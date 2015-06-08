@@ -32,3 +32,29 @@ for example.
 - [ ] It must be possible to get a list of instances in a group of a certain hook type.
 - [ ] It must support network-wide instances.
 
+## Registry
+
+### Purpose
+
+Manage a list of available hook types.
+
+### Constraints
+
+- [ ] It must be possible to get a list of all hook types.
+- [ ] It must be possible to deregister a hook after it is registered.
+- [ ] Hooks must be identified by slugs and not by class names.
+
+## Description
+
+### Purpose
+
+Generate descriptions of hook instances.
+
+### Constraints
+
+- [ ] It must be able to generate a general description for an instance.
+- [ ] It must be able to generate a description for an instance based on the parameters of the user action at the time the hook fires.
+- [ ] Descriptions must be localizable.
+- [ ] It must be possible for the user to customize the general description.
+
+
