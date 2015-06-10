@@ -1,6 +1,6 @@
 # WordPoints Hooks API
 
-A basic API for hooking into user actions, being developed as a module.
+API for scripting automatic responses to user actions, being developed as a module.
 
 ## Purpose
 
