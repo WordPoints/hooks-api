@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * Interface for class registries.
+ *
+ * @package wordpoints-hooks-api
+ * @since   1.0.0
+ */
+
+/**
+ * Defines how a class registry API should look.
+ *
+ * A class registry is an object that can be used to hold a list of classes indexed
+ * by unique arbitrary slugs. It can be used to retrieve objects by the slug, without
+ * knowing the class name. This allows for classes to be easily replaced, making the
+ * whole architecture more decoupled.
+ *
+ * Internally, the objects may be stored and re-used or new ones may be created on-
+ * the-fly as they are requested. This interface does not specify how they should be
+ * handled, only how the objects are to be retrieved.
+ *
+ * @since 1.0.0
+ */
+interface WordPoints_Class_RegistryI {
+
+	/**
+	 * Get an object by its slug, or retrieve a list of all objects.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the type of object to retrieve.
+	 *
+	 * @return object|object[]|false The object with the $slug or false if it is not
+	 *                               registered, or all of the objects.
+	 */
+	public function get( $slug = null );
+
+	/**
+	 * Register a type of object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug  A unique identifier for this type of object.
+	 * @param string $class The class name.
+	 * @param array  $args  Other arguments.
+	 *
+	 * @return bool Whether the class was registered successfully.
+	 */
+	public function register( $slug, $class, array $args = array() );
+
+	/**
+	 * Deregister a type of object
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the class to deregister.
+	 */
+	public function deregister( $slug );
+
+	/**
+	 * Check if a type of object is registered by its slug.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the class to check for.
+	 *
+	 * @return bool Whether the class is registered.
+	 */
+	public function is_registered( $slug );
+}
+
+// EOF
