@@ -11,8 +11,6 @@ interface WordPoints_Hook_ConditionI {
 
 	public function get_title();
 
-	public function get_supported_types();
-
 	public function get_settings_fields();
 
 	public function validate_settings(
@@ -25,11 +23,6 @@ interface WordPoints_Hook_ConditionI {
 }
 
 class WordPoints_Hook_Condition_Array_Count extends WordPoints_Hook_Condition {
-
-	protected $supported_types = array(
-		'array' => true,
-		'entity_array' => true,
-	);
 
 	public function get_settings_fields() {
 		return array(
@@ -90,8 +83,6 @@ class WordPoints_Hook_Condition_Array_Count extends WordPoints_Hook_Condition {
 }
 
 class WordPoints_Hook_Condition_Array_Contains extends WordPoints_Hook_Condition {
-
-	protected $supported_types = array( 'array' => true );
 
 	public function is_met( $settings, WordPoints_Entity_Hierarchy $args ) {
 

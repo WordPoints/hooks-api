@@ -24,7 +24,7 @@
  * @property-read WordPoints_Class_Registry_Persistent $firers     The firers registry.
  * @property-read WordPoints_Class_Registry_Persistent $reactors   The reactors registry.
  * @property-read WordPoints_Class_Registry_Persistent $extensions The extensions registry.
- * @property-read WordPoints_Class_Registry            $conditions The conditions sub-app.
+ * @property-read WordPoints_Class_Registry_Children   $conditions The conditions sub-app.
  */
 class WordPoints_Hooks extends WordPoints_App {
 
@@ -81,6 +81,7 @@ class WordPoints_Hooks extends WordPoints_App {
 			&& (
 				$value instanceof WordPoints_Class_Registry
 				|| $value instanceof WordPoints_Class_Registry_Persistent
+				|| $value instanceof WordPoints_Class_Registry_Children
 			)
 		) {
 
@@ -115,7 +116,7 @@ class WordPoints_Hooks extends WordPoints_App {
 		$this->sub_apps->register( 'firers', 'WordPoints_Class_Registry_Persistent' );
 		$this->sub_apps->register( 'reactors', 'WordPoints_Class_Registry_Persistent' );
 		$this->sub_apps->register( 'extensions', 'WordPoints_Class_Registry_Persistent' );
-		$this->sub_apps->register( 'conditions', 'WordPoints_Class_Registry' );
+		$this->sub_apps->register( 'conditions', 'WordPoints_Class_Registry_Children' );
 
 		/**
 		 * Hooks app initialization.

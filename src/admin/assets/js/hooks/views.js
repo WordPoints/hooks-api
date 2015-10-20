@@ -531,9 +531,14 @@ Fields = Backbone.Model.extend({
 
 			case 'hidden':
 				return this.templateHidden( data );
+		}
 
-			default:
-				return this.template( data );
+		var DataType = DataTypes.get( data.type );
+
+		if ( DataType ) {
+			return DataType.createField( data );
+		} else {
+			return this.template( data );
 		}
 	},
 
@@ -740,6 +745,35 @@ Fields = Backbone.Model.extend({
 		}
 	}
 });
+
+var DataType = Backbone.Model.extend({
+
+	idAttribute: 'slug',
+
+	defaults: {
+		inputType: 'text'
+	},
+
+	template: template( 'hook-reaction-field' ),
+
+	createField: function ( data ) {
+
+		return this.template(
+			_.extend( {}, data, { type: this.get( 'inputType' ) } )
+		);
+	}
+});
+
+//var NumberType = Backbone.Model.extend({
+//	defaults: {
+//		inputType: 'number'
+//	}
+//});
+
+var DataTypes = new Backbone.Collection();
+
+DataTypes.add( new DataType( { slug: 'text' } ) );
+DataTypes.add( new DataType( { slug: 'integer', inputType: 'number' } ) );
 
 module.exports = Fields;
 

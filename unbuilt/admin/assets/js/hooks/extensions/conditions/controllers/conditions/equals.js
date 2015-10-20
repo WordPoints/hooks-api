@@ -8,7 +8,6 @@
 
 var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	Args = wp.wordpoints.hooks.Args,
-	Extensions = wp.wordpoints.hooks.Extensions,
 	Equals;
 
 Equals = Condition.extend({
@@ -20,16 +19,11 @@ Equals = Condition.extend({
 	renderSettings: function ( condition, fieldNamePrefix ) {
 
 		var fields = this.get( 'fields' ),
-			hierarchy = _.clone( condition.model.get( '_hierarchy' ) ),
-			arg;
-
-		arg = Args.getChild(
-			hierarchy[ hierarchy.length - 2 ]
-			, hierarchy[ hierarchy.length - 1 ]
-		);
+			arg = condition.getArg();
 
 		// We render the `value` field differently based on the type of argument.
-		if ( arg.get( '_type' ) === 'attr' ) {
+		// TODO select?
+		if ( arg && arg.get( '_type' ) === 'attr' ) {
 
 			fields = _.extend( {}, fields );
 
@@ -43,15 +37,14 @@ Equals = Condition.extend({
 					, { type: 'select', options: values }
 				);
 
-			} else if ( arg.get( 'type' ) === 'int' ) {
-				fields.value = _.extend( {}, fields.value, { type: 'number' } );
+			} else {
+				fields.value = _.extend( {}, fields.value, { type: arg.get( 'type' ) } );
 			}
 		}
 
-		return Extensions.get( 'conditions' ).renderConditionFields(
-			condition
-			, fields
-			, fieldNamePrefix
+		return this.__super__.constructor.renderSettings.apply(
+			this
+			, [ condition, fieldNamePrefix ]
 		);
 	}
 });

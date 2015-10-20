@@ -55,23 +55,9 @@ add_action( 'wordpoints_hook_extensions_init', 'wordpoints_hook_extension_init' 
  *
  * @since 1.0.0
  *
- * @param WordPoints_Class_Registry $conditions The conditions registry.
+ * @param WordPoints_Class_Registry_Children $conditions The conditions registry.
  */
 function wordpoints_hook_conditions_init( $conditions ) {
-
-	$conditions->register( 'equals', 'WordPoints_Hook_Condition_Equals' );
-
-	$conditions->register(
-		'string_contains'
-		, 'WordPoints_Hook_Condition_String_Contains'
-	);
-
-	$conditions->register(
-		'entity_array_contains'
-		, 'WordPoints_Hook_Condition_Entity_Array_Contains'
-	);
-
-	$conditions = new WordPoints_Class_Registry_Children();
 
 	$conditions->register(
 		'text'
@@ -325,7 +311,7 @@ function wordpoints_entities_init( $entities ) {
 //	$children->register(
 //		'comment'
 //		, 'post'
-//		, 'WordPoints_Entity_Post'
+//		, 'WordPoints_Entity_Comment_Post'
 //	);
 //
 //	$children->register(
@@ -356,12 +342,12 @@ function wordpoints_data_types_init( $data_types ) {
 //	$formats = $data_types->formats;
 //
 //	$formats->register( 'string', 'text', 'WordPoints_Data_Type_Format' );
-
-	/** @var WordPoints_Class_Registry_ChildrenI $specs */
-	$specs = $data_types->specs = new WordPoints_Class_Registry_Children;
-
-	$specs->register( 'integer', 'max', 'WordPoints_Spec_Integer_Max' );
-	$specs->register( 'text', 'max_length', 'WordPoints_Spec_Text_Length_Max' );
+//
+//	/** @var WordPoints_Class_Registry_ChildrenI $specs */
+//	$specs = $data_types->specs = new WordPoints_Class_Registry_Children;
+//
+//	$specs->register( 'integer', 'max', 'WordPoints_Spec_Integer_Max' );
+//	$specs->register( 'text', 'max_length', 'WordPoints_Spec_Text_Length_Max' );
 }
 
 function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {

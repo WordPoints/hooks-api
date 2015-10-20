@@ -9,33 +9,6 @@
 
 abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 
-	protected $supported_types;
-
-	public function get_supported_types() {
-		return $this->supported_types;
-	}
-//
-//	protected function arg_type_supported( $arg, WordPoints_Hook_Reaction_Validator $validator ) {
-//
-//		$supported_types = $this->get_supported_types();
-//
-//		$is_supported = false;
-//
-//		if ( $arg instanceof WordPoints_Entity_Attr ) {
-//			$is_supported = isset( $supported_types[ $arg->get_data_type() ] );
-//		} elseif ( $arg instanceof WordPoints_Entity_Array ) {
-//			$is_supported = isset( $supported_types['entity_array'] );
-//		}
-//
-//		if ( ! $is_supported ) {
-//			$validator->add_error(
-//				__( 'This type of condition does not work for the selected attribute.', 'wordpoints' )
-//			);
-//		}
-//
-//		return $is_supported;
-//	}
-
 	public function validate_settings(
 		$arg,
 		array $settings,

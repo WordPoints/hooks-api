@@ -142,7 +142,7 @@ ConditionGroups = Base.extend({
 			return;
 		}
 
-		var conditions = Extensions.get( 'conditions' ).getByAttrType( argType );
+		var conditions = Extensions.get( 'conditions' ).getByDataType( argType );
 
 		if ( ! this.ConditionSelector ) {
 
@@ -155,7 +155,7 @@ ConditionGroups = Base.extend({
 			this.$conditionSelector = this.ConditionSelector.$el;
 		}
 
-		this.ConditionSelector.collection.reset( conditions );
+		this.ConditionSelector.collection.reset( _.toArray( conditions ) );
 
 		this.$conditionSelector.show().find( 'select' ).focus();
 	},

@@ -40,8 +40,6 @@ Condition = Base.extend({
 		this.$title = this.$( '.condition-title' );
 		this.$settings = this.$( '.condition-settings' );
 
-		this.$title.text( this.extension.getType( this.model.get( 'type' ) ).title );
-
 		this.trigger( 'render:title', this );
 		this.trigger( 'render:settings', this );
 		this.trigger( 'render', this );

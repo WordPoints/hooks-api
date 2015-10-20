@@ -26,10 +26,9 @@ EntityArrayContains = Condition.extend({
 		var Conditions = Extensions.get( 'conditions' );
 
 		// Render the main fields.
-		var fields = Conditions.renderConditionFields(
-			condition
-			, this.get( 'fields' )
-			, fieldNamePrefix
+		var fields = this.__super__.constructor.renderSettings.apply(
+			this
+			, [ condition, this.get( 'fields' ), fieldNamePrefix ]
 		);
 
 		condition.$settings.append( fields );

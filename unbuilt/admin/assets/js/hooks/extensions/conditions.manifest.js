@@ -16,16 +16,22 @@ hooks.view.ConditionGroups   = require( './conditions/views/condition-groups.js'
 
 // Controllers.
 hooks.extension.Conditions = require( './conditions/controllers/extension.js' );
-
-var condition = hooks.extension.Conditions.condition;
-
 hooks.extension.Conditions.Condition = require( './conditions/controllers/condition.js' );
 
+var Conditions = new hooks.extension.Conditions();
+
 // Conditions.
-condition.Equals              = require( './conditions/controllers/conditions/equals.js' );
-condition.EntityArrayContains = require( './conditions/controllers/conditions/entity-array-contains.js' );
+var Equals = require( './conditions/controllers/conditions/equals.js' );
+
+Conditions.registerController( 'text', 'equals', Equals );
+Conditions.registerController( 'entity_array', 'equals', Equals );
+Conditions.registerController(
+	'entity_array'
+	, 'contains'
+	, require( './conditions/controllers/conditions/entity-array-contains.js' )
+);
 
 // Register the extension.
-hooks.Extensions.add( new hooks.extension.Conditions() );
+hooks.Extensions.add( Conditions );
 
 // EOF

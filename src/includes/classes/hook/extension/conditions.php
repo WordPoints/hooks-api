@@ -29,20 +29,22 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 	public function get_data() {
 
-		$conditions = array();
+		$conditions_data = array();
 
-//		/** @var WordPoints_Hook_ConditionI $condition */
-//		foreach ( $this->conditions->get() as $slug => $condition ) {
-//
-//			$conditions[ $slug ] = array(
-//				'slug'   => $slug,
-//				'title'  => $condition->get_title(),
-//				'types'  => $condition->get_supported_types(),
-//				'fields' => $condition->get_settings_fields(),
-//			);
-//		}
+		/** @var WordPoints_Hook_ConditionI $condition */
+		foreach ( $this->conditions->get() as $data_type => $conditions ) {
 
-		return array( 'conditions' => $conditions );
+			foreach ( $conditions as $slug => $condition ) {
+				$conditions_data[ $data_type ][ $slug ] = array(
+					'slug'      => $slug,
+					'data_type' => $data_type,
+					'title'     => $condition->get_title(),
+					'fields'    => $condition->get_settings_fields(),
+				);
+			}
+		}
+
+		return array( 'conditions' => $conditions_data );
 	}
 //
 //	protected function validate_conditions( $args ) {

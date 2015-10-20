@@ -94,7 +94,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 					$child_data[ $child_slug ]['_type'] = 'attr';
 					$child_data[ $child_slug ]['type']  = $child->get_data_type();
-					$child_data[ $child_slug ]['specs'] = $child->get_data_type_specs();
+//					$child_data[ $child_slug ]['specs'] = $child->get_data_type_specs();
 
 					if ( $child instanceof WordPoints_Entity_Attr_Enumerable ) {
 						$child_data[ $child_slug ]['values'] = $child->get_enumerated_values();

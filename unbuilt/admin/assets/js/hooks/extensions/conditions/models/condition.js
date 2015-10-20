@@ -6,6 +6,7 @@
  * @augments wp.wordpoints.hooks.model.Base
  */
 var Base = wp.wordpoints.hooks.model.Base,
+	Args = wp.wordpoints.hooks.Args,
 	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Condition;
 
@@ -14,6 +15,19 @@ Condition = Base.extend({
 	defaults: {
 		type: '',
 		settings: []
+	},
+
+	getArg: function () {
+
+		var hierarchy = this.get( '_hierarchy' );
+
+		// TODO aliases
+		var arg = Args.getChild(
+			hierarchy[ hierarchy.length - 2 ]
+			, hierarchy[ hierarchy.length - 1 ]
+		);
+
+		return arg;
 	},
 
 	sync: function ( method, model, options ) {

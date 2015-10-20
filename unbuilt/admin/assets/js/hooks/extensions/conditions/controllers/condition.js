@@ -5,7 +5,10 @@
  * @augments Backbone.Model
  */
 
-var Condition = Backbone.Model.extend({
+var Fields = wp.wordpoints.hooks.Fields,
+	Condition;
+
+Condition = Backbone.Model.extend({
 
 	defaults: {
 		slug: '',
@@ -14,7 +17,27 @@ var Condition = Backbone.Model.extend({
 
 	idAttribute: 'slug',
 
-	renderSettings: function ( condition, fieldNamePrefix ) {}
+	renderSettings: function ( condition, fieldNamePrefix ) {
+
+		var fieldsHTML = '';
+
+		_.each( this.get( 'fields' ), function ( setting, name ) {
+
+			var fieldName = _.clone( fieldNamePrefix );
+
+			fieldName.push( name );
+
+			fieldsHTML += Fields.create(
+				condition.model.reaction
+				, fieldName
+				, condition.model.attributes.settings[ name ]
+				, setting
+			);
+
+		}, this );
+
+		return fieldsHTML;
+	}
 });
 
 module.exports = Condition;
