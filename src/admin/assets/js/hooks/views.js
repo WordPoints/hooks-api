@@ -18,6 +18,21 @@ Args = Backbone.Model.extend({
 		entities: {}
 	},
 
+	getEventArg: function ( eventSlug, slug ) {
+
+		var event = this.get( 'events' )[ eventSlug ];
+
+		if ( ! event || ! event.args || ! event.args[ slug ] ) {
+			return false;
+		}
+
+		var entity = this.getEntity( slug );
+
+		_.extend( entity.attributes, event.args[ slug ] );
+
+		return entity;
+	},
+
 	getEventArgs: function ( eventSlug ) {
 
 		var argsCollection = new ArgsCollection(),
@@ -145,7 +160,13 @@ Args = Backbone.Model.extend({
 		return new argType( child );
 	},
 
-	getArgsFromHierarchy: function ( hierarchy ) {
+	/**
+	 *
+	 * @param hierarchy
+	 * @param eventSlug Optional event for context.
+	 * @returns {*}
+	 */
+	getArgsFromHierarchy: function ( hierarchy, eventSlug ) {
 
 		var args = [], parent, arg, slug;
 
@@ -160,7 +181,11 @@ Args = Backbone.Model.extend({
 
 				arg = parent.getChild( slug );
 			} else {
-				arg = this.getEntity( slug );
+				if ( eventSlug && this.parseArgSlug( slug ).isAlias ) {
+					arg = this.getEventArg( eventSlug, slug );
+				} else {
+					arg = this.getEntity( slug );
+				}
 			}
 
 			if ( ! arg ) {
@@ -229,15 +254,20 @@ Args = Backbone.Model.extend({
 			return false;
 		}
 
-		return function ( subArgs ) {
+		return function ( subArgs, hierachy ) {
 
-			var matching, matches;
+			var matching = [], matches;
 
 			if ( subArgs instanceof Backbone.Collection ) {
-				 matching = subArgs.models;
+				subArgs = subArgs.models;
 			} else {
-				matching = _.clone( subArgs );
+				subArgs = _.clone( subArgs );
 			}
+
+			_.each( subArgs, function ( match ) {
+				match.hierachy = hierachy;
+				matching.push( match );
+			});
 
 			matching = new ArgsCollection( matching );
 
@@ -266,7 +296,7 @@ Args = Backbone.Model.extend({
 
 		// Check the top-level args as well.
 		if ( hierarchy.length === 0 ) {
-			addMatching( [ arg ] );
+			addMatching( [ arg ], hierarchy );
 		}
 
 		if ( arg instanceof Parent ) {
@@ -279,7 +309,7 @@ Args = Backbone.Model.extend({
 
 		hierarchy.push( arg );
 
-		addMatching( subArgs );
+		addMatching( subArgs, hierarchy );
 
 		subArgs.each( function ( subArg ) {
 
@@ -325,6 +355,7 @@ Args = Backbone.Model.extend({
 
 		return humanId;
 	}
+
 }, { type: {} });
 
 var Arg = Backbone.Model.extend({
@@ -403,7 +434,11 @@ var Relationship = Parent.extend({
 });
 
 var Array = Arg.extend( {
-	type: 'array'
+	type: 'array',
+
+	initialize: function () {
+		this.set( 'slug', this.get( 'entity_slug' ) + '{}' );
+	}
 });
 
 var Attr = Arg.extend( {
@@ -902,7 +937,9 @@ hooks.view.Reactions         = require( './views/reactions.js' );
 hooks.view.ArgOption         = require( './views/arg-option.js' );
 hooks.view.ArgSelector       = require( './views/arg-selector.js' );
 hooks.view.ArgSelectors      = require( './views/arg-selectors.js' );
-},{"./controllers/args.js":1,"./controllers/extension.js":2,"./controllers/extensions.js":3,"./controllers/fields.js":4,"./controllers/reactor.js":5,"./controllers/reactors.js":6,"./views/arg-option.js":8,"./views/arg-selector.js":9,"./views/arg-selectors.js":10,"./views/base.js":11,"./views/reaction.js":12,"./views/reactions.js":13}],8:[function(require,module,exports){
+hooks.view.ArgSelector2      = require( './views/arg-selector2.js' );
+
+},{"./controllers/args.js":1,"./controllers/extension.js":2,"./controllers/extensions.js":3,"./controllers/fields.js":4,"./controllers/reactor.js":5,"./controllers/reactors.js":6,"./views/arg-option.js":8,"./views/arg-selector.js":9,"./views/arg-selector2.js":10,"./views/arg-selectors.js":11,"./views/base.js":12,"./views/reaction.js":13,"./views/reactions.js":14}],8:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.ArgOption
  *
@@ -999,6 +1036,104 @@ ArgSelector = Base.extend({
 module.exports = ArgSelector;
 
 },{}],10:[function(require,module,exports){
+/**
+ * wp.wordpoints.hooks.view.ArgSelectors
+ *
+ * @class
+ * @augments Backbone.View
+ * @augments wp.wordpoints.hooks.view.Base
+ */
+var Base = wp.wordpoints.hooks.view.Base,
+	Args = wp.wordpoints.hooks.Args,
+	template = wp.wordpoints.hooks.template,
+	$ = Backbone.$,
+	ArgSelector2;
+
+ArgSelector2 = Base.extend({
+
+	namespace: 'arg-selector2',
+
+	tagName: 'div',
+
+	template: template( 'hook-arg-selector' ),
+
+	events: {
+		'change select': 'triggerChange'
+	},
+
+	initialize: function ( options ) {
+		if ( options.hierarchies ) {
+			this.hierarchies = options.hierarchies;
+		}
+	},
+
+	render: function () {
+		
+		this.$el.append(
+			this.template( { label: this.label, name: this.cid } )
+		);
+
+		this.$select = this.$( 'select' );
+
+		_.each( this.hierarchies, function ( hierarchy, index ) {
+
+			var $option = $( '<option></option>' )
+				.val( index )
+				.text( Args.buildHierarchyHumanId( hierarchy ) );
+
+			this.$select.append( $option );
+
+		}, this );
+
+		this.trigger( 'render', this );
+
+		return this;
+	},
+
+	triggerChange: function ( event ) {
+
+		var index = this.$select.val(),
+			hierarchy, arg;
+
+		// Don't do anything if the value hasn't really changed.
+		if ( index === this.currentIndex ) {
+			return;
+		}
+
+		this.currentIndex = index;
+
+		if ( index !== false ) {
+			hierarchy = this.hierarchies[ index ];
+
+			if ( ! hierarchy ) {
+				return;
+			}
+
+			arg = hierarchy[ hierarchy.length - 1 ];
+		}
+
+		this.trigger( 'change', this, arg, index, event );
+	},
+
+	getHierarchy: function () {
+
+		var hierarchy = [];
+
+		_.each( this.getHierarchyArgs(), function ( arg ) {
+			hierarchy.push( arg.get( 'slug' ) );
+		});
+
+		return hierarchy;
+	},
+
+	getHierarchyArgs: function () {
+		return this.hierarchies[ this.currentIndex ];
+	}
+});
+
+module.exports = ArgSelector2;
+
+},{}],11:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.ArgSelectors
  *
@@ -1165,7 +1300,7 @@ ArgSelectors = Base.extend({
 
 module.exports = ArgSelectors;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.Base
  *
@@ -1212,7 +1347,7 @@ Base = Backbone.View.extend( {
 
 module.exports = Base;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.Base
  *
@@ -1407,6 +1542,8 @@ Reaction = Base.extend({
 
 		this.$el.removeClass( 'changed' );
 
+		this.renderFields();
+
 		this.trigger( 'cancel' );
 	},
 
@@ -1576,7 +1713,7 @@ Reaction = Base.extend({
 });
 
 module.exports = Reaction;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.Hooks
  *

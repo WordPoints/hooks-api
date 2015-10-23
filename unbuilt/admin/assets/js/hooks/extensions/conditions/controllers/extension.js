@@ -21,14 +21,10 @@ Conditions = Extension.extend({
 		slug: 'conditions'
 	},
 
-	_byType: {},
-
 	initialize: function () {
 
-		this.listenTo( hooks, 'condition:model:validate', this.validateCondition );
-		this.listenTo( hooks, 'condition:view:init', this.initCondition );
-
 		this.controllers = new Backbone.Collection( [], { comparator: 'slug' } );
+		this.dataType = Backbone.Model.extend( { idAttribute: 'slug' } );
 	},
 
 	initReaction: function ( reaction ) {
@@ -81,107 +77,26 @@ Conditions = Extension.extend({
 		return conditionGroups;
 	},
 
+	// TODO move to condition groups?
 	getIdFromHierarchy: function ( hierarchy ) {
 		return hierarchy.join( '.' );
 	},
 
-	initCondition: function ( condition ) {
-		this.listenTo( condition, 'render:title', this.renderConditionTitle );
-		this.listenTo( condition, 'render:settings', this.renderConditionSettings );
-	},
-	//
-	//_getDataTypeFromCondition: function ( condition ) {
-	//
-	//},
+	getDataTypeFromArg: function ( arg ) {
 
-	_getTypeFromCondition: function ( condition ) {
+		var argType = arg.get( '_type' );
 
-		var arg = condition.getArg(),
-			dataType;
-
-		if ( ! arg ) {
-			return false;
-		}
-
-		switch ( arg.get( '_type' ) ) {
+		switch ( argType ) {
 
 			case 'attr':
-				dataType = arg.get( 'type' );
-				break;
+				return arg.get( 'type' );
 
 			case 'array':
-				dataType = 'entity_array';
-				break;
+				return 'entity_array';
+
+			default:
+				return argType;
 		}
-
-		return this.getType( dataType, condition.get( 'type' ) );
-	},
-
-	renderConditionTitle: function ( condition ) {
-
-		var conditionType = this._getTypeFromCondition( condition.model );
-
-		if ( conditionType ) {
-			condition.$title.text( conditionType.title );
-		}
-	},
-
-	renderConditionSettings: function ( condition ) {
-
-		// Build the fields based on the condition type.
-		// Should this be a template (or maybe meta-template) supplied by the PHP?
-		var conditionType = this._getTypeFromCondition( condition.model ),
-			fields = '';
-
-		var fieldNamePrefix = _.clone( condition.model.get( '_hierarchy' ) );
-		fieldNamePrefix.unshift( 'conditions' );
-		fieldNamePrefix.push(
-			'_conditions'
-			, condition.model.get( 'id' )
-			, 'settings'
-		);
-
-		var fieldName = _.clone( fieldNamePrefix );
-
-		fieldName.pop();
-		fieldName.push( 'type' );
-
-		fields += Fields.create(
-			condition.model.reaction
-			, fieldName
-			, condition.model.get( 'type' )
-			, { type: 'hidden' }
-		);
-
-		if ( conditionType ) {
-			var controller = this.getController(
-				conditionType.data_type
-				, conditionType.slug
-			);
-
-			if ( controller ) {
-				fields += controller.renderSettings( condition, fieldNamePrefix );
-			}
-		}
-
-		condition.$settings.append( fields );
-	},
-
-	validateCondition: function ( condition, attributes, errors ) {
-
-		var conditionType = this._getTypeFromCondition( condition );
-
-		if ( ! conditionType ) {
-			return;
-		}
-
-		var fields = conditionType.fields;
-
-		Fields.validate(
-			fields
-			, attributes
-			, errors
-		);
 	},
 
 	validateReactionConditions: function ( attributes, errors ) {
@@ -206,26 +121,26 @@ Conditions = Extension.extend({
 		return this.data.conditions[ dataType ][ slug ];
 	},
 
-	// Get all conditions for a certain attribute type.
+	// Get all conditions for a certain data type.
 	getByDataType: function ( dataType ) {
 
 		return this.data.conditions[ dataType ];
 	},
 
-	getController: function ( dataType, slug ) {
+	getController: function ( dataTypeSlug, slug ) {
 
-		var controllers = this.controllers.get( dataType ),
+		var dataType = this.controllers.get( dataTypeSlug ),
 			controller;
 
-		if ( controllers ) {
-			controller = controllers.get( slug );
+		if ( dataType ) {
+			controller = dataType.get( 'controllers' )[ slug ];
 		}
 
 		if ( ! controller ) {
 			controller = Conditions.Condition;
 		}
 
-		var type = this.getType( dataType, slug );
+		var type = this.getType( dataTypeSlug, slug );
 
 		if ( ! type ) {
 			type = { slug: slug }
@@ -234,15 +149,20 @@ Conditions = Extension.extend({
 		return new controller( type );
 	},
 
-	registerController: function ( dataType, slug, controller ) {
+	registerController: function ( dataTypeSlug, slug, controller ) {
 
-		var controllers = this.controllers.get( dataType );
+		var dataType = this.controllers.get( dataTypeSlug );
 
-		if ( ! controllers ) {
-			return false;
+		if ( ! dataType ) {
+			dataType = new this.dataType({
+				slug: dataTypeSlug,
+				controllers: {}
+			});
+
+			this.controllers.add( dataType );
 		}
 
-		controllers.add( controller );
+		dataType.get( 'controllers' )[ slug ] = controller;
 	}
 
 } );

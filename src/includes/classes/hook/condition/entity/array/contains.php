@@ -102,10 +102,27 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 
 	protected function validate_conditions() {
 
+		$current_arg = $this->validator->get_event_args()->get_current();
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+
+		if ( $current_arg instanceof WordPoints_Entity_Array ) {
+
+			$entity = wordpoints_apps()->entities->get(
+				$current_arg->get_entity_slug()
+			);
+
+			if ( $entity instanceof WordPoints_Entity ) {
+				$args->add_entity( $entity );
+			}
+		}
+
+		$args->set_validator( $this->validator );
+
 		$conditions = $this->conditions_extension->validate_settings(
 			array( 'conditions' => $this->settings['conditions'] )
 			, $this->validator
-			, $this->validator->get_event_args()
+			, $args
 		);
 
 		$this->settings['conditions'] = $conditions['conditions'];

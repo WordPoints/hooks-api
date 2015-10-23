@@ -7,7 +7,7 @@
  * @since 1.
  */
 
-class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship_OneToMany {
+class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship {
 
 	protected $primary_entity_slug = 'post';
 	protected $related_entity_slug = 'term{}';

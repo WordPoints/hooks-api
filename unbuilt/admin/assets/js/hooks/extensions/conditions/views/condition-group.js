@@ -37,7 +37,10 @@ ConditionGroup = Base.extend({
 
 		this.$( '.condition-group-title' ).text(
 			Args.buildHierarchyHumanId(
-				Args.getArgsFromHierarchy( this.model.get( 'hierarchy' ) )
+				Args.getArgsFromHierarchy(
+					this.model.get( 'hierarchy' )
+					, this.reaction.model.get( 'event' )
+				)
 			)
 		);
 

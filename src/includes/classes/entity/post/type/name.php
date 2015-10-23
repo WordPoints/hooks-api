@@ -11,7 +11,7 @@ class WordPoints_Entity_Post_Type_Name
 	extends WordPoints_Entity_Attr
 	implements WordPoints_Entity_Attr_Enumerable {
 
-	protected $type = 'string';
+	protected $type = 'text';
 	protected $field = 'name';
 
 	/**

@@ -9,13 +9,6 @@
 
 class WordPoints_Hook_Condition_Equals extends WordPoints_Hook_Condition {
 
-	protected $supported_types = array(
-		'array'  => true,
-		'float'  => true,
-		'int'    => true,
-		'string' => true,
-	);
-
 	public function get_title() {
 		return __( 'Equals', 'wordpoints' );
 	}

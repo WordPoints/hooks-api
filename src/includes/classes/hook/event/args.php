@@ -28,7 +28,7 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 				$entity = $arg->get_entity();
 
 				if ( $entity instanceof WordPoints_Entity ) {
-					$this->add_entity( $entity );
+					$this->entities[ $arg->get_slug() ] = $entity;
 				}
 			}
 		}
@@ -45,13 +45,16 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 		if ( ! $result ) {
 
 			if ( ! ( $this->current instanceof WordPoints_Entity_ParentI ) ) {
+
 				$this->validator->add_error( 'Current arg is not a parent.' );
-			}
 
-			$child_arg = $this->current->get_child( $child_slug );
+			} else {
 
-			if ( ! $child_arg ) {
-				$this->validator->add_error( 'Invalid child.', $child_slug );
+				$child_arg = $this->current->get_child( $child_slug );
+
+				if ( ! $child_arg ) {
+					$this->validator->add_error( 'Invalid child.', $child_slug );
+				}
 			}
 
 		} else {

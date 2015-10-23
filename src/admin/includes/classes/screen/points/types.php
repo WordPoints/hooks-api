@@ -122,6 +122,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 				'slug'     => $slug,
 				'title'    => $entity->get_title(),
 				'children' => $child_data,
+				'id_field' => $entity->get_id_field(),
 				'_type'    => 'entity',
 			);
 

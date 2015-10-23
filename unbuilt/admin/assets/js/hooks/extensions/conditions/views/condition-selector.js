@@ -62,13 +62,7 @@ ConditionSelector = Base.extend({
 
 	getSelected: function () {
 
-		var value = this.$select.val();
-
-		if ( '0' === value ) {
-			value = false;
-		}
-
-		return value;
+		return this.$select.val();
 	}
 });
 

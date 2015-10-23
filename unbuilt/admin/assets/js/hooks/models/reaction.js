@@ -6,6 +6,7 @@
  * @augments wp.wordpoints.hooks.model.Base
  */
 var Base = wp.wordpoints.hooks.model.Base,
+	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Reaction;
 
 Reaction = Base.extend({
@@ -21,17 +22,10 @@ Reaction = Base.extend({
 
 	get: function ( attr ) {
 
-		var atts = this.attributes, _attr;
+		var atts = this.attributes;
 
 		if ( _.isArray( attr ) ) {
-
-			_attr = _.clone( attr );
-
-			attr = _attr.pop();
-
-			_.each( _attr, function ( attr ) {
-				atts = atts[ attr ];
-			});
+			return getDeep( atts, attr );
 		}
 
 		return atts[ attr ];

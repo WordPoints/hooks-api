@@ -14,7 +14,7 @@ abstract class WordPoints_Entity
 	/**
 	 * The field the entity is identified by.
 	 *
-	 * You must either define this or override get_entity_id() in your subclass.
+	 * You must either define this or override get_id_field() in your subclass.
 	 *
 	 * @since 1.0.0
 	 *
@@ -49,16 +49,16 @@ abstract class WordPoints_Entity
 	protected function get_entity( $id ) {
 		return call_user_func( $this->getter, $id );
 	}
-//
-//	public function get_id_field() {
-//		return $this->id_field;
-//	}
+
+	public function get_id_field() {
+		return $this->id_field;
+	}
 
 	abstract protected function is_entity( $entity );
 	abstract protected function get_attr_value( $entity, $attr );
 
 	protected function get_entity_id( $entity ) {
-		return $this->get_attr_value( $entity, $this->id_field );
+		return $this->get_attr_value( $entity, $this->get_id_field() );
 	}
 
 	public function get_human_id( $id ) {

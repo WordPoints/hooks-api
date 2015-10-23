@@ -25,6 +25,7 @@ var Conditions = new hooks.extension.Conditions();
 var Equals = require( './conditions/controllers/conditions/equals.js' );
 
 Conditions.registerController( 'text', 'equals', Equals );
+Conditions.registerController( 'entity', 'equals', Equals );
 Conditions.registerController( 'entity_array', 'equals', Equals );
 Conditions.registerController(
 	'entity_array'
@@ -111,9 +112,9 @@ EntityArrayContains = Condition.extend({
 		var Conditions = Extensions.get( 'conditions' );
 
 		// Render the main fields.
-		var fields = this.__super__.constructor.renderSettings.apply(
+		var fields = this.constructor.__super__.renderSettings.apply(
 			this
-			, [ condition, this.get( 'fields' ), fieldNamePrefix ]
+			, [ condition, fieldNamePrefix ]
 		);
 
 		condition.$settings.append( fields );
@@ -126,11 +127,11 @@ EntityArrayContains = Condition.extend({
 			)
 		);
 
-		var hierarchy = condition.model.get( '_hierarchy' ),
+		var hierarchy = condition.model.getFullHierarchy(),
 			arg;
 
 		arg = Args.getEntity(
-			Args.parseArgSlug( hierarchy[ hierarchy.length - 1 ] ).slug
+			condition.model.getArg().get( 'entity_slug' )
 		);
 
 		var view = new ConditionGroupsView( {
@@ -170,10 +171,13 @@ Equals = Condition.extend({
 	renderSettings: function ( condition, fieldNamePrefix ) {
 
 		var fields = this.get( 'fields' ),
-			arg = condition.getArg();
+			arg = condition.model.getArg();
 
 		// We render the `value` field differently based on the type of argument.
-		// TODO select?
+		if ( arg && arg.get( '_type' ) === 'entity' ) {
+			arg = arg.getChild( arg.get( 'id_field' ) );
+		}
+
 		if ( arg && arg.get( '_type' ) === 'attr' ) {
 
 			fields = _.extend( {}, fields );
@@ -193,7 +197,9 @@ Equals = Condition.extend({
 			}
 		}
 
-		return this.__super__.constructor.renderSettings.apply(
+		this.set( 'fields', fields );
+
+		return this.constructor.__super__.renderSettings.apply(
 			this
 			, [ condition, fieldNamePrefix ]
 		);
@@ -226,14 +232,10 @@ Conditions = Extension.extend({
 		slug: 'conditions'
 	},
 
-	_byType: {},
-
 	initialize: function () {
 
-		this.listenTo( hooks, 'condition:model:validate', this.validateCondition );
-		this.listenTo( hooks, 'condition:view:init', this.initCondition );
-
 		this.controllers = new Backbone.Collection( [], { comparator: 'slug' } );
+		this.dataType = Backbone.Model.extend( { idAttribute: 'slug' } );
 	},
 
 	initReaction: function ( reaction ) {
@@ -286,107 +288,26 @@ Conditions = Extension.extend({
 		return conditionGroups;
 	},
 
+	// TODO move to condition groups?
 	getIdFromHierarchy: function ( hierarchy ) {
 		return hierarchy.join( '.' );
 	},
 
-	initCondition: function ( condition ) {
-		this.listenTo( condition, 'render:title', this.renderConditionTitle );
-		this.listenTo( condition, 'render:settings', this.renderConditionSettings );
-	},
-	//
-	//_getDataTypeFromCondition: function ( condition ) {
-	//
-	//},
+	getDataTypeFromArg: function ( arg ) {
 
-	_getTypeFromCondition: function ( condition ) {
+		var argType = arg.get( '_type' );
 
-		var arg = condition.getArg(),
-			dataType;
-
-		if ( ! arg ) {
-			return false;
-		}
-
-		switch ( arg.get( '_type' ) ) {
+		switch ( argType ) {
 
 			case 'attr':
-				dataType = arg.get( 'type' );
-				break;
+				return arg.get( 'type' );
 
 			case 'array':
-				dataType = 'entity_array';
-				break;
+				return 'entity_array';
+
+			default:
+				return argType;
 		}
-
-		return this.getType( dataType, condition.get( 'type' ) );
-	},
-
-	renderConditionTitle: function ( condition ) {
-
-		var conditionType = this._getTypeFromCondition( condition.model );
-
-		if ( conditionType ) {
-			condition.$title.text( conditionType.title );
-		}
-	},
-
-	renderConditionSettings: function ( condition ) {
-
-		// Build the fields based on the condition type.
-		// Should this be a template (or maybe meta-template) supplied by the PHP?
-		var conditionType = this._getTypeFromCondition( condition.model ),
-			fields = '';
-
-		var fieldNamePrefix = _.clone( condition.model.get( '_hierarchy' ) );
-		fieldNamePrefix.unshift( 'conditions' );
-		fieldNamePrefix.push(
-			'_conditions'
-			, condition.model.get( 'id' )
-			, 'settings'
-		);
-
-		var fieldName = _.clone( fieldNamePrefix );
-
-		fieldName.pop();
-		fieldName.push( 'type' );
-
-		fields += Fields.create(
-			condition.model.reaction
-			, fieldName
-			, condition.model.get( 'type' )
-			, { type: 'hidden' }
-		);
-
-		if ( conditionType ) {
-			var controller = this.getController(
-				conditionType.data_type
-				, conditionType.slug
-			);
-
-			if ( controller ) {
-				fields += controller.renderSettings( condition, fieldNamePrefix );
-			}
-		}
-
-		condition.$settings.append( fields );
-	},
-
-	validateCondition: function ( condition, attributes, errors ) {
-
-		var conditionType = this._getTypeFromCondition( condition );
-
-		if ( ! conditionType ) {
-			return;
-		}
-
-		var fields = conditionType.fields;
-
-		Fields.validate(
-			fields
-			, attributes
-			, errors
-		);
 	},
 
 	validateReactionConditions: function ( attributes, errors ) {
@@ -411,26 +332,26 @@ Conditions = Extension.extend({
 		return this.data.conditions[ dataType ][ slug ];
 	},
 
-	// Get all conditions for a certain attribute type.
+	// Get all conditions for a certain data type.
 	getByDataType: function ( dataType ) {
 
 		return this.data.conditions[ dataType ];
 	},
 
-	getController: function ( dataType, slug ) {
+	getController: function ( dataTypeSlug, slug ) {
 
-		var controllers = this.controllers.get( dataType ),
+		var dataType = this.controllers.get( dataTypeSlug ),
 			controller;
 
-		if ( controllers ) {
-			controller = controllers.get( slug );
+		if ( dataType ) {
+			controller = dataType.get( 'controllers' )[ slug ];
 		}
 
 		if ( ! controller ) {
 			controller = Conditions.Condition;
 		}
 
-		var type = this.getType( dataType, slug );
+		var type = this.getType( dataTypeSlug, slug );
 
 		if ( ! type ) {
 			type = { slug: slug }
@@ -439,15 +360,20 @@ Conditions = Extension.extend({
 		return new controller( type );
 	},
 
-	registerController: function ( dataType, slug, controller ) {
+	registerController: function ( dataTypeSlug, slug, controller ) {
 
-		var controllers = this.controllers.get( dataType );
+		var dataType = this.controllers.get( dataTypeSlug );
 
-		if ( ! controllers ) {
-			return false;
+		if ( ! dataType ) {
+			dataType = new this.dataType({
+				slug: dataTypeSlug,
+				controllers: {}
+			});
+
+			this.controllers.add( dataType );
 		}
 
-		controllers.add( controller );
+		dataType.get( 'controllers' )[ slug ] = controller;
 	}
 
 } );
@@ -498,20 +424,26 @@ ConditionGroup = Backbone.Model.extend({
 	// the id attributes of the models.
 	reset: function ( models, options ) {
 
+		options = options || {};
+		options.group = this;
+
 		var conditions = this.get( 'conditions' );
 
 		this.setIds( models, 0 );
 
-		return conditions.reset.apply( conditions, arguments );
+		return conditions.reset.call( conditions, models, options );
 	},
 
 	add: function ( models, options ) {
+
+		options = options || {};
+		options.group = this;
 
 		var conditions = this.get( 'conditions' );
 
 		this.setIds( models, this.getNextId() );
 
-		return conditions.add.apply( conditions, arguments );
+		return conditions.add.call( conditions, models, options );
 	},
 
 	getNextId: function() {
@@ -539,9 +471,11 @@ ConditionGroup = Backbone.Model.extend({
 				model.id = id;
 			}
 
-			model._hierarchy = this.get( 'preHierarchy' ).concat(
-				this.get( 'hierarchy' )
-			);
+			// This will be set when an object is converted to a model, but if it is
+			// a model already, we need to set it here.
+			if ( model instanceof Backbone.Model ) {
+				model.group = this;
+			}
 
 		}, this );
 	},
@@ -649,6 +583,8 @@ module.exports = ConditionTypes;
  */
 var Base = wp.wordpoints.hooks.model.Base,
 	Args = wp.wordpoints.hooks.Args,
+	Extensions = wp.wordpoints.hooks.Extensions,
+	Fields = wp.wordpoints.hooks.Fields,
 	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Condition;
 
@@ -659,17 +595,71 @@ Condition = Base.extend({
 		settings: []
 	},
 
+	initialize: function ( attributes, options ) {
+		if ( options.group ) {
+			this.group = options.group;
+		}
+	},
+
+	validate: function ( attributes, errors ) {
+
+		var conditionType = this.getType();
+
+		if ( ! conditionType ) {
+			return;
+		}
+
+		var fields = conditionType.fields;
+
+		Fields.validate(
+			fields
+			, attributes
+			, errors
+		);
+	},
+
+	getType: function () {
+
+		var arg = this.getArg();
+
+		if ( ! arg ) {
+			return false;
+		}
+
+		var Conditions = Extensions.get( 'conditions' );
+
+		return Conditions.getType(
+			Conditions.getDataTypeFromArg( arg )
+			, this.get( 'type' )
+		);
+	},
+
 	getArg: function () {
 
-		var hierarchy = this.get( '_hierarchy' );
+		if ( ! this.arg ) {
 
-		// TODO aliases
-		var arg = Args.getChild(
-			hierarchy[ hierarchy.length - 2 ]
-			, hierarchy[ hierarchy.length - 1 ]
+			var args = Args.getArgsFromHierarchy(
+				this.getHierarchy()
+				, this.reaction.get( 'event' )
+			);
+
+			if ( args ) {
+				this.arg = args[ args.length - 1 ];
+			}
+		}
+
+		return this.arg;
+	},
+
+	getHierarchy: function () {
+		return this.group.get( 'hierarchy' );
+	},
+
+	getFullHierarchy: function () {
+
+		return this.group.get( 'preHierarchy' ).concat(
+			this.group.get( 'hierarchy' )
 		);
-
-		return arg;
 	},
 
 	sync: function ( method, model, options ) {
@@ -680,7 +670,7 @@ Condition = Base.extend({
 
 		var conditions = getDeep(
 			model.reaction.attributes.conditions
-			, model.get( '_hierarchy' ).concat( [ '_conditions' ] )
+			, model.getFullHierarchy().concat( [ '_conditions' ] )
 		);
 
 		switch ( method ) {
@@ -691,7 +681,7 @@ Condition = Base.extend({
 					return;
 				}
 
-				conditions[ model.id ] = _.omit( model.attributes, [ 'id', '_hierarchy' ] );
+				conditions[ model.id ] = _.omit( model.attributes, [ 'id' ] );
 
 				options.success();
 				break;
@@ -711,10 +701,7 @@ Condition = Base.extend({
 					return;
 				}
 
-				conditions[ model.id ] = _.omit(
-					model.attributes
-					, [ 'id', '_hierarchy'  ]
-				);
+				conditions[ model.id ] = _.omit( model.attributes, [ 'id' ] );
 
 				options.success();
 				break;
@@ -833,7 +820,10 @@ ConditionGroup = Base.extend({
 
 		this.$( '.condition-group-title' ).text(
 			Args.buildHierarchyHumanId(
-				Args.getArgsFromHierarchy( this.model.get( 'hierarchy' ) )
+				Args.getArgsFromHierarchy(
+					this.model.get( 'hierarchy' )
+					, this.reaction.model.get( 'event' )
+				)
 			)
 		);
 
@@ -885,7 +875,7 @@ module.exports = ConditionGroup;
 var Base = wp.wordpoints.hooks.view.Base,
 	ConditionGroupView = wp.wordpoints.hooks.view.ConditionGroup,
 	Hook = wp.wordpoints.hooks.model.Reaction,
-	ArgSelectors = wp.wordpoints.hooks.view.ArgSelectors,
+	ArgSelector2 = wp.wordpoints.hooks.view.ArgSelector2,
 	ConditionSelector = wp.wordpoints.hooks.view.ConditionSelector,
 	Extensions = wp.wordpoints.hooks.Extensions,
 	Args = wp.wordpoints.hooks.Args,
@@ -918,6 +908,8 @@ ConditionGroups = Base.extend({
 		if ( options.hierarchy ) {
 			this.hierarchy = options.hierarchy;
 		}
+
+		this.Conditions = Extensions.get( 'conditions' );
 
 		this.listenTo( this.collection, 'add', this.addOne );
 		this.listenTo( this.collection, 'reset', this.render );
@@ -959,8 +951,7 @@ ConditionGroups = Base.extend({
 
 		this.$c( '> .conditions-title .add-new' ).attr( 'disabled', true );
 
-		// TODO filter out unusable args.
-		if ( ! this.ArgSelectors ) {
+		if ( typeof this.ArgSelector === 'undefined' ) {
 
 			var args = this.args;
 
@@ -968,29 +959,63 @@ ConditionGroups = Base.extend({
 				args = Args.getEventArgs( this.reaction.model.get( 'event' ) );
 			}
 
-			this.ArgSelectors = new ArgSelectors({
-				args: args,
-				el: this.$( '.arg-selectors' )
-			});
+			var Conditions = this.Conditions;
+			var isEntityArray = ( this.hierarchy.slice( -2 ).toString() === 'settings,conditions' );
+			var hasConditions = function ( arg ) {
 
-			this.listenTo( this.ArgSelectors, 'changing', this.maybeHideConditionSelector );
-			this.listenTo( this.ArgSelectors, 'change', this.maybeShowConditionSelector );
+				var dataType = Conditions.getDataTypeFromArg( arg );
 
-			this.ArgSelectors.render();
+				// We don't allow identity conditions on top-level entities.
+				if (
+					! isEntityArray
+					&& dataType === 'entity'
+					&& _.isEmpty( arg.hierarchy )
+				) {
+					return false;
+				}
+
+				var conditions = Conditions.getByDataType( dataType );
+
+				return ! _.isEmpty( conditions );
+			};
+
+			var hierarchies = Args.getHierarchiesMatching(
+				{ top: args.models, end: hasConditions }
+			);
+
+			if ( _.isEmpty( hierarchies ) ) {
+
+				this.$c( '> .add-condition-form .no-conditions' ).show();
+
+			} else {
+
+				this.ArgSelector = new ArgSelector2({
+					hierarchies: hierarchies,
+					el: this.$( '.arg-selectors' )
+				});
+
+				this.listenTo( this.ArgSelector, 'change', this.maybeShowConditionSelector );
+
+				this.ArgSelector.render();
+
+				this.ArgSelector.$select.change();
+			}
 		}
 
 		this.$c( '> .add-condition-form' ).slideDown();
 	},
 
 	getArgType: function ( arg ) {
-
+		// TODO use getDataTypeFromArg instead?
 		var argType;
 
 		if ( ! arg || ! arg.get ) {
 			return;
 		}
 
-		switch ( arg.get( '_type' ) ) {
+		argType = arg.get( '_type' );
+
+		switch ( argType ) {
 
 			case 'attr':
 				argType = arg.get( 'type' );
@@ -1004,8 +1029,6 @@ ConditionGroups = Base.extend({
 				// We compress relationships to avoid redundancy.
 				argType = this.getArgType( arg.getChild( arg.get( 'secondary' ) ) );
 				break;
-
-			default: return false;
 		}
 
 		return argType;
@@ -1016,10 +1039,14 @@ ConditionGroups = Base.extend({
 		var argType = this.getArgType( arg );
 
 		if ( ! argType ) {
+			if ( this.$conditionSelector ) {
+				this.$conditionSelector.hide();
+			}
+
 			return;
 		}
 
-		var conditions = Extensions.get( 'conditions' ).getByDataType( argType );
+		var conditions = this.Conditions.getByDataType( argType );
 
 		if ( ! this.ConditionSelector ) {
 
@@ -1034,14 +1061,7 @@ ConditionGroups = Base.extend({
 
 		this.ConditionSelector.collection.reset( _.toArray( conditions ) );
 
-		this.$conditionSelector.show().find( 'select' ).focus();
-	},
-
-	maybeHideConditionSelector: function ( argSelectors, arg ) {
-
-		if ( this.$conditionSelector && ! this.getArgType( arg ) ) {
-			this.$conditionSelector.hide();
-		}
+		this.$conditionSelector.show().find( 'select' ).change();
 	},
 
 	cancelAddNew: function () {
@@ -1064,8 +1084,8 @@ ConditionGroups = Base.extend({
 			return;
 		}
 
-		var hierarchy = this.ArgSelectors.getHierarchy(),
-			id = Extensions.get( 'conditions' ).getIdFromHierarchy( hierarchy ),
+		var hierarchy = this.ArgSelector.getHierarchy(),
+			id = this.Conditions.getIdFromHierarchy( hierarchy ),
 			ConditionGroup = this.collection.get( id );
 
 		if ( ! ConditionGroup ) {
@@ -1152,13 +1172,7 @@ ConditionSelector = Base.extend({
 
 	getSelected: function () {
 
-		var value = this.$select.val();
-
-		if ( '0' === value ) {
-			value = false;
-		}
-
-		return value;
+		return this.$select.val();
 	}
 });
 
@@ -1175,6 +1189,7 @@ module.exports = ConditionSelector;
 var Base = wp.wordpoints.hooks.view.Base,
 	template = wp.wordpoints.hooks.template,
 	Extensions = wp.wordpoints.hooks.Extensions,
+	Fields = wp.wordpoints.hooks.Fields,
 	Condition;
 
 Condition = Base.extend({
@@ -1207,11 +1222,65 @@ Condition = Base.extend({
 		this.$title = this.$( '.condition-title' );
 		this.$settings = this.$( '.condition-settings' );
 
-		this.trigger( 'render:title', this );
-		this.trigger( 'render:settings', this );
+		this.renderTitle();
+		this.renderSettings();
+
 		this.trigger( 'render', this );
 
 		return this;
+	},
+
+	renderTitle: function () {
+
+		var conditionType = this.model.getType();
+
+		if ( conditionType ) {
+			this.$title.text( conditionType.title );
+		}
+
+		this.trigger( 'render:title', this );
+	},
+
+	renderSettings: function () {
+
+		// Build the fields based on the condition type.
+		var conditionType = this.model.getType(),
+			fields = '';
+
+		var fieldNamePrefix = _.clone( this.model.getFullHierarchy() );
+		fieldNamePrefix.unshift( 'conditions' );
+		fieldNamePrefix.push(
+			'_conditions'
+			, this.model.get( 'id' )
+			, 'settings'
+		);
+
+		var fieldName = _.clone( fieldNamePrefix );
+
+		fieldName.pop();
+		fieldName.push( 'type' );
+
+		fields += Fields.create(
+			this.model.reaction
+			, fieldName
+			, this.model.get( 'type' )
+			, { type: 'hidden' }
+		);
+
+		if ( conditionType ) {
+			var controller = this.extension.getController(
+				conditionType.data_type
+				, conditionType.slug
+			);
+
+			if ( controller ) {
+				fields += controller.renderSettings( this, fieldNamePrefix );
+			}
+		}
+
+		this.$settings.append( fields );
+
+		this.trigger( 'render:settings', this );
 	},
 
 	// Remove the item, destroy the model.

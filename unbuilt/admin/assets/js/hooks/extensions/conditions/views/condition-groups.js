@@ -8,7 +8,7 @@
 var Base = wp.wordpoints.hooks.view.Base,
 	ConditionGroupView = wp.wordpoints.hooks.view.ConditionGroup,
 	Hook = wp.wordpoints.hooks.model.Reaction,
-	ArgSelectors = wp.wordpoints.hooks.view.ArgSelectors,
+	ArgSelector2 = wp.wordpoints.hooks.view.ArgSelector2,
 	ConditionSelector = wp.wordpoints.hooks.view.ConditionSelector,
 	Extensions = wp.wordpoints.hooks.Extensions,
 	Args = wp.wordpoints.hooks.Args,
@@ -41,6 +41,8 @@ ConditionGroups = Base.extend({
 		if ( options.hierarchy ) {
 			this.hierarchy = options.hierarchy;
 		}
+
+		this.Conditions = Extensions.get( 'conditions' );
 
 		this.listenTo( this.collection, 'add', this.addOne );
 		this.listenTo( this.collection, 'reset', this.render );
@@ -82,8 +84,7 @@ ConditionGroups = Base.extend({
 
 		this.$c( '> .conditions-title .add-new' ).attr( 'disabled', true );
 
-		// TODO filter out unusable args.
-		if ( ! this.ArgSelectors ) {
+		if ( typeof this.ArgSelector === 'undefined' ) {
 
 			var args = this.args;
 
@@ -91,29 +92,63 @@ ConditionGroups = Base.extend({
 				args = Args.getEventArgs( this.reaction.model.get( 'event' ) );
 			}
 
-			this.ArgSelectors = new ArgSelectors({
-				args: args,
-				el: this.$( '.arg-selectors' )
-			});
+			var Conditions = this.Conditions;
+			var isEntityArray = ( this.hierarchy.slice( -2 ).toString() === 'settings,conditions' );
+			var hasConditions = function ( arg ) {
 
-			this.listenTo( this.ArgSelectors, 'changing', this.maybeHideConditionSelector );
-			this.listenTo( this.ArgSelectors, 'change', this.maybeShowConditionSelector );
+				var dataType = Conditions.getDataTypeFromArg( arg );
 
-			this.ArgSelectors.render();
+				// We don't allow identity conditions on top-level entities.
+				if (
+					! isEntityArray
+					&& dataType === 'entity'
+					&& _.isEmpty( arg.hierarchy )
+				) {
+					return false;
+				}
+
+				var conditions = Conditions.getByDataType( dataType );
+
+				return ! _.isEmpty( conditions );
+			};
+
+			var hierarchies = Args.getHierarchiesMatching(
+				{ top: args.models, end: hasConditions }
+			);
+
+			if ( _.isEmpty( hierarchies ) ) {
+
+				this.$c( '> .add-condition-form .no-conditions' ).show();
+
+			} else {
+
+				this.ArgSelector = new ArgSelector2({
+					hierarchies: hierarchies,
+					el: this.$( '.arg-selectors' )
+				});
+
+				this.listenTo( this.ArgSelector, 'change', this.maybeShowConditionSelector );
+
+				this.ArgSelector.render();
+
+				this.ArgSelector.$select.change();
+			}
 		}
 
 		this.$c( '> .add-condition-form' ).slideDown();
 	},
 
 	getArgType: function ( arg ) {
-
+		// TODO use getDataTypeFromArg instead?
 		var argType;
 
 		if ( ! arg || ! arg.get ) {
 			return;
 		}
 
-		switch ( arg.get( '_type' ) ) {
+		argType = arg.get( '_type' );
+
+		switch ( argType ) {
 
 			case 'attr':
 				argType = arg.get( 'type' );
@@ -127,8 +162,6 @@ ConditionGroups = Base.extend({
 				// We compress relationships to avoid redundancy.
 				argType = this.getArgType( arg.getChild( arg.get( 'secondary' ) ) );
 				break;
-
-			default: return false;
 		}
 
 		return argType;
@@ -139,10 +172,14 @@ ConditionGroups = Base.extend({
 		var argType = this.getArgType( arg );
 
 		if ( ! argType ) {
+			if ( this.$conditionSelector ) {
+				this.$conditionSelector.hide();
+			}
+
 			return;
 		}
 
-		var conditions = Extensions.get( 'conditions' ).getByDataType( argType );
+		var conditions = this.Conditions.getByDataType( argType );
 
 		if ( ! this.ConditionSelector ) {
 
@@ -157,14 +194,7 @@ ConditionGroups = Base.extend({
 
 		this.ConditionSelector.collection.reset( _.toArray( conditions ) );
 
-		this.$conditionSelector.show().find( 'select' ).focus();
-	},
-
-	maybeHideConditionSelector: function ( argSelectors, arg ) {
-
-		if ( this.$conditionSelector && ! this.getArgType( arg ) ) {
-			this.$conditionSelector.hide();
-		}
+		this.$conditionSelector.show().find( 'select' ).change();
 	},
 
 	cancelAddNew: function () {
@@ -187,8 +217,8 @@ ConditionGroups = Base.extend({
 			return;
 		}
 
-		var hierarchy = this.ArgSelectors.getHierarchy(),
-			id = Extensions.get( 'conditions' ).getIdFromHierarchy( hierarchy ),
+		var hierarchy = this.ArgSelector.getHierarchy(),
+			id = this.Conditions.getIdFromHierarchy( hierarchy ),
 			ConditionGroup = this.collection.get( id );
 
 		if ( ! ConditionGroup ) {

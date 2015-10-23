@@ -7,7 +7,7 @@
  * @since 1.
  */
 
-class WordPoints_Entity_User_Roles extends WordPoints_Entity_Relationship_OneToMany {
+class WordPoints_Entity_User_Roles extends WordPoints_Entity_Relationship {
 
 	protected $primary_entity_slug = 'user';
 	protected $related_entity_slug = 'user_role{}';

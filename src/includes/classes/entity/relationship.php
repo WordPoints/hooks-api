@@ -104,7 +104,4 @@ abstract class WordPoints_Entity_Relationship
 	}
 }
 
-abstract class WordPoints_Entity_Relationship_OneToOne extends WordPoints_Entity_Relationship {}
-abstract class WordPoints_Entity_Relationship_OneToMany extends WordPoints_Entity_Relationship {}
-
 // EOF

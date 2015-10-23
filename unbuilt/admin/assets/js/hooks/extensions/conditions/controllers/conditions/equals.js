@@ -19,10 +19,13 @@ Equals = Condition.extend({
 	renderSettings: function ( condition, fieldNamePrefix ) {
 
 		var fields = this.get( 'fields' ),
-			arg = condition.getArg();
+			arg = condition.model.getArg();
 
 		// We render the `value` field differently based on the type of argument.
-		// TODO select?
+		if ( arg && arg.get( '_type' ) === 'entity' ) {
+			arg = arg.getChild( arg.get( 'id_field' ) );
+		}
+
 		if ( arg && arg.get( '_type' ) === 'attr' ) {
 
 			fields = _.extend( {}, fields );
@@ -42,7 +45,9 @@ Equals = Condition.extend({
 			}
 		}
 
-		return this.__super__.constructor.renderSettings.apply(
+		this.set( 'fields', fields );
+
+		return this.constructor.__super__.renderSettings.apply(
 			this
 			, [ condition, fieldNamePrefix ]
 		);

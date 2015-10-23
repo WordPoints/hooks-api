@@ -72,6 +72,12 @@ function wordpoints_hook_conditions_init( $conditions ) {
 	);
 
 	$conditions->register(
+		'entity'
+		, 'equals'
+		, 'WordPoints_Hook_Condition_Equals'
+	);
+
+	$conditions->register(
 		'entity_array'
 		, 'contains'
 		, 'WordPoints_Hook_Condition_Entity_Array_Contains'

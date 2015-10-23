@@ -192,6 +192,8 @@ Reaction = Base.extend({
 
 		this.$el.removeClass( 'changed' );
 
+		this.renderFields();
+
 		this.trigger( 'cancel' );
 	},
 

@@ -41,20 +41,26 @@ ConditionGroup = Backbone.Model.extend({
 	// the id attributes of the models.
 	reset: function ( models, options ) {
 
+		options = options || {};
+		options.group = this;
+
 		var conditions = this.get( 'conditions' );
 
 		this.setIds( models, 0 );
 
-		return conditions.reset.apply( conditions, arguments );
+		return conditions.reset.call( conditions, models, options );
 	},
 
 	add: function ( models, options ) {
+
+		options = options || {};
+		options.group = this;
 
 		var conditions = this.get( 'conditions' );
 
 		this.setIds( models, this.getNextId() );
 
-		return conditions.add.apply( conditions, arguments );
+		return conditions.add.call( conditions, models, options );
 	},
 
 	getNextId: function() {
@@ -82,9 +88,11 @@ ConditionGroup = Backbone.Model.extend({
 				model.id = id;
 			}
 
-			model._hierarchy = this.get( 'preHierarchy' ).concat(
-				this.get( 'hierarchy' )
-			);
+			// This will be set when an object is converted to a model, but if it is
+			// a model already, we need to set it here.
+			if ( model instanceof Backbone.Model ) {
+				model.group = this;
+			}
 
 		}, this );
 	},

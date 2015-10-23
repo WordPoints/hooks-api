@@ -155,9 +155,7 @@ function wordpoints_hooks_admin_register_scripts() {
 			<div class="arg-selector">
 				<label>
 					{{ data.label }}
-					<select name="{{ data.name }}">
-						<option value="0">' . esc_html__( 'Select&hellip;', 'wordpoints' ) . '</option>
-					</select>
+					<select name="{{ data.name }}"></select>
 				</label>
 			</div>
 		</script>
@@ -180,9 +178,7 @@ function wordpoints_hooks_admin_register_scripts() {
 			<p class="description description-thin">
 				<label>
 					{{ data.label }}
-					<select name="{{ data.name }}" class="widefat">
-						<option value="0">' . esc_html__( 'Select&hellip;', 'wordpoints' ) . '</option>
-					</select>
+					<select name="{{ data.name }}" class="widefat"></select>
 				</label>
 			</p>
 		</script>
@@ -220,6 +216,9 @@ function wordpoints_hooks_admin_register_scripts() {
 					</button>
 				</div>
 				<div class="add-condition-form hidden">
+					<div class="no-conditions hidden">
+						' . esc_html__( 'No conditions available.', 'wordpoints' ) . '
+					</div>
 					<div class="condition-selectors">
 						<div class="arg-selectors"></div>
 						<div class="condition-selector"></div>
@@ -252,61 +251,13 @@ function wordpoints_hooks_admin_register_scripts() {
 			<script type="text/template" id="tmpl-wordpoints-hook-condition-selector">
 				<label>
 					{{ data.label }}
-					<select name="{{ data.name }}">
-						<option value="0">' . esc_html__( 'Select&hellip;', 'wordpoints' ) . '</option>
-					</select>
+					<select name="{{ data.name }}"></select>
 				</label>
 			</script>
 		'
 	);
 }
 add_action( 'admin_init', 'wordpoints_hooks_admin_register_scripts' );
-
-/**
- * Allow registering JavaScript/Underscore templates as script dependents.
- *
- * To use this templates must be registered with handles prefixed with
- * `tmpl-wordpoints-`. Template files must use the `.tmpl` extension.
- *
- * @link https://core.trac.wordpress.org/ticket/31281
- *
- * @since 1.0.0
- *
- * @param string $html
- * @param string $handle
- * @param string $src
- *
- * @return string
- */
-function wordpoints_script_template_filter( $html, $handle, $src ) {
-
-	if ( empty( $src ) || 'tmpl-wordpoints-' !== substr( $handle, 0, 16 ) ) {
-		return $html;
-	}
-
-	$file = wp_check_filetype( $src );
-
-	if ( isset( $file['ext'] ) || 'tmpl' !== $file['ext'] ) {
-		return $html;
-	}
-
-	$dom = new DOMDocument;
-	$dom->loadHTML( $html );
-
-	/** @var DOMElement $tag */
-	foreach ( $dom->getElementsByTagName( 'script' ) as $tag ) {
-
-		if ( $tag->hasAttribute( 'type' ) ) {
-			$tag->setAttribute( 'type', 'text/template' );
-			$tag->setAttribute( 'id', $handle );
-			$tag->appendChild( $dom->createTextNode( file_get_contents( $src ) ) );
-			$tag->removeAttribute( 'src' );
-			$html = $dom->saveHTML( $tag );
-		}
-	}
-
-	return $html;
-}
 
 /**
  *

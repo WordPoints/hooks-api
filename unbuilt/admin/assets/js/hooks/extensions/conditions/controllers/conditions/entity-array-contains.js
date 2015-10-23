@@ -26,9 +26,9 @@ EntityArrayContains = Condition.extend({
 		var Conditions = Extensions.get( 'conditions' );
 
 		// Render the main fields.
-		var fields = this.__super__.constructor.renderSettings.apply(
+		var fields = this.constructor.__super__.renderSettings.apply(
 			this
-			, [ condition, this.get( 'fields' ), fieldNamePrefix ]
+			, [ condition, fieldNamePrefix ]
 		);
 
 		condition.$settings.append( fields );
@@ -41,11 +41,11 @@ EntityArrayContains = Condition.extend({
 			)
 		);
 
-		var hierarchy = condition.model.get( '_hierarchy' ),
+		var hierarchy = condition.model.getFullHierarchy(),
 			arg;
 
 		arg = Args.getEntity(
-			Args.parseArgSlug( hierarchy[ hierarchy.length - 1 ] ).slug
+			condition.model.getArg().get( 'entity_slug' )
 		);
 
 		var view = new ConditionGroupsView( {

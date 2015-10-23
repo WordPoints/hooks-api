@@ -17,6 +17,21 @@ Args = Backbone.Model.extend({
 		entities: {}
 	},
 
+	getEventArg: function ( eventSlug, slug ) {
+
+		var event = this.get( 'events' )[ eventSlug ];
+
+		if ( ! event || ! event.args || ! event.args[ slug ] ) {
+			return false;
+		}
+
+		var entity = this.getEntity( slug );
+
+		_.extend( entity.attributes, event.args[ slug ] );
+
+		return entity;
+	},
+
 	getEventArgs: function ( eventSlug ) {
 
 		var argsCollection = new ArgsCollection(),
@@ -144,7 +159,13 @@ Args = Backbone.Model.extend({
 		return new argType( child );
 	},
 
-	getArgsFromHierarchy: function ( hierarchy ) {
+	/**
+	 *
+	 * @param hierarchy
+	 * @param eventSlug Optional event for context.
+	 * @returns {*}
+	 */
+	getArgsFromHierarchy: function ( hierarchy, eventSlug ) {
 
 		var args = [], parent, arg, slug;
 
@@ -159,7 +180,11 @@ Args = Backbone.Model.extend({
 
 				arg = parent.getChild( slug );
 			} else {
-				arg = this.getEntity( slug );
+				if ( eventSlug && this.parseArgSlug( slug ).isAlias ) {
+					arg = this.getEventArg( eventSlug, slug );
+				} else {
+					arg = this.getEntity( slug );
+				}
 			}
 
 			if ( ! arg ) {
@@ -228,15 +253,20 @@ Args = Backbone.Model.extend({
 			return false;
 		}
 
-		return function ( subArgs ) {
+		return function ( subArgs, hierachy ) {
 
-			var matching, matches;
+			var matching = [], matches;
 
 			if ( subArgs instanceof Backbone.Collection ) {
-				 matching = subArgs.models;
+				subArgs = subArgs.models;
 			} else {
-				matching = _.clone( subArgs );
+				subArgs = _.clone( subArgs );
 			}
+
+			_.each( subArgs, function ( match ) {
+				match.hierachy = hierachy;
+				matching.push( match );
+			});
 
 			matching = new ArgsCollection( matching );
 
@@ -265,7 +295,7 @@ Args = Backbone.Model.extend({
 
 		// Check the top-level args as well.
 		if ( hierarchy.length === 0 ) {
-			addMatching( [ arg ] );
+			addMatching( [ arg ], hierarchy );
 		}
 
 		if ( arg instanceof Parent ) {
@@ -278,7 +308,7 @@ Args = Backbone.Model.extend({
 
 		hierarchy.push( arg );
 
-		addMatching( subArgs );
+		addMatching( subArgs, hierarchy );
 
 		subArgs.each( function ( subArg ) {
 
@@ -324,6 +354,7 @@ Args = Backbone.Model.extend({
 
 		return humanId;
 	}
+
 }, { type: {} });
 
 var Arg = Backbone.Model.extend({
@@ -402,7 +433,11 @@ var Relationship = Parent.extend({
 });
 
 var Array = Arg.extend( {
-	type: 'array'
+	type: 'array',
+
+	initialize: function () {
+		this.set( 'slug', this.get( 'entity_slug' ) + '{}' );
+	}
 });
 
 var Attr = Arg.extend( {

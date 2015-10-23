@@ -194,6 +194,8 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 			$data_type = $arg->get_data_type();
 		} elseif ( $arg instanceof WordPoints_Entity_Array ) {
 			$data_type = 'entity_array';
+		} elseif ( $arg instanceof WordPoints_Entity ) {
+			$data_type = 'entity';
 		}
 
 		if ( ! isset( $data_type ) ) {

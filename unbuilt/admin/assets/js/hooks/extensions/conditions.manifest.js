@@ -24,6 +24,7 @@ var Conditions = new hooks.extension.Conditions();
 var Equals = require( './conditions/controllers/conditions/equals.js' );
 
 Conditions.registerController( 'text', 'equals', Equals );
+Conditions.registerController( 'entity', 'equals', Equals );
 Conditions.registerController( 'entity_array', 'equals', Equals );
 Conditions.registerController(
 	'entity_array'
