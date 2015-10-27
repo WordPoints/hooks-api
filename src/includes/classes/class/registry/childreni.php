@@ -30,7 +30,7 @@ interface WordPoints_Class_Registry_ChildrenI {
 	 * @return object|object[]|false The object or all of the objects in the group.
 	 *                               False on failure.
 	 */
-	public function get( $parent_slug, $slug = null );
+	public function get( $parent_slug = null, $slug = null );
 
 	/**
 	 * Register a type of object.
