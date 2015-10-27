@@ -14,12 +14,27 @@
  */
 class WordPoints_PHPUnit_Mock_Object {
 
+	/**
+	 * The method calls made on this object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array[]
+	 */
 	public $calls = array();
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function __construct() {
-		$this->__call( '__construct', func_get_args() );
+		$this->__call( __FUNCTION__, func_get_args() );
 	}
 
+	/**
+	 * Record method calls on this object.
+	 *
+	 * @since 1.0.0
+	 */
 	public function __call( $name, $arguments ) {
 		$this->calls[] = array( 'name' => $name, 'arguments' => $arguments );
 	}

@@ -17,24 +17,6 @@
 class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * Test that it calls an action when it is constructed.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_does_action_on_construct() {
-
-		$mock = new WordPoints_Mock_Filter;
-
-		add_action( 'wordpoints_hook_actions_init', array( $mock, 'action' ) );
-
-		$hooks = new WordPoints_Hook_Actions;
-
-		$this->assertEquals( 1, $mock->call_count );
-
-		$this->assertTrue( $hooks === $mock->calls[0][0] );
-	}
-
-	/**
 	 * Test registering an action registers it with the router.
 	 *
 	 * @since 1.0.0

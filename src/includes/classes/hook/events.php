@@ -14,7 +14,7 @@
  *
  * @property-read WordPoints_Class_Registry_Children $args The event args registry.
  */
-class WordPoints_Hook_Events extends WordPoints_Class_Registry {
+class WordPoints_Hook_Events extends WordPoints_App_Registry {
 
 	/**
 	 * The data for the events, indexed by slug.
@@ -24,15 +24,6 @@ class WordPoints_Hook_Events extends WordPoints_Class_Registry {
 	 * @var array[]
 	 */
 	protected $event_data = array();
-
-	/**
-	 * A registry of args for events.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Class_Registry_Children
-	 */
-	protected $args;
 
 	/**
 	 * A hook router.
@@ -55,46 +46,24 @@ class WordPoints_Hook_Events extends WordPoints_Class_Registry {
 	/**
 	 * @since 1.0.0
 	 */
-	public function __construct() {
+	public function __construct( $slug ) {
 
 		$hooks = wordpoints_apps()->hooks;
 
 		$this->router   = $hooks->router;
 		$this->actions  = $hooks->actions;
-		$this->args = new WordPoints_Class_Registry_Children();
 
-		$this->init();
+		parent::__construct( $slug );
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function __get( $var ) {
+	public function init() {
 
-		if ( 'args' === $var ) {
-			return $this->args;
-		}
+		$this->sub_apps->register( 'args', 'WordPoints_Class_Registry_Children' );
 
-		return null;
-	}
-
-	/**
-	 * Initialize the registry.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function init() {
-
-		/**
-		 * Hook events initialization.
-		 *
-		 * Hook to this to register any custom events.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param WordPoints_Hook_Events $events The events registry.
-		 */
-		do_action( 'wordpoints_hook_events_init', $this );
+		parent::init();
 	}
 
 	/**

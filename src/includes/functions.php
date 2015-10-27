@@ -34,7 +34,7 @@ function wordpoints_hook_reactors_init( $reactors ) {
 
 	$reactors->register( 'points', 'WordPoints_Hook_Reactor_Points' );
 }
-add_action( 'wordpoints_hook_reactors_init', 'wordpoints_hook_reactors_init' );
+add_action( 'wordpoints_init_app_registry-hooks-reactors', 'wordpoints_hook_reactors_init' );
 
 /**
  * Register hook extension when the extension registry is initialized.
@@ -48,7 +48,7 @@ function wordpoints_hook_extension_init( $extensions ) {
 	$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
 //	$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
 }
-add_action( 'wordpoints_hook_extensions_init', 'wordpoints_hook_extension_init' );
+add_action( 'wordpoints_init_app_registry-hooks-extensions', 'wordpoints_hook_extension_init' );
 
 /**
  * Register hook conditions when the conditions registry is initialized.
@@ -84,7 +84,7 @@ function wordpoints_hook_conditions_init( $conditions ) {
 	);
 
 }
-add_action( 'wordpoints_hook_conditions_init', 'wordpoints_hook_conditions_init' );
+add_action( 'wordpoints_init_app_registry-hooks-conditions', 'wordpoints_hook_conditions_init' );
 
 /**
  * Register hook actions when the action registry is initialized.
@@ -181,7 +181,7 @@ function wordpoints_hook_actions_init( $actions ) {
 		)
 	);
 }
-add_action( 'wordpoints_hook_actions_init', 'wordpoints_hook_actions_init' );
+add_action( 'wordpoints_init_app_registry-hooks-actions', 'wordpoints_hook_actions_init' );
 
 /**
  * Register hook events when the event registry is initialized.
@@ -255,7 +255,7 @@ function wordpoints_hook_events_init( $events ) {
 //		);
 	}
 }
-add_action( 'wordpoints_hook_events_init', 'wordpoints_hook_events_init' );
+add_action( 'wordpoints_init_app_registry-hooks-events', 'wordpoints_hook_events_init' );
 
 /**
  * Register hook events when the firer registry is initialized.
@@ -270,14 +270,27 @@ function wordpoints_hook_firers_init( $firers ) {
 	$firers->register( 'reverse', 'WordPoints_Hook_Firer_Reverse' );
 	$firers->register( 'spam', 'WordPoints_Hook_Firer_Spam' );
 }
-add_action( 'wordpoints_hook_firers_init', 'wordpoints_hook_firers_init' );
+add_action( 'wordpoints_init_app_registry-hooks-firers', 'wordpoints_hook_firers_init' );
+
+/**
+ * Register sub-apps when the Entities app is initialized.
+ *
+ * @since 1.0.0
+ *
+ * @param WordPoints_App_Registry $entities The entities app.
+ */
+function wordpoints_entities_app_init( $entities ) {
+
+	$entities->sub_apps->register( 'children', 'WordPoints_Class_Registry_Children' );
+}
+add_action( 'wordpoints_init_app-entities', 'wordpoints_entities_app_init' );
 
 /**
  * Register entities when the entities app is initialized.
  *
  * @since 1.0.0
  *
- * @param WordPoints_Entities $entities The entities app.
+ * @param WordPoints_App_Registry $entities The entities app.
  */
 function wordpoints_entities_init( $entities ) {
 
@@ -330,7 +343,7 @@ function wordpoints_entities_init( $entities ) {
 
 	}
 }
-add_action( 'wordpoints_entities_init', 'wordpoints_entities_init' );
+add_action( 'wordpoints_init_app_registry-apps-entities', 'wordpoints_entities_init' );
 
 /**
  *
@@ -355,6 +368,7 @@ function wordpoints_data_types_init( $data_types ) {
 //	$specs->register( 'integer', 'max', 'WordPoints_Spec_Integer_Max' );
 //	$specs->register( 'text', 'max_length', 'WordPoints_Spec_Text_Length_Max' );
 }
+add_action( 'wordpoints_init_app_registry-apps-data_types', 'wordpoints_data_types_init' );
 
 function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
 
@@ -401,30 +415,60 @@ function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
  *
  * @since 1.0.0
  *
- * @return WordPoints_Apps The main WordPoints app.
+ * @return WordPoints_App The main WordPoints app.
  */
 function wordpoints_apps() {
 
-	if ( ! isset( WordPoints_Apps::$main_app ) ) {
-		WordPoints_Apps::$main_app = new WordPoints_Apps();
+	if ( ! isset( WordPoints_App::$main ) ) {
+		WordPoints_App::$main = new WordPoints_App( 'apps' );
 	}
 
-	return WordPoints_Apps::$main_app;
+	return WordPoints_App::$main;
 }
 
 /**
- *
+ * Register sub apps when the apps app is initialized.
  *
  * @since 1.0.0
  *
- * @param $apps WordPoints_Class_Registry_Persistent
+ * @param WordPoints_App $app The main apps app.
  */
-function wordpoints_hooks_app_init( $apps ) {
+function wordpoints_apps_init( $app ) {
+
+	$apps = $app->sub_apps;
 
 	$apps->register( 'hooks', 'WordPoints_Hooks' );
-	$apps->register( 'entities', 'WordPoints_Entities' );
+	$apps->register( 'entities', 'WordPoints_App_Registry' );
 	$apps->register( 'data_types', 'WordPoints_Class_Registry' );
 }
-add_action( 'wordpoints_apps_init', 'wordpoints_hooks_app_init' );
+add_action( 'wordpoints_init_app-apps', 'wordpoints_apps_init' );
+
+/**
+ * Construct a class with a variable number of args.
+ *
+ * @since 1.0.0
+ *
+ * @param string $class_name The name of the class to construct.
+ * @param array  $args       Up to 4 args to pass to the constructor.
+ *
+ * @return object|false The constructed object, or false if to many args were passed.
+ */
+function wordpoints_construct_class_with_args( $class_name, array $args ) {
+
+	switch ( count( $args ) ) {
+		case 0:
+			return new $class_name();
+		case 1:
+			return new $class_name( $args[0] );
+		case 2:
+			return new $class_name( $args[0], $args[1] );
+		case 3:
+			return new $class_name( $args[0], $args[1], $args[2] );
+		case 4:
+			return new $class_name( $args[0], $args[1], $args[2], $args[3] );
+		default:
+			return false;
+	}
+}
 
 // EOF

@@ -233,6 +233,113 @@ class WordPoints_Class_Registry_Persistent_Test extends PHPUnit_Framework_TestCa
 	}
 
 	/**
+	 * Test getting a registered class constructed with some args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_with_args() {
+
+		$registry = new WordPoints_Class_Registry_Persistent;
+
+		$this->assertTrue(
+			$registry->register( 'test', 'WordPoints_PHPUnit_Mock_Object' )
+		);
+
+		$args = array( 'one', 2 );
+
+		$object = $registry->get( 'test', $args );
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Object'
+			, $object
+		);
+
+		array_unshift( $args, 'test' );
+
+		$this->assertEquals(
+			array( 'name' => '__construct', 'arguments' => $args )
+			, $object->calls[0]
+		);
+	}
+
+	/**
+	 * Test getting all registered classes constructed with some args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_all_with_args() {
+
+		$registry = new WordPoints_Class_Registry_Persistent;
+
+		$this->assertTrue(
+			$registry->register( 'test', 'WordPoints_PHPUnit_Mock_Object' )
+		);
+
+		$this->assertTrue(
+			$registry->register( 'test_2', 'WordPoints_PHPUnit_Mock_Object2' )
+		);
+
+		$args = array( 'one', 2 );
+
+		$objects = $registry->get( null, $args );
+
+		$this->assertCount( 2, $objects );
+
+		array_unshift( $args, 'test' );
+
+		$this->assertEquals(
+			array( 'name' => '__construct', 'arguments' => $args )
+			, $objects['test']->calls[0]
+		);
+
+		$args[0] = 'test_2';
+
+		$this->assertEquals(
+			array( 'name' => '__construct', 'arguments' => $args )
+			, $objects['test_2']->calls[0]
+		);
+	}
+
+	/**
+	 * Test getting all registered classes constructed with some args when some
+	 * classes are already constructed.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_all_with_args_already_constructed() {
+
+		$registry = new WordPoints_Class_Registry_Persistent;
+
+		$this->assertTrue(
+			$registry->register( 'test', 'WordPoints_PHPUnit_Mock_Object' )
+		);
+
+		$this->assertTrue(
+			$registry->register( 'test_2', 'WordPoints_PHPUnit_Mock_Object2' )
+		);
+
+		$registry->get( 'test' );
+
+		$args = array( 'one', 2 );
+
+		$objects = $registry->get( null, $args );
+
+		$this->assertCount( 2, $objects );
+
+		$this->assertEquals(
+			array( 'name' => '__construct', 'arguments' => array( 'test' ) )
+			, $objects['test']->calls[0]
+		);
+
+		array_unshift( $args, 'test_2' );
+
+		$this->assertEquals(
+			array( 'name' => '__construct', 'arguments' => $args )
+			, $objects['test_2']->calls[0]
+		);
+	}
+
+	/**
 	 * Test deregistering a class.
 	 *
 	 * @since 1.0.0

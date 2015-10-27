@@ -147,6 +147,8 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertIsReaction( $result );
 
+		$hooks->firers->register( 'fire', 'WordPoints_Hook_Firer' );
+
 		do_action( __CLASS__, 1, 2, 3 );
 
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
@@ -177,7 +179,6 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$router = new WordPoints_Hook_Router;
 
 		$this->assertEquals( 'arg', $router->{'filter,10'}( 'arg' ) );
-
 	}
 }
 

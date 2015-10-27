@@ -17,31 +17,13 @@
 class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
-	 * Test that it calls an action when it is constructed.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_does_action_on_construct() {
-
-		$mock = new WordPoints_Mock_Filter;
-
-		add_action( 'wordpoints_hook_events_init', array( $mock, 'action' ) );
-
-		$events = new WordPoints_Hook_Events;
-
-		$this->assertEquals( 1, $mock->call_count );
-
-		$this->assertTrue( $events === $mock->calls[0][0] );
-	}
-
-	/**
-	 * Test that it provides the expected sub-apps..
+	 * Test that it provides the expected sub-apps.
 	 *
 	 * @since 1.0.0
 	 */
 	public function test_sub_apps() {
 
-		$events = new WordPoints_Hook_Events;
+		$events = new WordPoints_Hook_Events( 'test' );
 
 		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $events->args );
 	}
@@ -53,7 +35,7 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_register_requires_actions() {
 
-		$events = new WordPoints_Hook_Events;
+		$events = new WordPoints_Hook_Events( 'test' );
 
 		$this->assertFalse(
 			$events->register(
@@ -82,22 +64,18 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_register_registers_event_with_router() {
 
+		/** @var WordPoints_Hooks $hooks */
 		$hooks = $this->mock_apps()->hooks;
 
-		$hooks->events->register(
-			'test_event'
-			, 'WordPoints_PHPUnit_Mock_Hook_Event'
-			, array(
-				'action' => 'test_action',
-				'reverse_action' => 'test_reverse_action',
-			)
-		);
+		$this->factory->wordpoints->hook_event->create();
 
 		$this->factory->wordpoints->hook_action->create(
 			array( 'action' => __CLASS__ )
 		);
 
 		$this->factory->wordpoints->hook_reaction->create();
+
+		$hooks->firers->register( 'fire', 'WordPoints_Hook_Firer' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 
@@ -114,22 +92,18 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_deregister_deregisters_event_with_router() {
 
+		/** @var WordPoints_Hooks $hooks */
 		$hooks = $this->mock_apps()->hooks;
 
-		$hooks->events->register(
-			'test_event'
-			, 'WordPoints_PHPUnit_Mock_Hook_Event'
-			, array(
-				'action' => 'test_action',
-				'reverse_action' => 'test_reverse_action',
-			)
-		);
+		$this->factory->wordpoints->hook_event->create();
 
 		$this->factory->wordpoints->hook_action->create(
 			array( 'action' => __CLASS__ )
 		);
 
 		$this->factory->wordpoints->hook_reaction->create();
+
+		$hooks->firers->register( 'fire', 'WordPoints_Hook_Firer' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 
@@ -146,6 +120,70 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $reactor->hits );
+	}
+
+	/**
+	 * Test registering an event registers the args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_register_registers_args() {
+
+		/** @var WordPoints_Hooks $hooks */
+		$hooks = $this->mock_apps()->hooks;
+
+		$this->factory->wordpoints->hook_event->create(
+			array(
+				'args' => array(
+					'test_arg' => 'WordPoints_PHPUnit_Mock_Hook_Arg',
+				),
+			)
+		);
+
+		$this->assertTrue(
+			$hooks->events->args->is_registered( 'test_event', 'test_arg' )
+		);
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Hook_Arg'
+			, $hooks->events->args->get( 'test_event', 'test_arg' )
+		);
+	}
+
+	/**
+	 * Test deregistering an event deregisters the args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_deregister_deregisters_arg() {
+
+		/** @var WordPoints_Hooks $hooks */
+		$hooks = $this->mock_apps()->hooks;
+
+		$this->factory->wordpoints->hook_event->create(
+			array(
+				'args' => array(
+					'test_arg' => 'WordPoints_PHPUnit_Mock_Hook_Arg',
+				),
+			)
+		);
+
+		$this->assertTrue(
+			$hooks->events->args->is_registered( 'test_event', 'test_arg' )
+		);
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Hook_Arg'
+			, $hooks->events->args->get( 'test_event', 'test_arg' )
+		);
+
+		$hooks->events->deregister( 'test_event' );
+
+		$this->assertFalse(
+			$hooks->events->args->is_registered( 'test_event', 'test_arg' )
+		);
+
+		$this->assertFalse( $hooks->events->args->get( 'test_event', 'test_arg' ) );
 	}
 }
 

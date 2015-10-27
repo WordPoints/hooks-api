@@ -35,6 +35,10 @@ class WordPoints_Class_Registry_Children
 	 */
 	public function get( $parent_slug = null, $slug = null, array $args = array() ) {
 
+		if ( ! empty( $args ) ) {
+			array_unshift( $args, $slug );
+		}
+
 		if ( ! isset( $parent_slug ) ) {
 
 			$items = array();
@@ -44,7 +48,10 @@ class WordPoints_Class_Registry_Children
 					if ( empty( $args ) ) {
 						$items[ $parent_slug ][ $slug ] = new $class( $slug );
 					} else {
-						$items[ $parent_slug ][ $slug ] = $this->construct_with_args( $class, $slug, $args );
+						$items[ $parent_slug ][ $slug ] = wordpoints_construct_class_with_args(
+							$class
+							, array( $slug ) + $args
+						);
 					}
 				}
 			}
@@ -64,7 +71,10 @@ class WordPoints_Class_Registry_Children
 				if ( empty( $args ) ) {
 					$items[ $slug ] = new $class( $slug );
 				} else {
-					$items[ $slug ] = $this->construct_with_args( $class, $slug, $args );
+					$items[ $slug ] = wordpoints_construct_class_with_args(
+						$class
+						, array( $slug ) + $args
+					);
 				}
 			}
 
@@ -80,22 +90,8 @@ class WordPoints_Class_Registry_Children
 		if ( empty( $args ) ) {
 			return new $class( $slug );
 		} else {
-			return $this->construct_with_args( $class, $slug, $args );
+			return wordpoints_construct_class_with_args( $class, $args );
 		}
-	}
-
-	protected function construct_with_args( $class, $slug, $args ) {
-
-		switch ( count( $args ) ) {
-			case 1:
-				return new $class( $slug, $args[0] );
-			case 2:
-				return new $class( $slug, $args[0], $args[1] );
-			case 3:
-				return new $class( $slug, $args[0], $args[1], $args[2] );
-		}
-
-		return false;
 	}
 
 	/**

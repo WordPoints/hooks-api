@@ -14,7 +14,13 @@ class WordPoints_Hook_Action_Post_Publish extends WordPoints_Hook_Action {
 	 */
 	public function should_fire() {
 
-		$post_type = get_post_type( $this->get_arg_value( 'post' )->post_type );
+		$post = $this->get_arg_value( 'post' );
+
+		if ( ! isset( $post->post_type ) ) {
+			return false;
+		}
+
+		$post_type = get_post_type( $post->post_type );
 
 		// Don't fire for non-public post types (revisions, etc.).
 		if ( empty( $post_type->public ) ) {

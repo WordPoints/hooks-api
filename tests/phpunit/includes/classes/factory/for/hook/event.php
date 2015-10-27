@@ -70,7 +70,15 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 		}
 
 		if ( ! isset( $args['args'] ) ) {
-			$args['args'] = array( 'test_entity' => 'WordPoints_PHPUnit_Mock_Hook_Arg' );
+			$args['args'] = array(
+				'test_entity' => 'WordPoints_PHPUnit_Mock_Hook_Arg',
+			);
+
+			$entities = wordpoints_apps()->entities;
+
+			if ( ! $entities->is_registered( 'test_entity' ) ) {
+				$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
+			}
 		}
 
 		foreach ( $args['args'] as $arg_slug => $class ) {

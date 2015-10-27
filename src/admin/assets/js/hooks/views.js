@@ -1068,7 +1068,7 @@ ArgSelector2 = Base.extend({
 	},
 
 	render: function () {
-		
+
 		this.$el.append(
 			this.template( { label: this.label, name: this.cid } )
 		);

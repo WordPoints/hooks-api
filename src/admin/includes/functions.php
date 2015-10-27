@@ -12,9 +12,11 @@
  *
  * @since 1.
  *
- * @param WordPoints_Class_Registry_Persistent $apps
+ * @param WordPoints_App $app
  */
-function wordpoints_hooks_register_admin_apps( $apps ) {
+function wordpoints_hooks_register_admin_apps( $app ) {
+
+	$apps = $app->sub_apps;
 
 	$apps->register( 'admin', 'WordPoints_App' );
 
@@ -23,7 +25,7 @@ function wordpoints_hooks_register_admin_apps( $apps ) {
 
 	$admin->sub_apps->register( 'screen', 'WordPoints_Admin_Screens' );
 }
-add_action( 'wordpoints_apps_init', 'wordpoints_hooks_register_admin_apps' );
+add_action( 'wordpoints_init_app-apps', 'wordpoints_hooks_register_admin_apps' );
 
 /**
  * Register the admin screens.

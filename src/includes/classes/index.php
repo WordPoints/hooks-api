@@ -11,7 +11,7 @@
 
 // auto-generated {
 require_once( dirname( __FILE__ ) . 'app.php' );
-require_once( dirname( __FILE__ ) . 'apps.php' );
+require_once( dirname( __FILE__ ) . 'app/registry.php' );
 require_once( dirname( __FILE__ ) . 'class/autoloader.php' );
 require_once( dirname( __FILE__ ) . 'class/registry.php' );
 require_once( dirname( __FILE__ ) . 'class/registry/children.php' );
@@ -19,7 +19,6 @@ require_once( dirname( __FILE__ ) . 'class/registry/childreni.php' );
 require_once( dirname( __FILE__ ) . 'class/registry/persistent.php' );
 require_once( dirname( __FILE__ ) . 'class/registryi.php' );
 require_once( dirname( __FILE__ ) . 'data/type.php' );
-require_once( dirname( __FILE__ ) . 'entities.php' );
 require_once( dirname( __FILE__ ) . 'entity.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr/enumerable.php' );

@@ -29,34 +29,14 @@ class WordPoints_Hook_Actions extends WordPoints_Class_Registry {
 	public function __construct() {
 
 		$this->router = wordpoints_apps()->hooks->router;
-
-		$this->init();
-	}
-
-	/**
-	 * Initialize the registry.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function init() {
-
-		/**
-		 * Hook actions initialization.
-		 *
-		 * Hook to this to register any custom actions.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param WordPoints_Hook_Actions $actions The actions registry.
-		 */
-		do_action( 'wordpoints_hook_actions_init', $this );
 	}
 
 	/**
 	 * @since 1.0.0
 	 *
-	 * @param string $slug The slug of the action.
-	 * @param array  $args The args to pass to the action.
+	 * @param string $slug        The slug of the action.
+	 * @param array  $action_args The args the action was called with.
+	 * @param array  $args        The args to construct the class with.
 	 *
 	 * @return object|false The action object, or false if not found.
 	 */

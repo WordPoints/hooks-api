@@ -21,6 +21,10 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase
 	 */
 	public function setUp() {
 
+		if ( ! isset( $this->factory ) ) {
+			$this->factory = $this->factory();
+		}
+
 		parent::setUp();
 
 		if ( ! isset( $this->factory->wordpoints ) ) {
@@ -36,7 +40,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase
 		parent::tearDown();
 
 		if ( isset( $this->backup_app ) ) {
-			WordPoints_Apps::$main_app = $this->backup_app;
+			WordPoints_App::$main = $this->backup_app;
 			$this->backup_app = null;
 		}
 	}
@@ -46,13 +50,15 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WordPoints_Apps The mock app.
+	 * @return WordPoints_App The mock app.
 	 */
 	public function mock_apps() {
 
-		$this->backup_app = WordPoints_Apps::$main_app;
+		$this->backup_app = WordPoints_App::$main;
 
-		return WordPoints_Apps::$main_app = new WordPoints_Apps();
+		return WordPoints_App::$main = new WordPoints_PHPUnit_Mock_App_Silent(
+			'apps'
+		);
 	}
 
 	public function assertIsReaction( $reaction ) {

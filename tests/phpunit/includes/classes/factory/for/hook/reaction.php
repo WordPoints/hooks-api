@@ -35,6 +35,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 	 */
 	function create_object( $args ) {
 
+		/** @var WordPoints_Hooks $hooks */
 		$hooks    = wordpoints_apps()->hooks;
 		$reactors = $hooks->reactors;
 
@@ -57,7 +58,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 		}
 
 		if ( ! isset( $args['target'] ) ) {
-			$args['target'] = array( 'user' );
+			$args['target'] = array( 'test_entity' );
 		}
 
 		/** @var WordPoints_Hook_Reactor $reactor */

@@ -29,13 +29,24 @@ class WordPoints_Class_Registry_Persistent extends WordPoints_Class_Registry {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get( $slug = null ) {
+	public function get( $slug = null, array $args = array() ) {
+
+		if ( ! empty( $args ) ) {
+			array_unshift( $args, $slug );
+		}
 
 		if ( ! isset( $slug ) ) {
 
 			foreach ( $this->classes as $slug => $class ) {
 				if ( ! isset( $this->objects[ $slug ] ) ) {
-					$this->objects[ $slug ] = new $class( $slug );
+					if ( empty( $args ) ) {
+						$this->objects[ $slug ] = new $class( $slug );
+					} else {
+						$this->objects[ $slug ] = wordpoints_construct_class_with_args(
+							$class
+							, array( $slug ) + $args
+						);
+					}
 				}
 			}
 
@@ -47,7 +58,14 @@ class WordPoints_Class_Registry_Persistent extends WordPoints_Class_Registry {
 		}
 
 		if ( ! isset( $this->objects[ $slug ] ) ) {
-			$this->objects[ $slug ] = new $this->classes[ $slug ]( $slug );
+			if ( empty( $args ) ) {
+				$this->objects[ $slug ] = new $this->classes[ $slug ]( $slug );
+			} else {
+				$this->objects[ $slug ] = wordpoints_construct_class_with_args(
+					$this->classes[ $slug ]
+					, $args
+				);
+			}
 		}
 
 		return $this->objects[ $slug ];
