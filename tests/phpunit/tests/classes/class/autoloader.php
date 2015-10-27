@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  *
- * @covers WordPoints_Autoloader
+ * @covers WordPoints_Class_Autoloader
  */
 class WordPoints_Class_Autoloader_Test extends PHPUnit_Framework_TestCase {
 
@@ -56,7 +56,7 @@ class WordPoints_Class_Autoloader_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_load_nonexistent_class() {
 
-		$class = 'WordPoints_Autoloader_Test_Nonexistent';
+		$class = 'WordPoints_Class_Autoloader_Test_Nonexistent';
 
 		$this->register_class_dir();
 
