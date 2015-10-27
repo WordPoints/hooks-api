@@ -21,10 +21,6 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase
 	 */
 	public function setUp() {
 
-		if ( ! isset( $this->factory ) ) {
-			$this->factory = $this->factory();
-		}
-
 		parent::setUp();
 
 		if ( ! isset( $this->factory->wordpoints ) ) {

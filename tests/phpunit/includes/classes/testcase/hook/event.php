@@ -37,17 +37,6 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	protected $hooks;
 
 	/**
-	 *
-	 *
-	 * @since 1.
-	 *
-	 * @property $wordpoints
-	 *
-	 * @var WP_UnitTest_Factory
-	 */
-	protected $factory;
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function setUp() {
