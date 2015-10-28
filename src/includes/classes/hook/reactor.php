@@ -1,14 +1,18 @@
 <?php
 
 /**
- * Base hook reactor class.
+ * Hook reactor class.
  *
  * @package wordpoints-hooks-api
  * @since 1.0.0
  */
 
 /**
- * Bootstrap for performing actions when an event is fired.
+ * Bootstrap for performing pre-scripted reactions when an event is fired.
+ *
+ * When a hook event fires, it is the job of the reactor to perform the action
+ * specified for each reaction object. For most reactors this means that they must
+ * "hit" a "target". For example, it might award points to a particular user.
  *
  * @since 1.0.0
  *
@@ -26,7 +30,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $slug;
 
 	/**
-	 * The types of args that this reactor can relate target.
+	 * The types of args that this reactor can target.
 	 *
 	 * @since 1.0.0
 	 *
@@ -34,7 +38,14 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	protected $arg_types;
 
-	protected $settings;
+	/**
+	 * The settings fields used by this reactor.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	protected $settings_fields;
 
 	/**
 	 * The reaction storage class this reactor uses.
@@ -70,10 +81,24 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 		return null;
 	}
 
+	/**
+	 * Get the slug of this reactor.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The reactor's slug.
+	 */
 	public function get_slug() {
 		return $this->slug;
 	}
 
+	/**
+	 * Get a list of the slugs of each type of arg that this reactor supports.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[] The slugs of the arg types this reactor supports.
+	 */
 	public function get_arg_types() {
 		return (array) $this->arg_types;
 	}
@@ -86,9 +111,12 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * @return string[] The meta keys used to store this reactor's settings.
 	 */
 	public function get_settings_fields() {
-		return $this->settings;
+		return $this->settings_fields;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function validate_settings(
 		array $settings,
 		WordPoints_Hook_Reaction_Validator $validator,
@@ -97,9 +125,12 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
 		if (
 			! isset( $settings['target'] )
-			|| ! $validator->validate_arg_hierarchy( $settings['target'], $this->arg_types )
+			|| ! $validator->validate_arg_hierarchy( $settings['target'], $this->arg_types ) // TODO array of arg types
 		) {
-			$validator->add_error( 'The target must be a %s.', 'target' ); // TODO
+			$validator->add_error(
+				sprintf( 'The target must be a %s.', $this->arg_types )
+				, 'target'
+			); // TODO
 		}
 
 		return $settings;
@@ -115,46 +146,12 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	/**
 	 * Perform an action when the reactor is hit by an event being fired.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_Event_Args         $event_args
-	 * @param WordPoints_Hook_Reaction_Validator $reaction
-	 *
-	 * @return
-	 * @internal param WordPoints_Entity_HierarchyI $args
+	 * @param WordPoints_Hook_Event_Args         $event_args The event args.
+	 * @param WordPoints_Hook_Reaction_Validator $reaction   The reaction.
 	 */
 	abstract public function hit( WordPoints_Hook_Event_Args $event_args, WordPoints_Hook_Reaction_Validator $reaction );
 }
-
-interface WordPoints_Hook_Reactor_ReverseI {
-
-	/**
-	 * Reverse all hits from an event associated with a given argument.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @param WordPoints_Hook_Event_Args    $event_args
-	 * @param string|WordPoints_Hook_EventI $event The object for the event.
-	 *
-	 * @return
-	 */
-	public function reverse_hits( WordPoints_Hook_Event_Args $event_args, WordPoints_Hook_EventI $event );
-}
-
-interface WordPoints_Hook_Reactor_SpamI {
-
-	/**
-	 * Reverse all hits from an event associated with a given argument.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @param WordPoints_Hook_Event_Args    $event_args
-	 * @param string|WordPoints_Hook_EventI $event The object for the event.
-	 *
-	 * @return
-	 */
-	public function spam_hits( WordPoints_Hook_Event_Args $event_args, WordPoints_Hook_EventI $event );
-}
-
 
 // EOF
