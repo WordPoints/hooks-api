@@ -109,7 +109,7 @@ Reactions = Base.extend({
 	// Show the form for a new reaction.
 	initAddReaction: function () {
 
-		data = this.getReactionDefaults();
+		var data = this.getReactionDefaults();
 
 		this.$addReaction.prop( 'disabled', true );
 

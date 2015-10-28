@@ -7,7 +7,6 @@
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	Fields = wp.wordpoints.hooks.Fields,
-	fields = wp.wordpoints.hooks.view.data.fields,
 	Reactors = wp.wordpoints.hooks.Reactors,
 	Args = wp.wordpoints.hooks.Args,
 	$ = Backbone.$,
@@ -100,7 +99,7 @@ Reaction = Base.extend({
 					arg.get( '_type' ) === 'entity'
 					&& _.contains( argTypes, arg.get( '_canonical' ) )
 				);
-			}
+			};
 		}
 
 		var hierarchies = Args.getHierarchiesMatching( {
@@ -168,7 +167,7 @@ Reaction = Base.extend({
 
 		var attrSlug = Fields.getAttrSlug( this.model, $target.attr( 'name' ) );
 
-		if ( $target.val() != this.model.get( attrSlug ) ) {
+		if ( $target.val() !== this.model.get( attrSlug ) + '' ) {
 			this.lockOpen();
 		}
 	},
@@ -265,9 +264,9 @@ Reaction = Base.extend({
 	},
 
 	// Display an error when there is an Ajax failure.
-	showError: function ( event, response, options ) {
+	showError: function ( event, response ) {
 
-		var message, $error, errors = [];
+		var message, errors = [];
 
 		this.$( '.spinner-overlay' ).hide();
 
@@ -292,7 +291,7 @@ Reaction = Base.extend({
 
 				// When a field is specified, we try to locate it.
 				$field = this.$(
-					'[name="' + fieldName.replace( /[^a-z0-9-_\[\]\{\}]/gi, '' ) + '"]'
+					'[name="' + fieldName.replace( /[^a-z0-9-_\[\]\{}]/gi, '' ) + '"]'
 				);
 
 				if ( 0 === $field.length ) {
@@ -301,7 +300,7 @@ Reaction = Base.extend({
 					// and not a single field. In that case, we try to find the
 					// fields in that set.
 					$field = this.$(
-						'[name^="' + fieldName.replace( /[^a-z0-9-_\[\]\{\}]/gi, '' ) + '"]'
+						'[name^="' + fieldName.replace( /[^a-z0-9-_\[\]\{}]/gi, '' ) + '"]'
 					);
 
 					// If that fails, we just add this to the general errors.
@@ -329,7 +328,7 @@ Reaction = Base.extend({
 				$errors.html( '' );
 
 				_.each( errors, function ( error ) {
-					$errors.append( $( '<p></p>' ).text( error ) )
+					$errors.append( $( '<p></p>' ).text( error ) );
 				});
 
 				$errors.fadeIn();

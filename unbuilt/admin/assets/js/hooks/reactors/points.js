@@ -7,7 +7,6 @@
  */
 var Reactor = wp.wordpoints.hooks.controller.Reactor,
 	Fields = wp.wordpoints.hooks.Fields,
-	l10n = wp.wordpoints.hooks.view.l10n,
 	Points;
 
 Points = Reactor.extend({

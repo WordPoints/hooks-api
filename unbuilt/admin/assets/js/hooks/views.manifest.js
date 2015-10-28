@@ -20,9 +20,6 @@ $( function () {
 			.find( '.wordpoints-hook-reaction-group' )
 				.data( 'wordpoints-hooks-hook-event' );
 
-		console.log(event);
-		console.log(data.reactions[ event ]);
-
 		new hooks.view.Reactions( {
 			el: $this,
 			model: new hooks.model.Reactions( data.reactions[ event ] )

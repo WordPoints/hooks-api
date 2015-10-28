@@ -7,7 +7,6 @@
  */
 
 var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
-	Args = wp.wordpoints.hooks.Args,
 	Equals;
 
 Equals = Condition.extend({

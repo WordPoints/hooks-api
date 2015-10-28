@@ -10,9 +10,7 @@
 var Extension = wp.wordpoints.hooks.controller.Extension,
 	ConditionGroups = wp.wordpoints.hooks.model.ConditionGroups,
 	ConditionsGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
-	Fields = wp.wordpoints.hooks.Fields,
-	hooks = wp.wordpoints.hooks,
-	$ = jQuery,
+	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Conditions;
 
 Conditions = Extension.extend({
@@ -143,7 +141,7 @@ Conditions = Extension.extend({
 		var type = this.getType( dataTypeSlug, slug );
 
 		if ( ! type ) {
-			type = { slug: slug }
+			type = { slug: slug };
 		}
 
 		return new controller( type );

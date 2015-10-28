@@ -5,8 +5,7 @@
  * @augments Backbone.View
  * @augments wp.wordpoints.hooks.view.Base
  */
-var Base = wp.wordpoints.hooks.view.Base,
-	ArgsCollection = wp.wordpoints.hooks.model.Args,
+var ArgsCollection = wp.wordpoints.hooks.model.Args,
 	l10n = wp.wordpoints.hooks.view.l10n,
 	Args;
 
@@ -87,7 +86,7 @@ Args = Backbone.Model.extend({
 			entity = _.extend( {}, entity, { slug: slug, _canonical: parsed.slug } );
 		//}
 
-		return entity
+		return entity;
 	},
 
 	getEntity: function ( slug ) {
@@ -364,7 +363,7 @@ var Arg = Backbone.Model.extend({
 	idAttribute: 'slug',
 
 	defaults: function () {
-		return { _type: this.type }
+		return { _type: this.type };
 	}
 });
 
@@ -372,8 +371,10 @@ var Parent = Arg.extend({
 
 	/**
 	 * @abstract
+	 *
+	 * @param {string} slug The child slug.
 	 */
-	getChild: function ( slug ) {},
+	getChild: function () {},
 
 	/**
 	 * @abstract
@@ -413,13 +414,13 @@ var Relationship = Parent.extend({
 		var child;
 
 		if ( slug !== this.get( 'secondary' ) ) {
-			return false
+			return false;
 		}
 
 		var parsed = this.parseArgSlug( slug );
 
 		if ( parsed.isArray ) {
-			child = new Array({ entity_slug: parsed.slug });
+			child = new EntityArray({ entity_slug: parsed.slug });
 		} else {
 			child = wp.wordpoints.hooks.Args.getEntity( parsed.slug );
 		}
@@ -432,7 +433,7 @@ var Relationship = Parent.extend({
 	}
 });
 
-var Array = Arg.extend( {
+var EntityArray = Arg.extend( {
 	type: 'array',
 
 	initialize: function () {
@@ -446,7 +447,7 @@ var Attr = Arg.extend( {
 
 Args.type.entity = Entity;
 Args.type.relationship = Relationship;
-Args.type.array = Array;
+Args.type.array = EntityArray;
 Args.type.attr = Attr;
 
 module.exports = Args;

@@ -28,7 +28,7 @@ Conditions = Backbone.Collection.extend({
 
 			case 'create':
 				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( { message: 'Conditions already exist.' } ); // TODO
 					return;
 				}
 
@@ -43,7 +43,7 @@ Conditions = Backbone.Collection.extend({
 
 			case 'read':
 				if ( typeof conditions === 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( { message: 'Conditions not found.' } ); // TODO
 					return;
 				}
 
@@ -51,7 +51,7 @@ Conditions = Backbone.Collection.extend({
 				break;
 
 			default:
-				options.error( { message: 'Conditions can only be read.' } );
+				options.error( { message: 'Conditions can only be created and read.' } );
 		}
 	}
 });

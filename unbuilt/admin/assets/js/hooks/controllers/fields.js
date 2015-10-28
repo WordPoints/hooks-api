@@ -34,7 +34,7 @@ Fields = Backbone.Model.extend({
 		this.attributes.fields.event = {
 			type: 'hidden',
 			required: true
-		}
+		};
 	},
 
 	create: function ( reaction, name, value, data ) {
@@ -199,7 +199,7 @@ Fields = Backbone.Model.extend({
 			if ( isArray ) {
 
 				if ( typeof data[ key ] === 'undefined' ) {
-					data[ key ] = []
+					data[ key ] = [];
 				}
 
 				data[ key ].push( value );

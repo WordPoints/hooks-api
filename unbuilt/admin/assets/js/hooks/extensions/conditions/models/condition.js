@@ -101,7 +101,7 @@ Condition = Base.extend({
 
 			case 'create':
 				if ( typeof conditions[ model.id ] !== 'undefined' ) {
-					options.error( { message: todo } ); // TODO error messages
+					options.error( { message: 'Condition already exists.' } ); // TODO error messages
 					return;
 				}
 
@@ -112,7 +112,7 @@ Condition = Base.extend({
 
 			case 'read':
 				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: todo } );
+					options.error( { message: 'Condition not found.' } );
 					return;
 				}
 
@@ -121,7 +121,7 @@ Condition = Base.extend({
 
 			case 'update':
 				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: todo } );
+					options.error( { message: 'Condition not found.' } );
 					return;
 				}
 

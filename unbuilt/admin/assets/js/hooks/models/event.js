@@ -4,9 +4,9 @@
  * @class
  * @augments Backbone.Model
  */
-var Event;
+var HookEvent;
 
-Event = Backbone.Model.extend({
+HookEvent = Backbone.Model.extend({
 
 	// Default attributes for the event.
 	defaults: function() {
@@ -23,4 +23,4 @@ Event = Backbone.Model.extend({
 	}
 });
 
-module.exports = Event;
+module.exports = HookEvent;

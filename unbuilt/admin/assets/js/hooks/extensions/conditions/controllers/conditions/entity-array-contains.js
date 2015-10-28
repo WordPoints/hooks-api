@@ -11,7 +11,6 @@ var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	ConditionGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
 	ArgsCollection = wp.wordpoints.hooks.model.Args,
 	Args = wp.wordpoints.hooks.Args,
-	Fields = wp.wordpoints.hooks.Fields,
 	Extensions = wp.wordpoints.hooks.Extensions,
 	EntityArrayContains;
 

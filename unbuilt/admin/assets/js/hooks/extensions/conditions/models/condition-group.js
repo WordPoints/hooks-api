@@ -16,7 +16,7 @@ ConditionGroup = Backbone.Model.extend({
 			id: '',
 			hierarchy: [],
 			preHierarchy: [],
-			conditions: new Conditions,
+			conditions: new Conditions(),
 			reaction: null
 		};
 	},
@@ -109,7 +109,7 @@ ConditionGroup = Backbone.Model.extend({
 
 			case 'create':
 				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( { message: 'Condition already exists.' } );
 					return;
 				}
 
@@ -124,7 +124,7 @@ ConditionGroup = Backbone.Model.extend({
 
 			case 'read':
 				if ( typeof conditions === 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( 'Conditions not found.' );
 					return;
 				}
 
@@ -132,7 +132,9 @@ ConditionGroup = Backbone.Model.extend({
 				break;
 
 			default:
-				options.error( { message: 'Condition groups can only be read.' } );
+				options.error(
+					{ message: 'Condition groups can only be created and read.' }
+				);
 		}
 	}
 });

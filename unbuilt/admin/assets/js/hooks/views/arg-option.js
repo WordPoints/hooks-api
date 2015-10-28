@@ -7,6 +7,7 @@
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	template = wp.wordpoints.hooks.template,
+	$ = Backbone.$,
 	ArgOption;
 
 ArgOption = Base.extend({

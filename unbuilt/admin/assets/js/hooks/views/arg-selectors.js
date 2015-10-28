@@ -7,8 +7,6 @@
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	ArgSelector = wp.wordpoints.hooks.view.ArgSelector,
-	Args = wp.wordpoints.hooks.Args,
-	$ = Backbone.$,
 	ArgSelectors;
 
 ArgSelectors = Base.extend({

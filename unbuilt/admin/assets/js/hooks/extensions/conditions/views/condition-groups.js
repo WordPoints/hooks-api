@@ -7,7 +7,6 @@
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	ConditionGroupView = wp.wordpoints.hooks.view.ConditionGroup,
-	Hook = wp.wordpoints.hooks.model.Reaction,
 	ArgSelector2 = wp.wordpoints.hooks.view.ArgSelector2,
 	ConditionSelector = wp.wordpoints.hooks.view.ConditionSelector,
 	Extensions = wp.wordpoints.hooks.Extensions,
@@ -67,7 +66,7 @@ ConditionGroups = Base.extend({
 	},
 
 	addAll: function () {
-		this.collection.each( this.addOne, this )
+		this.collection.each( this.addOne, this );
 	},
 
 	addOne: function ( ConditionGroup ) {
