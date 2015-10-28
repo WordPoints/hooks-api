@@ -1,15 +1,22 @@
 <?php
 
 /**
- * .
+ * Reverse hook firer class.
  *
  * @package wordpoints-hooks-api
- * @since   1.
+ * @since   1.0.0
  */
 
-
+/**
+ * Fires a reverse action for a hook event.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Hook_Firer_Reverse implements WordPoints_Hook_FirerI {
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function do_event( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
 
 		$hooks = wordpoints_apps()->hooks;
@@ -24,7 +31,7 @@ class WordPoints_Hook_Firer_Reverse implements WordPoints_Hook_FirerI {
 
 			foreach ( $hooks->extensions->get() as $extension ) {
 				if ( $extension instanceof WordPoints_Hook_Extension_ReverseI ) {
-					$extension->after_reverse( $this, $event_args, $reactor );
+					$extension->after_reverse( $this, $event_args, $reactor ); // TODO
 				}
 			}
 		}

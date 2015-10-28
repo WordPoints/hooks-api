@@ -26,14 +26,21 @@ abstract class WordPoints_Admin_Screen {
 	protected $id;
 
 	/**
+	 * The WP Screen object for this screen.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WP_Screen
 	 */
 	protected $wp_screen;
 
+	/**
+	 * The tabs to dispaly on this screen.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
 	protected $tabs;
 
 	/**

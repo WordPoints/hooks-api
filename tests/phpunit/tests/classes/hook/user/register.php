@@ -21,6 +21,9 @@ class WordPoints_User_Register_Hook_Event_Test extends WordPoints_PHPUnit_TestCa
 	 */
 	protected $event_class = 'WordPoints_Hook_Event_User_Register';
 
+	/**
+	 * @since 1.0.0
+	 */
 	protected $event_slug = 'user_register';
 
 	/**

@@ -7,12 +7,23 @@
  * @since   1.0.0
  */
 
+/**
+ * Mock hook arg for using in the PHPUnit tests.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_PHPUnit_Mock_Hook_Arg extends WordPoints_Hook_Arg {
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_value() {
 		return true;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_title() {
 		return $this->get_entity()->get_title();
 	}

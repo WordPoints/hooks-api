@@ -1,12 +1,17 @@
 <?php
 
 /**
- * .
+ * Post author entity relationship class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Represents the relationship between a Post and its author.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Entity_Post_Author extends WordPoints_Entity_Relationship {
 
 	/**

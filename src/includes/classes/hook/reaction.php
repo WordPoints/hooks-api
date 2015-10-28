@@ -1,12 +1,17 @@
 <?php
 
 /**
- * .
+ * Hook reaction class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Bootstrap for representing a hook reaction.
+ *
+ * @since 1.0.0
+ */
 abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 
 	/**
@@ -14,8 +19,22 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 */
 	protected $ID;
 
+	/**
+	 * The slug of the reactor this reaction is for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	protected $reactor_slug;
 
+	/**
+	 * Whether this reaction is network-wide.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
 	protected $network_wide = false;
 
 	//
@@ -56,6 +75,9 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 		return null;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_reactor_slug() {
 		return $this->reactor_slug;
 	}

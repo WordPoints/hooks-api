@@ -22,14 +22,21 @@ class WordPoints_Admin_Ajax_Hooks {
 	//
 
 	/**
+	 * The reactor that the reactions are being saved for.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Hook_Reactor
 	 */
 	protected $reactor;
 
+	/**
+	 * The slug of the reactor that the reactions are being saved for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	protected $reactor_slug;
 
 	//
@@ -86,15 +93,20 @@ class WordPoints_Admin_Ajax_Hooks {
 	 */
 	public function hooks() {
 
-		add_action( 'wp_ajax_wordpoints_admin_create_hook_reaction', array( $this,
-			'create_hook_reaction'
-		) );
-		add_action( 'wp_ajax_wordpoints_admin_update_hook_reaction', array( $this,
-			'update_hook_reaction'
-		) );
-		add_action( 'wp_ajax_wordpoints_admin_delete_hook_reaction', array( $this,
-			'delete_hook_reaction'
-		) );
+		add_action(
+			'wp_ajax_wordpoints_admin_create_hook_reaction'
+			, array( $this, 'create_hook_reaction' )
+		);
+
+		add_action(
+			'wp_ajax_wordpoints_admin_update_hook_reaction'
+			, array( $this, 'update_hook_reaction' )
+		);
+
+		add_action(
+			'wp_ajax_wordpoints_admin_delete_hook_reaction'
+			, array( $this, 'delete_hook_reaction' )
+		);
 	}
 
 	/**

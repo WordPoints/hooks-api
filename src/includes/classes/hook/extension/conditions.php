@@ -1,12 +1,17 @@
 <?php
 
 /**
- * .
+ * Conditions hook extension class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Requires the event args to meet certain conditions for the target to be hit.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 	/**
@@ -15,18 +20,24 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	protected $slug = 'conditions';
 
 	/**
+	 * The conditions registry.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Class_Registry
 	 */
 	protected $conditions;
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function __construct() {
 		$this->conditions = wordpoints_apps()->hooks->conditions;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_data() {
 
 		$conditions_data = array();
@@ -46,39 +57,16 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 		return array( 'conditions' => $conditions_data );
 	}
-//
-//	protected function validate_conditions( $args ) {
-//
-//		if ( ! is_array( $args ) ) {
-//
-//			$this->validator->add_error(
-//				__( 'Conditions do not match expected format.', 'wordpoints' )
-//			);
-//
-//			return array();
-//		}
-//
-//		foreach ( $args as $arg_slug => $sub_args ) {
-//
-//			if ( ! $this->event_args->descend( $arg_slug ) ) {
-//				unset( $args[ $arg_slug ] );
-//				continue;
-//			}
-//
-//			$sub_args = $this->validate_sub_conditions( $sub_args );
-//
-//			if ( ! $sub_args ) {
-//				unset( $args[ $arg_slug ] );
-//			} else {
-//				$args[ $arg_slug ] = $sub_args;
-//			}
-//
-//			$this->event_args->ascend();
-//		}
-//
-//		return $args;
-//	}
 
+	/**
+	 * Validate the conditions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args The args and their conditions.
+	 *
+	 * @return array The validated settings.
+	 */
 	protected function validate_conditions( $args ) {
 
 		if ( ! is_array( $args ) ) {
@@ -131,51 +119,15 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 		return $args;
 	}
 
-//	protected function validate_condition( $settings ) {
-//
-//		if ( ! isset( $settings['type'] ) ) {
-//			$this->validator->add_error( __( 'Condition type is missing.', 'wordpoints' ) );
-//			return false;
-//		}
-//
-//		if ( ! isset( $settings['settings'] ) ) {
-//			$this->validator->add_error( __( 'Condition settings are missing.', 'wordpoints' ) );
-//			return false;
-//		}
-//
-//		$condition = $this->conditions->get( $settings['type'] );
-//
-//		if ( ! $condition ) {
-//
-//			$this->validator->add_error(
-//				sprintf(
-//					__( 'Unknown condition type &#8220;%s&#8221;.', 'wordpoints' )
-//					, $settings['type']
-//				)
-//			);
-//
-//			return false;
-//		}
-//
-//		$this->validator->push_field( 'settings' );
-//
-//		$the_settings = $condition->validate_settings(
-//			$this->event_args->get_current()
-//			, $settings['settings']
-//			, $this->validator
-//		);
-//
-//		$this->validator->pop_field();
-//
-//		if ( ! $the_settings ) {
-//			return false;
-//		}
-//
-//		$settings['settings'] = $the_settings;
-//
-//		return $settings;
-//	}
-
+	/**
+	 * Validate a condition's settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $settings The condition settings.
+	 *
+	 * @return array|false The validated conditions settings, or false if invalid.
+	 */
 	protected function validate_condition( $settings ) {
 
 		if ( ! isset( $settings['type'] ) ) {
@@ -239,6 +191,9 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 		return $settings;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function should_hit( WordPoints_Hook_Reaction_Validator $reaction, WordPoints_Hook_Event_Args $event_args ) {
 
 		$conditions = $reaction->get_meta( 'conditions' );
@@ -250,6 +205,16 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 		return true;
 	}
 
+	/**
+	 * Check if the event args meet the conditions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array                      $conditions The conditions.
+	 * @param WordPoints_Hook_Event_Args $event_args The event args.
+	 *
+	 * @return bool Whether the conditions are met.
+	 */
 	public function conditions_are_met(
 		$conditions,
 		WordPoints_Hook_Event_Args $event_args
@@ -281,6 +246,16 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 		return true;
 	}
 
+	/**
+	 * Check whether a condition is met.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array                      $settings   The condition's settings.
+	 * @param WordPoints_Hook_Event_Args $event_args The event args.
+	 *
+	 * @return bool Whether a condition is met.
+	 */
 	final private function is_met( $settings, WordPoints_Hook_Event_Args $event_args ) {
 
 		$condition = $this->conditions->get( $settings['type'] );

@@ -1,14 +1,22 @@
 <?php
 
 /**
- * .
+ * Hook condition class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Bootstrap for hook conditions.
+ *
+ * @since 1.0.0
+ */
 abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function validate_settings(
 		$arg,
 		array $settings,

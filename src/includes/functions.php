@@ -46,7 +46,7 @@ add_action( 'wordpoints_init_app_registry-hooks-reactors', 'wordpoints_hook_reac
 function wordpoints_hook_extension_init( $extensions ) {
 
 	$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
-//	$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
+	$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
 }
 add_action( 'wordpoints_init_app_registry-hooks-extensions', 'wordpoints_hook_extension_init' );
 
@@ -192,17 +192,17 @@ add_action( 'wordpoints_init_app_registry-hooks-actions', 'wordpoints_hook_actio
  */
 function wordpoints_hook_events_init( $events ) {
 
-//	$events->register(
-//		'comment_leave'
-//		, 'WordPoints_Hook_Event_Comment_Leave'
-//		, array(
-//			'actions' => array(
-//				'fire' => array( 'comment_approve', 'comment_new' ),
-//				'reverse' => 'comment_deapprove',
-//				'spam' => 'comment_spam',
-//			),
-//		)
-//	);
+	$events->register(
+		'comment_leave'
+		, 'WordPoints_Hook_Event_Comment_Leave'
+		, array(
+			'actions' => array(
+				'fire' => array( 'comment_approve', 'comment_new' ),
+				'reverse' => 'comment_deapprove',
+				'spam' => 'comment_spam',
+			),
+		)
+	);
 
 	$events->register(
 		'post_publish'
@@ -248,11 +248,11 @@ function wordpoints_hook_events_init( $events ) {
 	if ( is_multisite() ) {
 
 		// TODO network hooks
-//		$children->register(
-//			'current'
-//			, 'site'
-//			, 'WordPoints_Hook_Arg_Current_Site'
-//		);
+		$events->args->register(
+			'user_visit'
+			, 'current:site'
+			, 'WordPoints_Hook_Arg_Current_Site'
+		);
 	}
 }
 add_action( 'wordpoints_init_app_registry-hooks-events', 'wordpoints_hook_events_init' );
@@ -300,7 +300,7 @@ function wordpoints_entities_init( $entities ) {
 
 	$entities->register( 'post', 'WordPoints_Entity_Post' );
 	$entities->register( 'post_type', 'WordPoints_Entity_Post_Type' );
-//	$entities->register( 'comment', 'WordPoints_Entity_Comment' );
+	$entities->register( 'comment', 'WordPoints_Entity_Comment' );
 	$entities->register( 'user', 'WordPoints_Entity_User' );
 	$entities->register( 'user_role', 'WordPoints_Entity_User_Role' );
 	$entities->register( 'term', 'WordPoints_Entity_Term' );
@@ -326,50 +326,39 @@ function wordpoints_entities_init( $entities ) {
 	$children->register( 'post', 'type', 'WordPoints_Entity_Post_Type_Relationship' );
 	$children->register( 'post', 'terms', 'WordPoints_Entity_Post_Terms' );
 	$children->register( 'user', 'roles', 'WordPoints_Entity_User_Roles' );
-
-//	$children->register(
-//		'comment'
-//		, 'post'
-//		, 'WordPoints_Entity_Comment_Post'
-//	);
-//
-//	$children->register(
-//		'comment'
-//		, 'author'
-//		, 'WordPoints_Entity_Comment_Author'
-//	);
+	$children->register( 'comment', 'post', 'WordPoints_Entity_Comment_Post' );
+	$children->register( 'comment', 'author', 'WordPoints_Entity_Comment_Author' );
 
 	foreach ( get_post_types( array( 'public' => true ), false ) as $slug => $post_type ) {
-
+		unset( $post_type ); // TODO
 	}
 }
 add_action( 'wordpoints_init_app_registry-apps-entities', 'wordpoints_entities_init' );
 
 /**
+ * Register the data types with the data types registry is initialized.
  *
+ * @since 1.0.0
  *
- * @since 1.
- *
- * @param WordPoints_Class_RegistryI $data_types
+ * @param WordPoints_Class_RegistryI $data_types The data types registry.
  */
 function wordpoints_data_types_init( $data_types ) {
 
 	$data_types->register( 'integer', 'WordPoints_Data_Type_Integer' );
 	$data_types->register( 'text', 'WordPoints_Data_Type_Text' );
-
-//	/** @var WordPoints_Class_Registry_ChildrenI $formats */
-//	$formats = $data_types->formats;
-//
-//	$formats->register( 'string', 'text', 'WordPoints_Data_Type_Format' );
-//
-//	/** @var WordPoints_Class_Registry_ChildrenI $specs */
-//	$specs = $data_types->specs = new WordPoints_Class_Registry_Children;
-//
-//	$specs->register( 'integer', 'max', 'WordPoints_Spec_Integer_Max' );
-//	$specs->register( 'text', 'max_length', 'WordPoints_Spec_Text_Length_Max' );
 }
 add_action( 'wordpoints_init_app_registry-apps-data_types', 'wordpoints_data_types_init' );
 
+/**
+ * Check whether a user can view a points log.
+ *
+ * @since 1.0.0
+ *
+ * @param bool   $can_view Whether the user can view the points log.
+ * @param object $log      The points log's data.
+ *
+ * @return bool Whether the user can view the points log.
+ */
 function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
 
 	if ( ! $can_view ) {
@@ -379,10 +368,6 @@ function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
 	$user_id = get_current_user_id();
 
 	$event_slug = $log->log_type;
-//
-//	if ( 'reverse_' === substr( $event_slug, 0, 8 ) ) {
-//		$event_slug = substr( $event_slug, 8 );
-//	}
 
 	$wordpoints_apps = wordpoints_apps();
 	$entities = $wordpoints_apps->entities;

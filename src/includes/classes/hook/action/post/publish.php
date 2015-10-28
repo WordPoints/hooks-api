@@ -1,12 +1,17 @@
 <?php
 
 /**
- * .
+ * Post publish action class.
  *
  * @package wordpoints-hooks-api
- * @since   1.
+ * @since   1.0.0
  */
 
+/**
+ * Represents the Post publish action.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Hook_Action_Post_Publish extends WordPoints_Hook_Action {
 
 	/**

@@ -1,20 +1,17 @@
 <?php
 
 /**
- * .
+ * Periods hook extension.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
-array(
-	'args' => array(),
-	'settings' => array(
-		'length' => '',
-		'absolute' => true,
-	)
-);
-
+/**
+ * Limits the number of times that targets can be hit in a given time period.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 	/**
@@ -22,6 +19,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 */
 	protected $slug = 'periods';
 
+	/**
+	 * Validate the periods.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $periods The periods.
+	 *
+	 * @return array The validated periods.
+	 */
 	protected function validate_periods( $periods ) {
 
 		if ( ! is_array( $periods ) ) {
@@ -51,6 +57,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		return $periods;
 	}
 
+	/**
+	 * Validate the settings for a period.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $period The period.
+	 *
+	 * @return array|false The validated period, or false if invalid.
+	 */
 	protected function validate_period( $period ) {
 
 		if ( ! is_array( $period ) ) {
@@ -63,6 +78,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 		if ( ! isset( $period['args'] ) ) {
 			// TODO is there a default period args?
+			$period['args'] = array();
 		}
 
 		if ( ! $this->validator->validate_arg_hierarchy( $period['args'] ) ) {
@@ -107,6 +123,9 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		return $period;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function should_hit( WordPoints_Hook_Reaction_Validator $reaction, WordPoints_Hook_Event_Args $event_args ) {
 
 		$periods = $reaction->get_meta( 'periods' );
@@ -115,12 +134,12 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			return true;
 		}
 
-		$reaction_id = $reaction->get_ID();
+		$reaction_id = $reaction->get_id();
 
 		$this->event_args = $event_args;
 
 		foreach ( $periods as $period ) {
-			if ( ! $this->check_period( $period, $reaction_id ) ) {
+			if ( ! $this->has_period_ended( $period, $reaction_id ) ) {
 				return false;
 			}
 		}
@@ -128,7 +147,19 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		return true;
 	}
 
-	final private function check_period( $settings, $reaction_id ) {
+	/**
+	 * Check whether a period has ended.
+	 *
+	 * TODO should these be final?
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $settings    The period's settings.
+	 * @param int   $reaction_id The ID of the reaction.
+	 *
+	 * @return bool Whether the period has ended.
+	 */
+	final private function has_period_ended( array $settings, $reaction_id ) {
 
 		$period = $this->get_period_by_reaction(
 			$this->get_arg_values( $settings['args'] )
@@ -147,7 +178,16 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 	}
 
-	final private function get_arg_values( $period_args ) {
+	/**
+	 * Get the values of the args that a period relates to.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $period_args The args this period relates to.
+	 *
+	 * @return array The arg values.
+	 */
+	final private function get_arg_values( array $period_args ) {
 
 		$values = array();
 
@@ -167,6 +207,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		return $values;
 	}
 
+	/**
+	 * Get a a period from the database by ID.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $period_id The ID of a period.
+	 *
+	 * @return object|false The period data, or false if not found.
+	 */
 	final private function get_period( $period_id ) {
 
 		$period = wp_cache_get( $period_id, 'wordpoints_hook_period' );
@@ -197,7 +246,17 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		return $period;
 	}
 
-	final private function get_period_by_reaction( $args, $reaction_id ) {
+	/**
+	 * Get a period from the database by args reaction ID.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args        The values of the args this period relates to.
+	 * @param int   $reaction_id The reaction ID.
+	 *
+	 * @return object|false The period data, or false if not found.
+	 */
+	final private function get_period_by_reaction( array $args, $reaction_id ) {
 
 		// The periods for a reaction are differentiated by a hash of specific args.
 		$arg_hash = md5( serialize( $args ) );

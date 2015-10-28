@@ -14,27 +14,76 @@
  */
 final class WordPoints_Hook_Reaction_Validator {
 
+	/**
+	 * The object for the hook reaction being validated, or false if none is set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_ReactionI|false
+	 */
 	protected $reaction = false;
+
+	/**
+	 * The settings of the hook reaction being validated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
 	protected $settings;
+
+	/**
+	 * Whether to stop validating after encountering the first error.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
 	protected $fail_fast = false;
+
+	/**
+	 * A stack of fields for tracking the hierarchy of the field being validated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
 	protected $field_stack = array();
+
+	/**
+	 * A list of error messages and the fields they are associated with.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array[]
+	 */
 	protected $errors = array();
 
 	/**
+	 * The event args object for the event this reaction is for.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Hook_Event_Args
 	 */
 	protected $event_args;
 
+	/**
+	 * Shortcut to the hooks app.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hooks
+	 */
 	protected $hooks;
 
 	/**
 	 * @since 1.0.0
 	 *
-	 * @param bool $fail_fast Whether to fail as soon as the first error is found.
+	 * @param WordPoints_Hook_ReactionI|array $settings  The settings or reaction to
+	 *                                                   validate.
+	 * @param bool                            $fail_fast Whether to fail as soon as
+	 *                                                   the first error is found.
 	 */
 	public function __construct( $settings, $fail_fast = false ) {
 
@@ -50,12 +99,9 @@ final class WordPoints_Hook_Reaction_Validator {
 	}
 
 	/**
-	 * Validates the settings for a reaction.
+	 * Validates the settings for the reaction.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @param array                  $settings
-	 * @param WordPoints_Hook_Reactor $reactor
 	 *
 	 * @return array The validated settings.
 	 */
@@ -122,45 +168,27 @@ final class WordPoints_Hook_Reaction_Validator {
 		return $this->settings;
 	}
 
+	/**
+	 * Check the validity of an arg hierarchy.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] $hierarchy A list of slugs in hierarchical order.
+	 * @param string   $tip       A particular type of entity that must be at the tip.
+	 *
+	 * @return bool Whether the hierarchy is valid.
+	 */
 	public function validate_arg_hierarchy( $hierarchy, $tip = null ) {
 
 		if ( empty( $hierarchy ) || ! is_array( $hierarchy ) ) {
 			return false;
 		}
-//
-//		$entities = wordpoints_apps()->entities;
-//
-//		$entity_slug = reset( $hierarchy );
-//
-//		$parts = explode( ':', $entity_slug, 2 );
-//
-//		if ( isset( $parts[1] ) ) {
-//			$entity_slug = $parts[1];
-//			$hierarchy[ key( $hierarchy ) ] = $entity_slug;
-//		}
-//
-//		$entity = $entities->get( $entity_slug );
-//
-//		if ( ! $entity ) {
-//			return false;
-//		}
-//
-//		$entity_hierarchy = new WordPoints_Entity_Hierarchy( $entity );
 
 		$entity = $this->event_args->get_from_hierarchy( $hierarchy );
 
 		if ( ! $entity ) {
 			return false;
 		}
-
-//		foreach ( $hierarchy as $arg_slug ) {
-//
-//			if ( ! $entity_hierarchy->descend( $arg_slug ) ) {
-//				return false;
-//			}
-//		}
-
-//		$entity = $entity_hierarchy->get_current();
 
 		if ( isset( $tip ) && $entity->get_slug() !== $tip ) {
 			return false;
@@ -169,6 +197,13 @@ final class WordPoints_Hook_Reaction_Validator {
 		return true;
 	}
 
+	/**
+	 * Get the args for the event this reaction is for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Hook_Event_Args The event args object.
+	 */
 	public function get_event_args() {
 		return $this->event_args;
 	}
@@ -179,6 +214,7 @@ final class WordPoints_Hook_Reaction_Validator {
 	 * @since 1.0.0
 	 *
 	 * @param string $message The message to add.
+	 * @param string $field   The field the message is for.
 	 *
 	 * @throws WordPoints_Hook_Validator_Exception If the validator is configured to
 	 *                                             fail as soon as an error is found.
@@ -209,27 +245,67 @@ final class WordPoints_Hook_Reaction_Validator {
 		return ! empty( $this->errors );
 	}
 
+	/**
+	 * Get the errors.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array[] The messages and the fields they relate to.
+	 */
 	public function get_errors() {
 		return $this->errors;
 	}
 
+	/**
+	 * Push a field onto the field stack.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $field The field.
+	 */
 	public function push_field( $field ) {
 		$this->field_stack[] = $field;
 	}
 
+	/**
+	 * Pop a field off of the field stack.
+	 *
+	 * @since 1.0.0
+	 */
 	public function pop_field() {
 		array_pop( $this->field_stack );
 	}
 
+	/**
+	 * Get the current field hierarchy.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[] The field stack.
+	 */
 	public function get_field_stack() {
 		return $this->field_stack;
 	}
 
+	/**
+	 * Get the reaction object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Hook_ReactionI|false The reaction, or false if not set.
+	 */
 	public function get_reaction() {
 		return $this->reaction;
 	}
 
-	public function get_ID() {
+	/**
+	 * Get the reaction ID.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return int|false The reaction ID, or false if no reaction is set.
+	 */
+	public function get_id() {
 
 		if ( ! $this->reaction ) {
 			return false;
@@ -249,6 +325,13 @@ final class WordPoints_Hook_Reaction_Validator {
 		return $this->get_meta( 'event' );
 	}
 
+	/**
+	 * Get the slug of the reactor this reaction is for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The reactor slug.
+	 */
 	public function get_reactor_slug() {
 		return $this->get_meta( 'reactor' );
 	}
@@ -271,6 +354,13 @@ final class WordPoints_Hook_Reaction_Validator {
 		return $this->settings[ $key ];
 	}
 
+	/**
+	 * Get all metadata for this reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array The reaction metadata.
+	 */
 	public function get_all_meta() {
 		return $this->settings;
 	}

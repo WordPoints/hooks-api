@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Points hook reactor.
+ * Points hook reactor class.
  *
  * @package wordpoints-hooks-api
  * @since 1.0.0
@@ -29,7 +29,7 @@ class WordPoints_Hook_Reactor_Points
 	/**
 	 * @since 1.0.0
 	 */
-	protected $settings = array(
+	protected $settings_fields = array(
 		'description' => array(
 			'type'     => 'text',
 			'required' => true,
@@ -55,24 +55,21 @@ class WordPoints_Hook_Reactor_Points
 	 */
 	public function get_settings_fields() {
 
-		$this->settings['points']['label'] = _x( 'Points', 'form label', 'wordpoints' );
-		$this->settings['log_text']['label'] = _x( 'Log Text', 'form label', 'wordpoints' );
-		$this->settings['description']['label'] = _x( 'Description', 'form label', 'wordpoints' );
+		$this->settings_fields['points']['label'] = _x( 'Points', 'form label', 'wordpoints' );
+		$this->settings_fields['log_text']['label'] = _x( 'Log Text', 'form label', 'wordpoints' );
+		$this->settings_fields['description']['label'] = _x( 'Description', 'form label', 'wordpoints' );
 
 		return parent::get_settings_fields();
 	}
 
 	/**
 	 * @since 1.0.0
-	 *
-	 * @param array                              $settings
-	 * @param WordPoints_Hook_Reaction_Validator $validator
-	 * @param WordPoints_Hook_Event_Args         $event_args
-	 *
-	 * @return array
-	 * @throws WordPoints_Hook_Validator_Exception
 	 */
-	public function validate_settings( array $settings, WordPoints_Hook_Reaction_Validator $validator, WordPoints_Hook_Event_Args $event_args ) {
+	public function validate_settings(
+		array $settings,
+		WordPoints_Hook_Reaction_Validator $validator,
+		WordPoints_Hook_Event_Args $event_args
+	) {
 
 		if ( ! isset( $settings['points'] ) || false === wordpoints_int( $settings['points'] ) ) {
 			$validator->add_error( __( 'Points must be an integer.', 'wordpoints' ), 'points' );
@@ -96,7 +93,10 @@ class WordPoints_Hook_Reactor_Points
 	/**
 	 * @since 1.0.0
 	 */
-	public function update_settings( WordPoints_Hook_ReactionI $reaction, array $settings ) {
+	public function update_settings(
+		WordPoints_Hook_ReactionI $reaction,
+		array $settings
+	) {
 
 		parent::update_settings( $reaction, $settings );
 
@@ -108,9 +108,6 @@ class WordPoints_Hook_Reactor_Points
 
 	/**
 	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Event_Args         $event_args
-	 * @param WordPoints_Hook_Reaction_Validator $reaction
 	 */
 	public function hit(
 		WordPoints_Hook_Event_Args $event_args,
@@ -139,9 +136,6 @@ class WordPoints_Hook_Reactor_Points
 
 	/**
 	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Event_Args $event_args
-	 * @param WordPoints_Hook_EventI     $event
 	 */
 	public function spam_hits(
 		WordPoints_Hook_Event_Args $event_args,
@@ -202,7 +196,6 @@ class WordPoints_Hook_Reactor_Points
 
 		remove_filter( 'wordpoints_points_log', '__return_false' );
 	}
-
 }
 
 // EOF

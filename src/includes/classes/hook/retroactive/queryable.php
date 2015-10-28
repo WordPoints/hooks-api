@@ -30,7 +30,7 @@ interface WordPoints_Entityish_QueryableI {
 //}
 
 
-abstract class WordPoints_Entity_Object_DB extends WordPoints_Entity_Object {
+abstract class WordPoints_Entity_DB extends WordPoints_Entity {
 
 	protected $storage_type = 'db';
 

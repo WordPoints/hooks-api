@@ -178,8 +178,6 @@ class WordPoints_Hook_Router {
 
 					if ( $firer instanceof WordPoints_Hook_FirerI ) {
 						$firer->do_event( $event_slug, $hierarchy );
-					} else {
-						// TODO do action
 					}
 				}
 			}

@@ -1,20 +1,32 @@
 <?php
 
 /**
- * .
+ * The points types admin screen class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Displays the Points Types administration screen.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
+	/**
+	 * The slug of the points type currently being viewed/edited.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	protected $current_points_type;
 
 	/**
+	 * The hooks app.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Hooks
 	 */
@@ -94,7 +106,6 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 					$child_data[ $child_slug ]['_type'] = 'attr';
 					$child_data[ $child_slug ]['type']  = $child->get_data_type();
-//					$child_data[ $child_slug ]['specs'] = $child->get_data_type_specs();
 
 					if ( $child instanceof WordPoints_Entity_Attr_Enumerable ) {
 						$child_data[ $child_slug ]['values'] = $child->get_enumerated_values();
@@ -195,6 +206,11 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		<?php
 	}
 
+	/**
+	 * Add a meta-box for the settings of a the current points type.
+	 *
+	 * @since 1.0.0
+	 */
 	public function add_points_settings_meta_box() {
 
 		if ( ! current_user_can( 'manage_wordpoints_points_types' ) ) {
@@ -211,6 +227,11 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		);
 	}
 
+	/**
+	 * Display the contents of the meta-box for the points settings.
+	 *
+	 * @since 1.0.0
+	 */
 	public function display_points_settings_meta_box() {
 
 		if ( ! current_user_can( 'manage_wordpoints_points_types' ) ) {
@@ -346,6 +367,11 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		<?php
 	}
 
+	/**
+	 * Add a meta-box for each hook event.
+	 * @todo allow events to be skipped with a filter.
+	 * @since 1.0.0
+	 */
 	public function add_event_meta_boxes() {
 
 		if ( ! $this->current_points_type ) {
@@ -370,6 +396,14 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		}
 	}
 
+	/**
+	 * Display the meta box for a hook event.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $points_type The points type this meta-box relates to.
+	 * @param array $meta_box    The data the meta-box was created with.
+	 */
 	public function display_event_meta_box( $points_type, $meta_box ) {
 
 		$event_slug = $meta_box['args']['slug'];
@@ -408,8 +442,8 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		?>
 
 		<script>
-			WordPointsHooksAdminData.events.<?php echo sanitize_key( $event_slug ); ?> = <?php echo wp_json_encode( $event_data ); ?>;
-			WordPointsHooksAdminData.reactions.<?php echo sanitize_key( $event_slug ); ?> = <?php echo wp_json_encode( $data ); ?>;
+			WordPointsHooksAdminData.events[<?php echo wp_json_encode( $event_slug ); ?>] = <?php echo wp_json_encode( $event_data ); ?>;
+			WordPointsHooksAdminData.reactions[<?php echo wp_json_encode( $event_slug ); ?>] = <?php echo wp_json_encode( $data ); ?>;
 		</script>
 
 		<div class="wordpoints-hook-reaction-group-container">
@@ -438,6 +472,9 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		<?php
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function load() {
 
 		$this->save_points_type();
@@ -464,6 +501,11 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		$this->tabs = $tabs;
 	}
 
+	/**
+	 * Add, update, or delete a points type based on submitted data.
+	 *
+	 * @since 1.0.0
+	 */
 	public function save_points_type() {
 
 		if ( ! current_user_can( 'manage_wordpoints_points_types' ) ) {
@@ -481,9 +523,9 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 			$settings = array();
 
-			$settings['name']   = trim( sanitize_text_field( wp_unslash( $_POST['points-name'] ) ) );
-			$settings['prefix'] = ltrim( sanitize_text_field( wp_unslash( $_POST['points-prefix'] ) ) );
-			$settings['suffix'] = rtrim( sanitize_text_field( wp_unslash( $_POST['points-suffix'] ) ) );
+			$settings['name']   = trim( sanitize_text_field( wp_unslash( $_POST['points-name'] ) ) ); // WPCS: CSRF OK
+			$settings['prefix'] = ltrim( sanitize_text_field( wp_unslash( $_POST['points-prefix'] ) ) ); // WPCS: CSRF OK
+			$settings['suffix'] = rtrim( sanitize_text_field( wp_unslash( $_POST['points-suffix'] ) ) ); // WPCS: CSRF OK
 
 			if (
 				isset( $_POST['points-slug'] )
@@ -586,6 +628,9 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		}
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function display_content() {
 
 		/**

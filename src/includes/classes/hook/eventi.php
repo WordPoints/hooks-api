@@ -1,37 +1,50 @@
 <?php
 
 /**
- * .
+ * Hook event interface.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Defines the API for a hook event.
+ *
+ * @since 1.0.0
+ */
 interface WordPoints_Hook_EventI {
 
+	/**
+	 * @param string $slug The event slug.
+	 */
 	public function __construct( $slug );
 
+	/**
+	 * Get the event slug.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The event slug.
+	 */
 	public function get_slug();
 
+	/**
+	 * Get the human-readable title of this event.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The event title.
+	 */
 	public function get_title();
 
+	/**
+	 * Get the event description.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The event description.
+	 */
 	public function get_description();
 }
-
-
-
-
-class WordPoints_Hook_Event_User_Visit extends WordPoints_Hook_Event {
-
-	public function get_title() {
-		return __( 'Visit', 'wordpoints' );
-	}
-
-	public function get_description() {
-		return __( 'When a logged-in user or guest visits the site.', 'wordpoints' );
-	}
-}
-
-
 
 // EOF

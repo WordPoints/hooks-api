@@ -27,7 +27,21 @@ class WordPoints_PHPUnit_Mock_Hook_Condition extends WordPoints_Hook_Condition {
 	/**
 	 * @since 1.0.0
 	 */
-	public function is_met( $settings, $args ) {}
+	public function is_met( array $settings, WordPoints_Hook_Event_Args $args ) {}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_title() {
+		return 'Test Condition';
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_settings_fields() {
+		return array();
+	}
 }
 
 // EOF

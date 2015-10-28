@@ -1,37 +1,58 @@
 <?php
 
 /**
- * .
+ * Entityish class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
-
-interface WordPoints_EntityishI {
-	public function get_slug();
-	public function get_title();
-
-	public function user_can_view( $user_id, $id );
-
-	public function get_the_value();
-	public function set_the_value( $value );
-}
-
+/**
+ * Bootstrap for representing an entity-like object.
+ *
+ * @since 1.0.0
+ */
 abstract class WordPoints_Entityish implements WordPoints_EntityishI {
 
+	/**
+	 * The slug of this entity/entity-child.
+	 *
+	 * You must either set this or override the get_slug() method.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	protected $slug;
 
+	/**
+	 * The value of this entity/entity-child.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var mixed
+	 */
 	protected $the_value;
 
+	/**
+	 * Construct the entity/entity-child with a slug.
+	 *
+	 * @param string $slug The slug of the entity/entity-child.
+	 */
 	public function __construct( $slug ) {
 		$this->slug = $slug;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_slug() {
 		return $this->slug;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function user_can_view( $user_id, $id ) {
 
 		$can_view = true;
@@ -43,59 +64,34 @@ abstract class WordPoints_Entityish implements WordPoints_EntityishI {
 		return $can_view; // TODO filter here
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_the_value() {
 		return $this->the_value;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function set_the_value( $value ) {
 		$this->the_value = $value;
 	}
 }
 
 interface WordPoints_Entity_Check_CapsI { // TODO change the name
-	public function check_user_caps( $user_id, $id );
-}
-
-class WordPoints_Entity_Array {
-
-	protected $entity_slug;
-	protected $the_entities = array();
-	protected $the_value;
-
-	public function __construct( $entity_slug ) {
-		$this->entity_slug = $entity_slug;
-	}
-
-	public function get_entity_slug() {
-		return $this->entity_slug;
-	}
-
-	public function set_the_value( $values ) {
-
-		$object = wordpoints_apps()->entities->get( $this->entity_slug );
-
-		$this->the_entities = array();
-
-		$this->the_value = $values;
-
-		foreach ( $values as $value ) {
-
-			/** @var WordPoints_Entity $entity */
-			$entity = clone $object;
-			$entity->set_the_value( $value );
-			$this->the_entities[] = $entity;
-		}
-	}
 
 	/**
+	 * Check whether a user has the caps to view this entity.
 	 *
+	 * @since 1.0.0
 	 *
-	 * @since 1.
-	 * @return WordPoints_Entity[]
+	 * @param int   $user_id The user's ID.
+	 * @param mixed $id      The entity's ID.
+	 *
+	 * @return bool Whether the user can view the entity.
 	 */
-	public function get_the_entities() {
-		return $this->the_entities;
-	}
+	public function check_user_caps( $user_id, $id );
 }
 
 // EOF

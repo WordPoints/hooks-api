@@ -8,11 +8,11 @@
  */
 
 /**
+ * Register the admin apps when the main app is initialized.
  *
+ * @since 1.0.0
  *
- * @since 1.
- *
- * @param WordPoints_App $app
+ * @param WordPoints_App $app The main WordPoints app.
  */
 function wordpoints_hooks_register_admin_apps( $app ) {
 
@@ -42,10 +42,10 @@ function wordpoints_hooks_api_admin_menu() {
 	// Hooks page.
 	$id = add_submenu_page(
 		$wordpoints_menu
-		,__( 'WordPoints — Points Types', 'wordpoints' )
-		,__( 'Points Types', 'wordpoints' )
-		,'manage_options'
-		,'wordpoints_points_types'
+		, __( 'WordPoints — Points Types', 'wordpoints' )
+		, __( 'Points Types', 'wordpoints' )
+		, 'manage_options'
+		, 'wordpoints_points_types'
 		, array( $admin_screens, 'display' )
 	);
 
@@ -262,21 +262,20 @@ function wordpoints_hooks_admin_register_scripts() {
 add_action( 'admin_init', 'wordpoints_hooks_admin_register_scripts' );
 
 /**
- *
+ * Append templates registered in wordpoints-templates script data to scripts.
  *
  * One day templates will probably be stored in separate files instead.
  *
  * @link https://core.trac.wordpress.org/ticket/31281
  *
- * @since 1.
+ * @since 1.0.0
  *
- * @param $html
- * @param $handle
- * @param $src
+ * @param string $html   The HTML for the script.
+ * @param string $handle The handle of the script.
  *
- * @return string
+ * @return string The HTML with templates appended.
  */
-function wordpoints_script_templates_filter( $html, $handle, $src ) {
+function wordpoints_script_templates_filter( $html, $handle ) {
 
 	global $wp_scripts;
 
@@ -288,8 +287,13 @@ function wordpoints_script_templates_filter( $html, $handle, $src ) {
 
 	return $html;
 }
-add_filter( 'script_loader_tag', 'wordpoints_script_templates_filter', 10, 3 );
+add_filter( 'script_loader_tag', 'wordpoints_script_templates_filter', 10, 2 );
 
+/**
+ * Initialize the Ajax actions.
+ *
+ * @since 1.0.0
+ */
 function wordpoints_hooks_admin_ajax() {
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {

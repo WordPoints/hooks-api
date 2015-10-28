@@ -82,7 +82,8 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_event_slug() { // TODO is this even needed.
+	public function get_event_slug() {
+	    // TODO is this even needed.
 		return $this->get_meta( 'event' );
 	}
 

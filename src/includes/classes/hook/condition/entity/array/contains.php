@@ -1,18 +1,31 @@
 <?php
 
 /**
- * .
+ * Entity array contains hook condition class.
  *
  * @package wordpoints-hooks-api
  * @since 1.
  */
 
-class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Condition {
+/**
+ * Represents a contains condition on an entity array.
+ *
+ * @since 1.0.0
+ */
+class WordPoints_Hook_Condition_Entity_Array_Contains
+	extends WordPoints_Hook_Condition {
 
+	/**
+	 * The condition's settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
 	protected $settings;
 
 	/**
-	 *
+	 * The conditions extension.
 	 *
 	 * @since 1.0.0
 	 *
@@ -21,14 +34,17 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 	protected $conditions_extension;
 
 	/**
+	 * The validator for the reaction the condition belongs to.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Hook_Reaction_Validator
 	 */
 	protected $validator;
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function __construct() {
 
 		$this->conditions_extension = wordpoints_apps()->hooks->extensions->get(
@@ -36,10 +52,16 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 		);
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_title() {
 		return __( 'Contains', 'wordpoints' );
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_settings_fields() {
 		return array(
 			'min' => array(
@@ -55,6 +77,9 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 		);
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function validate_settings(
 		$arg,
 		array $settings,
@@ -75,6 +100,13 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 		return $this->settings;
 	}
 
+	/**
+	 * Validate the count setting for the condition.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether the count setting was valid.
+	 */
 	protected function validate_count() {
 
 		if (
@@ -100,6 +132,11 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 		return true;
 	}
 
+	/**
+	 * Validate the sub conditions for the condition.
+	 *
+	 * @since 1.0.0
+	 */
 	protected function validate_conditions() {
 
 		$current_arg = $this->validator->get_event_args()->get_current();
@@ -128,7 +165,10 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 		$this->settings['conditions'] = $conditions['conditions'];
 	}
 
-	public function is_met( $settings, WordPoints_Entity_Hierarchy $args ) {
+	/**
+	 * @since 1.0.0
+	 */
+	public function is_met( array $settings, WordPoints_Hook_Event_Args $args ) {
 
 		$this->settings = $settings;
 
@@ -141,13 +181,13 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 	}
 
 	/**
+	 * Filter an array of entities based on the sub-conditions of this condition.
 	 *
+	 * @since 1.0.0
 	 *
-	 * @since 1.
+	 * @param WordPoints_EntityishI[] $entities The array of entities.
 	 *
-	 * @param WordPoints_EntityishI[] $entities
-	 *
-	 * @return WordPoints_EntityishI[]
+	 * @return WordPoints_EntityishI[] The entities that matched the sub-conditions.
 	 */
 	protected function filter_entities( $entities ) {
 
@@ -166,6 +206,15 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Hook_Co
 		return $entities;
 	}
 
+	/**
+	 * Check whether a count matches the count settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $count The number of entities that matched the sub-conditions.
+	 *
+	 * @return bool Whether the count met the requirements.
+	 */
 	protected function check_count( $count ) {
 
 		if ( isset( $this->settings['max'] ) && $count > $this->settings['max'] ) {

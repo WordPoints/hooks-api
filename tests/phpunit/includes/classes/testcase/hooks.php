@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Parent test case class for the hooks API tests.
+ * Hooks test case class.
  *
  * @package wordpoints-hooks-api
  * @since   1.0.0
@@ -14,6 +14,13 @@
  */
 abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase {
 
+	/**
+	 * A backup of the main app.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_App
+	 */
 	protected $backup_app;
 
 	/**
@@ -57,6 +64,13 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase
 		);
 	}
 
+	/**
+	 * Assert that a value is a hook reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $reaction The reaction.
+	 */
 	public function assertIsReaction( $reaction ) {
 
 		if ( $reaction instanceof WordPoints_Hook_Reaction_Validator ) {

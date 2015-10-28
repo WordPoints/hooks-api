@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Mock hook reaction class for the PHPUnit tests.
+ * Mock hook reaction class.
  *
  * @package wordpoints-hooks-api
  * @since 1.0.0
@@ -14,8 +14,22 @@
  */
 class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 
+	/**
+	 * Incremented to determine the ID of each mock reaction object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
 	protected $ids = 0;
 
+	/**
+	 * Get the ID for the next mock reaction
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return int The next ID.
+	 */
 	protected function increment_id() {
 		return ++$this->ids;
 	}

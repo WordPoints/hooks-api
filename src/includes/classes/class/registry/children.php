@@ -42,7 +42,7 @@ class WordPoints_Class_Registry_Children
 		if ( ! isset( $parent_slug ) ) {
 
 			$items = array();
-			
+
 			foreach ( $this->classes as $parent_slug => $classes ) {
 				foreach ( $classes as $slug => $class ) {
 					if ( empty( $args ) ) {

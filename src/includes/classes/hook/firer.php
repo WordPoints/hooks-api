@@ -1,12 +1,17 @@
 <?php
 
 /**
- * .
+ * Hook firer class.
  *
  * @package wordpoints-hooks-api
- * @since   1.
+ * @since   1.0.0
  */
 
+/**
+ * Fires a hook event.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 
 	/**
@@ -17,6 +22,9 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 		$this->slug = $slug;
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function do_event( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
 
 		$hooks = wordpoints_apps()->hooks;

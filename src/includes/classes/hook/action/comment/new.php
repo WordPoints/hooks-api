@@ -1,12 +1,17 @@
 <?php
 
 /**
- * .
+ * New comment action class.
  *
  * @package wordpoints-hooks-api
- * @since   1.
+ * @since   1.0.0
  */
 
+/**
+ * Represents the new Comment action.
+ *
+ * @since 1.0.0
+ */
 class WordPoints_Hook_Action_Comment_New extends WordPoints_Hook_Action {
 
 	/**

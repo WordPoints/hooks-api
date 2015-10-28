@@ -1,12 +1,21 @@
 <?php
 
 /**
- * .
+ * Hook extension class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Represents a hook extension.
+ *
+ * Hook extensions extend the basic hooks API, and can modify whether a particular
+ * hook firing should hit the target. Each extension makes this decision based on
+ * custom settings it offers for each reaction.
+ *
+ * @since 1.0.0
+ */
 abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 
 	/**
@@ -19,18 +28,18 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	protected $slug;
 
 	/**
+	 * The validator for the current reaction.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Hook_Reaction_Validator
 	 */
 	protected $validator;
 
 	/**
+	 * The args for the current event.
 	 *
-	 *
-	 * @since 1.
+	 * @since 1.0.0
 	 *
 	 * @var WordPoints_Hook_Event_Args
 	 */
@@ -71,28 +80,19 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 		}
 	}
 
+	/**
+	 * Check whether this hook firing should hit the target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_Reaction_Validator $reaction   The reaction.
+	 * @param WordPoints_Hook_Event_Args         $event_args The event args.
+	 *
+	 * @return bool Whether the target should be hit by this hook firing.
+	 */
 	abstract public function should_hit(
-		WordPoints_Hook_Reaction_Validator $reaction
-		, WordPoints_Hook_Event_Args $event_args
-	);
-}
-
-interface WordPoints_Hook_Extension_SpamI {
-
-	public function after_spam(
-		WordPoints_Hook_EventI $event,
-		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_Reactor_SpamI $reactor
-	);
-}
-
-
-interface WordPoints_Hook_Extension_ReverseI {
-
-	public function after_reverse(
-		WordPoints_Hook_EventI $event,
-		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_Reactor_ReverseI $reactor
+		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_Event_Args $event_args
 	);
 }
 

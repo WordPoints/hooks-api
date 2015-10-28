@@ -1,105 +1,70 @@
 <?php
 
 /**
- * .
+ * Hook condition interface.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
+/**
+ * Defines the API for a hook condition.
+ *
+ * Conditions help determine whether a particular hook firing should hit the target,
+ * by specifying certain conditions which the hook's args must meet. Each child of
+ * this class handles a certain type of condition.
+ *
+ * @since 1.0.0
+ */
 interface WordPoints_Hook_ConditionI {
 
+	/**
+	 * Get the human-readable title of this condition.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The condition title.
+	 */
 	public function get_title();
 
+	/**
+	 * Get a list of settings fields for this condition.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function get_settings_fields();
 
+	/**
+	 * Validate the settings for an instance of this condition.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_EntityishI|WordPoints_Entity_Array $arg       The hook arg this condition is on.
+	 * @param array                                         $settings  The settings to validate.
+	 * @param WordPoints_Hook_Reaction_Validator            $validator The validator for the hook
+	 *                                                                 reaction this condition is for.
+	 *
+	 * @return array|false The validated settings, or false if they were invalid.
+	 */
 	public function validate_settings(
 		$arg,
 		array $settings,
 		WordPoints_Hook_Reaction_Validator $validator
 	);
 
-	public function is_met( $settings, WordPoints_Entity_Hierarchy $args );
-}
-
-class WordPoints_Hook_Condition_Array_Count extends WordPoints_Hook_Condition {
-
-	public function get_settings_fields() {
-		return array(
-			'count' => array(
-				'type' => 'number',
-				'label' => _x( 'Count', 'form label', 'wordpoints' ),
-			),
-		);
-	}
-
-	public function is_met( $settings, WordPoints_Entity_Hierarchy $args ) {
-
-		return count( $args->get_current()->get_the_value() ) === $settings['count'];
-	}
-
-	public function validate_settings(
-		$arg,
-		array $settings,
-		WordPoints_Hook_Reaction_Validator $validator
-	) {
-
-		if ( ! isset( $settings['count'] ) ) {
-
-			$settings_fields = $this->get_settings_fields();
-
-			$validator->add_error(
-				sprintf(
-					__( '%s is required.', 'wordpoints' )
-					, $settings_fields['count']['label']
-				)
-				, 'count'
-			);
-
-			return false;
-		}
-
-		if ( ! wordpoints_posint( $settings['count'] ) ) {
-
-			$settings_fields = $this->get_settings_fields();
-
-			$validator->add_error(
-				sprintf(
-					__( '%s count must be a positive integer.', 'wordpoints' )
-					, $settings_fields['count']['label']
-				)
-				, 'count'
-			);
-
-			return false;
-		}
-
-		return $settings;
-	}
-
-	public function get_title() {
-		// TODO: Implement get_title() method.
-	}
-}
-
-class WordPoints_Hook_Condition_Array_Contains extends WordPoints_Hook_Condition {
-
-	public function is_met( $settings, WordPoints_Entity_Hierarchy $args ) {
-
-		return in_array(
-			$settings['value']
-			, $args->get_current()->get_the_value()
-			, true
-		);
-	}
-
-	public function get_settings_fields() {
-		// TODO: Implement get_settings_fields() method.
-	}
-
-	public function get_title() {
-		// TODO: Implement get_title() method.
-	}
+	/**
+	 * Check whether the hook args meet the requirements placed by this coniditon.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array                      $settings The condition's settings.
+	 * @param WordPoints_Hook_Event_Args $args     The hook args.
+	 *
+	 * @return bool Whether this condition is met.
+	 */
+	public function is_met( array $settings, WordPoints_Hook_Event_Args $args );
 }
 
 // EOF

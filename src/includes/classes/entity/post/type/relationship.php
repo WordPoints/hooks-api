@@ -1,13 +1,19 @@
 <?php
 
 /**
- * .
+ * Post Type entity relationship class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
-class WordPoints_Entity_Post_Type_Relationship extends WordPoints_Entity_Relationship {
+/**
+ * Represents the relationship between a Post and its Post Type.
+ *
+ * @since 1.0.0
+ */
+class WordPoints_Entity_Post_Type_Relationship
+	extends WordPoints_Entity_Relationship {
 
 	/**
 	 * @since 1.0.0

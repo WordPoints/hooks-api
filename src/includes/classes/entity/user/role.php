@@ -1,21 +1,39 @@
 <?php
 
 /**
- * .
+ * User Role entity class.
  *
  * @package wordpoints-hooks-api
- * @since 1.
+ * @since 1.0.0
  */
 
-class WordPoints_Entity_User_Role extends WordPoints_Entity_Object {
+/**
+ * Represents a User Role.
+ *
+ * @since 1.0.0
+ */
+class WordPoints_Entity_User_Role extends WordPoints_Entity {
 
+	/**
+	 * @since 1.0.0
+	 */
 	protected $id_field = 'name';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $getter = 'get_role';
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_title() {
 		return __( 'Role' );
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_human_id( $id ) {
 
 		global $wp_roles;
@@ -27,10 +45,6 @@ class WordPoints_Entity_User_Role extends WordPoints_Entity_Object {
 		$names = $wp_roles->get_names();
 
 		return $names[ $id ];
-	}
-
-	public function get_user_roles() {
-		return wp_roles()->role_objects;
 	}
 }
 
