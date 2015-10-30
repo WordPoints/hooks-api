@@ -45,7 +45,7 @@ class WordPoints_Entity_Hierarchy implements WordPoints_Entity_HierarchyI {
 	 * Construct a hierarchy, optionally with a top-level entity.
 	 *
 	 * @since 1.0.0
-	 *        
+	 *
 	 * @param WordPoints_Entity|null $entity An entity.
 	 */
 	public function __construct( WordPoints_Entity $entity = null ) {
