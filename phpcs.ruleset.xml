@@ -4,6 +4,6 @@
 
 	<rule ref="WordPoints" />
 
-	<exclude-pattern>/src/includes/classes/hierarchy.php,/src/includes/classes/hook/retroactive/*,/src/includes/classes/hook/settings*,/src/includes/classes/query/*,/src/includes/classes/specedi.php,/tests/classes/hook/retroactive/*</exclude-pattern>
+	<exclude-pattern>/src/includes/classes/hierarchy.php,/src/includes/classes/hook/retroactive/*,/src/includes/classes/hook/settings.php,/src/includes/classes/query/*,/src/includes/classes/specedi.php,/tests/classes/hook/retroactive/*</exclude-pattern>
 
 </ruleset>
