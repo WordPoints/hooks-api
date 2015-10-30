@@ -28,7 +28,7 @@ class WordPoints_Entity_User_Role extends WordPoints_Entity {
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Role' );
+		return __( 'Role', 'wordpoints' );
 	}
 
 	/**

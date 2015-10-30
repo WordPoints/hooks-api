@@ -128,7 +128,10 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 			|| ! $validator->validate_arg_hierarchy( $settings['target'], $this->arg_types ) // TODO array of arg types
 		) {
 			$validator->add_error(
-				sprintf( 'The target must be a %s.', $this->arg_types )
+				sprintf(
+					__( 'The target must be a %s.', 'wordpoints' )
+					, $this->arg_types
+				)
 				, 'target'
 			); // TODO
 		}

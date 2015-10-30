@@ -28,7 +28,7 @@ class WordPoints_Entity_Post_Content extends WordPoints_Entity_Attr {
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Content' );
+		return __( 'Content', 'wordpoints' );
 	}
 }
 

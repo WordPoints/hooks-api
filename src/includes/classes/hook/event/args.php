@@ -68,14 +68,19 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 
 			if ( ! ( $this->current instanceof WordPoints_Entity_ParentI ) ) {
 
-				$this->validator->add_error( 'Current arg is not a parent.' );
+				$this->validator->add_error(
+					__( 'Current arg is not a parent.', 'wordpoints' ) // TODO message
+				);
 
 			} else {
 
 				$child_arg = $this->current->get_child( $child_slug );
 
 				if ( ! $child_arg ) {
-					$this->validator->add_error( 'Invalid child.', $child_slug );
+					$this->validator->add_error(
+						__( 'Invalid child.', 'wordpoints' ) // TODO message
+						, $child_slug
+					);
 				}
 			}
 
