@@ -1,7 +1,6 @@
 /* jshint node:true */
 module.exports = function( grunt ) {
-	var path = require( 'path' ),
-		SOURCE_DIR = 'src/',
+	var SOURCE_DIR = 'src/',
 		UNBUILT_DIR = 'unbuilt/',
 		browserifyConfig = {},
 		jsManifests = grunt.file.expand( { cwd: UNBUILT_DIR }, ['**/*.manifest.js'] );

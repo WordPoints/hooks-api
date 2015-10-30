@@ -1,1 +1,4 @@
-dev-lib/jshint/.jshintignore
+**/vendor/**
+**.min.js
+**/node_modules/**
+**src/admin/assets/js/hooks**
