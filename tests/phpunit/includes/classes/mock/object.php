@@ -27,7 +27,8 @@ class WordPoints_PHPUnit_Mock_Object {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->__call( __FUNCTION__, func_get_args() );
+		$arguments = func_get_args();
+		$this->__call( __FUNCTION__, $arguments );
 	}
 
 	/**
