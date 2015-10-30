@@ -1,4 +1,4 @@
-# WordPoints Hooks API
+# WordPoints Hooks API [![Build Status](https://travis-ci.org/WordPoints/hooks-api.svg?branch=master)](https://travis-ci.org/WordPoints/hooks-api) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordPoints/hooks-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordPoints/hooks-api/?branch=master) [![Coverage Status](https://coveralls.io/repos/WordPoints/hooks-api/badge.svg?branch=master&service=github)](https://coveralls.io/github/WordPoints/hooks-api?branch=master)
 
 API for scripting automatic responses to user actions, being developed as a module.
 
