@@ -93,7 +93,7 @@ class WordPoints_Hook_Action implements WordPoints_Hook_ActionI {
 	public function should_fire() {
 
 		foreach ( $this->requirements as $arg => $value ) {
-			if ( $this->args[ $arg ] !== $value ) {
+			if ( ! isset( $this->args[ $arg ] ) || $this->args[ $arg ] !== $value ) {
 				return false;
 			}
 		}

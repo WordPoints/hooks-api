@@ -35,23 +35,13 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 	protected $router;
 
 	/**
-	 * A hook actions registry.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Hook_Actions
-	 */
-	protected $actions;
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function __construct( $slug ) {
 
 		$hooks = wordpoints_hooks();
 
-		$this->router   = $hooks->router;
-		$this->actions  = $hooks->actions;
+		$this->router = $hooks->router;
 
 		parent::__construct( $slug );
 	}

@@ -18,10 +18,10 @@ function wordpoints_init_hooks() {
 
 	$hooks = wordpoints_hooks();
 
-	// Just accessing these causes them to be initialized. The rest of the API will
-	// be lazy-loaded as it is needed.
+	// Just accessing this causes it to be initialized. We need to do that so
+	// the actions will be registered and hooked up. The rest of the API can be
+	// lazy-loaded as it is needed.
 	$hooks->actions;
-	$hooks->events;
 }
 
 /**
@@ -87,7 +87,6 @@ function wordpoints_hook_conditions_init( $conditions ) {
 		, 'contains'
 		, 'WordPoints_Hook_Condition_Entity_Array_Contains'
 	);
-
 }
 
 /**
