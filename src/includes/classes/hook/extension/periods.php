@@ -81,7 +81,11 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			$period['args'] = array();
 		}
 
-		if ( ! $this->validator->validate_arg_hierarchy( $period['args'] ) ) {
+		if ( ! is_array( $period['args'] ) ) {
+			return false;
+		}
+
+		if ( ! $this->event_args->get_from_hierarchy( $period['args'] ) ) {
 			$this->validator->add_error(
 				__( 'Invalid period.', 'wordpoints' ) // TODO better error message
 				, 'args'
@@ -167,7 +171,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		);
 
 		// If the period isn't found, we know that we can still fire.
-		if ( ! $settings ) {
+		if ( ! $period ) {
 			return true;
 		}
 

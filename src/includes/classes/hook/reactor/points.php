@@ -118,6 +118,10 @@ class WordPoints_Hook_Reactor_Points
 			$reaction->get_meta( 'target' )
 		);
 
+		if ( ! $target instanceof WordPoints_Entity ) {
+			return;
+		}
+
 		$meta = array();
 
 		foreach ( $event_args->get_entities() as $entity ) {
@@ -137,10 +141,7 @@ class WordPoints_Hook_Reactor_Points
 	/**
 	 * @since 1.0.0
 	 */
-	public function spam_hits(
-		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_EventI $event
-	) {
+	public function spam_hits( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
 
 		$meta_queries = array(
 			array(
@@ -159,7 +160,7 @@ class WordPoints_Hook_Reactor_Points
 
 		$query = new WordPoints_Points_Logs_Query(
 			array(
-				'log_type'   => $event->get_slug(),
+				'log_type'   => $event_slug,
 				'meta_query' => $meta_queries,
 			)
 		);

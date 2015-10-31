@@ -124,16 +124,22 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	) {
 
 		if (
-			! isset( $settings['target'] )
-			|| ! $validator->validate_arg_hierarchy( $settings['target'], $this->arg_types ) // TODO array of arg types
+			empty( $settings['target'] )
+			|| ! is_array( $settings['target'] )
 		) {
-			$validator->add_error(
-				sprintf(
-					__( 'The target must be a %s.', 'wordpoints' )
-					, $this->arg_types
-				)
-				, 'target'
-			); // TODO
+
+			$validator->add_error( __( 'Invalid target.', 'wordpoints' ), 'target' );
+
+		} else {
+
+			$target = $event_args->get_from_hierarchy( $settings['target'] );
+
+			if (
+				! $target instanceof WordPoints_Entity
+				|| ! in_array( $target->get_slug(), (array) $this->arg_types )
+			) {
+				$validator->add_error( __( 'Invalid target.', 'wordpoints' ), 'target' );
+			}
 		}
 
 		return $settings;

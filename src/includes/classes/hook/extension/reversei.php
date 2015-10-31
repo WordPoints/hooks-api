@@ -19,12 +19,12 @@ interface WordPoints_Hook_Extension_ReverseI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_EventI           $event      The event object.
+	 * @param string                           $event_slug The event slug.
 	 * @param WordPoints_Hook_Event_Args       $event_args The event args.
 	 * @param WordPoints_Hook_Reactor_ReverseI $reactor    The reactor object.
 	 */
 	public function after_reverse(
-		WordPoints_Hook_EventI $event,
+		$event_slug,
 		WordPoints_Hook_Event_Args $event_args,
 		WordPoints_Hook_Reactor_ReverseI $reactor
 	);

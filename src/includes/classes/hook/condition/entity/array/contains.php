@@ -185,17 +185,20 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_EntityishI[] $entities The array of entities.
+	 * @param WordPoints_Entity[] $entities The array of entities.
 	 *
-	 * @return WordPoints_EntityishI[] The entities that matched the sub-conditions.
+	 * @return WordPoints_Entity[] The entities that matched the sub-conditions.
 	 */
 	protected function filter_entities( $entities ) {
 
 		foreach ( $entities as $index => $entity ) {
 
+			$event_args = new WordPoints_Hook_Event_Args( array() );
+			$event_args->add_entity( $entity );
+
 			$matches = $this->conditions_extension->conditions_are_met(
 				$this->settings['conditions']
-				, new WordPoints_Hook_Event_Args( array( $entity ) )
+				, $event_args
 			);
 
 			if ( ! $matches ) {

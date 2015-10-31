@@ -116,7 +116,7 @@ interface WordPoints_Hook_ReactionI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array
+	 * @return array|false All metadata for this reaction, or false on failure.
 	 */
 	public function get_all_meta();
 }

@@ -35,7 +35,7 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 
 		$this->ID = $id;
 
-		$option = "wordpoints_{$this->reactor_slug}_hook_reaction-{$this->ID}";
+		$option = $this->get_settings_option_name();
 
 		$settings = array( 'event' => $event_slug, 'reactor' => $this->reactor_slug );
 
@@ -70,7 +70,7 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	public function delete() {
 
-		$option = "wordpoints_{$this->reactor_slug}_hook_reaction-{$this->ID}";
+		$option = $this->get_settings_option_name();
 
 		if ( $this->network_wide ) {
 			return delete_site_option( $option );
@@ -141,6 +141,17 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	}
 
 	/**
+	 * Get the name of the option where the reaction's settings are stored.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The name of the option where the settings are stored.
+	 */
+	protected function get_settings_option_name() {
+		return "wordpoints_{$this->reactor_slug}_hook_reaction-{$this->ID}";
+	}
+
+	/**
 	 * Gets the settings for this reaction from the database.
 	 *
 	 * @since 1.0.0
@@ -149,7 +160,7 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	protected function get_settings() {
 
-		$option = "wordpoints_{$this->reactor_slug}_hook_reaction-{$this->ID}";
+		$option = $this->get_settings_option_name();
 
 		if ( $this->network_wide ) {
 			$settings = get_site_option( $option );
@@ -171,7 +182,7 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	protected function update_settings( $settings ) {
 
-		$option = "wordpoints_{$this->reactor_slug}_hook_reaction-{$this->ID}";
+		$option = $this->get_settings_option_name();
 
 		if ( $this->network_wide ) {
 			return update_site_option( $option, $settings );

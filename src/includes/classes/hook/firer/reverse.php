@@ -27,11 +27,11 @@ class WordPoints_Hook_Firer_Reverse implements WordPoints_Hook_FirerI {
 				continue;
 			}
 
-			$reactor->reverse_hits( $event_args, $this );
+			$reactor->reverse_hits( $event_slug, $event_args );
 
 			foreach ( $hooks->extensions->get() as $extension ) {
 				if ( $extension instanceof WordPoints_Hook_Extension_ReverseI ) {
-					$extension->after_reverse( $this, $event_args, $reactor ); // TODO
+					$extension->after_reverse( $event_slug, $event_args, $reactor );
 				}
 			}
 		}

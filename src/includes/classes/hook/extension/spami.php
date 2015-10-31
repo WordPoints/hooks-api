@@ -19,12 +19,12 @@ interface WordPoints_Hook_Extension_SpamI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_EventI        $event      The event object.
+	 * @param string                        $event_slug The event slug.
 	 * @param WordPoints_Hook_Event_Args    $event_args The event args.
 	 * @param WordPoints_Hook_Reactor_SpamI $reactor    The reactor.
 	 */
 	public function after_spam(
-		WordPoints_Hook_EventI $event,
+		$event_slug,
 		WordPoints_Hook_Event_Args $event_args,
 		WordPoints_Hook_Reactor_SpamI $reactor
 	);

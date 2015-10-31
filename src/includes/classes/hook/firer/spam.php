@@ -27,11 +27,11 @@ class WordPoints_Hook_Firer_Spam implements WordPoints_Hook_FirerI {
 				continue;
 			}
 
-			$reactor->spam_hits( $event_args, $this );
+			$reactor->spam_hits( $event_slug, $event_args );
 
 			foreach ( $hooks->extensions->get() as $extension ) {
 				if ( $extension instanceof WordPoints_Hook_Extension_SpamI ) {
-					$extension->after_spam( $this, $event_args, $reactor ); // TODO
+					$extension->after_spam( $event_slug, $event_args, $reactor );
 				}
 			}
 		}

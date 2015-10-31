@@ -44,9 +44,9 @@ interface WordPoints_Hook_Reaction_StorageI {
 	 *
 	 * @param array $settings The settings for the reaction.
 	 *
-	 * @return WordPoints_Hook_ReactionI|bool|WordPoints_Hook_Reaction_Validator True if the reaction was created
-	 *                                        successfully. False or a validator
-	 *                                        instance if not.
+	 * @return WordPoints_Hook_ReactionI|false|WordPoints_Hook_Reaction_Validator
+	 *         The reaction object if created successfully. False or a validator
+	 *         instance if not.
 	 */
 	public function create_reaction( array $settings );
 
@@ -58,9 +58,9 @@ interface WordPoints_Hook_Reaction_StorageI {
 	 * @param int   $id       The ID of the reaction to update.
 	 * @param array $settings The settings for the reaction.
 	 *
-	 * @return bool|WordPoints_Hook_Reaction_Validator True if the reaction was updated
-	 *                                        successfully. False or a validator
-	 *                                        instance if not.
+	 * @return WordPoints_Hook_ReactionI|false|WordPoints_Hook_Reaction_Validator
+	 *         The reaction object if updated successfully. False or a validator
+	 *         instance if not.
 	 */
 	public function update_reaction( $id, array $settings );
 

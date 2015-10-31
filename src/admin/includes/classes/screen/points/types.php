@@ -33,6 +33,15 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 	protected $hooks;
 
 	/**
+	 * The entities app.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_App_Registry
+	 */
+	protected $entities;
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function __construct() {
@@ -186,7 +195,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 	/**
 	 * @since 0.1.0
 	 */
-	function footer_scripts() {
+	public function footer_scripts() {
 
 		?>
 

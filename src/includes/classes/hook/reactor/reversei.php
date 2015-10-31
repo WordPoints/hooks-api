@@ -19,13 +19,10 @@ interface WordPoints_Hook_Reactor_ReverseI {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param string                     $event_slug The event slug.
 	 * @param WordPoints_Hook_Event_Args $event_args The event args.
-	 * @param WordPoints_Hook_EventI     $event      The object for the event.
 	 */
-	public function reverse_hits(
-		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_EventI $event
-	);
+	public function reverse_hits( $event_slug, WordPoints_Hook_Event_Args $event_args );
 }
 
 // EOF

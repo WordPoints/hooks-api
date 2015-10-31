@@ -169,35 +169,6 @@ final class WordPoints_Hook_Reaction_Validator {
 	}
 
 	/**
-	 * Check the validity of an arg hierarchy.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string[] $hierarchy A list of slugs in hierarchical order.
-	 * @param string   $tip       A particular type of entity that must be at the tip.
-	 *
-	 * @return bool Whether the hierarchy is valid.
-	 */
-	public function validate_arg_hierarchy( $hierarchy, $tip = null ) {
-
-		if ( empty( $hierarchy ) || ! is_array( $hierarchy ) ) {
-			return false;
-		}
-
-		$entity = $this->event_args->get_from_hierarchy( $hierarchy );
-
-		if ( ! $entity ) {
-			return false;
-		}
-
-		if ( isset( $tip ) && $entity->get_slug() !== $tip ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Get the args for the event this reaction is for.
 	 *
 	 * @since 1.0.0
@@ -223,7 +194,7 @@ final class WordPoints_Hook_Reaction_Validator {
 
 		$field_stack = $this->field_stack;
 
-		if ( $field ) {
+		if ( ! empty( $field ) ) {
 			$field_stack[] = $field;
 		}
 

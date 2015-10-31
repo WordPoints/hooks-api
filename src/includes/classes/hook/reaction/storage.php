@@ -103,9 +103,9 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	 * @param array $settings The settings for the reaction.
 	 * @param int   $id       The ID of the reaction to update, if updating.
 	 *
-	 * @return WordPoints_Hook_ReactionI|false|WordPoints_Hook_Reaction_Validator True if the reaction was created/
-	 *                                        updated successfully. False or a
-	 *                                        validator instance if not.
+	 * @return WordPoints_Hook_ReactionI|false|WordPoints_Hook_Reaction_Validator
+	 *         The reaction object if created/updated successfully. False or a
+	 *         validator instance if not.
 	 */
 	protected function create_or_update_reaction( array $settings, $id = null ) {
 

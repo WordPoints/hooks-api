@@ -10,6 +10,9 @@
 /**
  * Autoloader for the helper classes used by the PHPUnit tests.
  *
+ * We could use the WordPoints_Class_Autoloader class instead, but the plugin isn't
+ * always loaded during the tests.
+ *
  * @since 1.0.0
  *
  * @param string $class_name The name of the class to load.

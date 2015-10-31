@@ -59,7 +59,7 @@ abstract class WordPoints_Admin_Screen {
 	 *
 	 * @since 1.0.0
 	 */
-	function hooks() {
+	public function hooks() {
 
 		/* Load the JavaScript needed for the settings screen. */
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
