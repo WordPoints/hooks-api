@@ -39,11 +39,13 @@ class WordPoints_Admin_Screens extends WordPoints_Class_Registry {
 	 */
 	public function set_current_screen( $current_screen ) {
 
-		if ( ! $this->is_registered( $current_screen->id ) ) {
+		$screen = $this->get( $current_screen->id );
+
+		if ( ! ( $screen instanceof WordPoints_Admin_Screen ) ) {
 			return;
 		}
 
-		$this->current_screen = $this->get( $current_screen->id );
+		$this->current_screen = $screen;
 
 		add_action(
 			"load-{$current_screen->id}"

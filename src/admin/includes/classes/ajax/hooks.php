@@ -256,7 +256,7 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
 
-		if ( ! $reactor ) {
+		if ( ! $reactor instanceof WordPoints_Hook_Reactor ) {
 			$this->unexpected_error( 'reactor_invalid' );
 		}
 

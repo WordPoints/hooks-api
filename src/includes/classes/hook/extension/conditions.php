@@ -24,7 +24,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Class_Registry
+	 * @var WordPoints_Class_Registry_Children
 	 */
 	protected $conditions;
 
@@ -273,7 +273,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 * @since 1.0.0
 	 *
 	 * @param WordPoints_EntityishI $arg An entity object.
-	 *                                   
+	 *
 	 * @return string|false The data type, or false.
 	 */
 	protected function get_data_type( $arg ) {
