@@ -11,6 +11,8 @@
  * Initialize the hooks API.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_modules_loaded
  */
 function wordpoints_init_hooks() {
 
@@ -21,12 +23,13 @@ function wordpoints_init_hooks() {
 	$hooks->actions;
 	$hooks->events;
 }
-add_action( 'wordpoints_modules_loaded', 'wordpoints_init_hooks' );
 
 /**
  * Register hook reactors when the reactors registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-hooks-reactors
  *
  * @param WordPoints_Class_Registry_Persistent $reactors The reactors registry.
  */
@@ -34,12 +37,13 @@ function wordpoints_hook_reactors_init( $reactors ) {
 
 	$reactors->register( 'points', 'WordPoints_Hook_Reactor_Points' );
 }
-add_action( 'wordpoints_init_app_registry-hooks-reactors', 'wordpoints_hook_reactors_init' );
 
 /**
  * Register hook extension when the extension registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-hooks-extensions
  *
  * @param WordPoints_Class_Registry_Persistent $extensions The extension registry.
  */
@@ -48,12 +52,13 @@ function wordpoints_hook_extension_init( $extensions ) {
 	$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
 	$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
 }
-add_action( 'wordpoints_init_app_registry-hooks-extensions', 'wordpoints_hook_extension_init' );
 
 /**
  * Register hook conditions when the conditions registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-hooks-conditions
  *
  * @param WordPoints_Class_Registry_Children $conditions The conditions registry.
  */
@@ -84,12 +89,13 @@ function wordpoints_hook_conditions_init( $conditions ) {
 	);
 
 }
-add_action( 'wordpoints_init_app_registry-hooks-conditions', 'wordpoints_hook_conditions_init' );
 
 /**
  * Register hook actions when the action registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-hooks-actions
  *
  * @param WordPoints_Hook_Actions $actions The action registry.
  */
@@ -181,12 +187,13 @@ function wordpoints_hook_actions_init( $actions ) {
 		)
 	);
 }
-add_action( 'wordpoints_init_app_registry-hooks-actions', 'wordpoints_hook_actions_init' );
 
 /**
  * Register hook events when the event registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-hooks-events
  *
  * @param WordPoints_Hook_Events $events The event registry.
  */
@@ -255,12 +262,13 @@ function wordpoints_hook_events_init( $events ) {
 		);
 	}
 }
-add_action( 'wordpoints_init_app_registry-hooks-events', 'wordpoints_hook_events_init' );
 
 /**
  * Register hook events when the firer registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-hooks-firers
  *
  * @param WordPoints_Class_Registry_Persistent $firers The firer registry.
  */
@@ -270,12 +278,13 @@ function wordpoints_hook_firers_init( $firers ) {
 	$firers->register( 'reverse', 'WordPoints_Hook_Firer_Reverse' );
 	$firers->register( 'spam', 'WordPoints_Hook_Firer_Spam' );
 }
-add_action( 'wordpoints_init_app_registry-hooks-firers', 'wordpoints_hook_firers_init' );
 
 /**
  * Register sub-apps when the Entities app is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app-entities
  *
  * @param WordPoints_App_Registry $entities The entities app.
  */
@@ -283,12 +292,13 @@ function wordpoints_entities_app_init( $entities ) {
 
 	$entities->sub_apps->register( 'children', 'WordPoints_Class_Registry_Children' );
 }
-add_action( 'wordpoints_init_app-entities', 'wordpoints_entities_app_init' );
 
 /**
  * Register entities when the entities app is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-apps-entities
  *
  * @param WordPoints_App_Registry $entities The entities app.
  */
@@ -333,12 +343,13 @@ function wordpoints_entities_init( $entities ) {
 		unset( $post_type ); // TODO
 	}
 }
-add_action( 'wordpoints_init_app_registry-apps-entities', 'wordpoints_entities_init' );
 
 /**
  * Register the data types with the data types registry is initialized.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-apps-data_types
  *
  * @param WordPoints_Class_RegistryI $data_types The data types registry.
  */
@@ -347,12 +358,13 @@ function wordpoints_data_types_init( $data_types ) {
 	$data_types->register( 'integer', 'WordPoints_Data_Type_Integer' );
 	$data_types->register( 'text', 'WordPoints_Data_Type_Text' );
 }
-add_action( 'wordpoints_init_app_registry-apps-data_types', 'wordpoints_data_types_init' );
 
 /**
  * Check whether a user can view a points log.
  *
  * @since 1.0.0
+ *
+ * @WordPress\filter wordpoints_user_can_view_points_log
  *
  * @param bool   $can_view Whether the user can view the points log.
  * @param object $log      The points log's data.
@@ -432,6 +444,8 @@ function wordpoints_hooks() {
  *
  * @since 1.0.0
  *
+ * @WordPress\action wordpoints_init_app-apps
+ *
  * @param WordPoints_App $app The main apps app.
  */
 function wordpoints_apps_init( $app ) {
@@ -442,7 +456,6 @@ function wordpoints_apps_init( $app ) {
 	$apps->register( 'entities', 'WordPoints_App_Registry' );
 	$apps->register( 'data_types', 'WordPoints_Class_Registry' );
 }
-add_action( 'wordpoints_init_app-apps', 'wordpoints_apps_init' );
 
 /**
  * Construct a class with a variable number of args.
