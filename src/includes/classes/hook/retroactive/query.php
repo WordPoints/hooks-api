@@ -251,7 +251,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 			$this->validator->add_error( 'invalid hook' );
 		}
 
-		foreach ( $this->hooks->events->args->get( $event_slug ) as $arg ) {
+		foreach ( $this->hooks->events->args->get_children( $event_slug ) as $arg ) {
 			$this->arg_hierarchy_push( // TODO
 				$arg
 			);
@@ -267,7 +267,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 		$reactor->modify_retroactive_query( $this );
 		$this->reset();
 
-		foreach ( $this->hooks->extensions->get() as $extension ) {
+		foreach ( $this->hooks->extensions->get_all() as $extension ) {
 
 			if ( $extension instanceof WordPoints_Hook_Retroactive_Query_ModifierI ) {
 				$extension->modify_retroactive_query( $this );
@@ -399,7 +399,7 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 			$reactor->filter_retroactive_query( $this );
 		}
 
-		foreach ( $this->hooks->extensions->get() as $extension ) {
+		foreach ( $this->hooks->extensions->get_all() as $extension ) {
 			if ( $extension instanceof WordPoints_Hook_Retroactive_Query_FilterI ) {
 				$extension->filter_retroactive_query( $this );
 			}

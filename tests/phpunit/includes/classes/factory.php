@@ -49,7 +49,7 @@ class WordPoints_PHPUnit_Factory extends WordPoints_Class_Registry_Persistent{
 	/**
 	 * @since 1.0.0
 	 */
-	public function get( $slug = null ) {
+	public function get( $slug ) {
 
 		if ( ! isset( $slug ) ) {
 

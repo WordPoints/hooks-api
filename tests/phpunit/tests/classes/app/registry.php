@@ -116,7 +116,7 @@ class WordPoints_App_Registry_Test extends PHPUnit_Framework_TestCase {
 			$registry->register( 'test_2', 'WordPoints_PHPUnit_Mock_Object2' )
 		);
 
-		$objects = $registry->get();
+		$objects = $registry->get_all();
 
 		$this->assertCount( 2, $objects );
 

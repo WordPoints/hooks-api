@@ -40,7 +40,7 @@ class WordPoints_Hook_Actions extends WordPoints_Class_Registry {
 	 *
 	 * @return object|false The action object, or false if not found.
 	 */
-	public function get( $slug = null, array $action_args = array(), array $args = array() ) {
+	public function get( $slug, array $action_args = array(), array $args = array() ) {
 
 		if ( ! isset( $this->classes[ $slug ] ) ) {
 			return false;

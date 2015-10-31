@@ -29,42 +29,37 @@ class WordPoints_Class_Registry_Persistent extends WordPoints_Class_Registry {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get( $slug = null, array $args = array() ) {
+	public function get_all( array $args = array() ) {
 
-		if ( ! empty( $args ) ) {
-			array_unshift( $args, $slug );
+		$classes = array_diff_key( $this->classes, $this->objects );
+
+		if ( ! empty( $classes ) ) {
+
+			$objects = WordPoints_Class_Registry::construct_with_args(
+				$classes
+				, $args
+			);
+
+			$this->objects = $this->objects + $objects;
 		}
 
-		if ( ! isset( $slug ) ) {
+		return $this->objects;
+	}
 
-			$classes = array_diff_key( $this->classes, $this->objects );
-
-			if ( ! empty( $classes ) ) {
-
-				$objects = WordPoints_Class_Registry::construct_with_args(
-					$classes
-					, $args
-				);
-
-				$this->objects = $this->objects + $objects;
-			}
-
-			return $this->objects;
-		}
-
-		if ( ! isset( $this->classes[ $slug ] ) ) {
-			return false;
-		}
+	/**
+	 * @since 1.0.0
+	 */
+	public function get( $slug, array $args = array() ) {
 
 		if ( ! isset( $this->objects[ $slug ] ) ) {
-			if ( empty( $args ) ) {
-				$this->objects[ $slug ] = new $this->classes[ $slug ]( $slug );
-			} else {
-				$this->objects[ $slug ] = wordpoints_construct_class_with_args(
-					$this->classes[ $slug ]
-					, $args
-				);
+
+			$object = parent::get( $slug, $args );
+
+			if ( ! $object ) {
+				return false;
 			}
+
+			$this->objects[ $slug ] = $object;
 		}
 
 		return $this->objects[ $slug ];

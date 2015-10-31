@@ -21,7 +21,7 @@ class WordPoints_Hook_Firer_Spam implements WordPoints_Hook_FirerI {
 
 		$hooks = wordpoints_hooks();
 
-		foreach ( $hooks->reactors->get() as $reactor ) {
+		foreach ( $hooks->reactors->get_all() as $reactor ) {
 
 			if ( ! ( $reactor instanceof WordPoints_Hook_Reactor_SpamI ) ) {
 				continue;
@@ -29,7 +29,7 @@ class WordPoints_Hook_Firer_Spam implements WordPoints_Hook_FirerI {
 
 			$reactor->spam_hits( $event_slug, $event_args );
 
-			foreach ( $hooks->extensions->get() as $extension ) {
+			foreach ( $hooks->extensions->get_all() as $extension ) {
 				if ( $extension instanceof WordPoints_Hook_Extension_SpamI ) {
 					$extension->after_spam( $event_slug, $event_args, $reactor );
 				}

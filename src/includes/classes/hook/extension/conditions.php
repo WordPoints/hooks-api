@@ -42,10 +42,13 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 		$conditions_data = array();
 
-		/** @var WordPoints_Hook_ConditionI $condition */
-		foreach ( $this->conditions->get() as $data_type => $conditions ) {
-
+		foreach ( $this->conditions->get_all() as $data_type => $conditions ) {
 			foreach ( $conditions as $slug => $condition ) {
+
+				if ( ! ( $condition instanceof WordPoints_Hook_Condition ) ) {
+					continue;
+				}
+
 				$conditions_data[ $data_type ][ $slug ] = array(
 					'slug'      => $slug,
 					'data_type' => $data_type,
@@ -142,13 +145,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 		$arg = $this->event_args->get_current();
 
-		if ( $arg instanceof WordPoints_Entity_Attr ) {
-			$data_type = $arg->get_data_type();
-		} elseif ( $arg instanceof WordPoints_Entity_Array ) {
-			$data_type = 'entity_array';
-		} elseif ( $arg instanceof WordPoints_Entity ) {
-			$data_type = 'entity';
-		}
+		$data_type = $this->get_data_type( $arg );
 
 		if ( ! isset( $data_type ) ) {
 			$this->validator->add_error(
@@ -258,13 +255,40 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 */
 	final private function is_met( $settings, WordPoints_Hook_Event_Args $event_args ) {
 
-		$condition = $this->conditions->get( $settings['type'] );
+		$condition = $this->conditions->get(
+			$this->get_data_type( $this->event_args->get_current() )
+			, $settings['type']
+		);
 
 		$is_met = $condition->is_met( $settings['settings'], $event_args );
 
 		// TODO filter.
 
 		return $is_met;
+	}
+
+	/**
+	 * Get the data type of an entity.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_EntityishI $arg An entity object.
+	 *                                   
+	 * @return string|false The data type, or false.
+	 */
+	protected function get_data_type( $arg ) {
+
+		if ( $arg instanceof WordPoints_Entity_Attr ) {
+			$data_type = $arg->get_data_type();
+		} elseif ( $arg instanceof WordPoints_Entity_Array ) {
+			$data_type = 'entity_array';
+		} elseif ( $arg instanceof WordPoints_Entity ) {
+			$data_type = 'entity';
+		} else {
+			$data_type = false;
+		}
+
+		return $data_type;
 	}
 }
 

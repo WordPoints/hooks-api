@@ -20,17 +20,36 @@
 interface WordPoints_Class_Registry_ChildrenI {
 
 	/**
-	 * Get an object by its slug, or retrieve a list of all objects.
+	 * Get all of the registered objects.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return object[][] The objects, indexed by parent slug and child slug.
+	 */
+	public function get_all();
+
+	/**
+	 * Get all objects that are children of a certain parent..
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $parent_slug The parent slug.
+	 *
+	 * @return object[] The child objects, indexed by slug.
+	 */
+	public function get_children( $parent_slug );
+
+	/**
+	 * Get an object by its slug.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $parent_slug The group slug.
 	 * @param string $slug        The slug of the type of object to retrieve.
 	 *
-	 * @return object|object[]|false The object or all of the objects in the group.
-	 *                               False on failure.
+	 * @return object|false The object or false on failure.
 	 */
-	public function get( $parent_slug = null, $slug = null );
+	public function get( $parent_slug, $slug );
 
 	/**
 	 * Register a type of object.

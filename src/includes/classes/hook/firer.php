@@ -39,7 +39,7 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 		$hooks = wordpoints_hooks();
 
 		/** @var WordPoints_Hook_Reactor $reactor */
-		foreach ( $hooks->reactors->get() as $reactor ) {
+		foreach ( $hooks->reactors->get_all() as $reactor ) {
 
 			foreach ( $reactor->reactions->get_reactions_to_event( $event_slug ) as $reaction ) {
 
@@ -55,7 +55,7 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 				$reaction = $validator;
 
 				/** @var WordPoints_Hook_Extension $extension */
-				foreach ( $hooks->extensions->get() as $extension ) {
+				foreach ( $hooks->extensions->get_all() as $extension ) {
 
 					if ( ! $extension->should_hit( $reaction, $event_args ) ) {
 						continue 2;

@@ -82,12 +82,11 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 		$extensions_data = array();
 
-		foreach ( $this->hooks->extensions->get() as $slug => $class ) {
+		foreach ( $this->hooks->extensions->get_all() as $slug => $extension ) {
 
-			/** @var WordPoints_Hook_Extension $extension */
-			$extension = new $class();
-
-			$extensions_data[ $slug ] = $extension->get_data();
+			if ( $extension instanceof WordPoints_Hook_Extension ) {
+				$extensions_data[ $slug ] = $extension->get_data();
+			}
 
 			if ( wp_script_is( "wordpoints-hooks-extension-{$slug}", 'registered' ) ) {
 				wp_enqueue_script( "wordpoints-hooks-extension-{$slug}" );
@@ -99,7 +98,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		$entity_children = $this->entities->children;
 
 		/** @var WordPoints_Entity $entity */
-		foreach ( $this->entities->get() as $slug => $entity ) {
+		foreach ( $this->entities->get_all() as $slug => $entity ) {
 
 			$child_data = array();
 
@@ -388,7 +387,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		}
 
 		/** @var WordPoints_Hook_EventI $event */
-		foreach ( $this->hooks->events->get() as $slug => $event ) {
+		foreach ( $this->hooks->events->get_all() as $slug => $event ) {
 
 			add_meta_box(
 				"{$this->current_points_type}-{$slug}"
@@ -430,7 +429,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			}
 		}
 
-		$args = $this->hooks->events->args->get( $event_slug );
+		$args = $this->hooks->events->args->get_children( $event_slug );
 
 		$event_data = array( 'args' => array() );
 

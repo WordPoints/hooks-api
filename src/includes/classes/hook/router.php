@@ -166,7 +166,7 @@ class WordPoints_Hook_Router {
 						continue;
 					}
 
-					$event_args = $this->events->args->get( $event_slug, null, array( $action_object ) );
+					$event_args = $this->events->args->get_children( $event_slug, array( $action_object ) );
 
 					if ( false === $event_args ) {
 						continue;

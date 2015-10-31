@@ -24,16 +24,24 @@
 interface WordPoints_Class_RegistryI {
 
 	/**
-	 * Get an object by its slug, or retrieve a list of all objects.
+	 * Get all registered objects.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return object[] All of the registered objects, indexed by slug.
+	 */
+	public function get_all();
+
+	/**
+	 * Get an object by its slug.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $slug The slug of the type of object to retrieve.
 	 *
-	 * @return object|object[]|false The object with the $slug or false if it is not
-	 *                               registered, or all of the objects.
+	 * @return object|false The object or false if it is not registered.
 	 */
-	public function get( $slug = null );
+	public function get( $slug );
 
 	/**
 	 * Register a type of object.

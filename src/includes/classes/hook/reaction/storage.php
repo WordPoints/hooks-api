@@ -140,7 +140,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 		$reactor->update_settings( $reaction, $settings );
 
 		/** @var WordPoints_Hook_Extension $extension */
-		foreach ( $this->hooks->extensions->get() as $extension ) {
+		foreach ( $this->hooks->extensions->get_all() as $extension ) {
 			$extension->update_settings( $reaction, $settings );
 		}
 

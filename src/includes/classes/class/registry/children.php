@@ -33,36 +33,42 @@ class WordPoints_Class_Registry_Children
 	/**
 	 * @since 1.0.0
 	 */
-	public function get( $parent_slug = null, $slug = null, array $args = array() ) {
+	public function get_all( array $args = array() ) {
 
-		if ( ! empty( $args ) ) {
-			array_unshift( $args, $slug );
+		$items = array();
+
+		foreach ( $this->classes as $parent_slug => $classes ) {
+			$items[ $parent_slug ] = WordPoints_Class_Registry::construct_with_args(
+				$classes
+				, $args
+			);
 		}
 
-		if ( ! isset( $parent_slug ) ) {
+		return $items;
+	}
 
-			$items = array();
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_children( $parent_slug, array $args = array() ) {
 
-			foreach ( $this->classes as $parent_slug => $classes ) {
-				$items[ $parent_slug ] = WordPoints_Class_Registry::construct_with_args(
-					$classes
-					, $args
-				);
-			}
+		$items = array();
 
-			return $items;
-		}
+		if ( isset( $this->classes[ $parent_slug ] ) ) {
 
-		if ( ! isset( $this->classes[ $parent_slug ] ) ) {
-			return false;
-		}
-
-		if ( ! isset( $slug ) ) {
-			return WordPoints_Class_Registry::construct_with_args(
+			$items = WordPoints_Class_Registry::construct_with_args(
 				$this->classes[ $parent_slug ]
 				, $args
 			);
 		}
+
+		return $items;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get( $parent_slug, $slug, array $args = array() ) {
 
 		if ( ! isset( $this->classes[ $parent_slug ][ $slug ] ) ) {
 			return false;
@@ -73,6 +79,8 @@ class WordPoints_Class_Registry_Children
 		if ( empty( $args ) ) {
 			return new $class( $slug );
 		} else {
+			array_unshift( $args, $slug );
+
 			return wordpoints_construct_class_with_args( $class, $args );
 		}
 	}

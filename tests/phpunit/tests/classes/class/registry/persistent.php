@@ -98,7 +98,7 @@ class WordPoints_Class_Registry_Persistent_Test extends PHPUnit_Framework_TestCa
 			$registry->register( 'test_2', 'WordPoints_PHPUnit_Mock_Object2' )
 		);
 
-		$objects = $registry->get();
+		$objects = $registry->get_all();
 
 		$this->assertCount( 2, $objects );
 
@@ -133,7 +133,7 @@ class WordPoints_Class_Registry_Persistent_Test extends PHPUnit_Framework_TestCa
 			$registry->register( 'test', 'WordPoints_PHPUnit_Mock_Object' )
 		);
 
-		$objects = $registry->get();
+		$objects = $registry->get_all();
 
 		$this->assertCount( 1, $objects );
 
@@ -150,7 +150,7 @@ class WordPoints_Class_Registry_Persistent_Test extends PHPUnit_Framework_TestCa
 			$registry->register( 'test_2', 'WordPoints_PHPUnit_Mock_Object2' )
 		);
 
-		$objects = $registry->get();
+		$objects = $registry->get_all();
 
 		$this->assertCount( 2, $objects );
 
@@ -281,7 +281,7 @@ class WordPoints_Class_Registry_Persistent_Test extends PHPUnit_Framework_TestCa
 
 		$args = array( 'one', 2 );
 
-		$objects = $registry->get( null, $args );
+		$objects = $registry->get_all( $args );
 
 		$this->assertCount( 2, $objects );
 
@@ -322,7 +322,7 @@ class WordPoints_Class_Registry_Persistent_Test extends PHPUnit_Framework_TestCa
 
 		$args = array( 'one', 2 );
 
-		$objects = $registry->get( null, $args );
+		$objects = $registry->get_all( $args );
 
 		$this->assertCount( 2, $objects );
 

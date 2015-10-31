@@ -38,7 +38,14 @@ class WordPoints_App_Registry
 	/**
 	 * @since 1.0.0
 	 */
-	public function get( $slug = null, array $args = array() ) {
+	public function get_all( array $args = array() ) {
+		return $this->registry->get_all( $args );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get( $slug, array $args = array() ) {
 		return $this->registry->get( $slug, $args );
 	}
 

@@ -116,7 +116,7 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 			$registry->register( 'parent', 'test_2', 'WordPoints_PHPUnit_Mock_Object2' )
 		);
 
-		$objects = $registry->get( 'parent' );
+		$objects = $registry->get_children( 'parent' );
 
 		$this->assertCount( 2, $objects );
 
@@ -185,7 +185,7 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 			$registry->register( 'parent_2', 'test', 'WordPoints_PHPUnit_Mock_Object2' )
 		);
 
-		$objects = $registry->get();
+		$objects = $registry->get_all();
 
 		$this->assertCount( 2, $objects );
 
@@ -280,7 +280,7 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 
 		$args = array( 'one', 2 );
 
-		$objects = $registry->get( 'parent', null, $args );
+		$objects = $registry->get_children( 'parent', $args );
 
 		$this->assertCount( 2, $objects );
 
@@ -322,7 +322,7 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 
 		$args = array( 'one', 2 );
 
-		$objects = $registry->get( null, null, $args );
+		$objects = $registry->get_all( $args );
 
 		$this->assertCount( 2, $objects );
 
@@ -486,7 +486,7 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 
 		$this->assertFalse( $registry->get( 'parent', 'test' ) );
 		$this->assertFalse( $registry->get( 'parent', 'test_2' ) );
-		$this->assertFalse( $registry->get( 'parent' ) );
+		$this->assertEmpty( $registry->get_children( 'parent' ) );
 	}
 }
 

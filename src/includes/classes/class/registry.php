@@ -30,21 +30,22 @@ class WordPoints_Class_Registry implements WordPoints_Class_RegistryI {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get( $slug = null, array $args = array() ) {
+	public function get_all( array $args = array() ) {
+		return self::construct_with_args( $this->classes, $args );
+	}
 
-		if ( ! empty( $args ) ) {
-			array_unshift( $args, $slug );
-		}
-
-		if ( ! isset( $slug ) ) {
-			return self::construct_with_args( $this->classes, $args );
-		}
+	/**
+	 * @since 1.0.0
+	 */
+	public function get( $slug, array $args = array() ) {
 
 		if ( ! isset( $this->classes[ $slug ] ) ) {
 			return false;
 		}
 
 		if ( ! empty( $args ) ) {
+
+			array_unshift( $args, $slug );
 
 			return wordpoints_construct_class_with_args(
 				$this->classes[ $slug ]
@@ -104,6 +105,8 @@ class WordPoints_Class_Registry implements WordPoints_Class_RegistryI {
 			}
 
 		} else {
+
+			array_unshift( $args, null );
 
 			foreach ( $classes as $slug => $class ) {
 				$objects[ $slug ] = wordpoints_construct_class_with_args(

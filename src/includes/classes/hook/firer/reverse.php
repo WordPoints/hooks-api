@@ -21,7 +21,7 @@ class WordPoints_Hook_Firer_Reverse implements WordPoints_Hook_FirerI {
 
 		$hooks = wordpoints_hooks();
 
-		foreach ( $hooks->reactors->get() as $reactor ) {
+		foreach ( $hooks->reactors->get_all() as $reactor ) {
 
 			if ( ! ( $reactor instanceof WordPoints_Hook_Reactor_ReverseI ) ) {
 				continue;
@@ -29,7 +29,7 @@ class WordPoints_Hook_Firer_Reverse implements WordPoints_Hook_FirerI {
 
 			$reactor->reverse_hits( $event_slug, $event_args );
 
-			foreach ( $hooks->extensions->get() as $extension ) {
+			foreach ( $hooks->extensions->get_all() as $extension ) {
 				if ( $extension instanceof WordPoints_Hook_Extension_ReverseI ) {
 					$extension->after_reverse( $event_slug, $event_args, $reactor );
 				}
