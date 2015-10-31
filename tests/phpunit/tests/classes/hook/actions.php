@@ -35,7 +35,7 @@ class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
 			10
 			, has_action(
 				__METHOD__
-				, array( wordpoints_apps()->hooks->router, __METHOD__ . ',10' )
+				, array( wordpoints_hooks()->router, __METHOD__ . ',10' )
 			)
 		);
 	}
@@ -55,7 +55,7 @@ class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
 			, array( 'action' => __METHOD__ )
 		);
 
-		$router = wordpoints_apps()->hooks->router;
+		$router = wordpoints_hooks()->router;
 
 		$this->assertEquals(
 			10

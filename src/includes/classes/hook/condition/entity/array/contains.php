@@ -47,7 +47,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 	 */
 	public function __construct() {
 
-		$this->conditions_extension = wordpoints_apps()->hooks->extensions->get(
+		$this->conditions_extension = wordpoints_hooks()->extensions->get(
 			'conditions'
 		);
 	}

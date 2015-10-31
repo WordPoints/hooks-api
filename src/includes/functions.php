@@ -14,7 +14,7 @@
  */
 function wordpoints_init_hooks() {
 
-	$hooks = wordpoints_apps()->hooks;
+	$hooks = wordpoints_hooks();
 
 	// Just accessing these causes them to be initialized. The rest of the API will
 	// be lazy-loaded as it is needed.
@@ -409,6 +409,22 @@ function wordpoints_apps() {
 	}
 
 	return WordPoints_App::$main;
+}
+
+/**
+ * Get the hooks app.
+ *
+ * @since 1.0.0
+ *
+ * @return WordPoints_Hooks The hooks app.
+ */
+function wordpoints_hooks() {
+
+	if ( ! isset( WordPoints_App::$main ) ) {
+		wordpoints_apps();
+	}
+
+	return WordPoints_App::$main->hooks;
 }
 
 /**

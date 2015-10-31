@@ -32,7 +32,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	 */
 	function create_object( $args ) {
 
-		$reactors = wordpoints_apps()->hooks->reactors;
+		$reactors = wordpoints_hooks()->reactors;
 
 		$slug = $args['slug'];
 		$class = $args['class'];
@@ -55,7 +55,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	 * @since 1.0.0
 	 */
 	function get_object_by_id( $object_id ) {
-		return wordpoints_apps()->hooks->reactors->get( $object_id );
+		return wordpoints_hooks()->reactors->get( $object_id );
 	}
 }
 

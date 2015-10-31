@@ -254,7 +254,7 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$reactor_slug = sanitize_key( $_POST['reactor'] ); // WPCS: CSRF OK.
 
-		$reactor = wordpoints_apps()->hooks->reactors->get( $reactor_slug );
+		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
 
 		if ( ! $reactor ) {
 			$this->unexpected_error( 'reactor_invalid' );

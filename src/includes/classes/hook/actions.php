@@ -28,7 +28,7 @@ class WordPoints_Hook_Actions extends WordPoints_Class_Registry {
 	 */
 	public function __construct() {
 
-		$this->router = wordpoints_apps()->hooks->router;
+		$this->router = wordpoints_hooks()->router;
 	}
 
 	/**

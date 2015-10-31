@@ -32,7 +32,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->conditions = wordpoints_apps()->hooks->conditions;
+		$this->conditions = wordpoints_hooks()->conditions;
 	}
 
 	/**
@@ -158,7 +158,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 			return false;
 		}
 
-		$condition = wordpoints_apps()->hooks->conditions->get( $data_type, $settings['type'] );
+		$condition = wordpoints_hooks()->conditions->get( $data_type, $settings['type'] );
 
 		if ( ! $condition ) {
 

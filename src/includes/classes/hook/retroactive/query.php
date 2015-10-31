@@ -201,7 +201,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 		$this->reaction = $reaction;
 		$this->validator = new WordPoints_Hook_Reaction_Validator( $reaction, true );
 		$this->arg_hierarchy = new WordPoints_Hierarchy( 'sub_args' );
-		$this->hooks = wordpoints_apps()->hooks;
+		$this->hooks = wordpoints_hooks();
 		$this->entities = wordpoints_apps()->entities;
 	}
 
@@ -614,7 +614,7 @@ class WordPoints_Hook_Retroactive_Query_Executor_Array
 	}
 }
 
-wordpoints_apps()->hooks->retroactive_query_executors->register( 'array', 'WordPoints_Hook_Retroactive_Query_Executor_Array' );
+wordpoints_hooks()->retroactive_query_executors->register( 'array', 'WordPoints_Hook_Retroactive_Query_Executor_Array' );
 
 class WordPoints_Hook_Retroactive_Query_Executor_MySQL
 	implements WordPoints_Hook_Retroactive_Query_ExecutorI {
@@ -803,7 +803,7 @@ var_dump( $condition );
 }
 
 
-wordpoints_apps()->hooks->retroactive_query_executors->register( 'db', 'WordPoints_Hook_Retroactive_Query_Executor_MySQL' );
+wordpoints_hooks()->retroactive_query_executors->register( 'db', 'WordPoints_Hook_Retroactive_Query_Executor_MySQL' );
 
 
 // EOF

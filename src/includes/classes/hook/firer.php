@@ -36,7 +36,7 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 	 */
 	public function do_event( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
 
-		$hooks = wordpoints_apps()->hooks;
+		$hooks = wordpoints_hooks();
 
 		/** @var WordPoints_Hook_Reactor $reactor */
 		foreach ( $hooks->reactors->get() as $reactor ) {

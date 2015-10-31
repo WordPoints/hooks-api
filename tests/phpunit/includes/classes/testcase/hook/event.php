@@ -58,7 +58,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		parent::setUp();
 
 		$this->event = new $this->event_class( $this->event_slug );
-		$this->hooks = wordpoints_apps()->hooks;
+		$this->hooks = wordpoints_hooks();
 
 		if ( ! isset( $this->factory->wordpoints ) ) {
 			$this->factory->wordpoints = WordPoints_PHPUnit_Factory::$factory;

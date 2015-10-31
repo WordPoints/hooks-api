@@ -48,7 +48,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 	 */
 	public function __construct( $slug ) {
 
-		$hooks = wordpoints_apps()->hooks;
+		$hooks = wordpoints_hooks();
 
 		$this->router   = $hooks->router;
 		$this->actions  = $hooks->actions;

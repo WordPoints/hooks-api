@@ -134,7 +134,7 @@ class WordPoints_Hook_Router {
 
 		if ( ! isset( $this->actions ) ) {
 
-			$hooks = wordpoints_apps()->hooks;
+			$hooks = wordpoints_hooks();
 
 			$this->events  = $hooks->events;
 			$this->actions = $hooks->actions;

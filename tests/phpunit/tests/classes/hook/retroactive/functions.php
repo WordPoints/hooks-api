@@ -23,7 +23,7 @@ class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_Points_UnitT
 
 	public function assert_points_awarded( $constraints, $user_id, $points ) {
 
-		$hooks = wordpoints_apps()->hooks;
+		$hooks = wordpoints_hooks();
 
 		/** @var WordPoints_Hook_Reactor_Points $points_target */
 		$points_target = $hooks->reactors->get( 'points' );

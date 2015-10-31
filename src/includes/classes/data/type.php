@@ -298,7 +298,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Spec {
 
 	protected function validate_conditions() {
 
-		$conditions_extension = wordpoints_apps()->hooks->extensions->get(
+		$conditions_extension = wordpoints_hooks()->extensions->get(
 			'conditions'
 		);
 
@@ -329,7 +329,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains extends WordPoints_Spec {
 	 */
 	protected function filter_entities( $entities ) {
 
-		$conditions_extension = wordpoints_apps()->hooks->extensions->get(
+		$conditions_extension = wordpoints_hooks()->extensions->get(
 			'conditions'
 		);
 

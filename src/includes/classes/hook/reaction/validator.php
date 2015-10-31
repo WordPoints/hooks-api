@@ -88,7 +88,7 @@ final class WordPoints_Hook_Reaction_Validator {
 	public function __construct( $settings, $fail_fast = false ) {
 
 		$this->fail_fast = $fail_fast;
-		$this->hooks = wordpoints_apps()->hooks;
+		$this->hooks = wordpoints_hooks();
 
 		if ( $settings instanceof WordPoints_Hook_ReactionI ) {
 			$this->reaction = $settings;

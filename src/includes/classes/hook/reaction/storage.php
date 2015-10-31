@@ -52,7 +52,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	public function __construct( $reactor_slug ) {
 
 		$this->reactor_slug = $reactor_slug;
-		$this->hooks = wordpoints_apps()->hooks;
+		$this->hooks = wordpoints_hooks();
 	}
 
 	/**

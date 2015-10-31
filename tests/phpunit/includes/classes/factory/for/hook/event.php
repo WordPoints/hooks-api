@@ -32,7 +32,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 	 */
 	function create_object( $args ) {
 
-		$hooks  = wordpoints_apps()->hooks;
+		$hooks  = wordpoints_hooks();
 		$events = $hooks->events;
 
 		$slug = $args['slug'];
@@ -101,7 +101,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 	 * @since 1.0.0
 	 */
 	function get_object_by_id( $object_id ) {
-		return wordpoints_apps()->hooks->events->get( $object_id );
+		return wordpoints_hooks()->events->get( $object_id );
 	}
 }
 
