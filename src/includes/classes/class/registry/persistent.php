@@ -37,17 +37,16 @@ class WordPoints_Class_Registry_Persistent extends WordPoints_Class_Registry {
 
 		if ( ! isset( $slug ) ) {
 
-			foreach ( $this->classes as $slug => $class ) {
-				if ( ! isset( $this->objects[ $slug ] ) ) {
-					if ( empty( $args ) ) {
-						$this->objects[ $slug ] = new $class( $slug );
-					} else {
-						$this->objects[ $slug ] = wordpoints_construct_class_with_args(
-							$class
-							, array( $slug ) + $args
-						);
-					}
-				}
+			$classes = array_diff_key( $this->classes, $this->objects );
+
+			if ( ! empty( $classes ) ) {
+
+				$objects = WordPoints_Class_Registry::construct_with_args(
+					$classes
+					, $args
+				);
+
+				$this->objects = $this->objects + $objects;
 			}
 
 			return $this->objects;

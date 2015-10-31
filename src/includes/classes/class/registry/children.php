@@ -44,16 +44,10 @@ class WordPoints_Class_Registry_Children
 			$items = array();
 
 			foreach ( $this->classes as $parent_slug => $classes ) {
-				foreach ( $classes as $slug => $class ) {
-					if ( empty( $args ) ) {
-						$items[ $parent_slug ][ $slug ] = new $class( $slug );
-					} else {
-						$items[ $parent_slug ][ $slug ] = wordpoints_construct_class_with_args(
-							$class
-							, array( $slug ) + $args
-						);
-					}
-				}
+				$items[ $parent_slug ] = WordPoints_Class_Registry::construct_with_args(
+					$classes
+					, $args
+				);
 			}
 
 			return $items;
@@ -64,21 +58,10 @@ class WordPoints_Class_Registry_Children
 		}
 
 		if ( ! isset( $slug ) ) {
-
-			$items = array();
-
-			foreach ( $this->classes[ $parent_slug ] as $slug => $class ) {
-				if ( empty( $args ) ) {
-					$items[ $slug ] = new $class( $slug );
-				} else {
-					$items[ $slug ] = wordpoints_construct_class_with_args(
-						$class
-						, array( $slug ) + $args
-					);
-				}
-			}
-
-			return $items;
+			return WordPoints_Class_Registry::construct_with_args(
+				$this->classes[ $parent_slug ]
+				, $args
+			);
 		}
 
 		if ( ! isset( $this->classes[ $parent_slug ][ $slug ] ) ) {

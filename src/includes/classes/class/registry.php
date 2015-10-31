@@ -37,23 +37,7 @@ class WordPoints_Class_Registry implements WordPoints_Class_RegistryI {
 		}
 
 		if ( ! isset( $slug ) ) {
-
-			$items = array();
-
-			if ( empty( $args ) ) {
-				foreach ( $this->classes as $slug => $class ) {
-					$items[ $slug ] = new $class( $slug );
-				}
-			} else {
-				foreach ( $this->classes as $slug => $class ) {
-					$items[ $slug ] = wordpoints_construct_class_with_args(
-						$class
-						, array( $slug ) + $args
-					);
-				}
-			}
-
-			return $items;
+			return self::construct_with_args( $this->classes, $args );
 		}
 
 		if ( ! isset( $this->classes[ $slug ] ) ) {
@@ -96,6 +80,40 @@ class WordPoints_Class_Registry implements WordPoints_Class_RegistryI {
 	public function is_registered( $slug ) {
 
 		return isset( $this->classes[ $slug ] );
+	}
+
+	/**
+	 * Construct an array of classes with the given arguments.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] $classes The classes, indexed by slug (which will be the first
+	 *                          arg passed to the constructor before the other args).
+	 * @param array    $args    An array of args to pass to the class constructor.
+	 *
+	 * @return object[] An array of the constructed objects.
+	 */
+	public static function construct_with_args( array $classes, array $args ) {
+
+		$objects = array();
+
+		if ( empty( $args ) ) {
+
+			foreach ( $classes as $slug => $class ) {
+				$objects[ $slug ] = new $class( $slug );
+			}
+
+		} else {
+
+			foreach ( $classes as $slug => $class ) {
+				$objects[ $slug ] = wordpoints_construct_class_with_args(
+					$class
+					, array( $slug ) + $args
+				);
+			}
+		}
+
+		return $objects;
 	}
 }
 
