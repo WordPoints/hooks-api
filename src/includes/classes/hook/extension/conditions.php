@@ -147,7 +147,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 		$data_type = $this->get_data_type( $arg );
 
-		if ( ! isset( $data_type ) ) {
+		if ( ! $data_type ) {
 			$this->validator->add_error(
 				__( 'This type of condition does not work for the selected attribute.', 'wordpoints' )
 			);

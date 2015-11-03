@@ -102,7 +102,7 @@ class WordPoints_Hook_Arg {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WordPoints_Entity The entity.
+	 * @return WordPoints_Entity|false The entity, or false if not registered.
 	 */
 	public function get_entity() {
 
