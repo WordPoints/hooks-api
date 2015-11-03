@@ -44,7 +44,7 @@
 		"$sub_apps->register": [ 1, 2 ],
 		"$validator->add_error": [ 2 ],
 
-		"(unknown)->hooks->extensions->get": [ 1 ],
+		"(unknown)->extensions->get": [ 1 ],
 		"(unknown)->get_meta": true
 	},
 	"ignored-properties": {
