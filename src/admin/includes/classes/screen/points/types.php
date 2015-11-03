@@ -49,7 +49,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		parent::__construct();
 
 		$this->hooks = wordpoints_hooks();
-		$this->entities = wordpoints_apps()->entities;
+		$this->entities = wordpoints_entities();
 	}
 
 	/**

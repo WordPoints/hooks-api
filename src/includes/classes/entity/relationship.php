@@ -144,7 +144,7 @@ abstract class WordPoints_Entity_Relationship
 		if ( $parsed_slug['is_array'] ) {
 			$child = new WordPoints_Entity_Array( $parsed_slug['slug'] );
 		} else {
-			$child = wordpoints_apps()->entities->get( $parsed_slug['slug'] );
+			$child = wordpoints_entities()->get( $parsed_slug['slug'] );
 		}
 
 		if ( isset( $this->the_value ) ) {

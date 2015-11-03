@@ -84,7 +84,7 @@ class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
 			, array( 'action' => __METHOD__ )
 		);
 
-		wordpoints_apps()->entities->register(
+		wordpoints_entities()->register(
 			'test_entity'
 			, 'WordPoints_PHPUnit_Mock_Entity'
 		);

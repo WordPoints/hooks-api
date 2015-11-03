@@ -76,7 +76,7 @@ class WordPoints_Entity_Array {
 	 */
 	public function set_the_value( $values ) {
 
-		$object = wordpoints_apps()->entities->get( $this->entity_slug );
+		$object = wordpoints_entities()->get( $this->entity_slug );
 
 		$this->the_entities = array();
 

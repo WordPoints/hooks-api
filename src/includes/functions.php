@@ -442,6 +442,22 @@ function wordpoints_hooks() {
 }
 
 /**
+ * Get the entities app.
+ *
+ * @since 1.0.0
+ *
+ * @return WordPoints_App_Registry The hooks app.
+ */
+function wordpoints_entities() {
+
+	if ( ! isset( WordPoints_App::$main ) ) {
+		wordpoints_apps();
+	}
+
+	return WordPoints_App::$main->entities;
+}
+
+/**
  * Register sub apps when the apps app is initialized.
  *
  * @since 1.0.0

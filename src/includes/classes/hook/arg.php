@@ -106,7 +106,7 @@ class WordPoints_Hook_Arg {
 	 */
 	public function get_entity() {
 
-		$entity = wordpoints_apps()->entities->get(
+		$entity = wordpoints_entities()->get(
 			$this->get_entity_slug()
 		);
 

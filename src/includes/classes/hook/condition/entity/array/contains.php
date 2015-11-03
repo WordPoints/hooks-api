@@ -145,7 +145,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 
 		if ( $current_arg instanceof WordPoints_Entity_Array ) {
 
-			$entity = wordpoints_apps()->entities->get(
+			$entity = wordpoints_entities()->get(
 				$current_arg->get_entity_slug()
 			);
 

@@ -197,7 +197,7 @@ abstract class WordPoints_Entity
 	 */
 	public function get_child( $child_slug ) {
 
-		$children = wordpoints_apps()->entities->children;
+		$children = wordpoints_entities()->children;
 
 		$child = $children->get( $this->slug, $child_slug );
 

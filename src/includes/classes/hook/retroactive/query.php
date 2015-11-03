@@ -202,7 +202,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 		$this->validator = new WordPoints_Hook_Reaction_Validator( $reaction, true );
 		$this->arg_hierarchy = new WordPoints_Hierarchy( 'sub_args' );
 		$this->hooks = wordpoints_hooks();
-		$this->entities = wordpoints_apps()->entities;
+		$this->entities = wordpoints_entities();
 	}
 
 	public function get_reaction() {
