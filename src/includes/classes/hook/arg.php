@@ -17,7 +17,7 @@
  *
  * @since 1.0.0
  */
-abstract class WordPoints_Hook_Arg {
+class WordPoints_Hook_Arg {
 
 	/**
 	 * The slug of this arg.
@@ -38,6 +38,15 @@ abstract class WordPoints_Hook_Arg {
 	protected $entity_slug;
 
 	/**
+	 * The action object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_ActionI
+	 */
+	protected $action;
+
+	/**
 	 * Construct the arg with a slug.
 	 *
 	 * Slugs are typically the slug of the entity itself, but this isn't always the
@@ -49,11 +58,13 @@ abstract class WordPoints_Hook_Arg {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $slug The arg slug.
+	 * @param string                  $slug   The arg slug.
+	 * @param WordPoints_Hook_ActionI $action The calling action's object.
 	 */
-	public function __construct( $slug ) {
+	public function __construct( $slug, WordPoints_Hook_ActionI $action = null ) {
 
 		$this->slug = $slug;
+		$this->action = $action;
 
 		$parts = explode( ':', $slug, 2 );
 
@@ -106,10 +117,6 @@ abstract class WordPoints_Hook_Arg {
 		return $entity;
 	}
 
-	//
-	// Abstract.
-	//
-
 	/**
 	 * Retrieves the value for this arg.
 	 *
@@ -117,7 +124,14 @@ abstract class WordPoints_Hook_Arg {
 	 *
 	 * @return mixed The arg value.
 	 */
-	abstract public function get_value();
+	public function get_value() {
+
+		if ( $this->action instanceof WordPoints_Hook_ActionI ) {
+			return $this->action->get_arg_value( $this->slug );
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Retrieves the human-readable title of this arg.
@@ -126,7 +140,9 @@ abstract class WordPoints_Hook_Arg {
 	 *
 	 * @return string The arg title.
 	 */
-	abstract public function get_title();
+	public function get_title() {
+		return $this->get_entity()->get_title();
+	}
 }
 
 // EOF

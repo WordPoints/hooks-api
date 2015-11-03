@@ -207,6 +207,9 @@ function wordpoints_hook_events_init( $events ) {
 				'reverse' => 'comment_deapprove',
 				'spam' => 'comment_spam',
 			),
+			'args' => array(
+				'comment' => 'WordPoints_Hook_Arg',
+			),
 		)
 	);
 
@@ -219,7 +222,7 @@ function wordpoints_hook_events_init( $events ) {
 				'reverse' => 'post_delete', // TODO this should be hooked to post unpublish instead
 			),
 			'args' => array(
-				'post' => 'WordPoints_Hook_Arg_Action',
+				'post' => 'WordPoints_Hook_Arg',
 			),
 		)
 	);
@@ -233,7 +236,7 @@ function wordpoints_hook_events_init( $events ) {
 				'reverse' => 'user_delete',
 			),
 			'args' => array(
-				'user' => 'WordPoints_Hook_Arg_Action',
+				'user' => 'WordPoints_Hook_Arg',
 			),
 		)
 	);
