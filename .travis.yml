@@ -70,3 +70,6 @@ script:
 
 after_script:
     - source $DEV_LIB_PATH/travis/after_script.sh
+
+after_success:
+    - $DO_CODE_COVERAGE == 1 && bash <(curl -s https://codecov.io/bash) -f $(find build/logs/ -name 'clover-*.xml')

@@ -1,1 +1,16 @@
-dev-lib/phpunit/module.xml.dist
+<phpunit
+		bootstrap="dev-lib/phpunit/module-bootstrap.php"
+		backupGlobals="false"
+		colors="true"
+		>
+	<testsuites>
+		<testsuite>
+			<directory suffix=".php">tests/phpunit/tests/</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src/</directory>
+		</whitelist>
+	</filter>
+</phpunit>
