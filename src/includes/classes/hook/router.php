@@ -27,8 +27,6 @@
  * chooses to do so.
  *
  * @since 1.0.0
- *
- * @property-read WordPoints_Hook_ActionI $current_action The current action.
  */
 class WordPoints_Hook_Router {
 
@@ -80,15 +78,6 @@ class WordPoints_Hook_Router {
 	protected $event_index = array();
 
 	/**
-	 * The action currently being routed.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Hook_ActionI
-	 */
-	protected $current_action;
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function __call( $name, $args ) {
@@ -102,18 +91,6 @@ class WordPoints_Hook_Router {
 		}
 
 		return $return;
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function __get( $var ) {
-
-		if ( 'current_action' === $var ) {
-			return $this->current_action;
-		}
-
-		return null;
 	}
 
 	/**
@@ -153,8 +130,6 @@ class WordPoints_Hook_Router {
 				continue;
 			}
 
-			$this->current_action = $action_object;
-
 			if ( ! $action_object->should_fire() ) {
 				continue;
 			}
@@ -168,26 +143,27 @@ class WordPoints_Hook_Router {
 
 					$event_args = $this->events->args->get_children( $event_slug, array( $action_object ) );
 
-					if ( false === $event_args ) {
+					if ( empty( $event_args ) ) {
 						continue;
 					}
 
-					$hierarchy = new WordPoints_Hook_Event_Args( $event_args );
+					$event_args = new WordPoints_Hook_Event_Args( $event_args );
 
 					$firer = $this->firers->get( $type );
 
 					if ( $firer instanceof WordPoints_Hook_FirerI ) {
-						$firer->do_event( $event_slug, $hierarchy );
+						$firer->do_event( $event_slug, $event_args );
 					}
 				}
 			}
 		}
-
-		$this->current_action = null;
 	}
 
 	/**
 	 * Register an action with the router.
+	 *
+	 * The arg number will be automatically determined based on $data['arg_index']
+	 * and $data['requirements']. So in most cases $arg_number may be omitted.
 	 *
 	 * @since 1.0.0
 	 *
@@ -195,9 +171,15 @@ class WordPoints_Hook_Router {
 	 * @param array  $args {
 	 *        Other arguments.
 	 *
-	 *        @type string $action   The name of the WordPress action for this hook action.
-	 *        @type int    $priority The priority for the WordPress action. Default: 10.
-	 *        @type int    $args     The number of args the action object expects. Default: 1.
+	 *        @type string $action     The name of the WordPress action for this hook action.
+	 *        @type int    $priority   The priority for the WordPress action. Default: 10.
+	 *        @type int    $arg_number The number of args the action object expects. Default: 1.
+	 *        @type array  $data {
+	 *              Args that will be passed to the action object's constructor.
+	 *
+	 *              @type int[] $arg_index    List of args (starting from 0), indexed by slug.
+	 *              @type array $requirements List of requirements, indexed by arg index (from 0).
+	 *        }
 	 * }
 	 */
 	public function add_action( $slug, array $args ) {
@@ -217,11 +199,7 @@ class WordPoints_Hook_Router {
 
 		$arg_number = 1;
 
-		if ( isset( $args['arg_number'] ) ) {
-
-			$arg_number = $args['arg_number'];
-
-		} elseif ( isset( $args['data'] ) ) {
+		if ( isset( $args['data'] ) ) {
 
 			if ( isset( $args['data']['arg_index'] ) ) {
 				$arg_number = 1 + max( $args['data']['arg_index'] );
@@ -238,6 +216,10 @@ class WordPoints_Hook_Router {
 			$this->action_index[ $method ]['actions'][ $slug ] = $args['data'];
 		}
 
+		if ( isset( $args['arg_number'] ) ) {
+			$arg_number = $args['arg_number'];
+		}
+
 		// If this action is already being routed, and will have enough args, we
 		// don't need to hook to it again.
 		if (
@@ -249,7 +231,7 @@ class WordPoints_Hook_Router {
 
 		$this->action_index[ $method ]['arg_number'] = $arg_number;
 
-		add_action( $args['action'], array( $this, $method ), $priority );
+		add_action( $args['action'], array( $this, $method ), $priority, $arg_number );
 	}
 
 	/**

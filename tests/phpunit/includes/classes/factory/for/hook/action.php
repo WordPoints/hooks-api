@@ -25,7 +25,6 @@ class WordPoints_PHPUnit_Factory_For_Hook_Action extends WP_UnitTest_Factory_For
 			'slug'     => 'test_action',
 			'class'    => 'WordPoints_PHPUnit_Mock_Hook_Action',
 			'action'   => 'wordpoints_phpunit_factory_hook_action',
-			'args'     => 1,
 			'priority' => 10,
 		);
 	}
