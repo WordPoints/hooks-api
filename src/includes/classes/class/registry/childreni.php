@@ -68,14 +68,21 @@ interface WordPoints_Class_Registry_ChildrenI {
 	/**
 	 * Deregister a type of object.
 	 *
-	 * If the $slug is omitted, all children of the parent will be deregistered.
-	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $parent_slug The group slug.
 	 * @param string $slug        The slug of the class to deregister.
 	 */
-	public function deregister( $parent_slug, $slug = null );
+	public function deregister( $parent_slug, $slug );
+
+	/**
+	 * Deregister all children of a particular parent.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $parent_slug The group slug.
+	 */
+	public function deregister_children( $parent_slug );
 
 	/**
 	 * Check if a type of object is registered by its slug.

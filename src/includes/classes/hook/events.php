@@ -119,7 +119,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 			}
 		}
 
-		$this->args->deregister( $slug );
+		$this->args->deregister_children( $slug );
 
 		unset( $this->event_data[ $slug ] );
 	}

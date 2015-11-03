@@ -98,13 +98,15 @@ class WordPoints_Class_Registry_Children
 	/**
 	 * @since 1.0.0
 	 */
-	public function deregister( $parent_slug, $slug = null ) {
+	public function deregister( $parent_slug, $slug ) {
+		unset( $this->classes[ $parent_slug ][ $slug ] );
+	}
 
-		if ( isset( $slug ) ) {
-			unset( $this->classes[ $parent_slug ][ $slug ] );
-		} else {
-			unset( $this->classes[ $parent_slug ] );
-		}
+	/**
+	 * @since 1.0.0
+	 */
+	public function deregister_children( $parent_slug ) {
+		unset( $this->classes[ $parent_slug ] );
 	}
 
 	/**

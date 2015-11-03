@@ -478,7 +478,7 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 			, $registry->get( 'parent', 'test_2' )
 		);
 
-		$this->assertNull( $registry->deregister( 'parent' ) );
+		$this->assertNull( $registry->deregister_children( 'parent' ) );
 
 		$this->assertFalse( $registry->is_registered( 'parent', 'test' ) );
 		$this->assertFalse( $registry->is_registered( 'parent', 'test_2' ) );
