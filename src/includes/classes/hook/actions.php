@@ -54,11 +54,7 @@ class WordPoints_Hook_Actions extends WordPoints_Class_Registry {
 	 */
 	public function register( $slug, $class, array $args = array() ) {
 
-		$result = parent::register( $slug, $class, $args );
-
-		if ( ! $result ) {
-			return false;
-		}
+		parent::register( $slug, $class, $args );
 
 		$this->router->add_action( $slug, $args );
 

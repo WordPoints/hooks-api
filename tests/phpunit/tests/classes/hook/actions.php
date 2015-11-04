@@ -98,6 +98,24 @@ class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( 5, $action->get_arg_value( 'test_entity' ) );
 	}
+
+	/**
+	 * Test getting an unregistered action.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_unregistered() {
+
+		$actions = new WordPoints_Hook_Actions;
+
+		$action = $actions->get(
+			'test'
+			, array( 5 )
+			, array( 'arg_index' => array( 'test_entity' => 0 ) )
+		);
+
+		$this->assertFalse( $action );
+	}
 }
 
 // EOF

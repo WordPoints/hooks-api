@@ -23,7 +23,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_get_slug() {
 
-		$action = new WordPoints_PHPUnit_Mock_Hook_Action( 'test', array( 5 ) );
+		$action = new WordPoints_Hook_Action( 'test', array( 5 ) );
 
 		$this->assertEquals( 'test', $action->get_slug() );
 	}
@@ -35,7 +35,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_should_fire_requirements_met() {
 
-		$action = new WordPoints_PHPUnit_Mock_Hook_Action(
+		$action = new WordPoints_Hook_Action(
 			'test'
 			, array( 5, 'a' )
 			, array( 'requirements' => array( 1 => 'a' ) )
@@ -51,7 +51,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_should_fire_requirements_not_met() {
 
-		$action = new WordPoints_PHPUnit_Mock_Hook_Action(
+		$action = new WordPoints_Hook_Action(
 			'test'
 			, array( 5, 'a' )
 			, array( 'requirements' => array( 1 => 'b' ) )
@@ -67,7 +67,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_should_fire_true_by_default() {
 
-		$action = new WordPoints_PHPUnit_Mock_Hook_Action( 'test', array( 5, 'a' ) );
+		$action = new WordPoints_Hook_Action( 'test', array( 5, 'a' ) );
 
 		$this->assertTrue( $action->should_fire() );
 	}
@@ -80,7 +80,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_should_fire_requirements_not_met_multiple() {
 
-		$action = new WordPoints_PHPUnit_Mock_Hook_Action(
+		$action = new WordPoints_Hook_Action(
 			'test'
 			, array( 5, 'a', true )
 			, array( 'requirements' => array( 1 => 'a', 2 => false ) )
@@ -90,7 +90,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Test getting the arg hierarchy.
+	 * Test getting an arg value.
 	 *
 	 * @since 1.0.0
 	 */
@@ -101,7 +101,7 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 			, 'WordPoints_PHPUnit_Mock_Entity'
 		);
 
-		$action = new WordPoints_PHPUnit_Mock_Hook_Action(
+		$action = new WordPoints_Hook_Action(
 			'test'
 			, array( 5 )
 			, array( 'arg_index' => array( 'test_entity' => 0 ) )
@@ -128,9 +128,48 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 			, array( 'arg_index' => array( 'test_entity' => 1 ) )
 		);
 
-		$action->set( 'entity_index', 1 );
-
 		$this->assertEquals( 5, $action->get_arg_value( 'test_entity' ) );
+	}
+
+	/**
+	 * Test getting the value of an arg that doesn't exist.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_arg_value_not_found() {
+
+		wordpoints_entities()->register(
+			'test_entity'
+			, 'WordPoints_PHPUnit_Mock_Entity'
+		);
+
+		$action = new WordPoints_Hook_Action(
+			'test'
+			, array( 5 )
+		);
+
+		$this->assertEquals( null, $action->get_arg_value( 'test_entity' ) );
+	}
+
+	/**
+	 * Test getting the value of an arg that exists but wasn't passed.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_arg_value_not_there() {
+
+		wordpoints_entities()->register(
+			'test_entity'
+			, 'WordPoints_PHPUnit_Mock_Entity'
+		);
+
+		$action = new WordPoints_Hook_Action(
+			'test'
+			, array( 5 )
+			, array( 'arg_index' => array( 'test_entity' => 1 ) )
+		);
+
+		$this->assertEquals( null, $action->get_arg_value( 'test_entity' ) );
 	}
 }
 

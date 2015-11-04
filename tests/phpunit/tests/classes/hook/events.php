@@ -185,6 +185,27 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertFalse( $hooks->events->args->get( 'test_event', 'test_arg' ) );
 	}
+
+	/**
+	 * Test deregistering an unregistered event works without error.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_deregister_unregistered() {
+
+		/** @var WordPoints_Hooks $hooks */
+		$hooks = $this->mock_apps()->hooks;
+
+		$this->assertFalse(
+			$hooks->events->args->is_registered( 'test_event', 'test_arg' )
+		);
+
+		$hooks->events->deregister( 'test_event' );
+
+		$this->assertFalse(
+			$hooks->events->args->is_registered( 'test_event', 'test_arg' )
+		);
+	}
 }
 
 // EOF
