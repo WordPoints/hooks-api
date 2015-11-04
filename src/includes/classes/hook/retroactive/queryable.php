@@ -64,7 +64,7 @@ abstract class WordPoints_Entity_DB extends WordPoints_Entity {
 //
 //class WordPoints_Entity_Post
 //	extends WordPoints_Entity_Object_DB
-//	implements WordPoints_Entity_Check_CapsI {
+//	implements WordPoints_Entity_Restricted_VisibilityI {
 //
 //	protected $table_name = 'posts';
 //

@@ -14,7 +14,7 @@
  */
 class WordPoints_Entity_Comment
 	extends WordPoints_Entity
-	implements WordPoints_Entity_Check_CapsI {
+	implements WordPoints_Entity_Restricted_VisibilityI {
 
 	/**
 	 * @since 1.0.0
@@ -43,7 +43,7 @@ class WordPoints_Entity_Comment
 	/**
 	 * @since 1.0.0
 	 */
-	public function check_user_caps( $user_id, $id ) {
+	public function user_can_view( $user_id, $id ) {
 
 		$comment = get_comment( $id );
 

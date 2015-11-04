@@ -98,6 +98,171 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertTrue( $children->is_registered( 'comment', 'post' ) );
 		$this->assertTrue( $children->is_registered( 'comment', 'author' ) );
 	}
+
+	/**
+	 * Test the entity user capability check function.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_entity_user_can_view
+	 */
+	public function test_user_can_view() {
+
+		$this->mock_apps();
+
+		$user_id = $this->factory->user->create();
+
+		wordpoints_entities()->register(
+			'test_entity'
+			, 'WordPoints_PHPUnit_Mock_Entity'
+		);
+
+		$this->listen_for_filter( 'wordpoints_entity_user_can_view' );
+
+		$this->assertTrue(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+
+		$this->assertEquals(
+			1
+			, $this->filter_was_called( 'wordpoints_entity_user_can_view' )
+		);
+
+		add_filter( 'wordpoints_entity_user_can_view', '__return_false' );
+
+		$this->assertFalse(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+	}
+
+	/**
+	 * Test checking if an unregistered entity can be viewed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_entity_user_can_view
+	 */
+	public function test_user_can_view_not_registered() {
+
+		$this->mock_apps();
+
+		$user_id = $this->factory->user->create();
+
+		$this->listen_for_filter( 'wordpoints_entity_user_can_view' );
+
+		$this->assertFalse(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+
+		$this->assertEquals(
+			0
+			, $this->filter_was_called( 'wordpoints_entity_user_can_view' )
+		);
+	}
+
+	/**
+	 * Test an entity that isn't an entity can be viewed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_entity_user_can_view
+	 */
+	public function test_user_can_view_not_entity() {
+
+		$this->mock_apps();
+
+		$user_id = $this->factory->user->create();
+
+		wordpoints_entities()->register(
+			'test_entity'
+			, 'WordPoints_PHPUnit_Mock_Entityish'
+		);
+
+		$this->listen_for_filter( 'wordpoints_entity_user_can_view' );
+
+		$this->assertFalse(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+
+		$this->assertEquals(
+			0
+			, $this->filter_was_called( 'wordpoints_entity_user_can_view' )
+		);
+	}
+
+	/**
+	 * Test checking if a restricted entity can be viewed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_entity_user_can_view
+	 */
+	public function test_user_can_view_restricted() {
+
+		$this->mock_apps();
+
+		$user_id = $this->factory->user->create();
+
+		wordpoints_entities()->register(
+			'test_entity'
+			, 'WordPoints_PHPUnit_Mock_Entity_Restricted_Visibility'
+		);
+
+		$this->listen_for_filter( 'wordpoints_entity_user_can_view' );
+
+		$this->assertTrue(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+
+		$this->assertEquals(
+			1
+			, $this->filter_was_called( 'wordpoints_entity_user_can_view' )
+		);
+
+		add_filter( 'wordpoints_entity_user_can_view', '__return_false' );
+
+		$this->assertFalse(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+	}
+
+	/**
+	 * Test checking if a restricted entity can be viewed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_entity_user_can_view
+	 */
+	public function test_user_can_view_restricted_not_viewable() {
+
+		$this->mock_apps();
+
+		$user_id = $this->factory->user->create();
+
+		wordpoints_entities()->register(
+			'test_entity'
+			, 'WordPoints_PHPUnit_Mock_Entity_Restricted_Visibility'
+		);
+
+		WordPoints_PHPUnit_Mock_Entity_Restricted_Visibility::$can_view = false;
+
+		$this->listen_for_filter( 'wordpoints_entity_user_can_view' );
+
+		$this->assertFalse(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+
+		$this->assertEquals(
+			1
+			, $this->filter_was_called( 'wordpoints_entity_user_can_view' )
+		);
+
+		add_filter( 'wordpoints_entity_user_can_view', '__return_true' );
+
+		$this->assertTrue(
+			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+		);
+	}
 }
 
 // EOF

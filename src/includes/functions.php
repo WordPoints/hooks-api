@@ -383,30 +383,71 @@ function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
 
 	$event_slug = $log->log_type;
 
-	$wordpoints_apps = wordpoints_apps();
-	$entities = $wordpoints_apps->entities;
-	$hooks = $wordpoints_apps->hooks;
-
 	/** @var WordPoints_Hook_Arg $arg */
-	foreach ( $hooks->events->args->get( $event_slug ) as $slug => $arg ) {
+	foreach ( wordpoints_hooks()->events->args->get_all( $event_slug ) as $slug => $arg ) {
 
 		$value = wordpoints_get_points_log_meta( $log->id, $slug, true );
 
 		if ( ! $value ) {
-			return $can_view;
+			continue;
 		}
 
-		$entity = $entities->get( $arg->get_entity_slug() );
+		$can_view = wordpoints_entity_user_can_view(
+			$user_id
+			, $arg->get_entity_slug()
+			, $value
+		);
 
-		if (
-			! ( $entity instanceof WordPoints_Entity )
-			|| ! $entity->user_can_view( $user_id, $value )
-		) {
-			return false;
+		if ( ! $can_view ) {
+			break;
 		}
 	}
 
 	return $can_view;
+}
+
+/**
+ * Check whether a user can view an entity.
+ *
+ * @since 1.0.0
+ *
+ * @param int    $user_id     The user ID.
+ * @param string $entity_slug The slug of the entity type.
+ * @param mixed  $entity_id   The entity ID.
+ *
+ * @return bool Whether the user can view this entity.
+ */
+function wordpoints_entity_user_can_view( $user_id, $entity_slug, $entity_id ) {
+
+	$entity = wordpoints_entities()->get( $entity_slug );
+
+	if ( ! ( $entity instanceof WordPoints_Entity ) ) {
+		return false;
+	}
+
+	$can_view = true;
+
+	if ( $entity instanceof WordPoints_Entity_Restricted_VisibilityI ) {
+		$can_view = $entity->user_can_view( $user_id, $entity_id );
+	}
+
+	/**
+	 * Filter whether a user can view an entity.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool              $can_view  Whether the user can view the entity.
+	 * @param int               $user_id   The user ID.
+	 * @param int               $entity_id The entity ID.
+	 * @param WordPoints_Entity $entity    The entity object.
+	 */
+	return apply_filters(
+		'wordpoints_entity_user_can_view'
+		, $can_view
+		, $user_id
+		, $entity_id
+		, $entity
+	);
 }
 
 /**

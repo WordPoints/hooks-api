@@ -53,20 +53,6 @@ abstract class WordPoints_Entityish implements WordPoints_EntityishI {
 	/**
 	 * @since 1.0.0
 	 */
-	public function user_can_view( $user_id, $id ) {
-
-		$can_view = true;
-
-		if ( $this instanceof WordPoints_Entity_Check_CapsI ) {
-			$can_view = $this->check_user_caps( $user_id, $id );
-		}
-
-		return $can_view; // TODO filter here
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
 	public function get_the_value() {
 		return $this->the_value;
 	}
@@ -77,21 +63,6 @@ abstract class WordPoints_Entityish implements WordPoints_EntityishI {
 	public function set_the_value( $value ) {
 		$this->the_value = $value;
 	}
-}
-
-interface WordPoints_Entity_Check_CapsI { // TODO change the name
-
-	/**
-	 * Check whether a user has the caps to view this entity.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int   $user_id The user's ID.
-	 * @param mixed $id      The entity's ID.
-	 *
-	 * @return bool Whether the user can view the entity.
-	 */
-	public function check_user_caps( $user_id, $id );
 }
 
 // EOF

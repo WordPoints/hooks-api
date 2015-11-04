@@ -14,7 +14,7 @@
  */
 class WordPoints_Entity_Post
 	extends WordPoints_Entity
-	implements WordPoints_Entity_Check_CapsI {
+	implements WordPoints_Entity_Restricted_VisibilityI {
 
 	/**
 	 * @since 1.0.0
@@ -41,7 +41,7 @@ class WordPoints_Entity_Post
 	/**
 	 * @since 1.0.0
 	 */
-	public function check_user_caps( $user_id, $id ) {
+	public function user_can_view( $user_id, $id ) {
 		return user_can( $user_id, 'read_post', $id );
 	}
 }

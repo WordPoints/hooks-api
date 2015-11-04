@@ -37,18 +37,6 @@ interface WordPoints_EntityishI {
 	public function get_title();
 
 	/**
-	 * Check whether a user can view an entity/entity child.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int   $user_id The user ID.
-	 * @param mixed $id      The entity/entity-child ID.
-	 *
-	 * @return bool Whether the user can view this entity/entity-child.
-	 */
-	public function user_can_view( $user_id, $id );
-
-	/**
 	 * Get the value of this entity/entity-child.
 	 *
 	 * The objects that use this interface can be used to represent an entity/entity-
