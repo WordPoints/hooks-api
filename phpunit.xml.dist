@@ -9,7 +9,7 @@
 		</testsuite>
 	</testsuites>
 	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
+		<whitelist>
 			<directory suffix=".php">src/</directory>
 			<exclude>
 				<file>/src/includes/classes/hierarchy.php</file>
