@@ -11,6 +11,8 @@
  * Class Test
  *
  * @since 1.
+ *
+ * @coversNothing
  */
 class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_Points_UnitTestCase {
 
@@ -390,6 +392,13 @@ var_dump( $results );
 	}
 }
 
+/**
+ * Class Testttt
+ *
+ * @since 1.
+ *
+ * @covers WordPoints_Hierarchy
+ */
 class Testttt{
 	/**
 	 *
