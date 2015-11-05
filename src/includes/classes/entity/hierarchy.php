@@ -73,33 +73,16 @@ class WordPoints_Entity_Hierarchy implements WordPoints_Entity_HierarchyI {
 	 * @since 1.0.0
 	 */
 	public function remove_entity( $slug ) {
-		unset( $this->entities[ $slug ], $this->current );
-	}
 
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_from_hierarchy( array $hierarchy ) {
+		unset( $this->entities[ $slug ] );
 
-		$backup = $this->hierarchy;
-		$current = $this->current;
-
-		$this->hierarchy = array();
-		$this->current = null;
-
-		$slug = reset( $hierarchy );
-
-		while ( $slug ) {
-			$this->descend( $slug );
-			$slug = next( $hierarchy );
+		if (
+			isset( $this->hierarchy[0] )
+			&& $this->hierarchy[0]->get_slug() === $slug
+		) {
+			$this->current = null;
+			$this->hierarchy = array();
 		}
-
-		$entityish = $this->current;
-
-		$this->hierarchy = $backup;
-		$this->current = $current;
-
-		return $entityish;
 	}
 
 	/**
@@ -128,7 +111,9 @@ class WordPoints_Entity_Hierarchy implements WordPoints_Entity_HierarchyI {
 			}
 		}
 
-		$this->hierarchy[] = $this->current;
+		if ( $this->current ) {
+			$this->hierarchy[] = $this->current;
+		}
 
 		$this->current = $child;
 
@@ -147,6 +132,37 @@ class WordPoints_Entity_Hierarchy implements WordPoints_Entity_HierarchyI {
 	 */
 	public function get_current() {
 		return $this->current;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_from_hierarchy( array $hierarchy ) {
+
+		$backup = $this->hierarchy;
+		$current = $this->current;
+
+		$this->hierarchy = array();
+		$this->current = null;
+
+		$slug = reset( $hierarchy );
+
+		while ( $slug ) {
+
+			if ( ! $this->descend( $slug ) ) {
+				$this->current = null;
+				break;
+			}
+
+			$slug = next( $hierarchy );
+		}
+
+		$entityish = $this->current;
+
+		$this->hierarchy = $backup;
+		$this->current = $current;
+
+		return $entityish;
 	}
 }
 
