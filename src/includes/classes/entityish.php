@@ -61,7 +61,10 @@ abstract class WordPoints_Entityish implements WordPoints_EntityishI {
 	 * @since 1.0.0
 	 */
 	public function set_the_value( $value ) {
+
 		$this->the_value = $value;
+
+		return true;
 	}
 }
 

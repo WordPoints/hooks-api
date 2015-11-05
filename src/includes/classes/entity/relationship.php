@@ -158,9 +158,24 @@ abstract class WordPoints_Entity_Relationship
 	 * @since 1.0.0
 	 */
 	public function set_the_value_from_entity( WordPoints_Entity $entity ) {
-		$this->set_the_value(
-			$this->get_related_entity_ids( $entity->get_the_id() )
-		);
+
+		$this->the_value = null;
+
+		$id = $entity->get_the_id();
+
+		if ( ! $id ) {
+			return false;
+		}
+
+		$related_ids = $this->get_related_entity_ids( $id );
+
+		if ( false === $related_ids ) {
+			return false;
+		}
+
+		$this->the_value = $related_ids;
+
+		return true;
 	}
 }
 

@@ -57,6 +57,8 @@ interface WordPoints_EntityishI {
 	 * @since 1.0.0
 	 *
 	 * @param mixed $value The value of this entity/entity-child.
+	 *
+	 * @return bool Whether the value was set successfully.
 	 */
 	public function set_the_value( $value );
 }

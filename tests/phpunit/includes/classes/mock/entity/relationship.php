@@ -1,41 +1,25 @@
 <?php
 
 /**
- * Mock entity class for the PHPUnit tests.
+ * Mock entity relationship class for the PHPUnit tests.
  *
  * @package wordpoints-hooks-api
  * @since 1.0.0
  */
 
 /**
- * Mock entity class for the PHPUnit tests.
+ * Mock entity relationship class for the PHPUnit tests.
  *
  * @since 1.0.0
  */
-class WordPoints_PHPUnit_Mock_Entity extends WordPoints_Entity {
-
-	/**
-	 * @since 1.0.0
-	 */
-	protected $id_field = 'id';
-
-	/**
-	 * @since 1.0.0
-	 */
-	protected function get_entity( $id ) {
-
-		if ( isset( $this->getter ) ) {
-			return parent::get_entity( $id );
-		}
-
-		return (object) array( 'id' => $id, 'type' => $this->slug );
-	}
+class WordPoints_PHPUnit_Mock_Entity_Relationship
+	extends WordPoints_Entity_Relationship {
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return 'Mock Entity';
+		return 'Test Attribute';
 	}
 
 	/**

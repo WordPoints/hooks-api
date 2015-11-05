@@ -75,9 +75,14 @@ abstract class WordPoints_Entity_Attr
 	 * @since 1.0.0
 	 *
 	 * @param WordPoints_Entity $entity An entity object.
+	 *
+	 * @return bool Whether the value was set correctly.
 	 */
 	public function set_the_value_from_entity( WordPoints_Entity $entity ) {
+
 		$this->the_value = $entity->get_the_attr_value( $this->get_field() );
+
+		return true;
 	}
 }
 

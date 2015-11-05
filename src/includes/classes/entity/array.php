@@ -37,15 +37,6 @@ class WordPoints_Entity_Array {
 	protected $the_entities = array();
 
 	/**
-	 * The raw values of the entities in this array.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array
-	 */
-	protected $the_value;
-
-	/**
 	 * Construct the array with the slug of the type of the entities it will contain.
 	 *
 	 * @since 1.0.0
@@ -76,18 +67,21 @@ class WordPoints_Entity_Array {
 	 */
 	public function set_the_value( $values ) {
 
-		$object = wordpoints_entities()->get( $this->entity_slug );
-
 		$this->the_entities = array();
 
-		$this->the_value = $values;
+		$object = wordpoints_entities()->get( $this->entity_slug );
+
+		if ( ! ( $object instanceof WordPoints_Entity ) ) {
+			return;
+		}
 
 		foreach ( $values as $value ) {
 
-			/** @var WordPoints_Entity $entity */
 			$entity = clone $object;
-			$entity->set_the_value( $value );
-			$this->the_entities[] = $entity;
+
+			if ( $entity->set_the_value( $value ) ) {
+				$this->the_entities[] = $entity;
+			}
 		}
 	}
 

@@ -20,6 +20,8 @@ interface WordPoints_Entity_ChildI {
 	 * @since 1.0.0
 	 *
 	 * @param WordPoints_Entity $entity The entity.
+	 *
+	 * @return bool Whether the value was set successfully.
 	 */
 	public function set_the_value_from_entity( WordPoints_Entity $entity );
 }

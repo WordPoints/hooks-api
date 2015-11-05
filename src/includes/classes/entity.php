@@ -207,18 +207,14 @@ abstract class WordPoints_Entity
 
 		$child = $children->get( $this->slug, $child_slug );
 
-		if ( $child ) {
-			if (
-				isset( $this->the_value )
-				&& $child instanceof WordPoints_Entity_ChildI
-			) {
-				$child->set_the_value_from_entity( $this );
-			}
-
-			return $child;
+		if (
+			isset( $this->the_value )
+			&& $child instanceof WordPoints_Entity_ChildI
+		) {
+			$child->set_the_value_from_entity( $this );
 		}
 
-		return false;
+		return $child;
 	}
 
 	/**
@@ -234,8 +230,12 @@ abstract class WordPoints_Entity
 	 * @since 1.0.0
 	 *
 	 * @param mixed $value An entity or entity ID.
+	 *
+	 * @return bool Whether the value was set.
 	 */
 	public function set_the_value( $value ) {
+
+		$this->the_value = $this->the_entity = null;
 
 		if ( $this->is_entity( $value ) ) {
 
@@ -247,12 +247,14 @@ abstract class WordPoints_Entity
 			$entity = $this->get_entity( $value );
 
 			if ( ! $entity ) {
-				return;
+				return false;
 			}
 		}
 
 		$this->the_value = $value;
 		$this->the_entity = $entity;
+
+		return true;
 	}
 
 	/**

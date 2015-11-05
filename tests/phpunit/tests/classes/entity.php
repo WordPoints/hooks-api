@@ -17,7 +17,7 @@
 class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
-	 * Test getting the slug.
+	 * Test getting the entity.
 	 *
 	 * @since 1.0.0
 	 */
@@ -408,7 +408,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 
-		$entity->set_the_value( 1 );
+		$this->assertTrue( $entity->set_the_value( 1 ) );
 
 		$this->assertEquals( 1, $entity->get_the_value() );
 		$this->assertEquals( 1, $entity->get_the_id() );
@@ -424,7 +424,9 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 
-		$entity->set_the_value( array( 'id' => 1, 'type' => 'test' ) );
+		$this->assertTrue(
+			$entity->set_the_value( array( 'id' => 1, 'type' => 'test' ) )
+		);
 
 		$this->assertEquals( 1, $entity->get_the_value() );
 		$this->assertEquals( 1, $entity->get_the_id() );
@@ -443,7 +445,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 		$entity->set( 'getter', array( $mock, 'filter' ) );
 
-		$entity->set_the_value( 1 );
+		$this->assertFalse( $entity->set_the_value( 1 ) );
 
 		$this->assertNull( $entity->get_the_value() );
 		$this->assertNull( $entity->get_the_id() );
@@ -462,7 +464,33 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 		$entity->set( 'getter', array( $mock, 'filter' ) );
 
-		$entity->set_the_value( array( 'type' => 'test' ) );
+		$this->assertFalse( $entity->set_the_value( array( 'type' => 'test' ) ) );
+
+		$this->assertNull( $entity->get_the_value() );
+		$this->assertNull( $entity->get_the_id() );
+		$this->assertNull( $entity->get_the_attr_value( 'type' ) );
+	}
+
+	/**
+	 * Test set_the_value() twice.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_set_the_value_twice() {
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+
+		$this->assertTrue( $entity->set_the_value( 1 ) );
+
+		$this->assertEquals( 1, $entity->get_the_value() );
+		$this->assertEquals( 1, $entity->get_the_id() );
+		$this->assertEquals( 'test', $entity->get_the_attr_value( 'type' ) );
+
+		$mock = new WordPoints_Mock_Filter( false );
+
+		$entity->set( 'getter', array( $mock, 'filter' ) );
+
+		$this->assertFalse( $entity->set_the_value( array( 'type' => 'test' ) ) );
 
 		$this->assertNull( $entity->get_the_value() );
 		$this->assertNull( $entity->get_the_id() );
