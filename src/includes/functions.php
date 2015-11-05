@@ -421,6 +421,8 @@ function wordpoints_entity_user_can_view( $user_id, $entity_slug, $entity_id ) {
 
 	$entity = wordpoints_entities()->get( $entity_slug );
 
+	// If this entity type is not found, we have no way of determining whether it is
+	// safe for the user to view it.
 	if ( ! ( $entity instanceof WordPoints_Entity ) ) {
 		return false;
 	}
