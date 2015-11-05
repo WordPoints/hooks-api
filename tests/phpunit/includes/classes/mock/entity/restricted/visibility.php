@@ -17,11 +17,6 @@ class WordPoints_PHPUnit_Mock_Entity_Restricted_Visibility
 	implements WordPoints_Entity_Restricted_VisibilityI {
 
 	/**
-	 * @since 1.0.0
-	 */
-	protected $slug = 'test_restricted_visibility_entity';
-
-	/**
 	 * Whether this entity can be viewed.
 	 *
 	 * @since 1.0.0

@@ -115,10 +115,16 @@ abstract class WordPoints_Entity
 	protected function get_attr_value( $entity, $attr ) {
 
 		if ( is_array( $entity ) ) {
-			return $entity[ $attr ];
+			if ( isset( $entity[ $attr ] ) ) {
+				return $entity[ $attr ];
+			}
 		} else {
-			return $entity->{$attr};
+			if ( isset( $entity->{$attr} ) ) {
+				return $entity->{$attr};
+			}
 		}
+
+		return null;
 	}
 
 	/**
@@ -160,7 +166,7 @@ abstract class WordPoints_Entity
 	 *
 	 * @param mixed $id The ID of an entity.
 	 *
-	 * @return mixed The human identifier for the entity.
+	 * @return string|int|float|null The human identifier for the entity, or null.
 	 */
 	public function get_human_id( $id ) {
 
@@ -222,6 +228,9 @@ abstract class WordPoints_Entity
 	 * specific entity of that type (the Post with ID 3). This function allows you to
 	 * make this object instance represent a specific entity.
 	 *
+	 * If the value passed is not an entity, and is not a valid ID, it will be
+	 * ignored and the value will not be set.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param mixed $value An entity or entity ID.
@@ -229,10 +238,17 @@ abstract class WordPoints_Entity
 	public function set_the_value( $value ) {
 
 		if ( $this->is_entity( $value ) ) {
+
 			$entity = $value;
 			$value = $this->get_entity_id( $value );
+
 		} else {
+
 			$entity = $this->get_entity( $value );
+
+			if ( ! $entity ) {
+				return;
+			}
 		}
 
 		$this->the_value = $value;

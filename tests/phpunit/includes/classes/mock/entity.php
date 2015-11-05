@@ -17,11 +17,6 @@ class WordPoints_PHPUnit_Mock_Entity extends WordPoints_Entity {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $slug = 'test_entity';
-
-	/**
-	 * @since 1.0.0
-	 */
 	protected $id_field = 'id';
 
 	/**
@@ -44,25 +39,6 @@ class WordPoints_PHPUnit_Mock_Entity extends WordPoints_Entity {
 	}
 
 	/**
-	 * @since 1.0.0
-	 */
-	protected function is_entity( $entity ) {
-
-		return (
-			is_object( $entity )
-			&& isset( $entity->type )
-			&& $this->slug === $entity->type
-		);
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	protected function get_attr_value( $entity, $attr ) {
-		return $entity->$attr;
-	}
-
-	/**
 	 * Set a protected property's value.
 	 *
 	 * @since 1.0.0
@@ -72,6 +48,10 @@ class WordPoints_PHPUnit_Mock_Entity extends WordPoints_Entity {
 	 */
 	public function set( $var, $value ) {
 		$this->$var = $value;
+	}
+
+	public function call( $method, array $args = array() ) {
+		return call_user_func_array( array( $this, $method ), $args );
 	}
 }
 
