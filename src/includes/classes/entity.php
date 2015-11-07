@@ -78,10 +78,17 @@ abstract class WordPoints_Entity
 	 *
 	 * @param mixed $id The unique ID of the entity.
 	 *
-	 * @return mixed The entity.
+	 * @return mixed The entity, or false if not found.
 	 */
 	protected function get_entity( $id ) {
-		return call_user_func( $this->getter, $id );
+
+		$entity = call_user_func( $this->getter, $id );
+
+		if ( ! $this->is_entity( $entity ) ) {
+			return false;
+		}
+
+		return $entity;
 	}
 
 	/**

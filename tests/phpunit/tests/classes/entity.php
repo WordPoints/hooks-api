@@ -23,7 +23,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_entity() {
 
-		$return_value = 'entity';
+		$return_value = array( 'id' => 1 );
 
 		$mock = new WordPoints_Mock_Filter( $return_value );
 
@@ -33,6 +33,28 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$args = array( 1 );
 
 		$this->assertEquals( $return_value, $entity->call( 'get_entity', $args ) );
+
+		$this->assertEquals( $args, $mock->calls[0] );
+	}
+
+	/**
+	 * Test getting a nonexistent entity.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_nonexistent_entity() {
+
+		$return_value = new WP_Error();
+
+		$mock = new WordPoints_Mock_Filter( $return_value );
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+		$entity->set( 'getter', array( $mock, 'filter' ) );
+
+		$args = array( 1 );
+
+		// The return value should be normalized to false.
+		$this->assertFalse( $entity->call( 'get_entity', $args ) );
 
 		$this->assertEquals( $args, $mock->calls[0] );
 	}
