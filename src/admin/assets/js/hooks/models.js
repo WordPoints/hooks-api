@@ -80,11 +80,13 @@ hooks.util.extend = function () {
 		// We need to override the child method in case there will be grandchildren.
 		childMethods.__child__[ name ] = function () {
 
+			var __child__;
+
 			// If there are grandchildren, we need to update __child__ to refer to
 			// them, instead of to us and our siblings (otherwise we'd loop
 			// infinitely).
 			if ( this.__child__ ) {
-				var __child__ = this.__child__;
+				__child__ = this.__child__;
 				this.__child__ = __child__.__child__;
 			}
 
@@ -185,7 +187,7 @@ wp.wordpoints.$cache = function ( $ ) {
 		}
 
 		return cache[ selector ];
-	}
+	};
 };
 
 wp.wordpoints.$ = wp.wordpoints.$cache( $ );
@@ -380,9 +382,9 @@ module.exports = Base;
  * @class
  * @augments Backbone.Model
  */
-var Event;
+var HookEvent;
 
-Event = Backbone.Model.extend({
+HookEvent = Backbone.Model.extend({
 
 	// Default attributes for the event.
 	defaults: function() {
@@ -399,7 +401,7 @@ Event = Backbone.Model.extend({
 	}
 });
 
-module.exports = Event;
+module.exports = HookEvent;
 
 },{}],6:[function(require,module,exports){
 /**

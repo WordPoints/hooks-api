@@ -97,7 +97,6 @@ var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	ConditionGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
 	ArgsCollection = wp.wordpoints.hooks.model.Args,
 	Args = wp.wordpoints.hooks.Args,
-	Fields = wp.wordpoints.hooks.Fields,
 	Extensions = wp.wordpoints.hooks.Extensions,
 	EntityArrayContains;
 
@@ -159,7 +158,6 @@ module.exports = EntityArrayContains;
  */
 
 var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
-	Args = wp.wordpoints.hooks.Args,
 	Equals;
 
 Equals = Condition.extend({
@@ -174,30 +172,36 @@ Equals = Condition.extend({
 			arg = condition.model.getArg();
 
 		// We render the `value` field differently based on the type of argument.
-		if ( arg && arg.get( '_type' ) === 'entity' ) {
-			arg = arg.getChild( arg.get( 'id_field' ) );
-		}
+		if ( arg ) {
 
-		if ( arg && arg.get( '_type' ) === 'attr' ) {
+			var type = arg.get( '_type' );
 
 			fields = _.extend( {}, fields );
 
-			var values = arg.get( 'values' );
+			switch ( type ) {
 
-			if ( values ) {
+				case 'attr':
+					fields.value = _.extend(
+						{}
+						, fields.value
+						, { type: arg.get( 'type' ) }
+					);
+					/* falls through */
+				case 'entity':
+					var values = arg.get( 'values' );
 
-				fields.value = _.extend(
-					{}
-					, fields.value
-					, { type: 'select', options: values }
-				);
+					if ( values ) {
 
-			} else {
-				fields.value = _.extend( {}, fields.value, { type: arg.get( 'type' ) } );
+						fields.value = _.extend(
+							{}
+							, fields.value
+							, { type: 'select', options: values }
+						);
+					}
 			}
-		}
 
-		this.set( 'fields', fields );
+			this.set( 'fields', fields );
+		}
 
 		return this.constructor.__super__.renderSettings.apply(
 			this
@@ -221,9 +225,7 @@ module.exports = Equals;
 var Extension = wp.wordpoints.hooks.controller.Extension,
 	ConditionGroups = wp.wordpoints.hooks.model.ConditionGroups,
 	ConditionsGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
-	Fields = wp.wordpoints.hooks.Fields,
-	hooks = wp.wordpoints.hooks,
-	$ = jQuery,
+	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Conditions;
 
 Conditions = Extension.extend({
@@ -354,7 +356,7 @@ Conditions = Extension.extend({
 		var type = this.getType( dataTypeSlug, slug );
 
 		if ( ! type ) {
-			type = { slug: slug }
+			type = { slug: slug };
 		}
 
 		return new controller( type );
@@ -399,7 +401,7 @@ ConditionGroup = Backbone.Model.extend({
 			id: '',
 			hierarchy: [],
 			preHierarchy: [],
-			conditions: new Conditions,
+			conditions: new Conditions(),
 			reaction: null
 		};
 	},
@@ -492,7 +494,7 @@ ConditionGroup = Backbone.Model.extend({
 
 			case 'create':
 				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( { message: 'Condition already exists.' } );
 					return;
 				}
 
@@ -507,7 +509,7 @@ ConditionGroup = Backbone.Model.extend({
 
 			case 'read':
 				if ( typeof conditions === 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( 'Conditions not found.' );
 					return;
 				}
 
@@ -515,7 +517,9 @@ ConditionGroup = Backbone.Model.extend({
 				break;
 
 			default:
-				options.error( { message: 'Condition groups can only be read.' } );
+				options.error(
+					{ message: 'Condition groups can only be created and read.' }
+				);
 		}
 	}
 });
@@ -677,7 +681,7 @@ Condition = Base.extend({
 
 			case 'create':
 				if ( typeof conditions[ model.id ] !== 'undefined' ) {
-					options.error( { message: todo } ); // TODO error messages
+					options.error( { message: 'Condition already exists.' } ); // TODO error messages
 					return;
 				}
 
@@ -688,7 +692,7 @@ Condition = Base.extend({
 
 			case 'read':
 				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: todo } );
+					options.error( { message: 'Condition not found.' } );
 					return;
 				}
 
@@ -697,7 +701,7 @@ Condition = Base.extend({
 
 			case 'update':
 				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: todo } );
+					options.error( { message: 'Condition not found.' } );
 					return;
 				}
 
@@ -751,7 +755,7 @@ Conditions = Backbone.Collection.extend({
 
 			case 'create':
 				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( { message: 'Conditions already exist.' } ); // TODO
 					return;
 				}
 
@@ -766,7 +770,7 @@ Conditions = Backbone.Collection.extend({
 
 			case 'read':
 				if ( typeof conditions === 'undefined' ) {
-					options.error( { message: todo } ); // TODO
+					options.error( { message: 'Conditions not found.' } ); // TODO
 					return;
 				}
 
@@ -774,7 +778,7 @@ Conditions = Backbone.Collection.extend({
 				break;
 
 			default:
-				options.error( { message: 'Conditions can only be read.' } );
+				options.error( { message: 'Conditions can only be created and read.' } );
 		}
 	}
 });
@@ -874,7 +878,6 @@ module.exports = ConditionGroup;
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	ConditionGroupView = wp.wordpoints.hooks.view.ConditionGroup,
-	Hook = wp.wordpoints.hooks.model.Reaction,
 	ArgSelector2 = wp.wordpoints.hooks.view.ArgSelector2,
 	ConditionSelector = wp.wordpoints.hooks.view.ConditionSelector,
 	Extensions = wp.wordpoints.hooks.Extensions,
@@ -934,7 +937,7 @@ ConditionGroups = Base.extend({
 	},
 
 	addAll: function () {
-		this.collection.each( this.addOne, this )
+		this.collection.each( this.addOne, this );
 	},
 
 	addOne: function ( ConditionGroup ) {

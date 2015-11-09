@@ -6,8 +6,7 @@
  * @augments Backbone.View
  * @augments wp.wordpoints.hooks.view.Base
  */
-var Base = wp.wordpoints.hooks.view.Base,
-	ArgsCollection = wp.wordpoints.hooks.model.Args,
+var ArgsCollection = wp.wordpoints.hooks.model.Args,
 	l10n = wp.wordpoints.hooks.view.l10n,
 	Args;
 
@@ -88,7 +87,7 @@ Args = Backbone.Model.extend({
 			entity = _.extend( {}, entity, { slug: slug, _canonical: parsed.slug } );
 		//}
 
-		return entity
+		return entity;
 	},
 
 	getEntity: function ( slug ) {
@@ -331,7 +330,7 @@ Args = Backbone.Model.extend({
 
 		_.each( hierarchy, function ( arg) {
 
-			if ( ! arg || 'current' === arg.get( 'slug' ) ) {
+			if ( ! arg ) {
 				return;
 			}
 
@@ -365,7 +364,7 @@ var Arg = Backbone.Model.extend({
 	idAttribute: 'slug',
 
 	defaults: function () {
-		return { _type: this.type }
+		return { _type: this.type };
 	}
 });
 
@@ -373,8 +372,10 @@ var Parent = Arg.extend({
 
 	/**
 	 * @abstract
+	 *
+	 * @param {string} slug The child slug.
 	 */
-	getChild: function ( slug ) {},
+	getChild: function () {},
 
 	/**
 	 * @abstract
@@ -414,13 +415,13 @@ var Relationship = Parent.extend({
 		var child;
 
 		if ( slug !== this.get( 'secondary' ) ) {
-			return false
+			return false;
 		}
 
 		var parsed = this.parseArgSlug( slug );
 
 		if ( parsed.isArray ) {
-			child = new Array({ entity_slug: parsed.slug });
+			child = new EntityArray({ entity_slug: parsed.slug });
 		} else {
 			child = wp.wordpoints.hooks.Args.getEntity( parsed.slug );
 		}
@@ -433,9 +434,10 @@ var Relationship = Parent.extend({
 	}
 });
 
-var Array = Arg.extend( {
+var EntityArray = Arg.extend( {
 	type: 'array',
 
+	// TODO does _canonical need to be set too?
 	initialize: function () {
 		this.set( 'slug', this.get( 'entity_slug' ) + '{}' );
 	}
@@ -447,7 +449,7 @@ var Attr = Arg.extend( {
 
 Args.type.entity = Entity;
 Args.type.relationship = Relationship;
-Args.type.array = Array;
+Args.type.array = EntityArray;
 Args.type.attr = Attr;
 
 module.exports = Args;
@@ -550,7 +552,7 @@ Fields = Backbone.Model.extend({
 		this.attributes.fields.event = {
 			type: 'hidden',
 			required: true
-		}
+		};
 	},
 
 	create: function ( reaction, name, value, data ) {
@@ -715,7 +717,7 @@ Fields = Backbone.Model.extend({
 			if ( isArray ) {
 
 				if ( typeof data[ key ] === 'undefined' ) {
-					data[ key ] = []
+					data[ key ] = [];
 				}
 
 				data[ key ].push( value );
@@ -900,9 +902,6 @@ $( function () {
 			.find( '.wordpoints-hook-reaction-group' )
 				.data( 'wordpoints-hooks-hook-event' );
 
-		console.log(event);
-		console.log(data.reactions[ event ]);
-
 		new hooks.view.Reactions( {
 			el: $this,
 			model: new hooks.model.Reactions( data.reactions[ event ] )
@@ -949,6 +948,7 @@ hooks.view.ArgSelector2      = require( './views/arg-selector2.js' );
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	template = wp.wordpoints.hooks.template,
+	$ = Backbone.$,
 	ArgOption;
 
 ArgOption = Base.extend({
@@ -1143,8 +1143,6 @@ module.exports = ArgSelector2;
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	ArgSelector = wp.wordpoints.hooks.view.ArgSelector,
-	Args = wp.wordpoints.hooks.Args,
-	$ = Backbone.$,
 	ArgSelectors;
 
 ArgSelectors = Base.extend({
@@ -1357,7 +1355,6 @@ module.exports = Base;
  */
 var Base = wp.wordpoints.hooks.view.Base,
 	Fields = wp.wordpoints.hooks.Fields,
-	fields = wp.wordpoints.hooks.view.data.fields,
 	Reactors = wp.wordpoints.hooks.Reactors,
 	Args = wp.wordpoints.hooks.Args,
 	$ = Backbone.$,
@@ -1450,7 +1447,7 @@ Reaction = Base.extend({
 					arg.get( '_type' ) === 'entity'
 					&& _.contains( argTypes, arg.get( '_canonical' ) )
 				);
-			}
+			};
 		}
 
 		var hierarchies = Args.getHierarchiesMatching( {
@@ -1518,7 +1515,7 @@ Reaction = Base.extend({
 
 		var attrSlug = Fields.getAttrSlug( this.model, $target.attr( 'name' ) );
 
-		if ( $target.val() != this.model.get( attrSlug ) ) {
+		if ( $target.val() !== this.model.get( attrSlug ) + '' ) {
 			this.lockOpen();
 		}
 	},
@@ -1615,9 +1612,9 @@ Reaction = Base.extend({
 	},
 
 	// Display an error when there is an Ajax failure.
-	showError: function ( event, response, options ) {
+	showError: function ( event, response ) {
 
-		var message, $error, errors = [];
+		var message, errors = [];
 
 		this.$( '.spinner-overlay' ).hide();
 
@@ -1642,7 +1639,7 @@ Reaction = Base.extend({
 
 				// When a field is specified, we try to locate it.
 				$field = this.$(
-					'[name="' + fieldName.replace( /[^a-z0-9-_\[\]\{\}]/gi, '' ) + '"]'
+					'[name="' + fieldName.replace( /[^a-z0-9-_\[\]\{}]/gi, '' ) + '"]'
 				);
 
 				if ( 0 === $field.length ) {
@@ -1651,7 +1648,7 @@ Reaction = Base.extend({
 					// and not a single field. In that case, we try to find the
 					// fields in that set.
 					$field = this.$(
-						'[name^="' + fieldName.replace( /[^a-z0-9-_\[\]\{\}]/gi, '' ) + '"]'
+						'[name^="' + fieldName.replace( /[^a-z0-9-_\[\]\{}]/gi, '' ) + '"]'
 					);
 
 					// If that fails, we just add this to the general errors.
@@ -1679,7 +1676,7 @@ Reaction = Base.extend({
 				$errors.html( '' );
 
 				_.each( errors, function ( error ) {
-					$errors.append( $( '<p></p>' ).text( error ) )
+					$errors.append( $( '<p></p>' ).text( error ) );
 				});
 
 				$errors.fadeIn();
@@ -1825,7 +1822,7 @@ Reactions = Base.extend({
 	// Show the form for a new reaction.
 	initAddReaction: function () {
 
-		data = this.getReactionDefaults();
+		var data = this.getReactionDefaults();
 
 		this.$addReaction.prop( 'disabled', true );
 
