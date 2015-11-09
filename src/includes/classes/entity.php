@@ -190,10 +190,17 @@ abstract class WordPoints_Entity
 	 *
 	 * @param mixed $id The ID of an entity.
 	 *
-	 * @return string|int|float|null The human identifier for the entity, or null.
+	 * @return string|int|float|false The human identifier for the entity, or false.
 	 */
 	public function get_human_id( $id ) {
-		return $this->get_entity_human_id( $this->get_entity( $id ) );
+
+		$entity = $this->get_entity( $id );
+
+		if ( ! $entity ) {
+			return false;
+		}
+
+		return $this->get_entity_human_id( $entity );
 	}
 
 	/**

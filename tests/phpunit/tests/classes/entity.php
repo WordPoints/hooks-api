@@ -280,7 +280,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$entity->set( 'getter', array( $mock, 'filter' ) );
 		$entity->set( 'human_id_field', 'title' );
 
-		$this->assertNull( $entity->get_human_id( 1 ) );
+		$this->assertFalse( $entity->get_human_id( 1 ) );
 	}
 
 	/**
