@@ -24,7 +24,17 @@ class WordPoints_Entity_Comment
 	/**
 	 * @since 1.0.0
 	 */
-	protected $getter = 'get_comment';
+	protected function get_entity( $id ) {
+
+		// We must do this because the $id parameter is expected by reference.
+		$comment = get_comment( $id );
+
+		if ( ! $comment ) {
+			return false;
+		}
+
+		return $comment;
+	}
 
 	/**
 	 * @since 1.0.0
