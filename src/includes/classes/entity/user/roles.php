@@ -27,15 +27,13 @@ class WordPoints_Entity_User_Roles extends WordPoints_Entity_Relationship {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_title() {
-		return __( 'Roles', 'wordpoints' );
-	}
+	protected $related_ids_field = 'roles';
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_related_entity_ids( $id ) {
-		return get_userdata( $id )->roles;
+	public function get_title() {
+		return __( 'Roles', 'wordpoints' );
 	}
 }
 

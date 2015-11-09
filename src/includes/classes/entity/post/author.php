@@ -27,15 +27,13 @@ class WordPoints_Entity_Post_Author extends WordPoints_Entity_Relationship {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_title() {
-		return __( 'Author', 'wordpoints' );
-	}
+	protected $related_ids_field = 'post_author';
 
 	/**
 	 * @since 1.0.0
 	 */
-	protected function get_related_entity_ids( $id ) {
-		return get_post( $id )->post_author;
+	public function get_title() {
+		return __( 'Author', 'wordpoints' );
 	}
 }
 

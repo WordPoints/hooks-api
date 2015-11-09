@@ -23,21 +23,18 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_get_related_entity_ids() {
 
-		$return_value = 'some_slug';
-
-		$mock = new WordPoints_Mock_Filter( $return_value );
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+		$entity->set_the_value( array( 'id' => 1, 'related' => 'a' ) );
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
-		$relationship->set( 'related_getter', array( $mock, 'filter' ) );
+		$relationship->set( 'related_ids_field', 'related' );
 
-		$args = array( 1 );
+		$args = array( $entity );
 
 		$this->assertEquals(
-			$return_value
+			'a'
 			, $relationship->call( 'get_related_entity_ids', $args )
 		);
-
-		$this->assertEquals( $args, $mock->calls[0] );
 	}
 
 	/**
@@ -76,15 +73,12 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 		$entity->set_the_value( array( 'id' => 1, 'test_attr' => 'a' ) );
 
-		$return_value = 'some_slug';
-		$mock = new WordPoints_Mock_Filter( $return_value );
-
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
-		$relationship->set( 'related_getter', array( $mock, 'filter' ) );
+		$relationship->set( 'related_ids_field', 'test_attr' );
 
 		$this->assertTrue( $relationship->set_the_value_from_entity( $entity ) );
 
-		$this->assertEquals( 'some_slug', $relationship->get_the_value() );
+		$this->assertEquals( 'a', $relationship->get_the_value() );
 	}
 
 	/**
@@ -96,11 +90,8 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 
-		$return_value = 'some_slug';
-		$mock = new WordPoints_Mock_Filter( $return_value );
-
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
-		$relationship->set( 'related_getter', array( $mock, 'filter' ) );
+		$relationship->set( 'related_ids_field', 'test_attr' );
 
 		$this->assertFalse( $relationship->set_the_value_from_entity( $entity ) );
 
@@ -115,14 +106,10 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	public function test_set_the_value_from_entity_invalid() {
 
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
-		$entity->set_the_value( array( 'id' => 1, 'test_attr' => 'a' ) );
-
-		// Simulates no related entities being found.
-		$return_value = false;
-		$mock = new WordPoints_Mock_Filter( $return_value );
+		$entity->set_the_value( array( 'id' => 1 ) );
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
-		$relationship->set( 'related_getter', array( $mock, 'filter' ) );
+		$relationship->set( 'related_ids_field', 'test_attr' );
 
 		$this->assertFalse( $relationship->set_the_value_from_entity( $entity ) );
 
@@ -139,17 +126,14 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 		$entity->set_the_value( array( 'id' => 1, 'test_attr' => 'a' ) );
 
-		$return_value = 'some_slug';
-		$mock = new WordPoints_Mock_Filter( $return_value );
-
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
-		$relationship->set( 'related_getter', array( $mock, 'filter' ) );
+		$relationship->set( 'related_ids_field', 'test_attr' );
 
 		$this->assertTrue( $relationship->set_the_value_from_entity( $entity ) );
 
-		$this->assertEquals( 'some_slug', $relationship->get_the_value() );
+		$this->assertEquals( 'a', $relationship->get_the_value() );
 
-		$mock->return_value = false;
+		$entity->set_the_value( array( 'id' => 1 ) );
 
 		$this->assertFalse( $relationship->set_the_value_from_entity( $entity ) );
 

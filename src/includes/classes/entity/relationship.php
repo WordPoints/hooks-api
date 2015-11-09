@@ -49,15 +49,15 @@ abstract class WordPoints_Entity_Relationship
 	protected $related_entity_slug;
 
 	/**
-	 * The function to get the list of related IDs.
+	 * The field on the primary entity where the related entity IDs are stored.
 	 *
 	 * You must either define this or override get_related_entity_ids().
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var callable
+	 * @var string
 	 */
-	protected $related_getter;
+	protected $related_ids_field;
 
 	/**
 	 * Parse an entity slug.
@@ -89,12 +89,12 @@ abstract class WordPoints_Entity_Relationship
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed $id The ID of a primary entity.
+	 * @param WordPoints_Entity $entity The entity.
 	 *
 	 * @return mixed The ID (array of or IDs) of the related entity (or entities).
 	 */
-	protected function get_related_entity_ids( $id ) {
-		return call_user_func( $this->related_getter, $id );
+	protected function get_related_entity_ids( WordPoints_Entity $entity ) {
+		return $entity->get_the_attr_value( $this->related_ids_field );
 	}
 
 	//
@@ -161,15 +161,9 @@ abstract class WordPoints_Entity_Relationship
 
 		$this->the_value = null;
 
-		$id = $entity->get_the_id();
+		$related_ids = $this->get_related_entity_ids( $entity );
 
-		if ( ! $id ) {
-			return false;
-		}
-
-		$related_ids = $this->get_related_entity_ids( $id );
-
-		if ( false === $related_ids ) {
+		if ( ! $related_ids ) {
 			return false;
 		}
 

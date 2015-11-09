@@ -28,15 +28,13 @@ class WordPoints_Entity_Post_Type_Relationship
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_title() {
-		return __( 'Post Type', 'wordpoints' );
-	}
+	protected $related_ids_field = 'post_type';
 
 	/**
 	 * @since 1.0.0
 	 */
-	protected function get_related_entity_ids( $id ) {
-		return get_post( $id )->post_type;
+	public function get_title() {
+		return __( 'Post Type', 'wordpoints' );
 	}
 }
 

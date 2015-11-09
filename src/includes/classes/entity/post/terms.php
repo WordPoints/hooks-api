@@ -34,7 +34,9 @@ class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_related_entity_ids( $id ) {
+	protected function get_related_entity_ids( WordPoints_Entity $entity ) {
+
+		$id = $entity->get_the_id();
 
 		$taxonomies = get_object_taxonomies( get_post( $id ) );
 
