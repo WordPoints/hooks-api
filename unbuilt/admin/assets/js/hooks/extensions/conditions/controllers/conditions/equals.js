@@ -21,30 +21,36 @@ Equals = Condition.extend({
 			arg = condition.model.getArg();
 
 		// We render the `value` field differently based on the type of argument.
-		if ( arg && arg.get( '_type' ) === 'entity' ) {
-			arg = arg.getChild( arg.get( 'id_field' ) );
-		}
+		if ( arg ) {
 
-		if ( arg && arg.get( '_type' ) === 'attr' ) {
+			var type = arg.get( '_type' );
 
 			fields = _.extend( {}, fields );
 
-			var values = arg.get( 'values' );
+			switch ( type ) {
 
-			if ( values ) {
+				case 'attr':
+					fields.value = _.extend(
+						{}
+						, fields.value
+						, { type: arg.get( 'type' ) }
+					);
+					/* falls through */
+				case 'entity':
+					var values = arg.get( 'values' );
 
-				fields.value = _.extend(
-					{}
-					, fields.value
-					, { type: 'select', options: values }
-				);
+					if ( values ) {
 
-			} else {
-				fields.value = _.extend( {}, fields.value, { type: arg.get( 'type' ) } );
+						fields.value = _.extend(
+							{}
+							, fields.value
+							, { type: 'select', options: values }
+						);
+					}
 			}
-		}
 
-		this.set( 'fields', fields );
+			this.set( 'fields', fields );
+		}
 
 		return this.constructor.__super__.renderSettings.apply(
 			this

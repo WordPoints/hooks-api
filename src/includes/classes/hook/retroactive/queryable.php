@@ -152,7 +152,7 @@ abstract class WordPoints_Entity_DB extends WordPoints_Entity {
 //
 //class WordPoints_Entity_Post_Type_Name
 //	extends WordPoints_Entity_Attr
-//	implements WordPoints_Entity_Attr_Enumerable {
+//	implements WordPoints_Entity_Attr_EnumerableI {
 //
 //	protected $storage_type = 'array';
 //}
@@ -165,7 +165,7 @@ abstract class WordPoints_Entity_DB extends WordPoints_Entity {
 //
 //class WordPoints_Entity_User_Role_Name
 //	extends WordPoints_Entity_Attr
-//	implements WordPoints_Entity_Attr_Enumerable {
+//	implements WordPoints_Entity_Attr_EnumerableI {
 //
 //	protected $storage_type = 'array';
 //

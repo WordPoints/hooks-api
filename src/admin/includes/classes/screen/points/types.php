@@ -95,6 +95,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 		$entities_data = array();
 
+		/** @var WordPoints_Class_Registry_Children $entity_children */
 		$entity_children = $this->entities->children;
 
 		/** @var WordPoints_Entity $entity */
@@ -103,7 +104,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			$child_data = array();
 
 			/** @var WordPoints_EntityishI $child */
-			foreach ( $entity_children->get( $slug ) as $child_slug => $child ) {
+			foreach ( $entity_children->get_children( $slug ) as $child_slug => $child ) {
 
 				$child_data[ $child_slug ] = array(
 					'slug'  => $child_slug,
@@ -114,10 +115,6 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 					$child_data[ $child_slug ]['_type'] = 'attr';
 					$child_data[ $child_slug ]['type']  = $child->get_data_type();
-
-					if ( $child instanceof WordPoints_Entity_Attr_Enumerable ) {
-						$child_data[ $child_slug ]['values'] = $child->get_enumerated_values();
-					}
 
 				} elseif ( $child instanceof WordPoints_Entity_Relationship ) {
 
@@ -144,6 +141,22 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 				'id_field' => $entity->get_id_field(),
 				'_type'    => 'entity',
 			);
+
+			if ( $entity instanceof WordPoints_Entity_EnumerableI ) {
+
+				$values = array();
+
+				foreach ( $entity->get_enumerated_values() as $value ) {
+					if ( $entity->set_the_value( $value ) ) {
+						$values[] = array(
+							'value' => $entity->get_the_id(),
+							'label' => $entity->get_the_human_id(),
+						);
+					}
+				}
+
+				$entities_data[ $slug ]['values'] = $values;
+			}
 
 			/**
 			 * Filter the data for an entity.

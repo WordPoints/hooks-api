@@ -1,13 +1,18 @@
 <?php
 
 /**
- * .
+ * Enumerable entity interface.
  *
  * @package wordpoints-hooks-api
- * @since   1.
+ * @since   1.0.0
  */
 
-interface WordPoints_Entity_Attr_Enumerable {
+/**
+ * Implemented by entities that are enumerable.
+ *
+ * @since 1.0.0
+ */
+interface WordPoints_Entity_EnumerableI {
 
 	/**
 	 * Get a list of the predefined values this attribute can have.

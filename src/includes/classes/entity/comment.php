@@ -29,15 +29,15 @@ class WordPoints_Entity_Comment
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_title() {
-		return __( 'Comment', 'wordpoints' );
+	protected function get_entity_human_id( $entity ) {
+		return get_comment_excerpt( $entity );
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_human_id( $id ) {
-		return get_comment_excerpt( $id );
+	public function get_title() {
+		return __( 'Comment', 'wordpoints' );
 	}
 
 	/**

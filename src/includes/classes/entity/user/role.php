@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_User_Role extends WordPoints_Entity {
+class WordPoints_Entity_User_Role
+	extends WordPoints_Entity
+	implements WordPoints_Entity_EnumerableI {
 
 	/**
 	 * @since 1.0.0
@@ -27,14 +29,7 @@ class WordPoints_Entity_User_Role extends WordPoints_Entity {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_title() {
-		return __( 'Role', 'wordpoints' );
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_human_id( $id ) {
+	protected function get_entity_human_id( $entity ) {
 
 		global $wp_roles;
 
@@ -44,7 +39,32 @@ class WordPoints_Entity_User_Role extends WordPoints_Entity {
 
 		$names = $wp_roles->get_names();
 
-		return $names[ $id ];
+		if ( ! isset( $names[ $entity->name ] ) ) {
+			return false;
+		}
+
+		return translate_user_role( $names[ $entity->name ] );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_title() {
+		return __( 'Role', 'wordpoints' );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_enumerated_values() {
+
+		global $wp_roles;
+
+		if ( ! isset( $wp_roles ) ) {
+			$wp_roles = new WP_Roles();
+		}
+
+		return $wp_roles->role_objects;
 	}
 }
 

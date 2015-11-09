@@ -12,9 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_User_Role_Name
-	extends WordPoints_Entity_Attr
-	implements WordPoints_Entity_Attr_Enumerable {
+class WordPoints_Entity_User_Role_Name extends WordPoints_Entity_Attr {
 
 	/**
 	 * @since 1.0.0
@@ -24,37 +22,13 @@ class WordPoints_Entity_User_Role_Name
 	/**
 	 * @since 1.0.0
 	 */
-	protected $type = 'slug';
+	protected $type = 'slug'; // TODO
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Role Name', 'wordpoints' );
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_enumerated_values() {
-
-		global $wp_roles;
-
-		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles();
-		}
-
-		$values = array();
-
-		foreach ( $wp_roles->get_names() as $slug => $name ) {
-
-			$values[ $slug ] = array(
-				'value' => $slug,
-				'label' => $name,
-			);
-		}
-
-		return $values;
+		return __( 'Name', 'wordpoints' );
 	}
 }
 

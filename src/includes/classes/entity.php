@@ -41,7 +41,7 @@ abstract class WordPoints_Entity
 	/**
 	 * The field the entity can be identified by humans by.
 	 *
-	 * You must either define this or override get_human_id().
+	 * You must either define this or override get_entity_human_id().
 	 *
 	 * @since 1.0.0
 	 *
@@ -147,6 +147,23 @@ abstract class WordPoints_Entity
 		return $this->get_attr_value( $entity, $this->get_id_field() );
 	}
 
+	/**
+	 * Get the human ID from an entity.
+	 *
+	 * The human ID is a human readable identifier for the entity, and may be
+	 * different than the regular ID. It is also possible that the human ID will not
+	 * always be unique.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $entity The entity (usually object or array).
+	 *
+	 * @return mixed The human ID of the entity.
+	 */
+	protected function get_entity_human_id( $entity ) {
+		return $this->get_attr_value( $entity, $this->human_id_field );
+	}
+
 	//
 	// Public
 	//
@@ -165,22 +182,18 @@ abstract class WordPoints_Entity
 	/**
 	 * Get the human ID for an entity.
 	 *
-	 * The human ID is a human readable identifier for the entity, and may be
-	 * different than the regular ID. It is also possible that the human ID will not
-	 * always be unique.
+	 * TODO this is unused, may not be needed.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @see self::get_entity_human_id()
 	 *
 	 * @param mixed $id The ID of an entity.
 	 *
 	 * @return string|int|float|null The human identifier for the entity, or null.
 	 */
 	public function get_human_id( $id ) {
-
-		return $this->get_attr_value(
-			$this->get_entity( $id )
-			, $this->human_id_field
-		);
+		return $this->get_entity_human_id( $this->get_entity( $id ) );
 	}
 
 	/**
@@ -286,6 +299,19 @@ abstract class WordPoints_Entity
 	 */
 	public function get_the_id() {
 		return $this->get_the_value();
+	}
+
+	/**
+	 * Get the human ID of the entity.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see self::get_entity_human_id()
+	 *
+	 * @return string|int|float|null The human identifier for the entity, or null.
+	 */
+	public function get_the_human_id() {
+		return $this->get_entity_human_id( $this->the_entity );
 	}
 }
 

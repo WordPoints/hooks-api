@@ -518,6 +518,35 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertNull( $entity->get_the_id() );
 		$this->assertNull( $entity->get_the_attr_value( 'type' ) );
 	}
+
+	/**
+	 * Test get_the_human_id().
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_the_human_id() {
+
+		$object = (object) array( 'id' => 1, 'title' => 'Title' );
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+		$entity->set( 'human_id_field', 'title' );
+		$entity->set_the_value( $object );
+
+		$this->assertEquals( 'Title', $entity->get_the_human_id() );
+	}
+
+	/**
+	 * Test get_the_human_id() when the value isn't set.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_the_human_id_not_set() {
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+		$entity->set( 'human_id_field', 'title' );
+
+		$this->assertNull( $entity->get_the_human_id() );
+	}
 }
 
 // EOF
