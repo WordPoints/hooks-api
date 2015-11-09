@@ -43,7 +43,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_Entity $entity */
 		$entity = new $class( $data['slug'] );
 
-		$the_entity = $data['create_func']();
+		$the_entity = call_user_func( $data['create_func'] );
 
 		$the_id = $the_entity->{$data['id_field']};
 		$the_human_id = $the_entity->{$data['human_id_field']};
@@ -170,7 +170,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function data_provider_entities() {
 
-		$factory = $this->factory;
+		$factory = $this->factory = new WP_UnitTest_Factory();
 		$factory->wordpoints = WordPoints_PHPUnit_Factory::$factory;
 
 		$entities = array(
