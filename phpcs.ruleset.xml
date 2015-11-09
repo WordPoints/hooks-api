@@ -2,10 +2,6 @@
 <ruleset name="WordPoints-Hooks">
 	<description>Sniffs for the coding standards of the WordPoints plugin</description>
 
-	<rule ref="WordPoints">
-		<exclude name="WordPress.VIP.RestrictedFunctions.custom_role" />
-	</rule>
-
 	<exclude-pattern>/src/includes/classes/hierarchy.php</exclude-pattern>
 	<exclude-pattern>/src/includes/classes/hook/retroactive/*</exclude-pattern>
 	<exclude-pattern>/src/includes/classes/hook/settings.php</exclude-pattern>
