@@ -130,7 +130,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			$this->assertInternalType( 'array', $entity->get_enumerated_values() );
 		}
 
-		$data['delete_func']( $the_id );
+		call_user_func( $data['delete_func'], $the_id );
 
 		if ( isset( $data['children'] ) ) {
 
