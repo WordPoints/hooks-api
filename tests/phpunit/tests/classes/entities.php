@@ -312,6 +312,26 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
+	 * Fully deletes a user.
+	 *
+	 * This is back-compat for WP pre-4.3, when this method was added to the main
+	 * test case class.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $id The user ID.
+	 *
+	 * @return bool Whether the user was deleted successfully.
+	 */
+	public static function delete_user( $id ) {
+		if ( is_multisite() ) {
+			return wpmu_delete_user( $id );
+		} else {
+			return wp_delete_user( $id );
+		}
+	}
+
+	/**
 	 * Creates a post.
 	 *
 	 * @since 1.0.0
