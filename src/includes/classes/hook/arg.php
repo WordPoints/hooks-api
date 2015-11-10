@@ -141,7 +141,14 @@ class WordPoints_Hook_Arg {
 	 * @return string The arg title.
 	 */
 	public function get_title() {
-		return $this->get_entity()->get_title();
+
+		$entity = $this->get_entity();
+
+		if ( ! $entity ) {
+			return $this->slug;
+		}
+
+		return $entity->get_title();
 	}
 }
 

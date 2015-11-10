@@ -22,7 +22,7 @@ class WordPoints_PHPUnit_Mock_Hook_Action extends WordPoints_Hook_Action {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $arg_index = array( 0 => 'test_entity' );
+	protected $arg_index = array( 'test_entity' => 0 );
 
 	/**
 	 * Set a protected property's value.
