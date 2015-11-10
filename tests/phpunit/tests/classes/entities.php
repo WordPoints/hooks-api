@@ -237,7 +237,15 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 							'comment_post_ID' => $factory->post->create(
 								array(
 									'post_status' => 'private',
-									'post_author' => $factory->user->create(),
+									'post_author' => $factory->user->create(
+										// We have to do this because prior to WP 4.4
+										// the generators used by the test factories
+										// don't use a static incrementer.
+										array(
+											'user_login' => 'WP 4.3- 1',
+											'user_email' => 'WP+4.3-+1@l.com',
+										)
+									),
 								)
 							),
 						)
