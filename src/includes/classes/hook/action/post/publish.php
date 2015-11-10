@@ -25,7 +25,7 @@ class WordPoints_Hook_Action_Post_Publish extends WordPoints_Hook_Action {
 			return false;
 		}
 
-		$post_type = get_post_type( $post->post_type );
+		$post_type = get_post_type_object( $post->post_type );
 
 		// Don't fire for non-public post types (revisions, etc.).
 		if ( empty( $post_type->public ) ) {
