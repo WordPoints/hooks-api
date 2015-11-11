@@ -66,10 +66,16 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 
 		if ( ! $result ) {
 
-			if ( ! ( $this->current instanceof WordPoints_Entity_ParentI ) ) {
+			if ( ! isset( $this->current ) ) {
 
 				$this->validator->add_error(
-					__( 'Current arg is not a parent.', 'wordpoints' ) // TODO message
+					__( 'The %s arg is not registered for this event.', 'wordpoints' ) // TODO message
+				);
+
+			} elseif ( ! ( $this->current instanceof WordPoints_Entity_ParentI ) ) {
+
+				$this->validator->add_error(
+					__( 'Cannot get descendant of %s: not a parent.', 'wordpoints' ) // TODO message
 				);
 
 			} else {
@@ -78,7 +84,7 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 
 				if ( ! $child_arg ) {
 					$this->validator->add_error(
-						__( 'Invalid child.', 'wordpoints' ) // TODO message
+						__( '%s does not have a child "%s".', 'wordpoints' ) // TODO message
 						, $child_slug
 					);
 				}
@@ -97,9 +103,13 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	 */
 	public function ascend() {
 
-		parent::ascend();
+		$ascended = parent::ascend();
 
-		$this->validator->pop_field();
+		if ( $ascended ) {
+			$this->validator->pop_field();
+		}
+
+		return $ascended;
 	}
 }
 

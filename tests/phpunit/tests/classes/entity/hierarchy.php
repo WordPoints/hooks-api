@@ -126,6 +126,8 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 * Test removing an entity from the hierarchy resets the current entity.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @expectedIncorrectUsage WordPoints_Entity_Hierarchy::ascend
 	 */
 	public function test_remove_entity_resets_current() {
 
@@ -160,10 +162,8 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 
 		$this->assertNull( $hierarchy->get_current() );
 
-		$hierarchy->ascend();
-
 		// This tests that the hierarchy was reset as well.
-		$this->assertNull( $hierarchy->get_current() );
+		$this->assertFalse( $hierarchy->ascend() );
 	}
 
 	/**
@@ -207,7 +207,7 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 			, $hierarchy->get_current()
 		);
 
-		$hierarchy->ascend();
+		$this->assertTrue( $hierarchy->ascend() );
 
 		$this->assertEquals( $entity, $hierarchy->get_current() );
 	}
@@ -247,11 +247,11 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 			, $hierarchy->get_current()
 		);
 
-		$hierarchy->ascend();
+		$this->assertTrue( $hierarchy->ascend() );
 
 		$this->assertEquals( $entity, $hierarchy->get_current() );
 
-		$hierarchy->ascend();
+		$this->assertTrue( $hierarchy->ascend() );
 
 		$this->assertNull( $hierarchy->get_current() );
 	}
@@ -338,12 +338,14 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 * Test ascending when the hierarchy is empty.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @expectedIncorrectUsage WordPoints_Entity_Hierarchy::ascend
 	 */
 	public function test_ascend_empty_hierarchy() {
 
 		$hierarchy = new WordPoints_Entity_Hierarchy();
 
-		$hierarchy->ascend();
+		$this->assertFalse( $hierarchy->ascend() );
 
 		$this->assertNull( $hierarchy->get_current() );
 	}

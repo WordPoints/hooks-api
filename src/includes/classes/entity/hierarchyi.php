@@ -59,6 +59,8 @@ interface WordPoints_Entity_HierarchyI {
 	 * Ascend to the parent of the current entity/entity child.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @return bool Whether the ascent was successful.
 	 */
 	public function ascend();
 

@@ -124,7 +124,22 @@ class WordPoints_Entity_Hierarchy implements WordPoints_Entity_HierarchyI {
 	 * @since 1.0.0
 	 */
 	public function ascend() {
+
+		if ( empty( $this->current ) ) {
+
+			// We're already at the top, some logic is probably wrong.
+			_doing_it_wrong(
+				__METHOD__
+				, 'Attempting to ascend past the top of the hierarchy.'
+				, '1.0.0'
+			);
+
+			return false;
+		}
+
 		$this->current = array_pop( $this->hierarchy );
+
+		return true;
 	}
 
 	/**
