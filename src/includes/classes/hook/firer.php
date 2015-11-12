@@ -15,23 +15,6 @@
 class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 
 	/**
-	 * The firer's slug.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	protected $slug;
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function __construct( $slug ) {
-
-		$this->slug = $slug;
-	}
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function do_event( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
@@ -64,6 +47,7 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 
 				$reactor->hit( $event_args, $reaction );
 
+				// TODO hook docs (is this hook even needed?)
 				do_action( 'wordpoints_hook_event_hit', $reaction, $event_args, $reactor );
 			}
 		}
