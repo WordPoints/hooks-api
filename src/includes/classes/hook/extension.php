@@ -46,6 +46,17 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	protected $event_args;
 
 	/**
+	 * Get the slug of this extension.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The extension's slug.
+	 */
+	public function get_slug() {
+		return $this->slug;
+	}
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function validate_settings(
