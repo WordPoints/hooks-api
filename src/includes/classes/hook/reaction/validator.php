@@ -121,17 +121,13 @@ final class WordPoints_Hook_Reaction_Validator {
 				$this->add_error( __( 'Event type is invalid.', 'wordpoints' ), 'event' );
 			}
 
-			$event_args = $this->hooks->events->args->get_children(
-				$this->settings['event']
-			);
-
-			if ( false === $event_args ) {
-				$this->add_error( __( 'Event type is invalid.', 'wordpoints' ), 'event' );
-			}
-
 			// From here on out we can collect errors as they come (unless we are
 			// supposed to fail fast).
 			$this->fail_fast = $fail_fast;
+
+			$event_args = $this->hooks->events->args->get_children(
+				$this->settings['event']
+			);
 
 			$this->event_args = new WordPoints_Hook_Event_Args( $event_args );
 			$this->event_args->set_validator( $this );
@@ -258,6 +254,17 @@ final class WordPoints_Hook_Reaction_Validator {
 	 */
 	public function get_field_stack() {
 		return $this->field_stack;
+	}
+
+	/**
+	 * Get the reaction settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function get_settings() {
+		return $this->settings;
 	}
 
 	/**

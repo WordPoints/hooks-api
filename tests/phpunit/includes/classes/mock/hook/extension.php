@@ -80,6 +80,11 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 			'field_stack' => $this->validator->get_field_stack(),
 		);
 
+		if ( ! empty( $settings['fail'] ) ) {
+			$this->validator->add_error( $settings['fail'], 'fail' );
+			$settings = array();
+		}
+
 		return $settings;
 	}
 }
