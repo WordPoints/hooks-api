@@ -62,7 +62,7 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 * @since 1.0.0
 	 */
 	public function exists() {
-		return ! ( ! isset( $this->ID ) || false === $this->get_settings() );
+		return ( isset( $this->ID ) && false !== $this->get_settings() );
 	}
 
 	/**
