@@ -28,6 +28,19 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	protected $validator;
 
 	/**
+	 * Whether to push fields onto the validator when we descend into the hierarchy.
+	 *
+	 * This will usually be true, however, when we are getting a value from the
+	 * hierarchy, we aren't actually descending into a sub-field, but descending
+	 * down the arg hierarchy stored within a field.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	protected $push_on_descend = true;
+
+	/**
 	 * Construct the object with the arg objects.
 	 *
 	 * @param WordPoints_Hook_Arg[] $args The hook args.
@@ -85,12 +98,12 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 				if ( ! $child_arg ) {
 					$this->validator->add_error(
 						__( '%s does not have a child "%s".', 'wordpoints' ) // TODO message
-						, $child_slug
+						, $this->push_on_descend ? $child_slug : null
 					);
 				}
 			}
 
-		} else {
+		} elseif ( $this->push_on_descend ) {
 
 			$this->validator->push_field( $child_slug );
 		}
@@ -110,6 +123,18 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 		}
 
 		return $ascended;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_from_hierarchy( array $hierarchy ) {
+
+		$this->push_on_descend = false;
+		$entityish = parent::get_from_hierarchy( $hierarchy );
+		$this->push_on_descend = true;
+
+		return $entityish;
 	}
 }
 

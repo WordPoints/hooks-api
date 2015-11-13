@@ -243,6 +243,106 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$this->assertEquals( array( 'test' ), $validator->get_field_stack() );
 		$this->assertEquals( array(), $validator->get_errors() );
 	}
+
+	/**
+	 * Test getting an entity from an array of slugs.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_from_hierarchy() {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+
+		$entities->children->register(
+			'test'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Child'
+		);
+
+		$entities->children->register(
+			'test'
+			, 'child_2'
+			, 'WordPoints_PHPUnit_Mock_Entity_Child'
+		);
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
+		$args->set_validator( $validator );
+
+		$args->add_entity( $entity );
+		$args->descend( 'test' );
+		$args->descend( 'child' );
+
+		$this->assertEquals( 'child', $args->get_current()->get_slug() );
+		$this->assertEquals( array( 'test', 'child' ), $validator->get_field_stack() );
+		$this->assertEquals( array(), $validator->get_errors() );
+
+		$from_hierarchy = $args->get_from_hierarchy(
+			array( 'test', 'child_2' )
+		);
+
+		$this->assertEquals( 'child_2', $from_hierarchy->get_slug() );
+
+		$this->assertEquals( array( 'test', 'child' ), $validator->get_field_stack() );
+		$this->assertEquals( array(), $validator->get_errors() );
+
+		$this->assertEquals( 'child', $args->get_current()->get_slug() );
+
+		$args->ascend();
+
+		$this->assertEquals( $entity, $args->get_current() );
+		$this->assertEquals( array( 'test' ), $validator->get_field_stack() );
+		$this->assertEquals( array(), $validator->get_errors() );
+	}
+
+	/**
+	 * Test getting an entity from an invalid array of slugs.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_from_hierarchy_invalid() {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+
+		$entities->children->register(
+			'test'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Child'
+		);
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+		$args->add_entity( $entity );
+
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
+		$validator->push_field( 'field' );
+		$args->set_validator( $validator );
+
+		$this->assertEquals( array( 'field' ), $validator->get_field_stack() );
+		$this->assertEquals( array(), $validator->get_errors() );
+
+		$from_hierarchy = $args->get_from_hierarchy(
+			array( 'test', 'child_2' )
+		);
+
+		$this->assertNull( $from_hierarchy );
+
+		$this->assertEquals( array( 'field' ), $validator->get_field_stack() );
+
+		$errors = $validator->get_errors();
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( array( 'field' ), $errors[0]['field'] );
+	}
 }
 
 // EOF
