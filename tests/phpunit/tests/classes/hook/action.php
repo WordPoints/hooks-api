@@ -14,7 +14,7 @@
  *
  * @covers WordPoints_Hook_Action
  */
-class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
+class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
 	 * Test getting the action slug.
@@ -96,6 +96,8 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_get_arg_value() {
 
+		$this->mock_apps();
+
 		wordpoints_entities()->register(
 			'test_entity'
 			, 'WordPoints_PHPUnit_Mock_Entity'
@@ -116,6 +118,8 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 * @since 1.0.0
 	 */
 	public function test_get_entity_id_different_index() {
+
+		$this->mock_apps();
 
 		wordpoints_entities()->register(
 			'test_entity'
@@ -138,6 +142,8 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_get_arg_value_not_found() {
 
+		$this->mock_apps();
+
 		wordpoints_entities()->register(
 			'test_entity'
 			, 'WordPoints_PHPUnit_Mock_Entity'
@@ -157,6 +163,8 @@ class WordPoints_Hook_Action_Test extends PHPUnit_Framework_TestCase {
 	 * @since 1.0.0
 	 */
 	public function test_get_arg_value_not_there() {
+
+		$this->mock_apps();
 
 		wordpoints_entities()->register(
 			'test_entity'

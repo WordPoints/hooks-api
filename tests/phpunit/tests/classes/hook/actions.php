@@ -14,7 +14,7 @@
  *
  * @covers WordPoints_Hook_Actions
  */
-class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
+class WordPoints_Hook_Actions_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
 	 * Test registering an action registers it with the router.
@@ -75,6 +75,8 @@ class WordPoints_Hook_Actions_Test extends PHPUnit_Framework_TestCase {
 	 * @since 1.0.0
 	 */
 	public function test_get() {
+
+		$this->mock_apps();
 
 		$actions = new WordPoints_Hook_Actions;
 
