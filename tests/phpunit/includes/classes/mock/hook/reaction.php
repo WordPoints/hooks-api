@@ -15,80 +15,6 @@
 class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 
 	/**
-	 * Incremented to determine the ID of each mock reaction object.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var int
-	 */
-	protected static $ids = 0;
-
-	/**
-	 * Get the ID for the next mock reaction
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return int The next ID.
-	 */
-	protected function increment_id() {
-		return ++self::$ids;
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function exists() {
-		return ( isset( $this->ID ) && false !== $this->get_settings() );
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function create( $event_slug ) {
-
-		$this->ID = $this->increment_id();
-
-		$result = add_option(
-			$this->get_settings_option_name()
-			, array( 'event' => $event_slug, 'reactor' => $this->reactor_slug )
-		);
-
-		if ( ! $result ) {
-			return false;
-		}
-
-		$index_option = "wordpoints_{$this->reactor_slug}_mock_hook_reaction_index";
-
-		if ( $this->network_wide ) {
-			$index = get_site_option( $index_option );
-		} else {
-			$index = get_option( $index_option );
-		}
-
-		$index[] = array( 'event' => $event_slug, 'id' => $this->ID );
-
-		if ( $this->network_wide ) {
-			return update_site_option( $index_option, $index );
-		} else {
-			return update_option( $index_option, $index );
-		}
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function delete() {
-
-		$option = $this->get_settings_option_name();
-
-		if ( $this->network_wide ) {
-			return delete_site_option( $option );
-		} else {
-			return delete_option( $option );
-		}
-	}
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function get_event_slug() {
@@ -149,17 +75,6 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	}
 
 	/**
-	 * Get the name of the options where the settings are stored.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The option name.
-	 */
-	protected function get_settings_option_name() {
-		return "wordpoints_mock_hook_reaction-{$this->reactor_slug}-{$this->ID}";
-	}
-
-	/**
 	 * Gets the settings for this reaction from the database.
 	 *
 	 * @since 1.0.0
@@ -168,15 +83,17 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	 */
 	protected function get_settings() {
 
-		$option = $this->get_settings_option_name();
+		/** @var WordPoints_Hook_Reactor $reactor */
+		$reactor = wordpoints_hooks()->reactors->get( $this->reactor_slug );
 
-		if ( $this->network_wide ) {
-			$settings = get_site_option( $option );
-		} else {
-			$settings = get_option( $option );
+		if ( ! $reactor ) {
+			return false;
 		}
 
-		return $settings;
+		return $reactor->reactions->get_reaction_settings(
+			$this->ID
+			, $this->network_wide
+		);
 	}
 
 	/**
@@ -190,13 +107,18 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	 */
 	protected function update_settings( $settings ) {
 
-		$option = $this->get_settings_option_name();
+		/** @var WordPoints_Hook_Reactor $reactor */
+		$reactor = wordpoints_hooks()->reactors->get( $this->reactor_slug );
 
-		if ( $this->network_wide ) {
-			return update_site_option( $option, $settings );
-		} else {
-			return update_option( $option, $settings );
+		if ( ! $reactor ) {
+			return false;
 		}
+
+		return $reactor->reactions->update_reaction_settings(
+			$this->ID
+			, $this->network_wide
+			, $settings
+		);
 	}
 }
 

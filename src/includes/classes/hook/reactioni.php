@@ -31,35 +31,6 @@ interface WordPoints_Hook_ReactionI {
 	public function __construct( $id, $reactor_slug, $network_wide = false );
 
 	/**
-	 * Checks whether this reaction exists.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return bool Whether the reaction exists.
-	 */
-	public function exists();
-
-	/**
-	 * Create this reaction if it doesn't exist.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $event_slug The slug of the event that this is a reaction to.
-	 *
-	 * @return bool Whether the reaction was created successfully.
-	 */
-	public function create( $event_slug );
-
-	/**
-	 * Delete this reaction.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return bool Whether the reaction was deleted successfully.
-	 */
-	public function delete();
-
-	/**
 	 * Get the slug of the event this reaction is for.
 	 *
 	 * @since 1.0.0

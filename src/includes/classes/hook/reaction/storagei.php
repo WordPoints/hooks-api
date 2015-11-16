@@ -27,6 +27,17 @@ interface WordPoints_Hook_Reaction_StorageI {
 	public function __construct( $reactor_slug );
 
 	/**
+	 * Check whether a reaction exists.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $id The reaction ID.
+	 *
+	 * @return bool Whether the reaction exists.
+	 */
+	public function reaction_exists( $id );
+
+	/**
 	 * Get an reaction object.
 	 *
 	 * @since 1.0.0

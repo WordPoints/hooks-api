@@ -82,20 +82,6 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	}
 
 	/**
-	 * @since 1.0.0
-	 */
-	public function delete_reaction( $id ) {
-
-		$reaction = $this->get_reaction( $id );
-
-		if ( ! $reaction->exists() ) {
-			return false;
-		}
-
-		return $reaction->delete();
-	}
-
-	/**
 	 * Create or update a reaction.
 	 *
 	 * @since 1.0.0
@@ -109,9 +95,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	 */
 	protected function create_or_update_reaction( array $settings, $id = null ) {
 
-		$reaction = $this->get_reaction( $id );
-
-		if ( isset( $id ) && ! $reaction->exists() ) {
+		if ( isset( $id ) && ! $this->reaction_exists( $id ) ) {
 			return false;
 		}
 
@@ -124,13 +108,16 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 			return $validator;
 		}
 
-		if ( ! $reaction->exists() ) {
-			$result = $reaction->create( $settings['event'] );
+		if ( ! isset( $id ) ) {
 
-			if ( ! $result ) {
+			$id = $this->_create_reaction( $settings['event'] );
+
+			if ( ! $id ) {
 				return false;
 			}
 		}
+
+		$reaction = $this->get_reaction( $id );
 
 		$reaction->update_meta( 'event', $settings['event'] );
 
@@ -155,6 +142,20 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 
 		return $reaction;
 	}
+
+	/**
+	 * Create a reaction.
+	 *
+	 * The event slug is provided in case it is needed (for some storage methods it
+	 * is).
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $event_slug The slug of the event this reaction is for.
+	 *
+	 * @return int|false The reaction ID, or false if not created.
+	 */
+	abstract protected function _create_reaction( $event_slug );
 }
 
 // EOF
