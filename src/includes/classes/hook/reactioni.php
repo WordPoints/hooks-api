@@ -60,6 +60,20 @@ interface WordPoints_Hook_ReactionI {
 	public function get_meta( $key );
 
 	/**
+	 * Add a piece of metadata for this reaction.
+	 *
+	 * If this meta key already exists, the value will not be changed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $key   The meta key.
+	 * @param mixed  $value The value.
+	 *
+	 * @return bool Whether the metadata was added successfully.
+	 */
+	public function add_meta( $key, $value );
+
+	/**
 	 * Update a piece of metadata for this reaction.
 	 *
 	 * @since 1.0.0

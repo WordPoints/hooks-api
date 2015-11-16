@@ -38,6 +38,22 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	/**
 	 * @since 1.0.0
 	 */
+	public function add_meta( $key, $value ) {
+
+		$settings = $this->get_settings();
+
+		if ( ! is_array( $settings ) || isset( $settings['key'] ) ) {
+			return false;
+		}
+
+		$settings[ $key ] = $value;
+
+		return $this->update_settings( $settings );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function update_meta( $key, $value ) {
 
 		$settings = $this->get_settings();
