@@ -16,6 +16,13 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 
 	/**
 	 * @since 1.0.0
+	 *
+	 * @var WordPoints_PHPUnit_Mock_Hook_Reaction_Storage
+	 */
+	protected $storage;
+
+	/**
+	 * @since 1.0.0
 	 */
 	public function get_event_slug() {
 		return $this->get_meta( 'event' );
@@ -98,18 +105,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	 * @return array|false The settings, or false if none.
 	 */
 	protected function get_settings() {
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $this->reactor_slug );
-
-		if ( ! $reactor ) {
-			return false;
-		}
-
-		return $reactor->reactions->get_reaction_settings(
-			$this->ID
-			, $this->network_wide
-		);
+		return $this->storage->get_reaction_settings( $this->ID );
 	}
 
 	/**
@@ -122,19 +118,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	 * @return bool Whether the settings were updated successfully.
 	 */
 	protected function update_settings( $settings ) {
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $this->reactor_slug );
-
-		if ( ! $reactor ) {
-			return false;
-		}
-
-		return $reactor->reactions->update_reaction_settings(
-			$this->ID
-			, $this->network_wide
-			, $settings
-		);
+		return $this->storage->update_reaction_settings( $this->ID, $settings );
 	}
 }
 

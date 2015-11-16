@@ -23,25 +23,14 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 * @since 1.0.0
 	 */
 	public function reaction_exists( $id ) {
-
-		if ( $this->hooks->get_network_mode() ) {
-			return (bool) get_site_option( $this->get_settings_option_name( $id ) );
-		} else {
-			return (bool) get_option( $this->get_settings_option_name( $id ) );
-		}
+		return (bool) $this->get_option( $this->get_settings_option_name( $id ) );
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_reactions() {
-
-		$network_mode = $this->hooks->get_network_mode();
-
-		return $this->create_reaction_objects(
-			$this->get_reaction_index( $network_mode )
-			, $network_mode
-		);
+		return $this->create_reaction_objects( $this->get_reaction_index() );
 	}
 
 	/**
@@ -49,16 +38,9 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 */
 	public function get_reactions_to_event( $event_slug ) {
 
-		$reactions = $this->_get_reactions_to_event( $event_slug, false );
-
-		if ( is_wordpoints_network_active() ) {
-			$reactions = array_merge(
-				$reactions
-				, $this->_get_reactions_to_event( $event_slug, true )
-			);
-		}
-
-		return $reactions;
+		$index = $this->get_reaction_index();
+		$index = wp_list_filter( $index, array( 'event' => $event_slug ) );
+		return $this->create_reaction_objects( $index );
 	}
 
 	/**
@@ -73,17 +55,17 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param bool $network_wide Whether to retrieve the index for network-wide or
-	 *                           standard reactions.
-	 *
 	 * @return array[] The index array.
 	 */
-	protected function get_reaction_index( $network_wide ) {
+	protected function get_reaction_index() {
 
-		return wordpoints_get_array_option(
-			$this->get_reaction_index_option_name()
-			, $network_wide ? 'site' : 'default'
-		);
+		$index = $this->get_option( $this->get_reaction_index_option_name() );
+
+		if ( ! is_array( $index ) ) {
+			$index = array();
+		}
+
+		return $index;
 	}
 
 	/**
@@ -91,21 +73,16 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array[] $index        The index {@see self::get_reaction_index()}.
-	 * @param bool    $network_wide Whether to update the index for network-wide or
-	 *                              standard reactions.
+	 * @param array[] $index The index {@see self::get_reaction_index()}.
 	 *
 	 * @return bool Whether the index was updated successfully.
 	 */
-	protected function update_reaction_index( $index, $network_wide ) {
+	protected function update_reaction_index( $index ) {
 
-		$index_option = $this->get_reaction_index_option_name();
-
-		if ( $network_wide ) {
-			return update_site_option( $index_option, $index );
-		} else {
-			return update_option( $index_option, $index );
-		}
+		return $this->update_option(
+			$this->get_reaction_index_option_name()
+			, $index
+		);
 	}
 
 	/**
@@ -113,12 +90,11 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $index        A hook index {@see self::get_reaction_index()}.
-	 * @param bool  $network_wide Whether the index is for network-wide reactions.
+	 * @param array $index A hook index {@see self::get_reaction_index()}.
 	 *
 	 * @return WordPoints_Hook_Reaction_Options[] The objects for the reactions.
 	 */
-	protected function create_reaction_objects( $index, $network_wide ) {
+	protected function create_reaction_objects( $index ) {
 
 		$reactions = array();
 
@@ -127,28 +103,12 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 			$reactions[] = new $this->reaction_class(
 				$reaction['id']
 				, $this->reactor_slug
-				, $network_wide
+				, $this->network_wide
+				, $this
 			);
 		}
 
 		return $reactions;
-	}
-
-	/**
-	 * Get the reactions to a specific event for this reactor.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $event_slug   The slug of the event to get the reactions for.
-	 * @param bool   $network_wide Whether to get network-wide or standard reactions.
-	 *
-	 * @return WordPoints_Hook_Reaction_Options[] The reaction objects.
-	 */
-	protected function _get_reactions_to_event( $event_slug, $network_wide ) {
-
-		$index = $this->get_reaction_index( $network_wide );
-		$index = wp_list_filter( $index, array( 'event' => $event_slug ) );
-		return $this->create_reaction_objects( $index, $network_wide );
 	}
 
 	/**
@@ -160,25 +120,17 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 			return false;
 		}
 
-		$option = $this->get_settings_option_name( $id );
-
-		$network_wide = $this->hooks->get_network_mode();
-
-		if ( $network_wide ) {
-			$result = delete_site_option( $option );
-		} else {
-			$result = delete_option( $option );
-		}
+		$result = $this->delete_option( $this->get_settings_option_name( $id ) );
 
 		if ( ! $result ) {
 			return false;
 		}
 
-		$index = $this->get_reaction_index( $network_wide );
+		$index = $this->get_reaction_index();
 
 		$index = wp_list_filter( $index, array( 'id' => $id ), 'NOT' );
 
-		return $this->update_reaction_index( $index, $network_wide );
+		return $this->update_reaction_index( $index );
 	}
 
 	/**
@@ -186,9 +138,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 */
 	protected function _create_reaction( $event_slug ) {
 
-		$network_wide = $this->hooks->get_network_mode();
-
-		$index = $this->get_reaction_index( $network_wide );
+		$index = $this->get_reaction_index();
 
 		$id = 1;
 
@@ -201,11 +151,8 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		$settings = array( 'event' => $event_slug, 'reactor' => $this->reactor_slug );
 
-		if ( $network_wide ) {
-			$result = add_site_option( $option, $settings );
-		} else {
-			$result = add_option( $option, $settings );
-		}
+
+		$result = $this->add_option( $option, $settings );
 
 		if ( ! $result ) {
 			return false;
@@ -213,7 +160,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		$index[] = array( 'event' => $event_slug, 'id' => $id );
 
-		if ( ! $this->update_reaction_index( $index, $network_wide ) ) {
+		if ( ! $this->update_reaction_index( $index ) ) {
 			return false;
 		}
 
@@ -221,13 +168,73 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	}
 
 	/**
+	 * Get an option.
+	 *
+	 * This is public so that the reaction object can access it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $name The option name.
+	 *
+	 * @return mixed The option value, or false.
+	 */
+	public function get_option( $name ) {
+		return get_option( $name );
+	}
+
+	/**
+	 * Add an option.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $name  The name of the option.
+	 * @param mixed  $value The option value.
+	 *
+	 * @return bool Whether the option was added successfully.
+	 */
+	protected function add_option( $name, $value ) {
+		return add_option( $name, $value );
+	}
+
+	/**
+	 * Update an option.
+	 *
+	 * This is public so that the reaction object can access it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $name  The option name.
+	 * @param mixed  $value The option value.
+	 *
+	 * @return bool Whether the option was updated successfully.
+	 */
+	public function update_option( $name, $value ) {
+		return update_option( $name, $value );
+	}
+
+	/**
+	 * Delete an option.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $name The option name.
+	 *
+	 * @return bool Whether the option was deleted successfully.
+	 */
+	protected function delete_option( $name ) {
+		return delete_option( $name );
+	}
+
+	/**
 	 * Get the name of the option where the reaction's settings are stored.
+	 *
+	 * This is public so that the reaction object can access it.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return string The name of the option where the settings are stored.
 	 */
-	protected function get_settings_option_name( $id ) {
+	public function get_settings_option_name( $id ) {
 		return "wordpoints_{$this->reactor_slug}_hook_reaction-{$id}";
 	}
 

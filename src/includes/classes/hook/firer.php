@@ -24,7 +24,7 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 		/** @var WordPoints_Hook_Reactor $reactor */
 		foreach ( $hooks->reactors->get_all() as $reactor ) {
 
-			foreach ( $reactor->reactions->get_reactions_to_event( $event_slug ) as $reaction ) {
+			foreach ( $reactor->get_all_reactions_to_event( $event_slug ) as $reaction ) {
 
 				$validator = new WordPoints_Hook_Reaction_Validator( $reaction, true );
 

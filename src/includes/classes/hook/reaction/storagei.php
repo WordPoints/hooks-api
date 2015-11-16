@@ -23,8 +23,18 @@ interface WordPoints_Hook_Reaction_StorageI {
 	 * @since 1.0.0
 	 *
 	 * @param string $reactor_slug The slug of the reactor the reactions belong to.
+	 * @param bool   $network_wide Whether this object will store network-wide reactions.
 	 */
-	public function __construct( $reactor_slug );
+	public function __construct( $reactor_slug, $network_wide );
+
+	/**
+	 * Check whether this object stores network-wide reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether this object stores network-wide reactions.
+	 */
+	public function is_network_wide();
 
 	/**
 	 * Check whether a reaction exists.

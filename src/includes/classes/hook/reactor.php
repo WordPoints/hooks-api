@@ -16,7 +16,8 @@
  *
  * @since 1.0.0
  *
- * @property-read WordPoints_Hook_Reaction_StorageI $reactions
+ * @property-read WordPoints_Hook_Reaction_StorageI $reactions         Object for accessing hook reactions for this reactor.
+ * @property-read WordPoints_Hook_Reaction_StorageI $network_reactions Object for accessing network hook reactions for this reactor.
  */
 abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
@@ -57,25 +58,28 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
 	/**
-	 * Object for accessing hook reactions for this reactor.
+	 * The network reaction storage class this reactor uses.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_Reaction_StorageI
+	 * @var string
 	 */
-	protected $reactions;
+	protected $network_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options_Network';
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function __get( $var ) {
 
-		if ( 'reactions' === $var ) {
-			if ( ! isset( $this->reactions ) ) {
-				$this->reactions = new $this->reactions_class( $this->slug );
+		if ( 'reactions' === $var || 'network_reactions' === $var ) {
+			if ( ! isset( $this->$var ) ) {
+				$this->$var = new $this->{"{$var}_class"}(
+					$this->slug
+					, ( 'network_reactions' === $var )
+				);
 			}
 
-			return $this->reactions;
+			return $this->$var;
 		}
 
 		return null;
@@ -112,6 +116,32 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function get_settings_fields() {
 		return $this->settings_fields;
+	}
+
+	/**
+	 * Get all reactions to a particular event for this reactor.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $event_slug The event slug.
+	 *
+	 * @return WordPoints_Hook_ReactionI[] All of the reaction objects.
+	 */
+	public function get_all_reactions_to_event( $event_slug ) {
+
+		$reactions = $this->reactions->get_reactions_to_event( $event_slug );
+
+		if (
+			isset( $this->network_reactions_class )
+			&& is_wordpoints_network_active()
+		) {
+			$reactions = array_merge(
+				$reactions
+				, $this->network_reactions->get_reactions_to_event( $event_slug )
+			);
+		}
+
+		return $reactions;
 	}
 
 	/**

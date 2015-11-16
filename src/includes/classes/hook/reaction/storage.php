@@ -27,6 +27,15 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	protected $reactor_slug;
 
 	/**
+	 * Whether this object is storing network-wide reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	protected $network_wide;
+
+	/**
 	 * The name of the class to use for reaction objects.
 	 *
 	 * The class must implement the WordPoints_Hook_ReactionI interface.
@@ -49,10 +58,18 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	/**
 	 * @since 1.0.0
 	 */
-	public function __construct( $reactor_slug ) {
+	public function __construct( $reactor_slug, $network_wide ) {
 
 		$this->reactor_slug = $reactor_slug;
+		$this->network_wide = $network_wide;
 		$this->hooks = wordpoints_hooks();
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function is_network_wide() {
+		return $this->network_wide;
 	}
 
 	/**
@@ -63,7 +80,8 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 		return new $this->reaction_class(
 			$id
 			, $this->reactor_slug
-			, $this->hooks->get_network_mode()
+			, $this->network_wide
+			, $this
 		);
 	}
 

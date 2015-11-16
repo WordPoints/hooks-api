@@ -83,6 +83,7 @@ require_once( dirname( __FILE__ ) . 'hook/reaction.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/options.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/storage.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/storage/options.php' );
+require_once( dirname( __FILE__ ) . 'hook/reaction/storage/options/network.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/storagei.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/validator.php' );
 require_once( dirname( __FILE__ ) . 'hook/reactioni.php' );

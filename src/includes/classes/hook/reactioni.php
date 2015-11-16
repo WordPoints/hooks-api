@@ -28,7 +28,7 @@ interface WordPoints_Hook_ReactionI {
 	 * @param bool                          $network_wide Whether this is a network-
 	 *                                                    wide reaction.
 	 */
-	public function __construct( $id, $reactor_slug, $network_wide = false );
+	public function __construct( $id, $reactor_slug, $network_wide );
 
 	/**
 	 * Get the slug of the event this reaction is for.

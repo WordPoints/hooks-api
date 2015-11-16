@@ -16,6 +16,13 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 
 	/**
 	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_Storage_Options
+	 */
+	protected $storage;
+
+	/**
+	 * @since 1.0.0
 	 */
 	public function get_event_slug() {
 	    // TODO is this even needed.
@@ -92,17 +99,6 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	}
 
 	/**
-	 * Get the name of the option where the reaction's settings are stored.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The name of the option where the settings are stored.
-	 */
-	protected function get_settings_option_name() {
-		return "wordpoints_{$this->reactor_slug}_hook_reaction-{$this->ID}";
-	}
-
-	/**
 	 * Gets the settings for this reaction from the database.
 	 *
 	 * @since 1.0.0
@@ -111,15 +107,9 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	protected function get_settings() {
 
-		$option = $this->get_settings_option_name();
-
-		if ( $this->network_wide ) {
-			$settings = get_site_option( $option );
-		} else {
-			$settings = get_option( $option );
-		}
-
-		return $settings;
+		return $this->storage->get_option(
+			$this->storage->get_settings_option_name( $this->ID )
+		);
 	}
 
 	/**
@@ -133,13 +123,10 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	protected function update_settings( $settings ) {
 
-		$option = $this->get_settings_option_name();
-
-		if ( $this->network_wide ) {
-			return update_site_option( $option, $settings );
-		} else {
-			return update_option( $option, $settings );
-		}
+		return $this->storage->update_option(
+			$this->storage->get_settings_option_name( $this->ID )
+			, $settings
+		);
 	}
 }
 

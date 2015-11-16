@@ -35,7 +35,16 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 *
 	 * @var bool
 	 */
-	protected $network_wide = false;
+	protected $network_wide;
+
+	/**
+	 * The reaction storage object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_StorageI
+	 */
+	protected $storage;
 
 	//
 	// Public Methods.
@@ -44,7 +53,7 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	/**
 	 * @since 1.0.0
 	 */
-	public function __construct( $id, $reactor_slug, $network_wide = false ) {
+	public function __construct( $id, $reactor_slug, $network_wide, $storage = null ) {
 
 		if ( is_a( $id, __CLASS__ ) ) {
 			$id = $id->ID;
@@ -61,6 +70,8 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 		}
 
 		$this->network_wide = (bool) $network_wide;
+
+		$this->storage = $storage;
 	}
 
 	/**
