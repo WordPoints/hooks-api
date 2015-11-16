@@ -24,7 +24,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 */
 	public function reaction_exists( $id ) {
 
-		if ( wordpoints_hooks()->get_network_mode() ) {
+		if ( $this->hooks->get_network_mode() ) {
 			return (bool) get_site_option( $this->get_settings_option_name( $id ) );
 		} else {
 			return (bool) get_option( $this->get_settings_option_name( $id ) );
@@ -49,7 +49,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 */
 	public function get_reactions_to_event( $event_slug ) {
 
-		$reactions = $this->_get_reactions_to_event( $event_slug );
+		$reactions = $this->_get_reactions_to_event( $event_slug, false );
 
 		if ( is_wordpoints_network_active() ) {
 			$reactions = array_merge(
@@ -78,7 +78,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @return array[] The index array.
 	 */
-	protected function get_reaction_index( $network_wide = false ) {
+	protected function get_reaction_index( $network_wide ) {
 
 		return wordpoints_get_array_option(
 			$this->get_reaction_index_option_name()
@@ -97,7 +97,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @return bool Whether the index was updated successfully.
 	 */
-	protected function update_reaction_index( $index, $network_wide = false ) {
+	protected function update_reaction_index( $index, $network_wide ) {
 
 		$index_option = $this->get_reaction_index_option_name();
 
@@ -118,7 +118,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @return WordPoints_Hook_Reaction_Options[] The objects for the reactions.
 	 */
-	protected function create_reaction_objects( $index, $network_wide = false ) {
+	protected function create_reaction_objects( $index, $network_wide ) {
 
 		$reactions = array();
 
@@ -144,7 +144,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @return WordPoints_Hook_Reaction_Options[] The reaction objects.
 	 */
-	protected function _get_reactions_to_event( $event_slug, $network_wide = false ) {
+	protected function _get_reactions_to_event( $event_slug, $network_wide ) {
 
 		$index = $this->get_reaction_index( $network_wide );
 		$index = wp_list_filter( $index, array( 'event' => $event_slug ) );

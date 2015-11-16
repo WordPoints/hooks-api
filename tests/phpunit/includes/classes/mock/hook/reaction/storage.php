@@ -117,9 +117,11 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 	 */
 	public function get_reactions() {
 
+		$network_wide = $this->hooks->get_network_mode();
+
 		return $this->create_reaction_objects(
-			$this->_get_reactions()
-			, $this->hooks->get_network_mode()
+			$this->_get_reactions( $network_wide )
+			, $network_wide
 		);
 	}
 
@@ -128,7 +130,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 	 */
 	public function get_reactions_to_event( $event_slug ) {
 
-		$reactions = $this->_get_reactions_to_event( $event_slug );
+		$reactions = $this->_get_reactions_to_event( $event_slug, false );
 
 		if ( is_wordpoints_network_active() ) {
 			$reactions = array_merge(
@@ -168,7 +170,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 	 *
 	 * @return array[] The reactions.
 	 */
-	protected function _get_reactions( $network_wide = false ) {
+	protected function _get_reactions( $network_wide ) {
 
 		return ( $network_wide ) ? $this->network_reactions : $this->reactions;
 	}
@@ -183,7 +185,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 	 *
 	 * @return WordPoints_PHPUnit_Mock_Hook_Reaction[] The objects for the reactions.
 	 */
-	protected function create_reaction_objects( $reactions, $network_wide = false ) {
+	protected function create_reaction_objects( $reactions, $network_wide ) {
 
 		$objects = array();
 
@@ -209,7 +211,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 	 *
 	 * @return WordPoints_Hook_Reaction_Options[] The reaction objects.
 	 */
-	protected function _get_reactions_to_event( $event_slug, $network_wide = false ) {
+	protected function _get_reactions_to_event( $event_slug, $network_wide ) {
 
 		$reactions = $this->_get_reactions( $network_wide );
 		$reactions = wp_list_filter( $reactions, array( 'event' => $event_slug ) );
