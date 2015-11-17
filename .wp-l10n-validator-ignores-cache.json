@@ -1,13 +1,13 @@
 {
     "\/admin\/includes\/classes\/screen\/points\/types.php": {
         "attr": {
-            "115": false
+            "116": false
         },
         "relationship": {
-            "124": false
+            "121": false
         },
         "entity": {
-            "145": {
+            "142": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -16,13 +16,13 @@
             }
         },
         "jQuery( document ).ready( function ( $ ) {\n\n\t\t\t\t$( '.if-js-closed' )\n\t\t\t\t\t.removeClass( 'if-js-closed' )\n\t\t\t\t\t.addClass( 'closed' );\n\n\t\t\t\tpostboxes.add_postbox_toggles(": {
-            "200": false
+            "213": false
         },
         ");\n\t\t\t} );": {
-            "210": false
+            "223": false
         },
         "points-": {
-            "368": {
+            "381": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -31,7 +31,7 @@
             }
         },
         "-save": {
-            "368": {
+            "381": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -40,22 +40,22 @@
             }
         },
         "WordPointsHooksAdminData.events[": {
-            "448": false
+            "461": false
         },
         "] =": {
-            "451": false
+            "464": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
-            "450": false
+            "463": false
         },
         ";": {
-            "451": false
+            "464": false
         },
         "1": {
-            "669": false
+            "682": false
         },
         "2": {
-            "669": false
+            "682": false
         }
     },
     "\/admin\/includes\/classes\/screen.php": {
@@ -129,7 +129,7 @@
     },
     "\/includes\/classes\/entity\/post\/terms.php": {
         "ids": {
-            "41": {
+            "43": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -235,13 +235,6 @@
     },
     "\/includes\/functions.php": {
         "approved": {
-            "110": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "131": {
                 "name": "array",
                 "type": "unknown",
@@ -269,20 +262,6 @@
             }
         },
         "WordPoints_Hook_Arg": {
-            "211": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
-            "225": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "239": {
                 "name": "array",
                 "type": "unknown",

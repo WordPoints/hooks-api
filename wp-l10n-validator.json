@@ -59,8 +59,10 @@
 		"WordPoints_Hook_Action::$arg_index": true,
 		"WordPoints_Hook_Extension::$slug": true,
 		"WordPoints_Hook_Reaction_Storage::$reaction_class": true,
+		"WordPoints_Hook_Reaction_Storage_Options::$reaction_class": true,
 		"WordPoints_Hook_Reactor::$slug": true,
 		"WordPoints_Hook_Reactor::$arg_types": true,
+		"WordPoints_Hook_Reactor::$network_reactions_class": true,
 		"WordPoints_Hook_Reactor::$reactions_class": true,
 		"WordPoints_Un_Installer_Base::$type": true
 	},
