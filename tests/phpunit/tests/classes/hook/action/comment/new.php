@@ -25,7 +25,11 @@ class WordPoints_Hook_Action_Comment_New_Test
 	public function test_should_fire_requirements_met() {
 
 		$comment = $this->factory->comment->create_and_get(
-			array( 'comment_approved' => '1' )
+			array(
+				'comment_approved' => '1',
+				// We supply a post because some code always expects one.
+				'comment_post_ID' => $this->factory->post->create(),
+			)
 		);
 
 		$action = new WordPoints_Hook_Action_Comment_New(
@@ -78,7 +82,10 @@ class WordPoints_Hook_Action_Comment_New_Test
 	public function test_should_fire_other_requirements_met() {
 
 		$comment = $this->factory->comment->create_and_get(
-			array( 'comment_approved' => '1' )
+			array(
+				'comment_approved' => '1',
+				'comment_post_ID' => $this->factory->post->create(),
+			)
 		);
 
 		$action = new WordPoints_Hook_Action_Comment_New(
@@ -98,7 +105,10 @@ class WordPoints_Hook_Action_Comment_New_Test
 	public function test_should_fire_other_requirements_not_met() {
 
 		$comment = $this->factory->comment->create_and_get(
-			array( 'comment_approved' => '1' )
+			array(
+				'comment_approved' => '1',
+				'comment_post_ID' => $this->factory->post->create(),
+			)
 		);
 
 		$action = new WordPoints_Hook_Action_Comment_New(
