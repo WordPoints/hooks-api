@@ -22,7 +22,7 @@ class WordPoints_Hook_Reaction_Storage_Options_Network extends WordPoints_Hook_R
 	/**
 	 * @since 1.0.0
 	 */
-	protected function get_option( $name ) {
+	public function get_option( $name ) {
 		return get_site_option( $name );
 	}
 
@@ -36,7 +36,7 @@ class WordPoints_Hook_Reaction_Storage_Options_Network extends WordPoints_Hook_R
 	/**
 	 * @since 1.0.0
 	 */
-	protected function update_option( $name, $value ) {
+	public function update_option( $name, $value ) {
 		return update_site_option( $name, $value );
 	}
 
