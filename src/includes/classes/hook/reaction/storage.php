@@ -123,9 +123,10 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 			return false;
 		}
 
-		$settings['reactor'] = $this->reactor_slug;
+		/** @var WordPoints_Hook_Reactor $reactor */
+		$reactor = $this->hooks->reactors->get( $this->reactor_slug );
 
-		$validator = new WordPoints_Hook_Reaction_Validator( $settings );
+		$validator = new WordPoints_Hook_Reaction_Validator( $settings, $reactor );
 		$settings = $validator->validate();
 
 		if ( $validator->had_errors() ) {
@@ -144,9 +145,6 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 		$reaction = $this->get_reaction( $id );
 
 		$reaction->update_meta( 'event', $settings['event'] );
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = $this->hooks->reactors->get( $this->reactor_slug );
 
 		$reactor->update_settings( $reaction, $settings );
 

@@ -31,7 +31,6 @@ class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_Points_UnitT
 		$points_target = $hooks->reactors->get( 'points' );
 		$instance      = $points_target->reactions->create_reaction(
 			array(
-				'reactor'     => 'points',
 				'event'       => 'post_publish',
 				'points'      => 10,
 				'points_type' => 'points',

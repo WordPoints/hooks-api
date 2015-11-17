@@ -78,15 +78,26 @@ final class WordPoints_Hook_Reaction_Validator {
 	protected $hooks;
 
 	/**
+	 * The reactor object the reaction being validated is for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reactor
+	 */
+	protected $reactor;
+
+	/**
 	 * @since 1.0.0
 	 *
 	 * @param WordPoints_Hook_ReactionI|array $settings  The settings or reaction to
 	 *                                                   validate.
+	 * @param WordPoints_Hook_Reactor         $reactor   The reactor object.
 	 * @param bool                            $fail_fast Whether to fail as soon as
 	 *                                                   the first error is found.
 	 */
-	public function __construct( $settings, $fail_fast = false ) {
+	public function __construct( $settings, WordPoints_Hook_Reactor $reactor, $fail_fast = false ) {
 
+		$this->reactor = $reactor;
 		$this->fail_fast = $fail_fast;
 		$this->hooks = wordpoints_hooks();
 
@@ -132,16 +143,7 @@ final class WordPoints_Hook_Reaction_Validator {
 			$this->event_args = new WordPoints_Hook_Event_Args( $event_args );
 			$this->event_args->set_validator( $this );
 
-			if ( ! isset( $this->settings['reactor'] ) ) {
-				$this->add_error( __( 'Reactor type is missing.', 'wordpoints' ), 'reactor' );
-			} elseif ( ! $this->hooks->reactors->is_registered( $this->settings['reactor'] ) ) {
-				$this->add_error( __( 'Reactor type is invalid.', 'wordpoints' ), 'reactor' );
-			} else {
-
-				$reactor = $this->hooks->reactors->get( $this->settings['reactor'] );
-
-				$this->settings = $reactor->validate_settings( $this->settings, $this, $this->event_args );
-			}
+			$this->settings = $this->reactor->validate_settings( $this->settings, $this, $this->event_args );
 
 			/** @var WordPoints_Hook_Extension $extension */
 			foreach ( $this->hooks->extensions->get_all() as $extension ) {
@@ -313,7 +315,7 @@ final class WordPoints_Hook_Reaction_Validator {
 	 * @return string The reactor slug.
 	 */
 	public function get_reactor_slug() {
-		return $this->get_meta( 'reactor' );
+		return $this->reactor->get_slug();
 	}
 
 	/**

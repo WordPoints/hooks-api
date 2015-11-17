@@ -150,7 +150,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		$option = $this->get_settings_option_name( $id );
 
-		$settings = array( 'event' => $event_slug, 'reactor' => $this->reactor_slug );
+		$settings = array( 'event' => $event_slug );
 
 
 		$result = $this->add_option( $option, $settings );

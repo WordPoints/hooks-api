@@ -159,10 +159,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 
 		$id = $this->increment_id();
 
-		$this->reactions[ $id ] = array(
-			'event' => $event_slug,
-			'reactor' => $this->reactor_slug,
-		);
+		$this->reactions[ $id ] = array( 'event' => $event_slug );
 
 		return $id;
 	}
