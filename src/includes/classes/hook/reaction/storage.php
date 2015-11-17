@@ -68,6 +68,13 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_reactor_slug() {
+		return $this->reactor_slug;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function is_network_wide() {
 		return $this->network_wide;
 	}
@@ -77,12 +84,11 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	 */
 	public function get_reaction( $id ) {
 
-		return new $this->reaction_class(
-			$id
-			, $this->reactor_slug
-			, $this->network_wide
-			, $this
-		);
+		if ( ! $this->reaction_exists( $id ) ) {
+			return false;
+		}
+
+		return new $this->reaction_class( $id, $this );
 	}
 
 	/**

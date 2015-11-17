@@ -28,6 +28,15 @@ interface WordPoints_Hook_Reaction_StorageI {
 	public function __construct( $reactor_slug, $network_wide );
 
 	/**
+	 * Get the slug of the reactor this object stores reactions for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The reactor slug.
+	 */
+	public function get_reactor_slug();
+
+	/**
 	 * Check whether this object stores network-wide reactions.
 	 *
 	 * @since 1.0.0
@@ -54,7 +63,7 @@ interface WordPoints_Hook_Reaction_StorageI {
 	 *
 	 * @param int $id The ID of an reaction.
 	 *
-	 * @return WordPoints_Hook_ReactionI The reaction object.
+	 * @return WordPoints_Hook_ReactionI|false The reaction, or false if nonexistent.
 	 */
 	public function get_reaction( $id );
 

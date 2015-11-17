@@ -140,12 +140,13 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 
 		foreach ( $reactions as $id => $reaction ) {
 
-			$objects[] = new $this->reaction_class(
-				$id
-				, $this->reactor_slug
-				, $this->network_wide
-				, $this
-			);
+			$object = $this->get_reaction( $id );
+
+			if ( ! $object ) {
+				continue;
+			}
+
+			$objects[] = $object;
 		}
 
 		return $objects;

@@ -22,13 +22,19 @@ interface WordPoints_Hook_ReactionI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int|WordPoints_Hook_ReactionI $id           The ID of a hook reaction.
-	 * @param string                        $reactor_slug The slug of the reactor this
-	 *                                                    reaction is for.
-	 * @param bool                          $network_wide Whether this is a network-
-	 *                                                    wide reaction.
+	 * @param int|WordPoints_Hook_ReactionI     $id      The ID of a hook reaction.
+	 * @param WordPoints_Hook_Reaction_StorageI $storage The storage object.
 	 */
-	public function __construct( $id, $reactor_slug, $network_wide );
+	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage );
+
+	/**
+	 * Check whether this reaction is network-wide.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether this reaction is network-wide.
+	 */
+	public function is_network_wide();
 
 	/**
 	 * Get the slug of the event this reaction is for.

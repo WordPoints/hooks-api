@@ -100,12 +100,13 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		foreach ( $index as $reaction ) {
 
-			$reactions[] = new $this->reaction_class(
-				$reaction['id']
-				, $this->reactor_slug
-				, $this->network_wide
-				, $this
-			);
+			$object = $this->get_reaction( $reaction['id'] );
+
+			if ( ! $object ) {
+				continue;
+			}
+
+			$reactions[] = $object;
 		}
 
 		return $reactions;
