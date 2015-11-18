@@ -31,6 +31,13 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	/**
 	 * @since 1.0.0
 	 */
+	public function update_event_slug( $event_slug ) {
+		return $this->update_meta( 'event', $event_slug );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_meta( $key ) {
 
 		$settings = $this->get_settings();
@@ -94,7 +101,14 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	 * @since 1.0.0
 	 */
 	public function get_all_meta() {
-		return $this->get_settings();
+
+		$settings = $this->get_settings();
+
+		if ( is_array( $settings ) ) {
+			unset( $settings['event'] );
+		}
+
+		return $settings;
 	}
 
 	/**

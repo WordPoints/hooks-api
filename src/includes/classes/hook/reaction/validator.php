@@ -33,6 +33,15 @@ final class WordPoints_Hook_Reaction_Validator {
 	protected $settings;
 
 	/**
+	 * The slug of the event the reaction is to.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $event_slug;
+
+	/**
 	 * Whether to stop validating after encountering the first error.
 	 *
 	 * @since 1.0.0
@@ -102,11 +111,20 @@ final class WordPoints_Hook_Reaction_Validator {
 		$this->hooks = wordpoints_hooks();
 
 		if ( $settings instanceof WordPoints_Hook_ReactionI ) {
-			$this->reaction = $settings;
-			$this->settings = $this->reaction->get_all_meta();
+
+			$this->reaction   = $settings;
+			$this->settings   = $this->reaction->get_all_meta();
+			$this->event_slug = $this->reaction->get_event_slug();
+
 		} else {
+
 			$this->settings = $settings;
+
+			if ( isset( $this->settings['event'] ) ) {
+				$this->event_slug = $this->settings['event'];
+			}
 		}
+
 	}
 
 	/**
@@ -126,9 +144,9 @@ final class WordPoints_Hook_Reaction_Validator {
 			$fail_fast = $this->fail_fast;
 			$this->fail_fast = true;
 
-			if ( ! isset( $this->settings['event'] ) ) {
+			if ( ! isset( $this->event_slug ) ) {
 				$this->add_error( __( 'Event type is missing.', 'wordpoints' ), 'event' );
-			} elseif ( ! $this->hooks->events->is_registered( $this->settings['event'] ) ) {
+			} elseif ( ! $this->hooks->events->is_registered( $this->event_slug ) ) {
 				$this->add_error( __( 'Event type is invalid.', 'wordpoints' ), 'event' );
 			}
 
@@ -137,7 +155,7 @@ final class WordPoints_Hook_Reaction_Validator {
 			$this->fail_fast = $fail_fast;
 
 			$event_args = $this->hooks->events->args->get_children(
-				$this->settings['event']
+				$this->event_slug
 			);
 
 			$this->event_args = new WordPoints_Hook_Event_Args( $event_args );
@@ -304,7 +322,7 @@ final class WordPoints_Hook_Reaction_Validator {
 	 * @return string The event slug.
 	 */
 	public function get_event_slug() {
-		return $this->get_meta( 'event' );
+		return $this->event_slug;
 	}
 
 	/**

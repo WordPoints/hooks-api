@@ -46,11 +46,22 @@ interface WordPoints_Hook_ReactionI {
 	public function get_event_slug();
 
 	/**
+	 * Update the event this reaction is for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $event_slug The event slug.
+	 *
+	 * @return bool Whether the event was updated successfully.
+	 */
+	public function update_event_slug( $event_slug );
+
+	/**
 	 * Get the slug of the reactor this reaction is for.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string
+	 * @return string The reactor slug.
 	 */
 	public function get_reactor_slug();
 

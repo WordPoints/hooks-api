@@ -49,8 +49,8 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 * The index is stored as an array of the following format:
 	 *
 	 * array(
-	 *    array( 'event' => 'post_publish',  'id' => 1  ),
-	 *    array( 'event' => 'user_register', 'id' => 23 ),
+	 *    1  => array( 'event' => 'post_publish',  'id' => 1  ),
+	 *    23 => array( 'event' => 'user_register', 'id' => 23 ),
 	 * );
 	 *
 	 * @since 1.0.0
@@ -83,6 +83,49 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 			$this->get_reaction_index_option_name()
 			, $index
 		);
+	}
+
+	/**
+	 * Get the event for a reaction from the reaction index.
+	 *
+	 * This is only public because the reaction class needs to call it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $id The ID of the reaction.
+	 *
+	 * @return string|false The event slug, or false if not found.
+	 */
+	public function get_reaction_event_from_index( $id ) {
+
+		$index = $this->get_reaction_index();
+
+		if ( ! isset( $index[ $id ]['event'] ) ) {
+			return false;
+		}
+
+		return $index[ $id ]['event'];
+	}
+
+	/**
+	 * Update the event for a reaction in the reaction index.
+	 *
+	 * This is only public because the reaction class needs to call it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int    $id    The ID of the reaction.
+	 * @param string $event The slug of the event the reaction is to.
+	 *
+	 * @return bool Whether the event was updated successfully.
+	 */
+	public function update_reaction_event_in_index( $id, $event ) {
+
+		$index = $this->get_reaction_index();
+
+		$index[ $id ]['event'] = $event;
+
+		return $this->update_reaction_index( $index );
 	}
 
 	/**
@@ -129,7 +172,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		$index = $this->get_reaction_index();
 
-		$index = wp_list_filter( $index, array( 'id' => $id ), 'NOT' );
+		unset( $index[ $id ] );
 
 		return $this->update_reaction_index( $index );
 	}
@@ -145,7 +188,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		// TODO this is fragile when the newest reaction gets deleted.
 		if ( ! empty( $index ) ) {
-			$id = 1 + max( wp_list_pluck( $index, 'id' ) );
+			$id = 1 + max( array_keys( $index ) );
 		}
 
 		$option = $this->get_settings_option_name( $id );
@@ -159,7 +202,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 			return false;
 		}
 
-		$index[] = array( 'event' => $event_slug, 'id' => $id );
+		$index[ $id ] = array( 'event' => $event_slug, 'id' => $id );
 
 		if ( ! $this->update_reaction_index( $index ) ) {
 			return false;

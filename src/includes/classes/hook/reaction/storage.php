@@ -144,7 +144,9 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 
 		$reaction = $this->get_reaction( $id );
 
-		$reaction->update_meta( 'event', $settings['event'] );
+		$reaction->update_event_slug( $settings['event'] );
+
+		unset( $settings['event'] );
 
 		$reactor->update_settings( $reaction, $settings );
 
