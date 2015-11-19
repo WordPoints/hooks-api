@@ -19,7 +19,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction {
 	 *
 	 * @var WordPoints_PHPUnit_Mock_Hook_Reaction_Storage
 	 */
-	protected $storage;
+	public $storage;
 
 	/**
 	 * @since 1.0.0

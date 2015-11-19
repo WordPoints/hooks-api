@@ -53,6 +53,15 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	public $validated;
 
 	/**
+	 * A list of settings updates this reactor has received.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array[]
+	 */
+	public $updates = array();
+
+	/**
 	 * A list of hits this reactor has received.
 	 *
 	 * @since 1.0.0
@@ -84,6 +93,16 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 		$settings = parent::validate_settings( $settings, $validator, $event_args );
 
 		return $settings;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function update_settings( WordPoints_Hook_ReactionI $reaction, array $settings ) {
+
+		$this->updates[] = array( 'reaction' => $reaction, 'settings' => $settings );
+
+		parent::update_settings( $reaction, $settings );
 	}
 
 	/**

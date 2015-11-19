@@ -145,9 +145,9 @@ final class WordPoints_Hook_Reaction_Validator {
 			$this->fail_fast = true;
 
 			if ( ! isset( $this->event_slug ) ) {
-				$this->add_error( __( 'Event type is missing.', 'wordpoints' ), 'event' );
+				$this->add_error( __( 'Event is missing.', 'wordpoints' ), 'event' );
 			} elseif ( ! $this->hooks->events->is_registered( $this->event_slug ) ) {
-				$this->add_error( __( 'Event type is invalid.', 'wordpoints' ), 'event' );
+				$this->add_error( __( 'Event is invalid.', 'wordpoints' ), 'event' );
 			}
 
 			// From here on out we can collect errors as they come (unless we are

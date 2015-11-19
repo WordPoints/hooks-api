@@ -47,6 +47,15 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	public $validations = array();
 
 	/**
+	 * A list of settings updates this extension has received.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array[]
+	 */
+	public $updates = array();
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function should_hit(
@@ -86,6 +95,16 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function update_settings( WordPoints_Hook_ReactionI $reaction, array $settings ) {
+
+		$this->updates[] = array( 'reaction' => $reaction, 'settings' => $settings );
+
+		parent::update_settings( $reaction, $settings );
 	}
 }
 

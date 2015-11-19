@@ -119,7 +119,9 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	 */
 	protected function create_or_update_reaction( array $settings, $id = null ) {
 
-		if ( isset( $id ) && ! $this->reaction_exists( $id ) ) {
+		$is_new = ! isset( $id );
+
+		if ( ! $is_new && ! $this->reaction_exists( $id ) ) {
 			return false;
 		}
 
@@ -133,7 +135,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 			return $validator;
 		}
 
-		if ( ! isset( $id ) ) {
+		if ( $is_new ) {
 
 			$id = $this->_create_reaction( $settings['event'] );
 
@@ -162,7 +164,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 		 * @param array                     $settings The new settings for the reaction.
 		 * @param bool                      $is_new   Whether the reaction was just now created.
 		 */
-		do_action( 'wordpoints_hook_reaction_save', $reaction, $settings, null === $id );
+		do_action( 'wordpoints_hook_reaction_save', $reaction, $settings, $is_new );
 
 		return $reaction;
 	}
