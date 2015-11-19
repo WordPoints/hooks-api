@@ -27,12 +27,12 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $reactions_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage';
+	public $reactions_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage';
 
 	/**
 	 * @since 1.0.0
 	 */
-	protected $network_reactions_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage';
+	public $network_reactions_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage';
 
 	/**
 	 * A list of settings that were passed in for each call of validate_settings().

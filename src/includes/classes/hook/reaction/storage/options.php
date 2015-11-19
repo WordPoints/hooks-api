@@ -123,6 +123,10 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 
 		$index = $this->get_reaction_index();
 
+		if ( ! isset( $index[ $id ] ) ) {
+			return false;
+		}
+
 		$index[ $id ]['event'] = $event;
 
 		return $this->update_reaction_index( $index );
@@ -133,7 +137,7 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $index A hook index {@see self::get_reaction_index()}.
+	 * @param array $index A reaction index {@see self::get_reaction_index()}.
 	 *
 	 * @return WordPoints_Hook_Reaction_Options[] The objects for the reactions.
 	 */
@@ -191,12 +195,12 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 			$id = 1 + max( array_keys( $index ) );
 		}
 
-		$option = $this->get_settings_option_name( $id );
-
 		$settings = array( 'event' => $event_slug );
 
-
-		$result = $this->add_option( $option, $settings );
+		$result = $this->add_option(
+			$this->get_settings_option_name( $id )
+			, $settings
+		);
 
 		if ( ! $result ) {
 			return false;
