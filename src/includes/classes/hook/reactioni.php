@@ -22,7 +22,7 @@ interface WordPoints_Hook_ReactionI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int|WordPoints_Hook_ReactionI     $id      The ID of a hook reaction.
+	 * @param int                               $id      The ID of a hook reaction.
 	 * @param WordPoints_Hook_Reaction_StorageI $storage The storage object.
 	 */
 	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage );

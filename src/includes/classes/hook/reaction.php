@@ -55,18 +55,8 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 */
 	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage ) {
 
-		if ( is_a( $id, __CLASS__ ) ) {
-			$id = $id->ID;
-		}
-
-		$id = wordpoints_int( $id );
-
-		if ( $id ) {
-			$this->ID = $id;
-		}
-
-		$this->storage = $storage;
-
+		$this->ID           = wordpoints_int( $id );
+		$this->storage      = $storage;
 		$this->reactor_slug = $this->storage->get_reactor_slug();
 		$this->network_wide = $this->storage->is_network_wide();
 	}
