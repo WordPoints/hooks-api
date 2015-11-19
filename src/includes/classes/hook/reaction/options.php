@@ -46,7 +46,7 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 		$settings = $this->get_settings();
 
 		if ( ! is_array( $settings ) || ! isset( $settings[ $key ] ) ) {
-			return null;
+			return false;
 		}
 
 		return $settings[ $key ];

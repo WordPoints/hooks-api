@@ -72,7 +72,7 @@ interface WordPoints_Hook_ReactionI {
 	 *
 	 * @param string $key The meta key.
 	 *
-	 * @return mixed The meta value.
+	 * @return mixed|false The meta value, or false if not found.
 	 */
 	public function get_meta( $key );
 
