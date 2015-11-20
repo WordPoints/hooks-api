@@ -73,6 +73,10 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_UnitTestCase
 	 */
 	public function assertIsReaction( $reaction ) {
 
+		if ( $reaction instanceof WP_Error ) {
+			$reaction = $reaction->get_error_data();
+		}
+
 		if ( $reaction instanceof WordPoints_Hook_Reaction_Validator ) {
 
 			$message = '';

@@ -145,6 +145,8 @@ class WordPoints_Hook_Reactor_Points
 
 		$meta_queries = array(
 			array(
+				// This is needed for back-compat with the way the points hooks
+				// reversed transactions, so we don't re-reverse them.
 				'key'     => 'auto_reversed',
 				'compare' => 'NOT EXISTS',
 			),
