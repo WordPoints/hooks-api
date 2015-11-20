@@ -17,12 +17,17 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $slug = 'test_reactor';
+	public $slug = 'test_reactor';
 
 	/**
 	 * @since 1.0.0
 	 */
-	protected $arg_types = 'test_entity';
+	public $arg_types = 'test_entity';
+
+	/**
+	 * @since 1.0.0
+	 */
+	public $settings_fields;
 
 	/**
 	 * @since 1.0.0

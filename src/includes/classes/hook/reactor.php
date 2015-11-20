@@ -71,7 +71,13 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function __get( $var ) {
 
-		if ( 'reactions' === $var || 'network_reactions' === $var ) {
+		if (
+			'reactions' === $var
+			|| (
+				'network_reactions' === $var
+				&& isset( $this->network_reactions_class )
+			)
+		) {
 			if ( ! isset( $this->$var ) ) {
 				$this->$var = new $this->{"{$var}_class"}(
 					$this->slug
