@@ -93,10 +93,8 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 					$condition = $this->validate_condition( $settings );
 
-					if ( ! $condition ) {
-						unset( $sub_args['_conditions'][ $index ] );
-					} else {
-						$sub_args['_conditions'][ $index ] = $condition;
+					if ( $condition ) {
+						$sub_args[ $index ] = $condition;
 					}
 
 					$this->validator->pop_field();
@@ -107,7 +105,6 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 			} else {
 
 				if ( ! $this->event_args->descend( $arg_slug ) ) {
-					unset( $args[ $arg_slug ] );
 					continue;
 				}
 
@@ -117,6 +114,8 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 				$this->event_args->ascend();
 			}
+
+			$args[ $arg_slug ] = $sub_args;
 		}
 
 		return $args;
@@ -164,6 +163,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 					__( 'Unknown condition type &#8220;%s&#8221;.', 'wordpoints' )
 					, $settings['type']
 				)
+				, 'type'
 			);
 
 			return false;
@@ -191,7 +191,10 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function should_hit( WordPoints_Hook_Reaction_Validator $reaction, WordPoints_Hook_Event_Args $event_args ) {
+	public function should_hit(
+		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_Event_Args $event_args
+	) {
 
 		$conditions = $reaction->get_meta( 'conditions' );
 
@@ -225,7 +228,15 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 				foreach ( $sub_args['_conditions'] as $settings ) {
 
-					if ( ! $this->is_met( $settings, $event_args ) ) {
+					$condition = $this->conditions->get(
+						$this->get_data_type( $event_args->get_current() )
+						, $settings['type']
+					);
+
+					$is_met = $condition->is_met( $settings['settings'], $event_args );
+
+					if ( ! $is_met ) {
+						$event_args->ascend();
 						return false;
 					}
 				}
@@ -233,38 +244,16 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 				unset( $sub_args['_conditions'] );
 			}
 
-			if ( ! $this->conditions_are_met( $sub_args, $event_args ) ) {
-				return false;
-			}
+			$are_met = $this->conditions_are_met( $sub_args, $event_args );
 
 			$event_args->ascend();
+
+			if ( ! $are_met ) {
+				return false;
+			}
 		}
 
 		return true;
-	}
-
-	/**
-	 * Check whether a condition is met.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array                      $settings   The condition's settings.
-	 * @param WordPoints_Hook_Event_Args $event_args The event args.
-	 *
-	 * @return bool Whether a condition is met.
-	 */
-	final private function is_met( $settings, WordPoints_Hook_Event_Args $event_args ) {
-
-		$condition = $this->conditions->get(
-			$this->get_data_type( $this->event_args->get_current() )
-			, $settings['type']
-		);
-
-		$is_met = $condition->is_met( $settings['settings'], $event_args );
-
-		// TODO filter.
-
-		return $is_met;
 	}
 
 	/**

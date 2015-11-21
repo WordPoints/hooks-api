@@ -22,12 +22,16 @@ class WordPoints_PHPUnit_Mock_Hook_Condition extends WordPoints_Hook_Condition {
 	/**
 	 * @since 1.0.0
 	 */
-	public function validate( $settings ) {}
+	protected $settings_fields = array(
+		'value' => array( 'label' => 'Value' ),
+	);
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function is_met( array $settings, WordPoints_Hook_Event_Args $args ) {}
+	public function is_met( array $settings, WordPoints_Hook_Event_Args $args ) {
+		return true;
+	}
 
 	/**
 	 * @since 1.0.0
@@ -40,7 +44,7 @@ class WordPoints_PHPUnit_Mock_Hook_Condition extends WordPoints_Hook_Condition {
 	 * @since 1.0.0
 	 */
 	public function get_settings_fields() {
-		return array();
+		return $this->settings_fields;
 	}
 }
 
