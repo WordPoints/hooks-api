@@ -38,7 +38,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_data() {
+	public function get_ui_script_data() {
 
 		$conditions_data = array();
 

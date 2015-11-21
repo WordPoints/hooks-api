@@ -105,6 +105,17 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 		WordPoints_Hook_Reaction_Validator $reaction,
 		WordPoints_Hook_Event_Args $event_args
 	);
+
+	/**
+	 * Get the data the scripts need for the UI.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Any data that needs to be present for the scripts in the UI.
+	 */
+	public function get_ui_script_data() {
+		return array();
+	}
 }
 
 // EOF
