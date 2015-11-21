@@ -262,6 +262,149 @@ function wordpoints_hooks_admin_register_scripts() {
 add_action( 'admin_init', 'wordpoints_hooks_admin_register_scripts' );
 
 /**
+ * Export the data for the scripts needed to make the hooks UI work.
+ *
+ * @since 1.0.0
+ */
+function wordpoints_hooks_ui_setup_script_data() {
+
+	$hooks = wordpoints_hooks();
+
+	$extensions_data = array();
+
+	foreach ( $hooks->extensions->get_all() as $slug => $extension ) {
+
+		if ( $extension instanceof WordPoints_Hook_Extension ) {
+			$extensions_data[ $slug ] = $extension->get_data();
+		}
+
+		if ( wp_script_is( "wordpoints-hooks-extension-{$slug}", 'registered' ) ) {
+			wp_enqueue_script( "wordpoints-hooks-extension-{$slug}" );
+		}
+	}
+
+	$reactor_data = array();
+
+	foreach ( $hooks->reactors->get_all() as $slug => $reactor ) {
+
+		if ( $reactor instanceof WordPoints_Hook_Reactor ) {
+			$reactor_data[ $slug ] = array(
+				'slug'         => $reactor->get_slug(),
+				'fields'       => $reactor->get_settings_fields(),
+				'arg_types'    => $reactor->get_arg_types(),
+				'target_label' => __( 'Award To', 'wordpoints' ),
+			);
+		}
+
+		if ( wp_script_is( "wordpoints-hooks-reactor-{$slug}", 'registered' ) ) {
+			wp_enqueue_script( "wordpoints-hooks-reactor-{$slug}" );
+		}
+	}
+	
+	$entities = wordpoints_entities();
+
+	$entities_data = array();
+
+	/** @var WordPoints_Class_Registry_Children $entity_children */
+	$entity_children = $entities->children;
+
+	/** @var WordPoints_Entity $entity */
+	foreach ( $entities->get_all() as $slug => $entity ) {
+
+		$child_data = array();
+
+		/** @var WordPoints_EntityishI $child */
+		foreach ( $entity_children->get_children( $slug ) as $child_slug => $child ) {
+
+			$child_data[ $child_slug ] = array(
+				'slug'  => $child_slug,
+				'title' => $child->get_title(),
+			);
+
+			if ( $child instanceof WordPoints_Entity_Attr ) {
+
+				$child_data[ $child_slug ]['_type'] = 'attr';
+				$child_data[ $child_slug ]['type']  = $child->get_data_type();
+
+			} elseif ( $child instanceof WordPoints_Entity_Relationship ) {
+
+				$child_data[ $child_slug ]['_type']     = 'relationship';
+				$child_data[ $child_slug ]['primary']   = $child->get_primary_entity_slug();
+				$child_data[ $child_slug ]['secondary'] = $child->get_related_entity_slug();
+			}
+
+			/**
+			 * Filter the data for an entity child.
+			 *
+			 * Entity children include attributes and relationships.
+			 *
+			 * @param array                $data  The data for the entity child.
+			 * @param WordPoints_Entityish $child The child's object.
+			 */
+			$child_data[ $child_slug ] = apply_filters( 'wordpoints_hooks_ui_data_entity_child', $child_data[ $child_slug ], $child );
+		}
+
+		$entities_data[ $slug ] = array(
+			'slug'     => $slug,
+			'title'    => $entity->get_title(),
+			'children' => $child_data,
+			'id_field' => $entity->get_id_field(),
+			'_type'    => 'entity',
+		);
+
+		if ( $entity instanceof WordPoints_Entity_EnumerableI ) {
+
+			$values = array();
+
+			foreach ( $entity->get_enumerated_values() as $value ) {
+				if ( $entity->set_the_value( $value ) ) {
+					$values[] = array(
+						'value' => $entity->get_the_id(),
+						'label' => $entity->get_the_human_id(),
+					);
+				}
+			}
+
+			$entities_data[ $slug ]['values'] = $values;
+		}
+
+		/**
+		 * Filter the data for an entity.
+		 *
+		 * @param array             $data   The data for the entity.
+		 * @param WordPoints_Entity $entity The entity object.
+		 */
+		$entities_data[ $slug ] = apply_filters( 'wordpoints_hooks_ui_data_entity', $entities_data[ $slug ], $entity );
+	}
+
+	$data = array(
+		'fields'     => (object) array(),
+		'reactions'  => (object) array(),
+		'events'     => (object) array(),
+		'extensions' => $extensions_data,
+		'entities'   => $entities_data,
+		'reactors'   => $reactor_data,
+	);
+
+	/**
+	 * Filter the hooks data used to provide the UI.
+	 *
+	 * This is currently exported as JSON to the Backbone.js powered UI. But
+	 * that could change in the future. The important thing is that the data is
+	 * bing exported and will be used by something somehow.
+	 *
+	 * @param array $data The data.
+	 */
+	$data = apply_filters( 'wordpoints_hooks_ui_data', $data );
+
+	wp_localize_script(
+		'wordpoints-hooks-models'
+		, 'WordPointsHooksAdminData'
+		, $data
+	);
+}
+
+/**
  * Append templates registered in wordpoints-templates script data to scripts.
  *
  * One day templates will probably be stored in separate files instead.
