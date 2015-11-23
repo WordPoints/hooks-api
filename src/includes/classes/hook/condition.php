@@ -43,7 +43,7 @@ abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 
 			// If this data type isn't recognized, that's probably OK. Validation is
 			// just to help the user know that they've made a mistake anyway.
-			if ( ! $data_type ) {
+			if ( ! ( $data_type instanceof WordPoints_Data_TypeI ) ) {
 				return $settings;
 			}
 
@@ -55,7 +55,7 @@ abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 
 				$validator->add_error(
 					sprintf(
-						__( '%s does not match the correct format.', 'wordpoints' )
+						$validated_value->get_error_message()
 						, $settings_fields['value']['label']
 					)
 					, 'value'

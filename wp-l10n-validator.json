@@ -15,8 +15,8 @@
 		"WordPoints_Hook_Action::get_arg_value": true,
 		"WordPoints_Hook_Condition_Entity_Array_Contains::validator->add_error": [ 2 ],
 		"WordPoints_Hook_Events::sub_apps->register": [ 1, 2 ],
+		"WordPoints_Hook_Extension::validator->add_error": [ 2 ],
 		"WordPoints_Hook_Extension::validator->push_field": true,
-		"WordPoints_Hook_Extension_Periods::validator->add_error": [ 2 ],
 		"WordPoints_Hook_Reaction_Validator::add_error": [ 2 ],
 		"WordPoints_Hook_Reaction_Validator::get_meta": true,
 		"WordPoints_Hook_Reaction::get_meta": true,
@@ -74,6 +74,7 @@
 		"/includes/classes/hook/retroactive/",
 		"/includes/classes/hook/settings.php",
 		"/includes/classes/query/",
-		"/includes/classes/specedi.php"
+		"/includes/classes/specedi.php",
+		"/includes/classes/spec.php"
 	]
 }

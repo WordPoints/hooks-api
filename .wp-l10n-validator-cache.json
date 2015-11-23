@@ -11,8 +11,8 @@
             "errors": false
         },
         "\/admin\/includes\/classes\/screen\/points\/types.php": {
-            "size": 17953,
-            "hash": "38bb55a6664096b027bed3dc40f0620d",
+            "size": 14168,
+            "hash": "8b91290bcaf13f46a3cb05333149161d",
             "errors": false
         },
         "\/admin\/includes\/classes\/screen.php": {
@@ -26,8 +26,8 @@
             "errors": false
         },
         "\/admin\/includes\/functions.php": {
-            "size": 8918,
-            "hash": "436e74c9905a8ffc74f84e350b92dcab",
+            "size": 12971,
+            "hash": "67d18116acaf2e40b5fd72967c27a743",
             "errors": false
         },
         "\/hooks-api.php": {
@@ -85,9 +85,24 @@
             "hash": "621d8ad7321c58f76d9a3e91e28f0c2d",
             "errors": false
         },
+        "\/includes\/classes\/data\/type\/integer.php": {
+            "size": 486,
+            "hash": "aa40cc397790e481862052a34a01aa53",
+            "errors": false
+        },
+        "\/includes\/classes\/data\/type\/text.php": {
+            "size": 577,
+            "hash": "9b18b6e545839c9b5d8ad44cff0c2db9",
+            "errors": false
+        },
         "\/includes\/classes\/data\/type.php": {
-            "size": 6921,
-            "hash": "ccb7bf938ccae427508054771279330b",
+            "size": 570,
+            "hash": "4fe03d672579f1b65c282acd533a5681",
+            "errors": false
+        },
+        "\/includes\/classes\/data\/typei.php": {
+            "size": 1092,
+            "hash": "955fb648fbecbb4ad84b07c9dad1df39",
             "errors": false
         },
         "\/includes\/classes\/entity\/array.php": {
@@ -276,8 +291,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/condition\/entity\/array\/contains.php": {
-            "size": 4610,
-            "hash": "12594dcf4fdd5d45e6924fbfff8952d2",
+            "size": 4505,
+            "hash": "73b3b9d6d7f12962ee7a9fd739d25802",
             "errors": false
         },
         "\/includes\/classes\/hook\/condition\/equals.php": {
@@ -291,13 +306,13 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/condition.php": {
-            "size": 1491,
-            "hash": "3e8a54927adced7256deb92dac69d6ff",
+            "size": 1840,
+            "hash": "01575b6bae741c561cc2b8a3d45d7cbb",
             "errors": false
         },
         "\/includes\/classes\/hook\/conditioni.php": {
-            "size": 1812,
-            "hash": "0d27d918c8a72caa2b1756e4f72acfc1",
+            "size": 1816,
+            "hash": "a2407b3a07e0044ed81e613706e90e44",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/args.php": {
@@ -341,8 +356,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/conditions.php": {
-            "size": 6112,
-            "hash": "5e99e5325ed6988faad84acec9002bb9",
+            "size": 5651,
+            "hash": "5bf98de0e17770b24ae05c4e9bc10c43",
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/periods.php": {
@@ -361,8 +376,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/extension.php": {
-            "size": 2343,
-            "hash": "7cabe6fe7b913a41d3ecc376c98f77fe",
+            "size": 2505,
+            "hash": "dfbe3bec7e8c5b73e36017179674e05b",
             "errors": false
         },
         "\/includes\/classes\/hook\/firer\/reverse.php": {
@@ -376,8 +391,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/firer.php": {
-            "size": 1188,
-            "hash": "cb9d5838cb4e88dd986e58a48c68bac6",
+            "size": 1219,
+            "hash": "bb4529380f85638318e3a283ff75df23",
             "errors": false
         },
         "\/includes\/classes\/hook\/fireri.php": {
@@ -386,48 +401,48 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/options.php": {
-            "size": 2359,
-            "hash": "e58a61f1de6c17dc0cbf082d648fe3a5",
+            "size": 2533,
+            "hash": "a5a016969ef90aac22b1d7df2f63d6a6",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/storage\/options\/network.php": {
-            "size": 897,
-            "hash": "833daeed4998f661f528c6da31669e91",
+            "size": 891,
+            "hash": "19b105486b204e6440bfa40521ff21be",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/storage\/options.php": {
-            "size": 5299,
-            "hash": "6d93560acfca21df076280be3129098b",
+            "size": 6292,
+            "hash": "e2415e39f9ec57e8587e6082ed105b53",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/storage.php": {
-            "size": 3926,
-            "hash": "5bc20d261112c41d83e8430371098013",
+            "size": 4037,
+            "hash": "fee1445e1ea81707f6dd91458eb54488",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/storagei.php": {
-            "size": 2834,
-            "hash": "5e24752efaf9ddc16dc52a1aa9f5fad2",
+            "size": 3034,
+            "hash": "2f1bf06dd9d25695559120e61f9061d5",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/validator.php": {
-            "size": 7469,
-            "hash": "564e62646f898f780877af0257c9705a",
+            "size": 7612,
+            "hash": "a9bff8a0d8abe8270b3220ee90ea7fbc",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction.php": {
-            "size": 1330,
-            "hash": "a4ecc6d4924dd9e5ef9c3120545bb7fb",
+            "size": 1350,
+            "hash": "119b95fc719250025cbc1083606fe2a7",
             "errors": false
         },
         "\/includes\/classes\/hook\/reactioni.php": {
-            "size": 2439,
-            "hash": "59ad81158fd1da899638dad25953b073",
+            "size": 2683,
+            "hash": "2da940bfa2b53f530343e1200665aaf9",
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor\/points.php": {
-            "size": 4422,
-            "hash": "914f5a3da486bc68e4a287f9add4884c",
+            "size": 4549,
+            "hash": "09423547b42f70b5ea24bd95f30e1bd8",
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor\/reversei.php": {
@@ -441,8 +456,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor.php": {
-            "size": 4332,
-            "hash": "ca2df3bd108c8af9c6c328cbdc4dc5dc",
+            "size": 4398,
+            "hash": "9b9c4a1c6ee683e62ddd59c199759db0",
             "errors": false
         },
         "\/includes\/classes\/hook\/router.php": {
@@ -451,8 +466,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/settingsi.php": {
-            "size": 1100,
-            "hash": "f626a33baca655615972ace901b5d459",
+            "size": 1141,
+            "hash": "6ceb7cda895cd60d79441046f325307e",
             "errors": false
         },
         "\/includes\/classes\/hook\/validator\/exception.php": {
@@ -466,8 +481,8 @@
             "errors": false
         },
         "\/includes\/classes\/index.php": {
-            "size": 6110,
-            "hash": "e932831dcda1cb1cf2a70af6c8668bcc",
+            "size": 6339,
+            "hash": "37f2cc36398e79472954a75660b874e7",
             "errors": false
         },
         "\/includes\/constants.php": {
@@ -481,5 +496,5 @@
             "errors": false
         }
     },
-    "config_signature": "9d0fa615e2dbdb410d870df8e661cb99"
+    "config_signature": "a800fc1541d98a2e2bbc2764c738e2a5"
 }

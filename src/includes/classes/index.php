@@ -19,6 +19,9 @@ require_once( dirname( __FILE__ ) . 'class/registry/childreni.php' );
 require_once( dirname( __FILE__ ) . 'class/registry/persistent.php' );
 require_once( dirname( __FILE__ ) . 'class/registryi.php' );
 require_once( dirname( __FILE__ ) . 'data/type.php' );
+require_once( dirname( __FILE__ ) . 'data/type/integer.php' );
+require_once( dirname( __FILE__ ) . 'data/type/text.php' );
+require_once( dirname( __FILE__ ) . 'data/typei.php' );
 require_once( dirname( __FILE__ ) . 'entity.php' );
 require_once( dirname( __FILE__ ) . 'entity/array.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr.php' );
@@ -102,6 +105,7 @@ require_once( dirname( __FILE__ ) . 'hook/settingsi.php' );
 require_once( dirname( __FILE__ ) . 'hook/validator/exception.php' );
 require_once( dirname( __FILE__ ) . 'hooks.php' );
 require_once( dirname( __FILE__ ) . 'query/builder/db/mysql.php' );
+require_once( dirname( __FILE__ ) . 'spec.php' );
 require_once( dirname( __FILE__ ) . 'specedi.php' );
 // }
 

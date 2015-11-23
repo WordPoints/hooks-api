@@ -15,7 +15,7 @@
 				<file>/src/includes/classes/hierarchy.php</file>
 				<file>/src/includes/classes/hook/settings.php</file>
 				<file>/src/includes/classes/specedi.php</file>
-				<file>/src/includes/classes/data/type.php</file>
+				<file>/src/includes/classes/spec.php</file>
 				<directory>/src/includes/classes/hook/retroactive/</directory>
 				<directory>/src/includes/classes/query/</directory>
 				<directory>/tests/classes/hook/retroactive/</directory>

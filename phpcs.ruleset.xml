@@ -7,6 +7,6 @@
 	<exclude-pattern>/src/includes/classes/hook/settings.php</exclude-pattern>
 	<exclude-pattern>/src/includes/classes/query/*</exclude-pattern>
 	<exclude-pattern>/src/includes/classes/specedi.php</exclude-pattern>
+	<exclude-pattern>/src/includes/classes/spec.php</exclude-pattern>
 	<exclude-pattern>/tests/classes/hook/retroactive/*</exclude-pattern>
-	<exclude-pattern>/src/includes/classes/data/type.php</exclude-pattern>
 </ruleset>
