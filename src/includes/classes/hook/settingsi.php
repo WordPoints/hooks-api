@@ -23,7 +23,7 @@ interface WordPoints_Hook_SettingsI {
 	 * @param WordPoints_Hook_Reaction_Validator $validator  The validator.
 	 * @param WordPoints_Hook_Event_Args         $event_args The event args.
 	 *
-	 * @return array The validated settings.
+	 * @return array The validated settings (any errors will be added to $validator).
 	 */
 	public function validate_settings(
 		array $settings,

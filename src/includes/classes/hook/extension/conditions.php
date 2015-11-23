@@ -128,17 +128,13 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 *
 	 * @param array $settings The condition settings.
 	 *
-	 * @return array|false The validated conditions settings, or false if invalid.
+	 * @return array|false The validated conditions settings, or false if unable to
+	 *                     validate.
 	 */
 	protected function validate_condition( $settings ) {
 
 		if ( ! isset( $settings['type'] ) ) {
 			$this->validator->add_error( __( 'Condition type is missing.', 'wordpoints' ) );
-			return false;
-		}
-
-		if ( ! isset( $settings['settings'] ) ) {
-			$this->validator->add_error( __( 'Condition settings are missing.', 'wordpoints' ) );
 			return false;
 		}
 
@@ -169,21 +165,20 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 			return false;
 		}
 
+		if ( ! isset( $settings['settings'] ) ) {
+			$this->validator->add_error( __( 'Condition settings are missing.', 'wordpoints' ) );
+			return false;
+		}
+
 		$this->validator->push_field( 'settings' );
 
-		$the_settings = $condition->validate_settings(
+		$settings['settings'] = $condition->validate_settings(
 			$arg
 			, $settings['settings']
 			, $this->validator
 		);
 
 		$this->validator->pop_field();
-
-		if ( ! $the_settings ) {
-			return false;
-		}
-
-		$settings['settings'] = $the_settings;
 
 		return $settings;
 	}

@@ -89,9 +89,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 		$this->settings = $settings;
 		$this->validator = $validator;
 
-		if ( ! $this->validate_count() ) {
-			return false;
-		}
+		$this->validate_count();
 
 		if ( isset( $settings['conditions'] ) ) {
 			$this->validate_conditions();
@@ -104,8 +102,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 	 * Validate the count setting for the condition.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return bool Whether the count setting was valid.
 	 */
 	protected function validate_count() {
 
@@ -128,8 +124,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 				, 'min'
 			);
 		}
-
-		return true;
 	}
 
 	/**

@@ -35,10 +35,7 @@ abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 				, 'value'
 			);
 
-			return false;
-		}
-
-		if ( $arg instanceof WordPoints_Entity_Attr ) {
+		} elseif ( $arg instanceof WordPoints_Entity_Attr ) {
 
 			$data_types = wordpoints_apps()->data_types;
 
@@ -64,7 +61,7 @@ abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 					, 'value'
 				);
 
-				return false;
+				return $settings;
 			}
 
 			$settings['value'] = $validated_value;

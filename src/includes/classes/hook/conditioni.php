@@ -46,7 +46,7 @@ interface WordPoints_Hook_ConditionI {
 	 * @param WordPoints_Hook_Reaction_Validator            $validator The validator for the hook
 	 *                                                                 reaction this condition is for.
 	 *
-	 * @return array|false The validated settings, or false if they were invalid.
+	 * @return array The validated settings (any errors will be added to $validator).
 	 */
 	public function validate_settings(
 		$arg,
