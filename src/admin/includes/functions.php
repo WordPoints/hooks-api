@@ -324,7 +324,7 @@ function wordpoints_hooks_ui_setup_script_data() {
 			if ( $child instanceof WordPoints_Entity_Attr ) {
 
 				$child_data[ $child_slug ]['_type'] = 'attr';
-				$child_data[ $child_slug ]['type']  = $child->get_data_type();
+				$child_data[ $child_slug ]['data_type']  = $child->get_data_type();
 
 			} elseif ( $child instanceof WordPoints_Entity_Relationship ) {
 

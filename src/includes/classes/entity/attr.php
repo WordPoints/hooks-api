@@ -40,7 +40,7 @@ abstract class WordPoints_Entity_Attr
 	 *
 	 * @var string
 	 */
-	protected $type;
+	protected $data_type;
 
 	/**
 	 * Get the field that this attribute's value is stored in.
@@ -61,7 +61,7 @@ abstract class WordPoints_Entity_Attr
 	 * @return string The data type of this attribute's values.
 	 */
 	public function get_data_type() {
-		return $this->type;
+		return $this->data_type;
 	}
 
 	/**

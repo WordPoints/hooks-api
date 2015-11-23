@@ -93,7 +93,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 				if ( $child instanceof WordPoints_Entity_Attr ) {
 
 					$this->assertEquals(
-						$child_data['type']
+						$child_data['data_type']
 						, $child->get_data_type()
 					);
 
@@ -211,9 +211,9 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 							'value'   => 'post_author',
 						),
 						'content' => array(
-							'class' => 'WordPoints_Entity_Post_Content',
-							'type'  => 'text',
-							'value' => 'post_content',
+							'class'     => 'WordPoints_Entity_Post_Content',
+							'data_type' => 'text',
+							'value'     => 'post_content',
 						),
 						'type' => array(
 							'class'   => 'WordPoints_Entity_Post_Type_Relationship',
@@ -286,9 +286,9 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'delete_func'    => 'remove_role',
 					'children'       => array(
 						'name' => array(
-							'class' => 'WordPoints_Entity_User_Role_Name',
-							'type'  => 'slug',
-							'value' => 'name',
+							'class'     => 'WordPoints_Entity_User_Role_Name',
+							'data_type' => 'slug',
+							'value'     => 'name',
 						),
 					),
 				),

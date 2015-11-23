@@ -17,7 +17,7 @@ class WordPoints_Entity_Post_Content extends WordPoints_Entity_Attr {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $type = 'text';
+	protected $data_type = 'text';
 
 	/**
 	 * @since 1.0.0

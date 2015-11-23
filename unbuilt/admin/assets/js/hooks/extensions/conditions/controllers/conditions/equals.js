@@ -33,7 +33,7 @@ Equals = Condition.extend({
 					fields.value = _.extend(
 						{}
 						, fields.value
-						, { type: arg.get( 'type' ) }
+						, { type: arg.get( 'data_type' ) }
 					);
 					/* falls through */
 				case 'entity':

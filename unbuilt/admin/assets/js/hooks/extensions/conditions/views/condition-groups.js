@@ -150,7 +150,7 @@ ConditionGroups = Base.extend({
 		switch ( argType ) {
 
 			case 'attr':
-				argType = arg.get( 'type' );
+				argType = arg.get( 'data_type' );
 				break;
 
 			case 'array':

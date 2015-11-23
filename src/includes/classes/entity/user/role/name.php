@@ -22,7 +22,7 @@ class WordPoints_Entity_User_Role_Name extends WordPoints_Entity_Attr {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $type = 'slug'; // TODO
+	protected $data_type = 'slug'; // TODO
 
 	/**
 	 * @since 1.0.0

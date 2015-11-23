@@ -40,7 +40,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		);
 
 		$this->factory->wordpoints->hook_condition->create(
-			array( 'slug' => 'test', 'data_type' => 'string' )
+			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
 		$extension = new WordPoints_Hook_Extension_Conditions();
@@ -132,7 +132,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		);
 
 		$this->factory->wordpoints->hook_condition->create(
-			array( 'data_type' => 'string' )
+			array( 'data_type' => 'text' )
 		);
 
 		$extension = new WordPoints_Hook_Extension_Conditions();
@@ -261,7 +261,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		);
 
 		$this->factory->wordpoints->hook_condition->create(
-			array( 'slug' => 'test', 'data_type' => 'string' )
+			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
 		$extension = new WordPoints_Hook_Extension_Conditions();
@@ -305,7 +305,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		);
 
 		$this->factory->wordpoints->hook_condition->create(
-			array( 'slug' => 'unmet', 'data_type' => 'string' )
+			array( 'slug' => 'unmet', 'data_type' => 'text' )
 		);
 
 		$this->factory->wordpoints->hook_condition->create(

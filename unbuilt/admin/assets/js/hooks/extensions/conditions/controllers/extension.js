@@ -87,7 +87,7 @@ Conditions = Extension.extend({
 		switch ( argType ) {
 
 			case 'attr':
-				return arg.get( 'type' );
+				return arg.get( 'data_type' );
 
 			case 'array':
 				return 'entity_array';

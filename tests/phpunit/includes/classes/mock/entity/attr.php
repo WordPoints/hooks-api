@@ -22,7 +22,7 @@ class WordPoints_PHPUnit_Mock_Entity_Attr extends WordPoints_Entity_Attr {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $type = 'string';
+	protected $data_type = 'text';
 
 	/**
 	 * @since 1.0.0

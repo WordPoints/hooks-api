@@ -37,7 +37,7 @@ class WordPoints_Entity_Attr_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_get_data_type() {
 
 		$attr = new WordPoints_PHPUnit_Mock_Entity_Attr( 'test' );
-		$attr->set( 'type', 'int' );
+		$attr->set( 'data_type', 'int' );
 
 		$this->assertEquals( 'int', $attr->get_data_type() );
 	}

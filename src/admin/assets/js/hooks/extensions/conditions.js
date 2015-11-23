@@ -184,7 +184,7 @@ Equals = Condition.extend({
 					fields.value = _.extend(
 						{}
 						, fields.value
-						, { type: arg.get( 'type' ) }
+						, { type: arg.get( 'data_type' ) }
 					);
 					/* falls through */
 				case 'entity':
@@ -302,7 +302,7 @@ Conditions = Extension.extend({
 		switch ( argType ) {
 
 			case 'attr':
-				return arg.get( 'type' );
+				return arg.get( 'data_type' );
 
 			case 'array':
 				return 'entity_array';
@@ -1021,7 +1021,7 @@ ConditionGroups = Base.extend({
 		switch ( argType ) {
 
 			case 'attr':
-				argType = arg.get( 'type' );
+				argType = arg.get( 'data_type' );
 				break;
 
 			case 'array':

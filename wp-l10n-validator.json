@@ -48,8 +48,8 @@
 		"(unknown)->get_meta": true
 	},
 	"ignored-properties": {
+		"WordPoints_Entity_Attr::$data_type": true,
 		"WordPoints_Entity_Attr::$field": true,
-		"WordPoints_Entity_Attr::$type": true,
 		"WordPoints_Entity_Relationship::$primary_entity_slug": true,
 		"WordPoints_Entity_Relationship::$related_entity_slug": true,
 		"WordPoints_Entity_Relationship::$related_ids_field": true,

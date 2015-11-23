@@ -22,7 +22,7 @@ class WordPoints_Entity_Term_Id extends WordPoints_Entity_Attr {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $type = 'int';
+	protected $data_type = 'int';
 
 	/**
 	 * @since 1.0.0
