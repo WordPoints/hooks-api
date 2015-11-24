@@ -16,7 +16,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Array {
+class WordPoints_Entity_Array extends WordPoints_Entityish {
 
 	/**
 	 * The slug of the type of the entities in this array.
@@ -26,6 +26,15 @@ class WordPoints_Entity_Array {
 	 * @var string
 	 */
 	protected $entity_slug;
+
+	/**
+	 * The object for the type of entity in this array.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Entity|false
+	 */
+	protected $entity_object;
 
 	/**
 	 * The objects for the entities in this array.
@@ -44,7 +53,11 @@ class WordPoints_Entity_Array {
 	 * @param string $entity_slug The slug of the entity type.
 	 */
 	public function __construct( $entity_slug ) {
+
 		$this->entity_slug = $entity_slug;
+		$this->entity_object = wordpoints_entities()->get( $this->entity_slug );
+
+		parent::__construct( $this->entity_slug . '{}' );
 	}
 
 	/**
@@ -64,25 +77,28 @@ class WordPoints_Entity_Array {
 	 * @since 1.0.0
 	 *
 	 * @param array $values The entities or their IDs to populate the array with.
+	 *
+	 * @return bool Whether the value was set successfully.
 	 */
 	public function set_the_value( $values ) {
 
-		$this->the_entities = array();
+		$this->the_entities = $this->the_value = array();
 
-		$object = wordpoints_entities()->get( $this->entity_slug );
-
-		if ( ! ( $object instanceof WordPoints_Entity ) ) {
-			return;
+		if ( ! ( $this->entity_object instanceof WordPoints_Entity ) ) {
+			return false;
 		}
 
 		foreach ( $values as $value ) {
 
-			$entity = clone $object;
+			$entity = clone $this->entity_object;
 
 			if ( $entity->set_the_value( $value ) ) {
 				$this->the_entities[] = $entity;
+				$this->the_value[] = $entity->get_the_id();
 			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -94,6 +110,24 @@ class WordPoints_Entity_Array {
 	 */
 	public function get_the_entities() {
 		return $this->the_entities;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_title() {
+
+		if ( $this->entity_object ) {
+
+			return sprintf(
+				// translators: the singular name of an item
+				__( '%s Collection', 'wordpoints' )
+				, $this->entity_object->get_title()
+			);
+
+		} else {
+			return __( 'Item Collection', 'wordpoints' );
+		}
 	}
 }
 

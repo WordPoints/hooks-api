@@ -41,10 +41,10 @@ interface WordPoints_Hook_ConditionI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_EntityishI|WordPoints_Entity_Array $arg       The hook arg this condition is on.
-	 * @param array                                         $settings  The settings to validate.
-	 * @param WordPoints_Hook_Reaction_Validator            $validator The validator for the hook
-	 *                                                                 reaction this condition is for.
+	 * @param WordPoints_EntityishI              $arg       The hook arg this condition is on.
+	 * @param array                              $settings  The settings to validate.
+	 * @param WordPoints_Hook_Reaction_Validator $validator The validator for the hook
+	 *                                                      reaction this condition is for.
 	 *
 	 * @return array The validated settings (any errors will be added to $validator).
 	 */
