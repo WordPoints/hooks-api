@@ -77,12 +77,20 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 
 		$result = parent::descend( $child_slug );
 
+		// Just in case no validator has been set.
+		if ( ! $this->validator ) {
+			return $result;
+		}
+
 		if ( ! $result ) {
 
 			if ( ! isset( $this->current ) ) {
 
 				$this->validator->add_error(
-					__( 'The %s arg is not registered for this event.', 'wordpoints' ) // TODO message
+					sprintf(
+						__( 'The %s arg is not registered for this event.', 'wordpoints' ) // TODO message
+						, $child_slug
+					)
 				);
 
 			} elseif ( ! ( $this->current instanceof WordPoints_Entity_ParentI ) ) {
@@ -118,7 +126,7 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 
 		$ascended = parent::ascend();
 
-		if ( $ascended ) {
+		if ( $ascended && $this->validator ) {
 			$this->validator->pop_field();
 		}
 

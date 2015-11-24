@@ -21,7 +21,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 	 *
 	 * @since 1.0.0
 	 *
-	 * @dataProvider data_provider_valid_settings
+	 * @dataProvider data_provider_valid_condition_settings
 	 *
 	 * @param array $settings An array of valid settings.
 	 */
@@ -68,51 +68,11 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 	}
 
 	/**
-	 * Provides several different sets of valid settings.
+	 * Test validating the settings when they are invalid.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array[] Sets of valid settings.
-	 */
-	public function data_provider_valid_settings() {
-
-		$conditions = array(
-			'_conditions' => array(
-				array(
-					'type'     => 'test',
-					'settings' => array( 'value' => 'a' ),
-				),
-			),
-		);
-
-		$entity = array( 'test_entity' => $conditions );
-		$child = $both = array( 'test_entity' => array( 'child' => $conditions ) );
-
-		$both['test_entity']['_conditions'] = $conditions['_conditions'];
-
-		return array(
-			'none' => array( array() ),
-			'empty' => array( array( 'conditions' => array() ) ),
-			'entity' => array( array( 'conditions' => $entity ) ),
-			'child' => array( array( 'conditions' => $child ) ),
-			'both' => array( array( 'conditions' => $both ) ),
-			'two_entities' => array(
-				array(
-					'conditions' => array(
-						'test_entity' => $conditions,
-						'another' => $conditions,
-					),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Test validating the settings they are invalid.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @dataProvider data_provider_invalid_settings
+	 * @dataProvider data_provider_invalid_condition_settings
 	 *
 	 * @param array  $settings The settings, with one invalid or missing.
 	 * @param string $invalid  The slug of the setting that is invalid or missing.
@@ -168,81 +128,11 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 	}
 
 	/**
-	 * Provides an array of possible settings, each with one invalid item.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array[] Every possible set of settings with one invalid item.
-	 */
-	public function data_provider_invalid_settings() {
-
-		$conditions = array(
-			'_conditions' => array(
-				array(
-					'type'     => 'test',
-					'settings' => array( 'value' => 'a' ),
-				),
-			),
-		);
-
-		$invalid_settings = array(
-			'not_array' => array(
-				array( 'conditions' => 'not_array' ),
-				array( 'conditions' ),
-			),
-			'invalid_entity' => array(
-				array( 'conditions' => array( 'invalid_entity' => $conditions ) ),
-				array( 'conditions' ),
-			),
-			'incorrect_data_type' => array(
-				array( 'conditions' => array( 'test_entity' => array( 'child' => $conditions ) ) ),
-				array( 'conditions', 'test_entity', 'child', '_conditions', 0 ),
-			),
-		);
-
-		$invalid_setting_fields = array(
-			'type' => 'invalid',
-			'settings' => array(),
-		);
-
-		foreach ( $conditions['_conditions'][0] as $slug => $value ) {
-
-			$invalid_conditions = $conditions;
-
-			unset( $invalid_conditions['_conditions'][0][ $slug ] );
-
-			$field = array( 'conditions', 'test_entity', '_conditions', 0 );
-
-			$invalid_settings[ "no_{$slug}" ] = array(
-				array( 'conditions' => array( 'test_entity' => $invalid_conditions ) ),
-				$field,
-			);
-
-			if ( isset( $invalid_setting_fields[ $slug ] ) ) {
-				$invalid_conditions['_conditions'][0][ $slug ] = $invalid_setting_fields[ $slug ];
-
-				$field[] = $slug;
-
-				if ( 'settings' === $slug ) {
-					$field[] = 'value';
-				}
-
-				$invalid_settings[ "invalid_{$slug}" ] = array(
-					array( 'conditions' => array( 'test_entity' => $invalid_conditions ) ),
-					$field,
-				);
-			}
-		}
-
-		return $invalid_settings;
-	}
-
-	/**
 	 * Test checking whether an event should hit the target.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @dataProvider data_provider_valid_settings
+	 * @dataProvider data_provider_valid_condition_settings
 	 *
 	 * @param array $settings Reaction settings.
 	 */
@@ -290,7 +180,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 	 *
 	 * @since 1.0.0
 	 *
-	 * @dataProvider data_provider_should_not_hit
+	 * @dataProvider data_provider_unmet_conditions
 	 *
 	 * @param array $settings Reaction settings.
 	 */
@@ -328,41 +218,6 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 	}
-
-	/**
-	 * Provides an array of possible settings which should not hit the target.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array[] Settings that should not cause the target to be hit.
-	 */
-	public function data_provider_should_not_hit() {
-
-		$conditions = array(
-			'_conditions' => array(
-				array(
-					'type'     => 'unmet',
-					'settings' => array( 'value' => 'a' ),
-				),
-			),
-		);
-
-		$settings = array(
-			'unmet_condition' => array(
-				array( 'conditions' => array( 'test_entity' => $conditions ) ),
-			),
-			'unmet_child_condition' => array(
-				array(
-					'conditions' => array(
-						'test_entity' => array( 'child' => $conditions ),
-					),
-				),
-			),
-		);
-
-		return $settings;
-	}
-
 }
 
 // EOF

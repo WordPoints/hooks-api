@@ -66,7 +66,6 @@ class WordPoints_Hook_Condition_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		);
 	}
 
-
 	/**
 	 * Test checking if the condition settings are valid when they aren't.
 	 *

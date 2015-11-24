@@ -92,7 +92,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 		$this->validate_count();
 
 		if ( isset( $settings['conditions'] ) ) {
-			$this->validate_conditions();
+			$this->validate_conditions( $arg );
 		}
 
 		return $this->settings;
@@ -130,10 +130,10 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 	 * Validate the sub conditions for the condition.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Entityish|WordPoints_Entity_Array $current_arg The current arg.
 	 */
-	protected function validate_conditions() {
-
-		$current_arg = $this->validator->get_event_args()->get_current();
+	protected function validate_conditions( $current_arg ) {
 
 		$args = new WordPoints_Hook_Event_Args( array() );
 
@@ -166,10 +166,18 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 
 		$this->settings = $settings;
 
-		/** @var WordPoints_Entity_Array $arg */
 		$arg = $args->get_current();
 
-		$entities = $this->filter_entities( $arg->get_the_entities() );
+		$entities = array();
+
+		if ( $arg instanceof WordPoints_Entity_Array ) {
+
+			$entities = $arg->get_the_entities();
+
+			if ( isset( $this->settings['conditions'] ) ) {
+				$entities = $this->filter_entities( $entities );
+			}
+		}
 
 		return $this->check_count( count( $entities ) );
 	}

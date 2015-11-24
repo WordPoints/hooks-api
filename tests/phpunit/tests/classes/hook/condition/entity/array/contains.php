@@ -1,0 +1,369 @@
+<?php
+
+/**
+ * Test case for WordPoints_Hook_Condition_Entity_Array_Contains.
+ *
+ * @package wordpoints-hooks-api
+ * @since   1.0.0
+ */
+
+/**
+ * Tests WordPoints_Hook_Condition_Entity_Array_Contains.
+ *
+ * @since 1.0.0
+ *
+ * @covers WordPoints_Hook_Condition_Entity_Array_Contains
+ */
+class WordPoints_Hook_Condition_Entity_Array_Contains_Test
+	extends WordPoints_PHPUnit_TestCase_Hooks {
+
+	/**
+	 * Test checking if the condition settings are valid.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_valid_settings
+	 *
+	 * @param string $settings The valid settings.
+	 */
+	public function test_validate_settings( $settings ) {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+
+		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
+
+		$entities->children->register(
+			'test_entity'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
+		);
+
+		wordpoints_hooks()->extensions->register(
+			'conditions'
+			, 'WordPoints_Hook_Extension_Conditions'
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'entity' )
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'text' )
+		);
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$event_args->set_validator( $validator );
+		$event_args->add_entity( $entities->get( 'test_entity' ) );
+
+		$condition = new WordPoints_Hook_Condition_Entity_Array_Contains();
+
+		$validated_settings = $condition->validate_settings(
+			new WordPoints_Entity_Array( 'test_entity' )
+			, $settings
+			, $validator
+		);
+
+		$this->assertEquals( $settings, $validated_settings );
+
+		$this->assertFalse( $validator->had_errors() );
+		$this->assertEmpty( $validator->get_field_stack() );
+		$this->assertNull( $event_args->get_current() );
+	}
+
+	/**
+	 * Provides different sets of valid settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Possible settings.
+	 */
+	public function data_provider_valid_settings() {
+
+		$return = $max_and_min = array(
+			'empty' => array( array() ),
+			'max_only' => array( array( 'max' => 4 ) ),
+			'min_only' => array( array( 'min' => 1 ) ),
+			'max_zero' => array( array( 'max' => 0 ) ),
+			'min_zero' => array( array( 'min' => 0 ) ),
+			'max_and_min' => array( array( 'min' => 1, 'max' => 4 ) ),
+		);
+
+		$conditions = parent::data_provider_valid_condition_settings();
+
+		unset( $conditions['none'], $conditions['two_entities'] );
+
+		foreach ( $conditions as $key => $value ) {
+			$return[ "conditions_{$key}" ] = $value;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Test checking if the condition settings are valid when they aren't.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_invalid_settings
+	 *
+	 * @param array $settings The invalid settings.
+	 * @param array $invalid  The invalid field.
+	 */
+	public function test_validate_settings_invalid( $settings, $invalid ) {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+
+		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
+
+		$entities->children->register(
+			'test_entity'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Child'
+		);
+
+		wordpoints_hooks()->extensions->register(
+			'conditions'
+			, 'WordPoints_Hook_Extension_Conditions'
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'entity' )
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'data_type' => 'text' )
+		);
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$event_args->set_validator( $validator );
+		$event_args->add_entity( $entities->get( 'test_entity' ) );
+
+		$condition = new WordPoints_Hook_Condition_Entity_Array_Contains();
+
+		$validated_settings = $condition->validate_settings(
+			new WordPoints_Entity_Array( 'test_entity' )
+			, $settings
+			, $validator
+		);
+
+		if ( ! isset( $settings['conditions'] ) || is_array( $settings['conditions'] ) ) {
+			if ( 'max' === $invalid[0] || 'min' === $invalid[0] ) {
+				$settings[ $invalid[0] ] = false;
+			}
+
+			$this->assertEquals( $settings, $validated_settings );
+		} else {
+			$this->assertSame( array(), $validated_settings['conditions'] );
+		}
+
+		$errors = $validator->get_errors();
+
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( $invalid, $errors[0]['field'] );
+
+		$this->assertEmpty( $validator->get_field_stack() );
+		$this->assertNull( $event_args->get_current() );
+	}
+
+	/**
+	 * Provides different sets of invalid settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Invalid settings.
+	 */
+	public function data_provider_invalid_settings() {
+
+		$return = array(
+			'invalid_max' => array( array( 'max' => -3 ), array( 'max' ) ),
+			'invalid_min' => array( array( 'min' => -1 ), array( 'min' ) ),
+		);
+
+		$conditions = parent::data_provider_invalid_condition_settings();
+
+		foreach ( $conditions as $key => $value ) {
+			$return[ "conditions_{$key}" ] = $value;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Test checking if the condition is met.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_valid_settings
+	 *
+	 * @param string $settings The settings for the condition.
+	 */
+	public function test_is_met( $settings ) {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+
+		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
+
+		$entities->children->register(
+			'test_entity'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
+		);
+
+		$entities->children->register(
+			'test_entity'
+			, 'relationship'
+			, 'WordPoints_PHPUnit_Mock_Entity_Relationship_Array'
+		);
+
+		wordpoints_hooks()->extensions->register(
+			'conditions'
+			, 'WordPoints_Hook_Extension_Conditions'
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'entity' )
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'text' )
+		);
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$event_args->set_validator( $validator );
+		$event_args->add_entity( $entities->get( 'test_entity' ) );
+		$event_args->descend( 'test_entity' );
+		$event_args->descend( 'relationship' );
+		$event_args->descend( 'test_entity{}' );
+
+		$current = $event_args->get_current();
+
+		if ( array( 'max' => 0 ) === $settings ) {
+			$current->set_the_value( array() );
+		} else {
+			$current->set_the_value( array( 2, 445 ) );
+		}
+
+		$condition = new WordPoints_Hook_Condition_Entity_Array_Contains();
+
+		$this->assertTrue( $condition->is_met( $settings, $event_args ) );
+
+		$this->assertEquals(
+			array( 'test_entity', 'relationship', 'test_entity{}' )
+			, $validator->get_field_stack()
+		);
+
+		$this->assertEquals( $current, $event_args->get_current() );
+	}
+
+	/**
+	 * Test checking if the condition is met when its not.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_unmet_settings
+	 *
+	 * @param string $settings The settings for the condition.
+	 */
+	public function test_is_met_not( $settings ) {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+
+		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
+
+		$entities->children->register(
+			'test_entity'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
+		);
+
+		$entities->children->register(
+			'test_entity'
+			, 'relationship'
+			, 'WordPoints_PHPUnit_Mock_Entity_Relationship_Array'
+		);
+
+		wordpoints_hooks()->extensions->register(
+			'conditions'
+			, 'WordPoints_Hook_Extension_Conditions'
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'unmet', 'data_type' => 'text' )
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'unmet', 'data_type' => 'entity' )
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'entity' )
+		);
+
+		$this->factory->wordpoints->hook_condition->create(
+			array( 'slug' => 'test', 'data_type' => 'text' )
+		);
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$event_args->set_validator( $validator );
+		$event_args->add_entity( $entities->get( 'test_entity' ) );
+		$event_args->descend( 'test_entity' );
+		$event_args->descend( 'relationship' );
+		$event_args->descend( 'test_entity{}' );
+
+		$current = $event_args->get_current();
+		$current->set_the_value( array( 2, 445 ) );
+
+		$condition = new WordPoints_Hook_Condition_Entity_Array_Contains();
+
+		$this->assertFalse( $condition->is_met( $settings, $event_args ) );
+
+		$this->assertEquals(
+			array( 'test_entity', 'relationship', 'test_entity{}' )
+			, $validator->get_field_stack()
+		);
+
+		$this->assertEquals( $current, $event_args->get_current() );
+	}
+
+	/**
+	 * Provides different values that should cause the value not to be met.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Possible values.
+	 */
+	public function data_provider_unmet_settings() {
+
+		$return = array(
+			'max_to_low' => array( array( 'max' => 1 ) ),
+			'min_to_high' => array( array( 'min' => 3 ) ),
+		);
+
+		$conditions = parent::data_provider_unmet_conditions();
+
+		foreach ( $conditions as $key => $value ) {
+			$return[ "conditions_{$key}" ] = $value;
+			$return[ "conditions_{$key}" ][0]['min'] = 1;
+		}
+
+		return $return;
+	}
+}
+
+// EOF
