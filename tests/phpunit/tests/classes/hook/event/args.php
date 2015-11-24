@@ -121,6 +121,50 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	}
 
 	/**
+	 * Test descending when no validator is set.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_descend_no_validator() {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+		$entities->children->register(
+			'test'
+			, 'child'
+			, 'WordPoints_PHPUnit_Mock_Entity_Child'
+		);
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+		$args->add_entity( $entity );
+
+		$this->assertNull( $args->get_current() );
+
+		$this->assertTrue( $args->descend( 'test' ) );
+
+		$this->assertEquals( $entity, $args->get_current() );
+
+		$this->assertTrue( $args->descend( 'child' ) );
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Entity_Child'
+			, $args->get_current()
+		);
+
+		$this->assertTrue( $args->ascend() );
+
+		$this->assertEquals( $entity, $args->get_current() );
+
+		$this->assertTrue( $args->ascend() );
+
+		$this->assertNull( $args->get_current() );
+	}
+
+	/**
 	 * Test descending when the entity isn't part of the hierarchy.
 	 *
 	 * @since 1.0.0
