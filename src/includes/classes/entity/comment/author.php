@@ -27,7 +27,7 @@ class WordPoints_Entity_Comment_Author extends WordPoints_Entity_Relationship {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $related_ids_field = 'comment_author';
+	protected $related_ids_field = 'user_id';
 
 	/**
 	 * @since 1.0.0

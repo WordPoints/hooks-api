@@ -255,7 +255,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 							'class'   => 'WordPoints_Entity_Comment_Author',
 							'primary' => 'comment',
 							'related' => 'user',
-							'value'   => 'comment_author',
+							'value'   => 'user_id',
 						),
 						'post' => array(
 							'class'   => 'WordPoints_Entity_Comment_Post',
@@ -366,7 +366,10 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function create_comment() {
 
 		return $this->factory->comment->create_and_get(
-			array( 'comment_post_ID' => $this->factory->post->create() )
+			array(
+				'user_id'         => $this->factory->user->create(),
+				'comment_post_ID' => $this->factory->post->create(),
+			)
 		);
 	}
 

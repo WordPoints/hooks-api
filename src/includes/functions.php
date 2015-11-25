@@ -116,8 +116,10 @@ function wordpoints_hook_actions_init( $actions ) {
 		'comment_new'
 		, 'WordPoints_Hook_Action_Comment_New'
 		, array(
-			'action'     => 'wp_insert_comment',
-			'arg_number' => 2,
+			'action' => 'wp_insert_comment',
+			'data'   => array(
+				'arg_index' => array( 'comment' => 1 ),
+			),
 		)
 	);
 

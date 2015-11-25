@@ -103,6 +103,8 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 				);
 			}
 		}
+
+		self::$tested_targets = array();
 	}
 
 	/**
@@ -166,6 +168,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	public function test_fires( $target, $reactor_slug ) {
 
 		self::$tested_targets[] = $target;
+		self::$_expected_targets = $this->expected_targets;
 
 		$reactor = $this->hooks->reactors->get( $reactor_slug );
 
@@ -222,8 +225,6 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	 */
 	public function data_provider_targets() {
 
-		self::$_expected_targets = $this->expected_targets;
-
 		$this->hooks = wordpoints_hooks();
 
 		$reactors = $this->hooks->reactors->get_all();
@@ -261,14 +262,14 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		foreach ( $args as $slug => $arg ) {
 
-			if ( $arg instanceof WordPoints_Hook_Arg ) {
-				$arg = $arg->get_entity();
-			} elseif ( $arg instanceof WordPoints_Entity_Relationship ) {
+			if ( $arg instanceof WordPoints_Entity_Relationship ) {
+
 				$child_slug = $arg->get_related_entity_slug();
 				$target_stack[] = $slug;
 				$arg = $arg->get_child( $child_slug );
 				$slug = $arg->get_slug();
-			} else {
+
+			} elseif ( ! ( $arg instanceof WordPoints_Hook_Arg ) ) {
 				continue;
 			}
 

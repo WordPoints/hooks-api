@@ -38,8 +38,8 @@ class WordPoints_Hook_Action implements WordPoints_Hook_ActionI {
 	 * You must either define this in your subclass or override the get_arg_value()
 	 * method.
 	 *
-	 * The indexes of the array should match the indexes in the args array. The
-	 * values are the slugs of the args whose value is that that index. The slugs
+	 * The values of the array should match the indexes in the args array. The
+	 * keys are the slugs of the args whose value is in that index. The slugs
 	 * will usually be entity slugs or entity aliases and the entity value/ID will
 	 * be the value of that action arg.
 	 *
