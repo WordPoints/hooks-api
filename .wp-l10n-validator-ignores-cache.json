@@ -28,7 +28,6 @@
             "339": false
         },
         "] =": {
-            "341": false,
             "342": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
@@ -236,14 +235,14 @@
     },
     "\/includes\/functions.php": {
         "approved": {
-            "110": {
+            "131": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "131": {
+            "133": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -252,7 +251,7 @@
             }
         },
         "publish": {
-            "143": {
+            "145": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -261,7 +260,7 @@
             }
         },
         "wp": {
-            "185": {
+            "187": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -270,21 +269,21 @@
             }
         },
         "WordPoints_Hook_Arg": {
-            "211": {
+            "213": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "225": {
+            "227": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "239": {
+            "241": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -293,7 +292,7 @@
             }
         },
         "WordPoints_Hook_Arg_Current_User": {
-            "252": {
+            "254": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,

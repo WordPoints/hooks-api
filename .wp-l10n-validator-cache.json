@@ -26,8 +26,8 @@
             "errors": false
         },
         "\/admin\/includes\/functions.php": {
-            "size": 12971,
-            "hash": "67d18116acaf2e40b5fd72967c27a743",
+            "size": 12976,
+            "hash": "956106b88d23cf7c4112b62d3c98e33b",
             "errors": false
         },
         "\/hooks-api.php": {
@@ -106,13 +106,13 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/array.php": {
-            "size": 1891,
-            "hash": "d8a165f8293341845d59d203853c8dae",
+            "size": 2626,
+            "hash": "ac4f303e7df12a830bf178751080a0e7",
             "errors": false
         },
         "\/includes\/classes\/entity\/attr.php": {
-            "size": 1860,
-            "hash": "c7e4beeb7dd25ec9c4554f8480eccf97",
+            "size": 1870,
+            "hash": "29a98472a82ae275fa0fc94095068cb0",
             "errors": false
         },
         "\/includes\/classes\/entity\/childi.php": {
@@ -121,8 +121,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/comment\/author.php": {
-            "size": 617,
-            "hash": "83eb3c9f269dbe09679fa6a2f2f6d2dd",
+            "size": 610,
+            "hash": "478ba04fc0d8dd1c20583d812e9cff84",
             "errors": false
         },
         "\/includes\/classes\/entity\/comment\/post.php": {
@@ -161,8 +161,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/post\/content.php": {
-            "size": 478,
-            "hash": "379c8a9aaecdb262a3a3b50fa384d41d",
+            "size": 483,
+            "hash": "b6485c05d563efe15f07cc3763a5f453",
             "errors": false
         },
         "\/includes\/classes\/entity\/post\/terms.php": {
@@ -171,8 +171,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/post\/type\/name.php": {
-            "size": 491,
-            "hash": "4a6deda3c824e99e9058ea90779f756f",
+            "size": 496,
+            "hash": "9cd3daca28494096c22cf1b85dface0f",
             "errors": false
         },
         "\/includes\/classes\/entity\/post\/type\/relationship.php": {
@@ -206,8 +206,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/term\/id.php": {
-            "size": 462,
-            "hash": "31e7eeafc54d0659e80b559d4d33c9fc",
+            "size": 467,
+            "hash": "9bd845d95cdd3ae5818bbf8699b9b600",
             "errors": false
         },
         "\/includes\/classes\/entity\/term.php": {
@@ -216,8 +216,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/user\/role\/name.php": {
-            "size": 486,
-            "hash": "2f1f39d71e0fa4a0d085b2070a614f8d",
+            "size": 491,
+            "hash": "ba7a464cbe60e905ac195378a77ac12d",
             "errors": false
         },
         "\/includes\/classes\/entity\/user\/role.php": {
@@ -251,8 +251,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/action\/comment\/new.php": {
-            "size": 577,
-            "hash": "6751762eedae8730224723939c66bda1",
+            "size": 500,
+            "hash": "2bcd99cd2e8a6f3cf219e330fe6644b0",
             "errors": false
         },
         "\/includes\/classes\/hook\/action\/post\/publish.php": {
@@ -261,8 +261,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/action.php": {
-            "size": 2243,
-            "hash": "072bf067f561baab3a8a8718831aa266",
+            "size": 2238,
+            "hash": "c582cedee64f70df672fc256f19a4328",
             "errors": false
         },
         "\/includes\/classes\/hook\/actioni.php": {
@@ -291,8 +291,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/condition\/entity\/array\/contains.php": {
-            "size": 4505,
-            "hash": "73b3b9d6d7f12962ee7a9fd739d25802",
+            "size": 4644,
+            "hash": "445099139886f58fd762508447796ce9",
             "errors": false
         },
         "\/includes\/classes\/hook\/condition\/equals.php": {
@@ -311,13 +311,13 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/conditioni.php": {
-            "size": 1816,
-            "hash": "a2407b3a07e0044ed81e613706e90e44",
+            "size": 1772,
+            "hash": "d053065e57468ddd551604cc624bc776",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/args.php": {
-            "size": 2966,
-            "hash": "2a58576759204f17ac9d2790247f6bd2",
+            "size": 3127,
+            "hash": "8f1e34b259da8c39a2e12003f2bdbc20",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/comment\/leave.php": {
@@ -491,10 +491,10 @@
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 12469,
-            "hash": "6fc4639e6a70ad488464a2479d92a434",
+            "size": 12512,
+            "hash": "ea1c01f6813154fd9dc40a3968e6124d",
             "errors": false
         }
     },
-    "config_signature": "a800fc1541d98a2e2bbc2764c738e2a5"
+    "config_signature": "ae0592a164afa95c09ce0ac3d26e02e4"
 }
