@@ -158,7 +158,7 @@ function wordpoints_hook_actions_init( $actions ) {
 
 	$actions->register(
 		'user_register'
-	    , 'WordPoints_Hook_Action'
+		, 'WordPoints_Hook_Action'
 		, array(
 			'action' => 'user_register',
 			'data'   => array(
