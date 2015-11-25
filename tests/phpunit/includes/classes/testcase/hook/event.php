@@ -199,19 +199,21 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		$this->assertIsReaction( $reaction );
 
-		$arg = wordpoints_entities()->get( $target[0] );
+		$arg = new WordPoints_Hook_Arg( $target[0] );
 
-		$base_entity_id = $this->fire_event( $arg, $reactor_slug );
+		$base_entity_id = $this->fire_event( $arg->get_entity(), $reactor_slug );
 
-		$this->assertTrue( $arg->set_the_value( $base_entity_id ) );
+		$hierarchy = new WordPoints_Hook_Event_Args( array( $arg ) );
 
-		$hierarchy = new WordPoints_Entity_Hierarchy( $arg );
+		$hierarchy->descend( $target[0] );
+		$entity = $hierarchy->get_current();
+		$this->assertTrue( $entity->set_the_value( $base_entity_id ) );
 
-		$entity = $hierarchy->get_from_hierarchy( $target );
+		$target_entity = $hierarchy->get_from_hierarchy( $target );
 
-		$this->assertInstanceOf( 'WordPoints_Entity', $entity );
+		$this->assertInstanceOf( 'WordPoints_Entity', $target_entity );
 
-		$target_id = $entity->get_the_value();
+		$target_id = $target_entity->get_the_value();
 
 		call_user_func( array( $this, $assertion ), $target_id );
 	}
@@ -262,18 +264,24 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		foreach ( $args as $slug => $arg ) {
 
+			$target_stack[] = $slug;
+
 			if ( $arg instanceof WordPoints_Entity_Relationship ) {
 
 				$child_slug = $arg->get_related_entity_slug();
-				$target_stack[] = $slug;
 				$arg = $arg->get_child( $child_slug );
 				$slug = $arg->get_slug();
+				$target_stack[] = $slug;
 
-			} elseif ( ! ( $arg instanceof WordPoints_Hook_Arg ) ) {
+			} elseif ( $arg instanceof WordPoints_Hook_Arg ) {
+
+				$slug = $arg->get_entity_slug();
+
+			} else {
+
+				array_pop( $target_stack );
 				continue;
 			}
-
-			$target_stack[] = $slug;
 
 			if ( isset( $arg_types_index[ $slug ] ) ) {
 				foreach ( $arg_types_index[ $slug ] as $reactor_slug ) {
