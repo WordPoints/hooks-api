@@ -59,6 +59,7 @@ require_once( dirname( __FILE__ ) . 'hook/actioni.php' );
 require_once( dirname( __FILE__ ) . 'hook/actions.php' );
 require_once( dirname( __FILE__ ) . 'hook/arg.php' );
 require_once( dirname( __FILE__ ) . 'hook/arg/current/post.php' );
+require_once( dirname( __FILE__ ) . 'hook/arg/current/site.php' );
 require_once( dirname( __FILE__ ) . 'hook/arg/current/user.php' );
 require_once( dirname( __FILE__ ) . 'hook/condition.php' );
 require_once( dirname( __FILE__ ) . 'hook/condition/entity/array/contains.php' );
