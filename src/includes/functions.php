@@ -258,12 +258,21 @@ function wordpoints_hook_events_init( $events ) {
 
 	if ( is_multisite() ) {
 
-		// TODO network hooks
-		$events->args->register(
-			'user_visit'
-			, 'current:site'
-			, 'WordPoints_Hook_Arg_Current_Site'
+		$event_slugs = array(
+			'user_visit',
+			'user_register',
+			'post_publish',
+			'comment_leave',
 		);
+
+		foreach ( $event_slugs as $event_slug ) {
+			// TODO network hooks
+			$events->args->register(
+				$event_slug
+				, 'current:site'
+				, 'WordPoints_Hook_Arg_Current_Site'
+			);
+		}
 	}
 }
 
