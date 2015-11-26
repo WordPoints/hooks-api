@@ -38,15 +38,35 @@ class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCa
 	 * @since 1.0.0
 	 */
 	protected function fire_event( $arg, $reactor_slug ) {
-		return $this->factory->comment->create(
+
+		$comment_id = $this->factory->comment->create(
 			array(
-				'user_id'         => $this->factory->user->create(),
-				'comment_post_ID' => $this->factory->post->create(
+				'comment_approved' => 0,
+				'user_id'          => $this->factory->user->create(),
+				'comment_post_ID'  => $this->factory->post->create(
 					array(
 						'post_author' => $this->factory->user->create(),
 					)
 				),
 			)
+		);
+
+		wp_update_comment(
+			array( 'comment_ID' => $comment_id, 'comment_approved' => 1 )
+		);
+
+		return array(
+			$this->factory->comment->create(
+				array(
+					'user_id'         => $this->factory->user->create(),
+					'comment_post_ID' => $this->factory->post->create(
+						array(
+							'post_author' => $this->factory->user->create(),
+						)
+					),
+				)
+			),
+			$comment_id,
 		);
 	}
 }

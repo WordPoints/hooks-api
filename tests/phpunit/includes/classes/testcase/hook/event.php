@@ -201,21 +201,24 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		$arg = new WordPoints_Hook_Arg( $target[0] );
 
-		$base_entity_id = $this->fire_event( $arg->get_entity(), $reactor_slug );
+		$base_entity_ids = $this->fire_event( $arg->get_entity(), $reactor_slug );
 
-		$hierarchy = new WordPoints_Hook_Event_Args( array( $arg ) );
+		foreach ( (array) $base_entity_ids as $base_entity_id ) {
 
-		$hierarchy->descend( $target[0] );
-		$entity = $hierarchy->get_current();
-		$this->assertTrue( $entity->set_the_value( $base_entity_id ) );
+			$hierarchy = new WordPoints_Hook_Event_Args( array( $arg ) );
 
-		$target_entity = $hierarchy->get_from_hierarchy( $target );
+			$hierarchy->descend( $target[0] );
+			$entity = $hierarchy->get_current();
+			$this->assertTrue( $entity->set_the_value( $base_entity_id ) );
 
-		$this->assertInstanceOf( 'WordPoints_Entity', $target_entity );
+			$target_entity = $hierarchy->get_from_hierarchy( $target );
 
-		$target_id = $target_entity->get_the_value();
+			$this->assertInstanceOf( 'WordPoints_Entity', $target_entity );
 
-		call_user_func( array( $this, $assertion ), $target_id );
+			$target_id = $target_entity->get_the_value();
+
+			call_user_func( array( $this, $assertion ), $target_id );
+		}
 	}
 
 	/**
