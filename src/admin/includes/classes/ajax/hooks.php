@@ -301,7 +301,7 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$data = wp_unslash( $_POST ); // WPCS: CSRF OK.
 
-		unset( $data['id'] );
+		unset( $data['id'], $data['action'], $data['nonce'], $data['reactor'] );
 
 		return $data;
 	}
