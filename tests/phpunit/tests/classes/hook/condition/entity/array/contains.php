@@ -90,6 +90,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			'max_zero' => array( array( 'max' => 0 ) ),
 			'min_zero' => array( array( 'min' => 0 ) ),
 			'max_and_min' => array( array( 'min' => 1, 'max' => 4 ) ),
+			'max_equals_min' => array( array( 'min' => 2, 'max' => 2 ) ),
 		);
 
 		$conditions = parent::data_provider_valid_condition_settings();
@@ -110,10 +111,11 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 	 *
 	 * @dataProvider data_provider_invalid_settings
 	 *
-	 * @param array $settings The invalid settings.
-	 * @param array $invalid  The invalid field.
+	 * @param array $settings     The invalid settings.
+	 * @param array $invalid      The invalid field.
+	 * @param bool  $expect_false Whether to expect the invalid max/min to be false.
 	 */
-	public function test_validate_settings_invalid( $settings, $invalid ) {
+	public function test_validate_settings_invalid( $settings, $invalid, $expect_false = false ) {
 
 		$this->mock_apps();
 
@@ -155,7 +157,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 		);
 
 		if ( ! isset( $settings['conditions'] ) || is_array( $settings['conditions'] ) ) {
-			if ( 'max' === $invalid[0] || 'min' === $invalid[0] ) {
+			if ( $expect_false ) {
 				$settings[ $invalid[0] ] = false;
 			}
 
@@ -183,8 +185,9 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 	public function data_provider_invalid_settings() {
 
 		$return = array(
-			'invalid_max' => array( array( 'max' => -3 ), array( 'max' ) ),
-			'invalid_min' => array( array( 'min' => -1 ), array( 'min' ) ),
+			'invalid_max' => array( array( 'max' => -3 ), array( 'max' ), true ),
+			'invalid_min' => array( array( 'min' => -1 ), array( 'min' ), true ),
+			'max_less_than_min' => array( array( 'min' => 3, 'max' => 1 ), array( 'min' ) ),
 		);
 
 		$conditions = parent::data_provider_invalid_condition_settings();

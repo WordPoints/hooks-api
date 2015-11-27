@@ -116,14 +116,25 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 			);
 		}
 
-		if (
-			! empty( $this->settings['min'] )
-			&& ! wordpoints_posint( $this->settings['min'] )
-		) {
-			$this->validator->add_error(
-				__( 'The minimum must be a positive integer.', 'wordpoints' )
-				, 'min'
-			);
+		if ( ! empty( $this->settings['min'] ) ) {
+
+			if ( ! wordpoints_posint( $this->settings['min'] ) ) {
+
+				$this->validator->add_error(
+					__( 'The minimum must be a positive integer.', 'wordpoints' )
+					, 'min'
+				);
+
+			} elseif (
+				! empty( $this->settings['max'] )
+				&& $this->settings['max'] < $this->settings['min']
+			) {
+
+				$this->validator->add_error(
+					__( 'The minimum must be less than the maximum.', 'wordpoints' )
+					, 'min'
+				);
+			}
 		}
 	}
 
