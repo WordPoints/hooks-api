@@ -132,7 +132,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Entityish $current_arg The current arg.
+	 * @param WordPoints_EntityishI $current_arg The current arg.
 	 */
 	protected function validate_conditions( $current_arg ) {
 

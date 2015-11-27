@@ -172,11 +172,18 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 		$this->validator->push_field( 'settings' );
 
+		// The condition may call this object's validate_settings() method to
+		// validate some sub-conditions. When that happens, these properties will be
+		// reset, so we need to back up their values and then restore them below.
+		$backup = array( $this->validator, $this->event_args );
+
 		$settings['settings'] = $condition->validate_settings(
 			$arg
 			, $settings['settings']
 			, $this->validator
 		);
+
+		list( $this->validator, $this->event_args ) = $backup;
 
 		$this->validator->pop_field();
 

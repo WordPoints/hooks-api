@@ -68,6 +68,66 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 	}
 
 	/**
+	 * Test validating the settings when the condition also validates some sub
+	 * -conditions.
+	 *
+	 * Previously when sub-conditions were being validated the event args object
+	 * would get reset, resulting in issues including _doing_it_wrong() notices from
+	 * ascend() being called when at the top of the (inadvertently reset) hierarchy.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_validate_settings_sub_conditions() {
+
+		$settings = array(
+			'conditions' => array(
+				'user' => array(
+					'roles' => array(
+						'user_role{}' => array(
+							'_conditions' => array(
+								array(
+									'type' => 'contains',
+									'settings' => array(
+										'min' => 1,
+										'conditions' => array(
+											'user_role' => array(
+												'_conditions' => array(
+													array(
+														'type' => 'equals',
+														'settings' => array(
+															'value' => 'administrator',
+														),
+													),
+												),
+											),
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$extension = wordpoints_hooks()->extensions->get( 'conditions' );
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$event_args->add_entity( wordpoints_entities()->get( 'user' ) );
+		$event_args->set_validator( $validator );
+
+		$result = $extension->validate_settings( $settings, $validator, $event_args );
+
+		$this->assertFalse( $validator->had_errors() );
+		$this->assertEmpty( $validator->get_field_stack() );
+		$this->assertNull( $event_args->get_current() );
+
+		$this->assertEquals( $settings, $result );
+	}
+
+	/**
 	 * Test validating the settings when they are invalid.
 	 *
 	 * @since 1.0.0
