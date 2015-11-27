@@ -39,6 +39,10 @@ Fields = Backbone.Model.extend({
 
 	create: function ( reaction, name, value, data ) {
 
+		if ( typeof value === 'undefined' && data.default ) {
+			value = data.default;
+		}
+
 		data = _.extend(
 			{ name: this.getFieldName( reaction, name ), value: value }
 			, data

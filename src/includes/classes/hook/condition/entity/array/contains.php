@@ -65,9 +65,10 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 	public function get_settings_fields() {
 		return array(
 			'min' => array(
-				'slug'  => 'min',
-				'label' => __( 'Minimum number of items', 'wordpoints' ),
-				'type'  => 'number',
+				'slug'    => 'min',
+				'label'   => __( 'Minimum number of items', 'wordpoints' ),
+				'type'    => 'number',
+				'default' => 1,
 			),
 			'max' => array(
 				'slug'  => 'max',
