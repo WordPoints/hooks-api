@@ -12,6 +12,8 @@
  *
  * @since 1.0.0
  *
+ * @WordPress\action wordpoints_init_app-apps
+ *
  * @param WordPoints_App $app The main WordPoints app.
  */
 function wordpoints_hooks_register_admin_apps( $app ) {
@@ -25,12 +27,14 @@ function wordpoints_hooks_register_admin_apps( $app ) {
 
 	$admin->sub_apps->register( 'screen', 'WordPoints_Admin_Screens' );
 }
-add_action( 'wordpoints_init_app-apps', 'wordpoints_hooks_register_admin_apps' );
 
 /**
  * Register the admin screens.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action admin_menu
+ * @WordPress\action network_admin_menu
  */
 function wordpoints_hooks_api_admin_menu() {
 
@@ -53,13 +57,13 @@ function wordpoints_hooks_api_admin_menu() {
 		$admin_screens->register( $id, 'WordPoints_Admin_Screen_Points_Types' );
 	}
 }
-add_action( 'admin_menu', 'wordpoints_hooks_api_admin_menu' );
-add_action( 'network_admin_menu', 'wordpoints_hooks_api_admin_menu' );
 
 /**
  * Register module admin scripts.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action admin_init
  */
 function wordpoints_hooks_admin_register_scripts() {
 
@@ -259,7 +263,6 @@ function wordpoints_hooks_admin_register_scripts() {
 		'
 	);
 }
-add_action( 'admin_init', 'wordpoints_hooks_admin_register_scripts' );
 
 /**
  * Export the data for the scripts needed to make the hooks UI work.
@@ -413,6 +416,8 @@ function wordpoints_hooks_ui_setup_script_data() {
  *
  * @since 1.0.0
  *
+ * @WordPress\filter script_loader_tag
+ *
  * @param string $html   The HTML for the script.
  * @param string $handle The handle of the script.
  *
@@ -430,12 +435,13 @@ function wordpoints_script_templates_filter( $html, $handle ) {
 
 	return $html;
 }
-add_filter( 'script_loader_tag', 'wordpoints_script_templates_filter', 10, 2 );
 
 /**
  * Initialize the Ajax actions.
  *
  * @since 1.0.0
+ *
+ * @WordPress\action admin_init
  */
 function wordpoints_hooks_admin_ajax() {
 
@@ -443,6 +449,5 @@ function wordpoints_hooks_admin_ajax() {
 		new WordPoints_Admin_Ajax_Hooks;
 	}
 }
-add_action( 'admin_init', 'wordpoints_hooks_admin_ajax' );
 
 // EOF
