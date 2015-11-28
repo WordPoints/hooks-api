@@ -229,10 +229,10 @@ function wordpoints_hooks_admin_register_scripts() {
 						<div class="arg-selectors"></div>
 						<div class="condition-selector"></div>
 					</div>
-					<button type="button" class="confirm-add-new button-secondary button-link" disabled aria-label="' . esc_attr__( 'Add Condition', 'wordpoints' ) . '">
+					<button type="button" class="confirm-add-new button-secondary" disabled aria-label="' . esc_attr__( 'Add Condition', 'wordpoints' ) . '">
 						' . esc_html_x( 'Add', 'reaction condition', 'wordpoints' ) . '
 					</button>
-					<button type="button" class="cancel-add-new button-secondary button-link" aria-label="' . esc_attr__( 'Cancel Adding New Condition', 'wordpoints' ) . '">
+					<button type="button" class="cancel-add-new button-secondary" aria-label="' . esc_attr__( 'Cancel Adding New Condition', 'wordpoints' ) . '">
 						' . esc_html_x( 'Cancel', 'reaction condition', 'wordpoints' ) . '
 					</button>
 				</div>
