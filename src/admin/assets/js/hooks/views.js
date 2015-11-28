@@ -45,6 +45,10 @@ Args = Backbone.Model.extend({
 
 			var entity = this.getEntity( arg.slug );
 
+			if ( ! entity ) {
+				return;
+			}
+
 			_.extend( entity.attributes, arg );
 
 			argsCollection.add( entity );
