@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Comment_Post extends WordPoints_Entity_Relationship {
+class WordPoints_Entity_Comment_Post extends WordPoints_Entity_Relationship_Dynamic {
 
 	/**
 	 * @since 1.0.0
@@ -28,13 +28,6 @@ class WordPoints_Entity_Comment_Post extends WordPoints_Entity_Relationship {
 	 * @since 1.0.0
 	 */
 	protected $related_ids_field = 'comment_post_ID';
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_title() {
-		return __( 'Post', 'wordpoints' );
-	}
 }
 
 // EOF
