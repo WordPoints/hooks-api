@@ -35,7 +35,14 @@ class WordPoints_Entity_Post
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Content', 'wordpoints' ); // TODO standardize on Post or Content
+
+		$post_type = get_post_type_object( substr( $this->slug, 5 /* post\ */ ) );
+
+		if ( $post_type ) {
+			return $post_type->labels->singular_name;
+		} else {
+			return $this->slug;
+		}
 	}
 
 	/**
