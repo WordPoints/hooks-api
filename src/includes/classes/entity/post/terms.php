@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship {
+class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship_Dynamic {
 
 	/**
 	 * @since 1.0.0
@@ -28,7 +28,14 @@ class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship {
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Terms', 'wordpoints' );
+
+		$taxonomy = get_taxonomy( substr( $this->slug, 6 /* terms\ */ ) );
+
+		if ( $taxonomy ) {
+			return $taxonomy->labels->name;
+		} else {
+			return parent::get_title();
+		}
 	}
 
 	/**
