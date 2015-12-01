@@ -72,16 +72,28 @@ class WordPoints_Hook_Arg_Dynamic_Test extends WordPoints_PHPUnit_TestCase_Hooks
 
 		foreach ( $basic as $slug => $data ) {
 
-			$data[0] .= '-a';
-			$data[1] .= '-a';
+			$data_2 = $data[2];
+
+			$data[0] .= '\a';
+			$data[1] .= '\a';
 
 			$return[ "{$slug}_dynamic_generic" ] = $data;
 
-			$data[2] = array( key( $data[2] ) . '-a' => 0 );
+			$data[2] = array( key( $data[2] ) . '\a' => 0 );
 
 			$return[ "{$slug}_dynamic" ] = $data;
-		}
 
+			$data[0] .= 'a\b';
+			$data[1] .= 'a\b';
+			$data[2] = $data_2;
+
+			$return[ "{$slug}_double_dynamic_generic" ] = $data;
+
+			$data[2] = array( key( $data[2] ) . '\aa\b' => 0 );
+
+			$return[ "{$slug}_double_dynamic" ] = $data;
+		}
+var_dump($return);
 		return $return;
 	}
 

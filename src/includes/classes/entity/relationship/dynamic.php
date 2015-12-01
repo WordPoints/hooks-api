@@ -21,14 +21,14 @@ abstract class WordPoints_Entity_Relationship_Dynamic extends WordPoints_Entity_
 
 		parent::__construct( $slug );
 
-		$parts = explode( '-', $this->slug, 2 );
+		$parts = explode( '\\', $this->slug, 2 );
 
 		if ( isset( $parts[1] ) ) {
 
 			$parsed = $this->parse_slug( $this->related_entity_slug );
 
-			$this->primary_entity_slug = "{$this->primary_entity_slug}-{$parts[1]}";
-			$this->related_entity_slug = "{$parsed['slug']}-{$parts[1]}";
+			$this->primary_entity_slug = "{$this->primary_entity_slug}\\{$parts[1]}";
+			$this->related_entity_slug = "{$parsed['slug']}\\{$parts[1]}";
 
 			if ( $parsed['is_array'] ) {
 				$this->related_entity_slug .= '{}';

@@ -41,7 +41,7 @@ class WordPoints_Hook_Arg_Dynamic extends WordPoints_Hook_Arg {
 
 		parent::__construct( $slug, $action );
 
-		$parts = explode( '-', $this->slug, 2 );
+		$parts = explode( '\\', $this->slug, 2 );
 
 		if ( isset( $parts[1] ) ) {
 			$this->arg_slug = $parts[0];
