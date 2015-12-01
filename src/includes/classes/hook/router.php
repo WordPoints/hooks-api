@@ -109,6 +109,10 @@ class WordPoints_Hook_Router {
 			return;
 		}
 
+		// We might normally do this in the constructor, however, the events
+		// registry attempts to access the router in its own constructor. The result
+		// of attempting to do this before the router itself has been fully
+		// constructed is that the events registry gets null instead of the router.
 		if ( ! isset( $this->actions ) ) {
 
 			$hooks = wordpoints_hooks();
