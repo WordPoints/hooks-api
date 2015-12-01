@@ -12,20 +12,35 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Event_Post_Publish extends WordPoints_Hook_Event {
+class WordPoints_Hook_Event_Post_Publish extends WordPoints_Hook_Event_Dynamic {
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $generic_entity_slug = 'post';
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Post Publish', 'wordpoints' );
+
+		return sprintf(
+			// translators: singular name of the post type
+			__( 'Publish %s', 'wordpoints' )
+			, $this->get_entity_title()
+		);
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_description() {
-		return __( 'When a Post, Page, or other type of content is published.', 'wordpoints' );
+
+		return sprintf(
+			// translators: singular name of the post type
+			__( 'When a %s is published.', 'wordpoints' )
+			, $this->get_entity_title()
+		);
 	}
 }
 

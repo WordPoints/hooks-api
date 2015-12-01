@@ -12,20 +12,35 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Event_Comment_Leave extends WordPoints_Hook_Event {
+class WordPoints_Hook_Event_Comment_Leave extends WordPoints_Hook_Event_Dynamic {
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $generic_entity_slug = 'post';
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Comment', 'wordpoints' );
+
+		return sprintf(
+			// translators: singular name of the post type
+			__( 'Comment on a %s', 'wordpoints' )
+			, $this->get_entity_title()
+		);
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_description() {
-		return __( 'When a user leaves a reply to a Post or other type of content.', 'wordpoints' );
+
+		return sprintf(
+			// translators: singular name of the post type
+			__( 'When a user leaves a reply to a %s.', 'wordpoints' )
+			, $this->get_entity_title()
+		);
 	}
 }
 
