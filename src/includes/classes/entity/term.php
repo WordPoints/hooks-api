@@ -28,7 +28,14 @@ class WordPoints_Entity_Term extends WordPoints_Entity {
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Term', 'wordpoints' );
+
+		$taxonomy = get_taxonomy( substr( $this->slug, 5 /* term\ */ ) );
+
+		if ( $taxonomy ) {
+			return $taxonomy->labels->singular_name;
+		} else {
+			return $this->slug;
+		}
 	}
 
 	/**
