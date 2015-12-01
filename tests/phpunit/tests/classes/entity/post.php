@@ -33,7 +33,7 @@ class WordPoints_Entity_Post_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_get_title_nonexistent_taxonomy() {
+	public function test_get_title_nonexistent_post_type() {
 
 		$entity = new WordPoints_Entity_Post( 'post\invalid' );
 
