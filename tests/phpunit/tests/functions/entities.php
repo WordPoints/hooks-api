@@ -73,30 +73,91 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->mock_apps();
 
-		$entities = new WordPoints_App_Registry( 'entities' );
+		$entities = wordpoints_entities();
+
+		$filter = 'wordpoints_register_entities_for_post_types';
+		$this->listen_for_filter( $filter );
+
+		$filter_2 = 'wordpoints_register_entities_for_taxonomies';
+		$this->listen_for_filter( $filter_2 );
 
 		wordpoints_entities_init( $entities );
 
-		$this->assertTrue( $entities->is_registered( 'post' ) );
-		$this->assertTrue( $entities->is_registered( 'post_type' ) );
-		$this->assertTrue( $entities->is_registered( 'comment' ) );
-		$this->assertTrue( $entities->is_registered( 'user' ) );
-		$this->assertTrue( $entities->is_registered( 'user_role' ) );
-		$this->assertTrue( $entities->is_registered( 'term' ) );
+		$this->assertEquals( 1, $this->filter_was_called( $filter ) );
+		$this->assertEquals( 1, $this->filter_was_called( $filter_2 ) );
 
 		$children = $entities->children;
 
-		$this->assertTrue( $children->is_registered( 'post', 'content' ) );
-		$this->assertTrue( $children->is_registered( 'post_type', 'name' ) );
-		$this->assertTrue( $children->is_registered( 'user_role', 'name' ) );
-		$this->assertTrue( $children->is_registered( 'term', 'id' ) );
+		$this->assertTrue( $entities->is_registered( 'post\post' ) );
+		$this->assertTrue( $children->is_registered( 'post\post', 'content' ) );
+		$this->assertTrue( $children->is_registered( 'post\post', 'author' ) );
+		$this->assertTrue( $children->is_registered( 'post\post', 'terms\post_tag' ) );
+		$this->assertTrue( $children->is_registered( 'post\post', 'terms\category' ) );
+		$this->assertTrue( $children->is_registered( 'post\post', 'terms\post_format' ) );
 
-		$this->assertTrue( $children->is_registered( 'post', 'author' ) );
-		$this->assertTrue( $children->is_registered( 'post', 'type' ) );
-		$this->assertTrue( $children->is_registered( 'post', 'terms' ) );
+		$this->assertTrue( $entities->is_registered( 'comment\post' ) );
+		$this->assertTrue( $children->is_registered( 'comment\post', 'post\post' ) );
+		$this->assertTrue( $children->is_registered( 'comment\post', 'author' ) );
+
+		$this->assertTrue( $entities->is_registered( 'term\post_tag' ) );
+		$this->assertTrue( $children->is_registered( 'term\post_tag', 'id' ) );
+
+		$this->assertTrue( $entities->is_registered( 'term\category' ) );
+		$this->assertTrue( $children->is_registered( 'term\category', 'id' ) );
+
+		$this->assertTrue( $entities->is_registered( 'term\post_format' ) );
+		$this->assertTrue( $children->is_registered( 'term\post_format', 'id' ) );
+
+		$this->assertTrue( $entities->is_registered( 'post\page' ) );
+		$this->assertTrue( $children->is_registered( 'post\page', 'content' ) );
+		$this->assertTrue( $children->is_registered( 'post\page', 'author' ) );
+
+		$this->assertTrue( $entities->is_registered( 'comment\page' ) );
+		$this->assertTrue( $children->is_registered( 'comment\page', 'post\page' ) );
+		$this->assertTrue( $children->is_registered( 'comment\page', 'author' ) );
+
+		$this->assertTrue( $entities->is_registered( 'post\attachment' ) );
+//		$this->assertTrue( $children->is_registered( 'post-attachment', 'content' ) );
+		$this->assertTrue( $children->is_registered( 'post\attachment', 'author' ) );
+
+		$this->assertTrue( $entities->is_registered( 'comment\attachment' ) );
+		$this->assertTrue( $children->is_registered( 'comment\attachment', 'post\attachment' ) );
+		$this->assertTrue( $children->is_registered( 'comment\attachment', 'author' ) );
+
+//		$this->assertTrue( $entities->is_registered( 'post_type' ) );
+//		$this->assertTrue( $children->is_registered( 'post_type', 'name' ) );
+
+		$this->assertTrue( $entities->is_registered( 'user' ) );
 		$this->assertTrue( $children->is_registered( 'user', 'roles' ) );
-		$this->assertTrue( $children->is_registered( 'comment', 'post' ) );
-		$this->assertTrue( $children->is_registered( 'comment', 'author' ) );
+
+		$this->assertTrue( $entities->is_registered( 'user_role' ) );
+		$this->assertTrue( $children->is_registered( 'user_role', 'name' ) );
+	}
+
+	/**
+	 * Test that it registers the expected entities.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_register_taxonomy_entities
+	 */
+	public function test_register_taxonomy_entities() {
+
+		$this->mock_apps();
+
+		$filter = 'wordpoints_register_taxonomy_entities';
+		$mock = $this->listen_for_filter( $filter );
+
+		wordpoints_register_taxonomy_entities( 'post_tag' );
+
+		$this->assertEquals( 1, $mock->call_count );
+		$this->assertEquals( array( 'post_tag' ), $mock->calls[0] );
+
+		$entities = wordpoints_entities();
+		$children = $entities->children;
+
+		$this->assertTrue( $entities->is_registered( 'term\post_tag' ) );
+		$this->assertTrue( $children->is_registered( 'term\post_tag', 'id' ) );
 	}
 
 	/**

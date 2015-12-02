@@ -24,13 +24,13 @@ class WordPoints_Hook_Event_Post_Publish_Test extends WordPoints_PHPUnit_TestCas
 	/**
 	 * @since 1.0.0
 	 */
-	protected $event_slug = 'post_publish';
+	protected $event_slug = 'post_publish\post';
 
 	/**
 	 * @since 1.0.0
 	 */
 	protected $expected_targets = array(
-		array( 'post', 'author', 'user' ),
+		array( 'post\post', 'author', 'user' ),
 	);
 
 	/**

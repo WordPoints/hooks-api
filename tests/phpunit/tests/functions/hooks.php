@@ -165,19 +165,136 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->mock_apps();
 
-		$events = new WordPoints_Hook_Events( 'events' );
+		$events = wordpoints_hooks()->events;
+
+		$filter = 'wordpoints_register_hook_events_for_post_types';
+		$this->listen_for_filter( $filter );
 
 		wordpoints_hook_events_init( $events );
 
-		$this->assertTrue( $events->is_registered( 'comment_leave' ) );
-		$this->assertTrue( $events->is_registered( 'post_publish' ) );
-		$this->assertTrue( $events->is_registered( 'user_register' ) );
-		$this->assertTrue( $events->is_registered( 'user_visit' ) );
+		$this->assertEquals( 1, $this->filter_was_called( $filter ) );
+
+		$this->assert_registered( 'user_register', 'user' );
+		$this->assert_registered( 'user_visit', 'current:user' );
+
+		$this->assert_registered( 'post_publish\post', 'post\post' );
+		$this->assert_registered( 'post_publish\page', 'post\page' );
+		$this->assert_registered( 'post_publish\attachment', 'post\attachment' );
+
+		$this->assert_registered( 'comment_leave\post', 'comment\post' );
+		$this->assert_registered( 'comment_leave\page', 'comment\page' );
+		$this->assert_registered( 'comment_leave\attachment', 'comment\attachment' );
+	}
+
+	/**
+	 * Test that it registers the expected events.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_register_post_type_hook_events
+	 */
+	public function test_register_post_type_hook_events() {
+
+		$this->mock_apps();
+
+		$this->factory->wordpoints->post_type->create(
+			array( 'name' => 'test', 'supports' => array( 'testing' ) )
+		);
+
+		$mock = $this->listen_for_filter(
+			'wordpoints_register_post_type_hook_events'
+		);
+
+		wordpoints_register_post_type_hook_events( 'test' );
+
+		$this->assertEquals( 1, $mock->call_count );
+		$this->assertEquals( array( 'test' ), $mock->calls[0] );
+
+		$this->assert_registered( 'post_publish\test', 'post\test' );
+	}
+
+	/**
+	 * Test that it registers the comment entities only when comments are supported.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_register_post_type_hook_events
+	 */
+	public function test_supports_comments() {
+
+		$this->mock_apps();
+
+		$this->factory->wordpoints->post_type->create(
+			array( 'name' => 'test', 'supports' => array() )
+		);
+
+		wordpoints_register_post_type_hook_events( 'test' );
+
+		$this->assert_not_registered( 'comment_leave\test', 'comment\test' );
+
+		add_post_type_support( 'test', 'comments' );
+
+		wordpoints_register_post_type_hook_events( 'test' );
+
+		$this->assert_registered( 'comment_leave\test', 'comment\test' );
+
+	}
+
+	/**
+	 * Assert that an event is registered.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string          $event_slug The slug of the event.
+	 * @param string|string[] $arg_slugs The slugs of the args expected to be
+	 *                                   registered for this event.
+	 */
+	protected function assert_registered( $event_slug, $arg_slugs = array() ) {
+
+		$events = wordpoints_hooks()->events;
+
+		$this->assertTrue( $events->is_registered( $event_slug ) );
 
 		$this->assertEquals(
 			is_multisite()
-			, $events->args->is_registered( 'user_visit', 'current:site' )
+			, $events->args->is_registered( $event_slug, 'current:site' )
 		);
+
+		foreach ( (array) $arg_slugs as $slug ) {
+
+			$this->assertTrue(
+				$events->args->is_registered( $event_slug, $slug )
+				, "The {$slug} arg must be registered for the {$event_slug} event."
+			);
+		}
+	}
+
+	/**
+	 * Assert that an event is not registered.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string          $event_slug The slug of the event.
+	 * @param string|string[] $arg_slugs The slugs of the args expected to be
+	 *                                   registered for this event.
+	 */
+	protected function assert_not_registered( $event_slug, $arg_slugs = array() ) {
+
+		$events = wordpoints_hooks()->events;
+
+		$this->assertFalse( $events->is_registered( $event_slug ) );
+
+		$this->assertFalse(
+			$events->args->is_registered( $event_slug, 'current:site' )
+		);
+
+		foreach ( (array) $arg_slugs as $slug ) {
+
+			$this->assertFalse(
+				$events->args->is_registered( $event_slug, $slug )
+				, "The {$slug} arg must not be registered for the {$event_slug} event."
+			);
+		}
 	}
 
 	/**

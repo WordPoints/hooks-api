@@ -24,14 +24,14 @@ class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCa
 	/**
 	 * @since 1.0.0
 	 */
-	protected $event_slug = 'comment_leave';
+	protected $event_slug = 'comment_leave\post';
 
 	/**
 	 * @since 1.0.0
 	 */
 	protected $expected_targets = array(
-		array( 'comment', 'author', 'user' ),
-		array( 'comment', 'post', 'post', 'author', 'user' ),
+		array( 'comment\post', 'author', 'user' ),
+		array( 'comment\post', 'post\post', 'post\post', 'author', 'user' ),
 	);
 
 	/**

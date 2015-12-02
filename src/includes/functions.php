@@ -201,35 +201,6 @@ function wordpoints_hook_actions_init( $actions ) {
 function wordpoints_hook_events_init( $events ) {
 
 	$events->register(
-		'comment_leave'
-		, 'WordPoints_Hook_Event_Comment_Leave'
-		, array(
-			'actions' => array(
-				'fire' => array( 'comment_approve', 'comment_new' ),
-				'reverse' => 'comment_deapprove',
-				'spam' => 'comment_spam',
-			),
-			'args' => array(
-				'comment' => 'WordPoints_Hook_Arg',
-			),
-		)
-	);
-
-	$events->register(
-		'post_publish'
-		, 'WordPoints_Hook_Event_Post_Publish'
-		, array(
-			'actions' => array(
-				'fire' => 'post_publish',
-				'reverse' => 'post_delete', // TODO this should be hooked to post unpublish instead
-			),
-			'args' => array(
-				'post' => 'WordPoints_Hook_Arg',
-			),
-		)
-	);
-
-	$events->register(
 		'user_register'
 		, 'WordPoints_Hook_Event_User_Register'
 		, array(
@@ -256,13 +227,27 @@ function wordpoints_hook_events_init( $events ) {
 		)
 	);
 
+	// Register events for all of the public post types.
+	$post_types = get_post_types( array( 'public' => true ) );
+
+	/**
+	 * Filter which post types to register hook events for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] The post type slugs ("names").
+	 */
+	$post_types = apply_filters( 'wordpoints_register_hook_events_for_post_types', $post_types );
+
+	foreach ( $post_types as $slug ) {
+		wordpoints_register_post_type_hook_events( $slug );
+	}
+
 	if ( is_multisite() ) {
 
 		$event_slugs = array(
 			'user_visit',
 			'user_register',
-			'post_publish',
-			'comment_leave',
 		);
 
 		foreach ( $event_slugs as $event_slug ) {
@@ -317,44 +302,177 @@ function wordpoints_entities_app_init( $entities ) {
  */
 function wordpoints_entities_init( $entities ) {
 
-	//
-	// Entities.
-	//
-
-	$entities->register( 'post', 'WordPoints_Entity_Post' );
-	$entities->register( 'post_type', 'WordPoints_Entity_Post_Type' );
-	$entities->register( 'comment', 'WordPoints_Entity_Comment' );
-	$entities->register( 'user', 'WordPoints_Entity_User' );
-	$entities->register( 'user_role', 'WordPoints_Entity_User_Role' );
-	$entities->register( 'term', 'WordPoints_Entity_Term' );
-
-	//
-	// Attributes.
-	//
-
-	$atts = $entities->children;
-
-	$atts->register( 'post', 'content', 'WordPoints_Entity_Post_Content' );
-	$atts->register( 'post_type', 'name', 'WordPoints_Entity_Post_Type_Name' );
-	$atts->register( 'term', 'id', 'WordPoints_Entity_Term_Id' );
-	$atts->register( 'user_role', 'name', 'WordPoints_Entity_User_Role_Name' );
-
-	//
-	// Relationships.
-	//
-
 	$children = $entities->children;
 
-	$children->register( 'post', 'author', 'WordPoints_Entity_Post_Author' );
-	$children->register( 'post', 'type', 'WordPoints_Entity_Post_Type_Relationship' );
-	$children->register( 'post', 'terms', 'WordPoints_Entity_Post_Terms' );
+	$entities->register( 'user', 'WordPoints_Entity_User' );
 	$children->register( 'user', 'roles', 'WordPoints_Entity_User_Roles' );
-	$children->register( 'comment', 'post', 'WordPoints_Entity_Comment_Post' );
-	$children->register( 'comment', 'author', 'WordPoints_Entity_Comment_Author' );
 
-	foreach ( get_post_types( array( 'public' => true ), false ) as $slug => $post_type ) {
-		unset( $post_type ); // TODO
+	$entities->register( 'user_role', 'WordPoints_Entity_User_Role' );
+	$children->register( 'user_role', 'name', 'WordPoints_Entity_User_Role_Name' );
+
+	// Register entities for all of the public post types.
+	$post_types = get_post_types( array( 'public' => true ) );
+
+	/**
+	 * Filter which post types to register entities for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] The post type slugs ("names").
+	 */
+	$post_types = apply_filters( 'wordpoints_register_entities_for_post_types', $post_types );
+
+	foreach ( $post_types as $slug ) {
+		wordpoints_register_post_type_entities( $slug );
 	}
+
+	// Register entities for all of the public taxonomies.
+	$taxonomies = get_taxonomies( array( 'public' => true ) );
+
+	/**
+	 * Filter which taxonomies to register entities for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] The taxonomy slugs.
+	 */
+	$taxonomies = apply_filters( 'wordpoints_register_entities_for_taxonomies', $taxonomies );
+
+	foreach ( $taxonomies as $slug ) {
+		wordpoints_register_taxonomy_entities( $slug );
+	}
+}
+
+/**
+ * Register the entities for a post type.
+ *
+ * @since 1.0.0
+ *
+ * @param string $slug The slug of the post type.
+ */
+function wordpoints_register_post_type_entities( $slug ) {
+
+	$entities = wordpoints_entities();
+	$children = $entities->children;
+
+	$entities->register( "post\\{$slug}", 'WordPoints_Entity_Post' );
+	$children->register( "post\\{$slug}", 'author', 'WordPoints_Entity_Post_Author' );
+
+	$supports = get_all_post_type_supports( $slug );
+
+	if ( isset( $supports['editor'] ) ) {
+		$children->register( "post\\{$slug}", 'content', 'WordPoints_Entity_Post_Content' );
+	}
+
+	if ( isset( $supports['comments'] ) ) {
+		$entities->register( "comment\\{$slug}", 'WordPoints_Entity_Comment' );
+		$children->register( "comment\\{$slug}", "post\\{$slug}", 'WordPoints_Entity_Comment_Post' );
+		$children->register( "comment\\{$slug}", 'author', 'WordPoints_Entity_Comment_Author' );
+	}
+
+	foreach ( get_object_taxonomies( $slug ) as $taxonomy_slug ) {
+		$children->register( "post\\{$slug}", "terms\\{$taxonomy_slug}", 'WordPoints_Entity_Post_Terms' );
+	}
+
+	/**
+	 * Fired when registering the entities for a post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug ("name") of the post type.
+	 */
+	do_action( 'wordpoints_register_post_type_entities', $slug );
+}
+/**
+ * Register the hook events for a post type.
+ *
+ * @since 1.0.0
+ *
+ * @param string $slug The slug of the post type.
+ */
+function wordpoints_register_post_type_hook_events( $slug ) {
+
+	$event_slugs = array( "post_publish\\{$slug}" );
+
+	$events = wordpoints_hooks()->events;
+
+	$events->register(
+		"post_publish\\{$slug}"
+		, 'WordPoints_Hook_Event_Post_Publish'
+		, array(
+			'actions' => array(
+				'fire' => 'post_publish',
+				'reverse' => 'post_delete', // TODO this should be hooked to post unpublish instead
+			),
+			'args' => array(
+				"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+			),
+		)
+	);
+
+	if ( post_type_supports( $slug, 'comments' ) ) {
+
+		$event_slugs[] = "comment_leave\\{$slug}";
+
+		$events->register(
+			"comment_leave\\{$slug}"
+			, 'WordPoints_Hook_Event_Comment_Leave'
+			, array(
+				'actions' => array(
+					'fire' => array( 'comment_approve', 'comment_new' ),
+					'reverse' => 'comment_deapprove',
+					'spam' => 'comment_spam',
+				),
+				'args' => array(
+					"comment\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+				),
+			)
+		);
+	}
+
+	if ( is_multisite() ) {
+		foreach ( $event_slugs as $event_slug ) {
+			$events->args->register(
+				$event_slug
+				, 'current:site'
+				, 'WordPoints_Hook_Arg_Current_Site'
+			);
+		}
+	}
+
+	/**
+	 * Fires when registering the hook events for a post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug ("name") of the post type.
+	 */
+	do_action( 'wordpoints_register_post_type_hook_events', $slug );
+}
+
+/**
+ * Register the entities for a taxonomy.
+ *
+ * @since 1.0.0
+ *
+ * @param string $slug The slug of the taxonomy.
+ */
+function wordpoints_register_taxonomy_entities( $slug ) {
+
+	$entities = wordpoints_entities();
+	$children = $entities->children;
+
+	$entities->register( "term\\{$slug}", 'WordPoints_Entity_Term' );
+	$children->register( "term\\{$slug}", 'id', 'WordPoints_Entity_Term_Id' );
+
+	/**
+	 * Fired when registering the entities for a taxonomy.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The taxonomy's slug.
+	 */
+	do_action( 'wordpoints_register_taxonomy_entities', $slug );
 }
 
 /**
