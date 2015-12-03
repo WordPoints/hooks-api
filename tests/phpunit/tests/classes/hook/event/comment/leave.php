@@ -14,7 +14,7 @@
  *
  * @covers WordPoints_Hook_Event_Comment_Leave
  */
-class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCase_Hook_Event {
+class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCase_Hook_Event_Dynamic {
 
 	/**
 	 * @since 1.0.0
@@ -24,14 +24,19 @@ class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCa
 	/**
 	 * @since 1.0.0
 	 */
-	protected $event_slug = 'comment_leave\post';
+	protected $event_slug = 'comment_leave\\';
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $dynamic_slug = 'post';
 
 	/**
 	 * @since 1.0.0
 	 */
 	protected $expected_targets = array(
-		array( 'comment\post', 'author', 'user' ),
-		array( 'comment\post', 'post\post', 'post\post', 'author', 'user' ),
+		array( 'comment\\', 'author', 'user' ),
+		array( 'comment\\', 'post\\', 'post\\', 'author', 'user' ),
 	);
 
 	/**
@@ -46,6 +51,7 @@ class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCa
 				'comment_post_ID'  => $this->factory->post->create(
 					array(
 						'post_author' => $this->factory->user->create(),
+						'post_type'   => $this->dynamic_slug,
 					)
 				),
 			)
@@ -62,6 +68,7 @@ class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCa
 					'comment_post_ID' => $this->factory->post->create(
 						array(
 							'post_author' => $this->factory->user->create(),
+							'post_type'   => $this->dynamic_slug,
 						)
 					),
 				)
