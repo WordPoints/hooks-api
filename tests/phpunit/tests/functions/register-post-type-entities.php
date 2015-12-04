@@ -17,6 +17,16 @@
 class WordPoints_Functions_Register_Post_Type_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
+	 * @since 1.0.0
+	 */
+	public function tearDown() {
+
+		parent::tearDown();
+
+		_unregister_post_type( 'test' );
+	}
+
+	/**
 	 * Test that it registers the expected entities.
 	 *
 	 * @since 1.0.0

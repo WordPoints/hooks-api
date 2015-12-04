@@ -135,6 +135,7 @@ function wordpoints_hook_actions_init( $actions ) {
 		)
 	);
 
+	// This works for all post types except attachments.
 	$actions->register(
 		'post_publish'
 		, 'WordPoints_Hook_Action_Post_Publish'
@@ -143,6 +144,17 @@ function wordpoints_hook_actions_init( $actions ) {
 			'data'   => array(
 				'arg_index' => array( 'post' => 2 ),
 				'requirements' => array( 0 => 'publish' ),
+			),
+		)
+	);
+
+	$actions->register(
+		'add_attachment'
+		, 'WordPoints_Hook_Action'
+		, array(
+			'action' => 'add_attachment',
+			'data'   => array(
+				'arg_index' => array( 'post\attachment' => 0 ),
 			),
 		)
 	);
@@ -383,6 +395,7 @@ function wordpoints_register_post_type_entities( $slug ) {
 	 */
 	do_action( 'wordpoints_register_post_type_entities', $slug );
 }
+
 /**
  * Register the hook events for a post type.
  *
@@ -392,23 +405,46 @@ function wordpoints_register_post_type_entities( $slug ) {
  */
 function wordpoints_register_post_type_hook_events( $slug ) {
 
-	$event_slugs = array( "post_publish\\{$slug}" );
+	$event_slugs = array();
 
 	$events = wordpoints_hooks()->events;
 
-	$events->register(
-		"post_publish\\{$slug}"
-		, 'WordPoints_Hook_Event_Post_Publish'
-		, array(
-			'actions' => array(
-				'fire' => 'post_publish',
-				'reverse' => 'post_delete', // TODO this should be hooked to post unpublish instead
-			),
-			'args' => array(
-				"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
-			),
-		)
-	);
+	if ( 'attachment' === $slug ) {
+
+		$event_slugs[] = 'media_upload';
+
+		$events->register(
+			'media_upload'
+			, 'WordPoints_Hook_Event_Media_Upload'
+			, array(
+				'actions' => array(
+					'fire'    => 'add_attachment',
+					'reverse' => 'post_delete',
+				),
+				'args'    => array(
+					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+				),
+			)
+		);
+
+	} else {
+
+		$event_slugs[] = "post_publish\\{$slug}";
+
+		$events->register(
+			"post_publish\\{$slug}"
+			, 'WordPoints_Hook_Event_Post_Publish'
+			, array(
+				'actions' => array(
+					'fire'    => 'post_publish',
+					'reverse' => 'post_delete', // TODO this should be hooked to post unpublish instead
+				),
+				'args'    => array(
+					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+				),
+			)
+		);
+	}
 
 	if ( post_type_supports( $slug, 'comments' ) ) {
 

@@ -15,6 +15,16 @@
 class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
+	 * @since 1.0.0
+	 */
+	public function tearDown() {
+
+		parent::tearDown();
+
+		_unregister_post_type( 'test' );
+	}
+
+	/**
 	 * Test initializing the API registers the actions.
 	 *
 	 * @since 1.0.0
@@ -179,7 +189,7 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->assert_registered( 'post_publish\post', 'post\post' );
 		$this->assert_registered( 'post_publish\page', 'post\page' );
-		$this->assert_registered( 'post_publish\attachment', 'post\attachment' );
+		$this->assert_registered( 'media_upload', 'post\attachment' );
 
 		$this->assert_registered( 'comment_leave\post', 'comment\post' );
 		$this->assert_registered( 'comment_leave\page', 'comment\page' );
@@ -211,6 +221,23 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$this->assertEquals( array( 'test' ), $mock->calls[0] );
 
 		$this->assert_registered( 'post_publish\test', 'post\test' );
+	}
+
+	/**
+	 * Test that it registers the expected events for an attachment.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_register_post_type_hook_events
+	 */
+	public function test_register_post_type_hook_events_attachment() {
+
+		$this->mock_apps();
+
+		wordpoints_register_post_type_hook_events( 'attachment' );
+
+		$this->assert_not_registered( 'post_publish\attachment', 'post\attachment' );
+		$this->assert_registered( 'media_upload', 'post\attachment' );
 	}
 
 	/**
