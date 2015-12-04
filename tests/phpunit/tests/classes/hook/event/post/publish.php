@@ -14,7 +14,7 @@
  *
  * @covers WordPoints_Hook_Event_Post_Publish
  */
-class WordPoints_Hook_Event_Post_Publish_Test extends WordPoints_PHPUnit_TestCase_Hook_Event {
+class WordPoints_Hook_Event_Post_Publish_Test extends WordPoints_PHPUnit_TestCase_Hook_Event_Dynamic {
 
 	/**
 	 * @since 1.0.0
@@ -24,23 +24,46 @@ class WordPoints_Hook_Event_Post_Publish_Test extends WordPoints_PHPUnit_TestCas
 	/**
 	 * @since 1.0.0
 	 */
-	protected $event_slug = 'post_publish\post';
+	protected $event_slug = 'post_publish\\';
 
 	/**
 	 * @since 1.0.0
 	 */
 	protected $expected_targets = array(
-		array( 'post\post', 'author', 'user' ),
+		array( 'post\\', 'author', 'user' ),
 	);
 
 	/**
 	 * @since 1.0.0
 	 */
+	protected $dynamic_slug = 'post';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected function fire_event( $arg, $reactor_slug ) {
-		return $this->factory->post->create(
+
+		$post_id = $this->factory->post->create(
 			array(
 				'post_author' => $this->factory->user->create(),
+				'post_type'   => $this->dynamic_slug,
+				'post_status' => 'draft',
 			)
+		);
+
+		$this->factory->post->update_object(
+			$post_id
+			, array( 'post_status' => 'publish' )
+		);
+
+		return array(
+			$post_id,
+			$this->factory->post->create(
+				array(
+					'post_author' => $this->factory->user->create(),
+					'post_type'   => $this->dynamic_slug,
+				)
+			),
 		);
 	}
 }

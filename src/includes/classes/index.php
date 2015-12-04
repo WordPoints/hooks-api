@@ -72,6 +72,7 @@ require_once( dirname( __FILE__ ) . 'hook/event.php' );
 require_once( dirname( __FILE__ ) . 'hook/event/args.php' );
 require_once( dirname( __FILE__ ) . 'hook/event/comment/leave.php' );
 require_once( dirname( __FILE__ ) . 'hook/event/dynamic.php' );
+require_once( dirname( __FILE__ ) . 'hook/event/media/upload.php' );
 require_once( dirname( __FILE__ ) . 'hook/event/post/publish.php' );
 require_once( dirname( __FILE__ ) . 'hook/event/user/register.php' );
 require_once( dirname( __FILE__ ) . 'hook/event/user/visit.php' );

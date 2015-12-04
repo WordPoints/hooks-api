@@ -93,7 +93,7 @@ class WordPoints_Hook_Arg_Dynamic_Test extends WordPoints_PHPUnit_TestCase_Hooks
 
 			$return[ "{$slug}_double_dynamic" ] = $data;
 		}
-var_dump($return);
+
 		return $return;
 	}
 
