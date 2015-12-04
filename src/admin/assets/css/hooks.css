@@ -68,11 +68,8 @@
   }
 }
 
-.wordpoints-hook-reaction-group-container .group-description {
-  padding: 5px 10px;
-  border-bottom: 1px solid #ddd;
-  background-color: #f7f7f7;
-  margin: 0;
+.wordpoints-hook-reaction-group-container .description {
+  margin: 10px;
 }
 
 .wordpoints-hook-reaction-group-container .controls {

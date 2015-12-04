@@ -78,11 +78,8 @@ $lighter_border_color: #ddd;
 }
 
 .wordpoints-hook-reaction-group-container {
-	.group-description {
-		padding: 5px 10px;
-		border-bottom: 1px solid $lighter_border_color;
-		background-color: $background_color;
-		margin: 0;
+	.description {
+		margin: 10px;
 	}
 
 	.controls {

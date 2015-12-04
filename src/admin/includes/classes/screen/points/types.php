@@ -290,6 +290,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 				, array(
 					'points_type' => $this->current_points_type,
 					'slug'        => $slug,
+					'event'       => $event,
 				)
 			);
 		}
@@ -343,6 +344,10 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		</script>
 
 		<div class="wordpoints-hook-reaction-group-container">
+			<p class="description">
+				<?php echo esc_html( $meta_box['args']['event']->get_description() ); ?>
+			</p>
+
 			<div class="wordpoints-hook-reaction-group"
 				data-wordpoints-hooks-hook-event="<?php echo esc_attr( $event_slug ); ?>"
 				data-wordpoints-hooks-points-type="<?php echo esc_attr( $this->current_points_type ); ?>"
