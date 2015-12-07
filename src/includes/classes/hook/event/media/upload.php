@@ -17,11 +17,6 @@ class WordPoints_Hook_Event_Media_Upload extends WordPoints_Hook_Event {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $slug = 'post\attachment';
-
-	/**
-	 * @since 1.0.0
-	 */
 	public function get_title() {
 
 		return __( 'Upload Media', 'wordpoints' );
