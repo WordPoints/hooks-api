@@ -436,6 +436,10 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 	 */
 	public function test_get_registry_sub_app_access_restricted_property() {
 
+		if ( defined( 'HHVM_VERSION' ) ) {
+			$this->markTestSkipped( 'Attempting to set a hidden property causes a fatal error on HHVM' );
+		}
+
 		$this->mock_apps();
 
 		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
