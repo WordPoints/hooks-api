@@ -24,11 +24,26 @@ class WordPoints_Hook_Event_Comment_Leave extends WordPoints_Hook_Event_Dynamic 
 	 */
 	public function get_title() {
 
-		return sprintf(
-			// translators: singular name of the post type
-			__( 'Comment on a %s', 'wordpoints' )
-			, $this->get_entity_title()
-		);
+		$parsed = wordpoints_parse_dynamic_slug( $this->slug );
+
+		switch ( $parsed['dynamic'] ) {
+
+			case 'post':
+				return __( 'Comment on a Post', 'wordpoints' );
+
+			case 'page':
+				return __( 'Comment on a Page', 'wordpoints' );
+
+			case 'attachment':
+				return __( 'Comment on a Media Upload', 'wordpoints' );
+
+			default:
+				return sprintf(
+					// translators: singular name of the post type
+					__( 'Comment on a %s', 'wordpoints' )
+					, $this->get_entity_title()
+				);
+		}
 	}
 
 	/**
@@ -36,11 +51,26 @@ class WordPoints_Hook_Event_Comment_Leave extends WordPoints_Hook_Event_Dynamic 
 	 */
 	public function get_description() {
 
-		return sprintf(
-			// translators: singular name of the post type
-			__( 'When a user leaves a reply to a %s.', 'wordpoints' )
-			, $this->get_entity_title()
-		);
+		$parsed = wordpoints_parse_dynamic_slug( $this->slug );
+
+		switch ( $parsed['dynamic'] ) {
+
+			case 'post':
+				return __( 'When a user leaves a comment on a Post.', 'wordpoints' );
+
+			case 'page':
+				return __( 'When a user leaves a comment on a Page.', 'wordpoints' );
+
+			case 'attachment':
+				return __( 'When a user leaves a comment on a file uploaded to the Media Library.', 'wordpoints' );
+
+			default:
+				return sprintf(
+					// translators: singular name of the post type
+					__( 'When a user leaves a comment on a %s.', 'wordpoints' )
+					, $this->get_entity_title()
+				);
+		}
 	}
 }
 

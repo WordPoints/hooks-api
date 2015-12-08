@@ -711,4 +711,34 @@ function wordpoints_construct_class_with_args( $class_name, array $args ) {
 	}
 }
 
+/**
+ * Parse a dynamic slug into the dynamic and generic components.
+ *
+ * In the hooks and entities APIs, we have a convention of using dynamic slugs when
+ * certain elements are registered dynamically. Such slugs are of the following
+ * format: <generic part>\<dynamic part>. In other words, the generic and dynamic
+ * parts are separated by a backslash. This function provides a canonical method of
+ * parsing a slug into its constituent parts.
+ *
+ * @since 1.0.0
+ *
+ * @param string $slug A slug (for an entity or hook event, for example).
+ *
+ * @return array The slug parsed into the 'generic' and 'dynamic' portions. If the
+ *               slug is not dynamic, the value of each of those keys will be false.
+ */
+function wordpoints_parse_dynamic_slug( $slug ) {
+
+	$parsed = array( 'dynamic' => false, 'generic' => false );
+
+	$parts = explode( '\\', $slug, 2 );
+
+	if ( isset( $parts[1] ) ) {
+		$parsed['dynamic'] = $parts[1];
+		$parsed['generic'] = $parts[0];
+	}
+
+	return $parsed;
+}
+
 // EOF

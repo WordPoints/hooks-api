@@ -41,10 +41,10 @@ class WordPoints_Hook_Arg_Dynamic extends WordPoints_Hook_Arg {
 
 		parent::__construct( $slug, $action );
 
-		$parts = explode( '\\', $this->slug, 2 );
+		$parts = wordpoints_parse_dynamic_slug( $this->slug );
 
-		if ( isset( $parts[1] ) ) {
-			$this->arg_slug = $parts[0];
+		if ( $parts['dynamic'] ) {
+			$this->arg_slug = $parts['generic'];
 		} else {
 			$this->arg_slug = $this->slug;
 		}

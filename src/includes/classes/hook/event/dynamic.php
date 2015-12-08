@@ -46,10 +46,10 @@ abstract class WordPoints_Hook_Event_Dynamic extends WordPoints_Hook_Event {
 	 */
 	protected function get_entity_title() {
 
-		$parts = explode( '\\', $this->slug, 2 );
+		$parts = wordpoints_parse_dynamic_slug( $this->slug );
 
-		if ( isset( $parts[1] ) ) {
-			$entity_slug = "{$this->generic_entity_slug}\\{$parts[1]}";
+		if ( $parts['dynamic'] ) {
+			$entity_slug = "{$this->generic_entity_slug}\\{$parts['dynamic']}";
 		} else {
 			$entity_slug = $this->generic_entity_slug;
 		}

@@ -24,11 +24,23 @@ class WordPoints_Hook_Event_Post_Publish extends WordPoints_Hook_Event_Dynamic {
 	 */
 	public function get_title() {
 
-		return sprintf(
-			// translators: singular name of the post type
-			__( 'Publish %s', 'wordpoints' )
-			, $this->get_entity_title()
-		);
+		$parsed = wordpoints_parse_dynamic_slug( $this->slug );
+
+		switch ( $parsed['dynamic'] ) {
+
+			case 'post':
+				return __( 'Publish Post', 'wordpoints' );
+
+			case 'page':
+				return __( 'Publish Page', 'wordpoints' );
+
+			default:
+				return sprintf(
+					// translators: singular name of the post type
+					__( 'Publish %s', 'wordpoints' )
+					, $this->get_entity_title()
+				);
+		}
 	}
 
 	/**
@@ -36,11 +48,23 @@ class WordPoints_Hook_Event_Post_Publish extends WordPoints_Hook_Event_Dynamic {
 	 */
 	public function get_description() {
 
-		return sprintf(
-			// translators: singular name of the post type
-			__( 'When a %s is published.', 'wordpoints' )
-			, $this->get_entity_title()
-		);
+		$parsed = wordpoints_parse_dynamic_slug( $this->slug );
+
+		switch ( $parsed['dynamic'] ) {
+
+			case 'post':
+				return __( 'When a Post is published.', 'wordpoints' );
+
+			case 'page':
+				return __( 'When a Page is published.', 'wordpoints' );
+
+			default:
+				return sprintf(
+					// translators: singular name of the post type
+					__( 'When a %s is published.', 'wordpoints' )
+					, $this->get_entity_title()
+				);
+		}
 	}
 }
 
