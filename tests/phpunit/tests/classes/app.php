@@ -429,15 +429,17 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @expectedException PHPUnit_Framework_Error_Notice
-	 * @expectedExceptionMessage Undefined property: WordPoints_App::$parent
-	 *
 	 * @expectedIncorrectUsage WordPoints_App::__set
 	 */
 	public function test_get_registry_sub_app_access_restricted_property() {
 
 		if ( defined( 'HHVM_VERSION' ) ) {
 			$this->markTestSkipped( 'Attempting to set a hidden property causes a fatal error on HHVM' );
+		} else {
+			$this->setExpectedException(
+				'PHPUnit_Framework_Error_Notice'
+				, 'Undefined property: WordPoints_App::$parent'
+			);
 		}
 
 		$this->mock_apps();
