@@ -36,7 +36,7 @@ class WordPoints_Hooks extends WordPoints_App {
 	 *
 	 * @var bool
 	 */
-	protected $network_mode = false;
+	protected $network_mode = null;
 
 	/**
 	 * Register the sub apps when the app is constructed.
@@ -65,6 +65,11 @@ class WordPoints_Hooks extends WordPoints_App {
 	 * @return bool Whether network-wide mode is on.
 	 */
 	public function get_network_mode() {
+
+		if ( ! isset( $this->network_mode ) ) {
+			$this->network_mode = is_network_admin();
+		}
+
 		return $this->network_mode;
 	}
 
