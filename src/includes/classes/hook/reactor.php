@@ -16,8 +16,13 @@
  *
  * @since 1.0.0
  *
- * @property-read WordPoints_Hook_Reaction_StorageI $reactions         Object for accessing hook reactions for this reactor.
- * @property-read WordPoints_Hook_Reaction_StorageI $network_reactions Object for accessing network hook reactions for this reactor.
+ * @property-read WordPoints_Hook_Reaction_StorageI $reactions          Object for
+ *                accessing hook reactions for this reactor based on the current
+ *                network mode.
+ * @property-read WordPoints_Hook_Reaction_StorageI $standard_reactions Object for
+ *                accessing standard hook reactions for this reactor.
+ * @property-read WordPoints_Hook_Reaction_StorageI $network_reactions  Object for
+ *                accessing network hook reactions for this reactor.
  */
 abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
@@ -55,7 +60,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 *
 	 * @var string
 	 */
-	protected $reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
+	protected $standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
 	/**
 	 * The network reaction storage class this reactor uses.
@@ -71,21 +76,25 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function __get( $var ) {
 
-		if (
-			'reactions' === $var
-			|| (
-				'network_reactions' === $var
-				&& isset( $this->network_reactions_class )
-			)
-		) {
-			if ( ! isset( $this->$var ) ) {
-				$this->$var = new $this->{"{$var}_class"}(
-					$this->slug
-					, ( 'network_reactions' === $var )
-				);
-			}
+		switch ( $var ) {
+			case 'reactions':
+				$var = wordpoints_hooks()->get_network_mode()
+					? 'network_reactions'
+					: 'standard_reactions';
+				// fall through
 
-			return $this->$var;
+			case 'standard_reactions':
+			case 'network_reactions':
+				if ( ! isset( $this->$var ) ) {
+					if ( isset( $this->{"{$var}_class"} ) ) {
+						$this->$var = new $this->{"{$var}_class"}(
+							$this->slug
+							, ( 'network_reactions' === $var )
+						);
+					}
+				}
+
+				return $this->$var;
 		}
 
 		return null;

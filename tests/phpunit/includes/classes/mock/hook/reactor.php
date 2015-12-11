@@ -32,7 +32,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	public $reactions_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage';
+	public $standard_reactions_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage';
 
 	/**
 	 * @since 1.0.0

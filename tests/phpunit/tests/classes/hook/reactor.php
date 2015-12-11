@@ -25,9 +25,9 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 
-		$reactor->reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
+		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		$this->assertInstanceOf( $reactor->reactions_class, $reactor->reactions );
+		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
 		$this->assertFalse( $reactor->reactions->is_network_wide() );
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
