@@ -46,6 +46,8 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 			WordPoints_App::$main = $this->backup_app;
 			$this->backup_app = null;
 		}
+
+		unset( $GLOBALS['current_screen'] );
 	}
 
 	/**
@@ -62,6 +64,15 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 		return WordPoints_App::$main = new WordPoints_PHPUnit_Mock_App_Silent(
 			'apps'
 		);
+	}
+
+	/**
+	 * Mock being in the network admin.
+	 *
+	 * @since 1.0.0
+	 */
+	public function set_network_admin() {
+		$GLOBALS['current_screen'] = WP_Screen::get( 'test-network' );
 	}
 }
 

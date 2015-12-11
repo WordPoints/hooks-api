@@ -14,7 +14,7 @@
  *
  * @covers WordPoints_Hooks
  */
-class WordPoints_Hooks_Test extends PHPUnit_Framework_TestCase {
+class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 
 	/**
 	 * Test that it calls the wordpoints_hooks_init action when it is constructed.
@@ -98,6 +98,20 @@ class WordPoints_Hooks_Test extends PHPUnit_Framework_TestCase {
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
 		$this->assertFalse( $hooks->get_network_mode() );
+	}
+
+	/**
+	 * Test that network mode is on by default in the network admin.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_network_mode_on_if_network_admin() {
+
+		$this->set_network_admin();
+
+		$hooks = new WordPoints_Hooks( 'hooks' );
+
+		$this->assertTrue( $hooks->get_network_mode() );
 	}
 }
 
