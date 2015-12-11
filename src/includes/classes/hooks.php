@@ -76,11 +76,38 @@ class WordPoints_Hooks extends WordPoints_App {
 	/**
 	 * Sets whether network-wide mode is on.
 	 *
+	 * This function should not be used, especially to turn network mode off when
+	 * WordPoints has turned it on. I won't even say, "Unless you really know what
+	 * you're doing," because trust me, if you're trying to do that, you don't. Here
+	 * be dragons!
+	 *
+	 * For those of you that are specifically looking for something to break, here is
+	 * how to do it.
+	 *
+	 * What network mode does is tell the hooks API that it is in the context of the
+	 * network itself, and not of any particular site. This feature is what allows us
+	 * to have network-wide reactions in addition to the standard, per-site
+	 * reactions. When network mode is on, it means that we don't want to do anything
+	 * with standard reactions at all, because even though there may be a "current
+	 * site" that we could pull them from, we're actually supposed to be pretending
+	 * that we aren't on a particular site on the network, but in network-wide
+	 * context. So when network mode is turned on, you won't be able to do anything
+	 * with standard reactions, only network-wide ones.
+	 *
+	 * This is why turning it off is so dangerous—it would allow you to accidentally
+	 * do things with standard reactions when you probably aren't expected to. The
+	 * user is in the context of the network, for example in the network admin, so
+	 * they're only expecting network-wide reactions to be affected. If you did
+	 * something with standard reactions, you'd end up affecting a particular site,
+	 * when the user doesn't think he is.
+	 *
 	 * @since 1.0.0
+	 *
+	 * @internal
 	 *
 	 * @param bool $on Whether network-wide mode should be on (or off).
 	 */
-	public function set_network_mode( $on = true ) {
+	public function _set_network_mode( $on = true ) {
 		$this->network_mode = (bool) $on;
 	}
 }

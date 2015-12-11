@@ -61,11 +61,11 @@ class WordPoints_Hooks_Test extends PHPUnit_Framework_TestCase {
 
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
-		$hooks->set_network_mode( false );
+		$hooks->_set_network_mode( false );
 
 		$this->assertFalse( $hooks->get_network_mode() );
 
-		$hooks->set_network_mode( true );
+		$hooks->_set_network_mode( true );
 
 		$this->assertTrue( $hooks->get_network_mode() );
 	}
@@ -79,11 +79,11 @@ class WordPoints_Hooks_Test extends PHPUnit_Framework_TestCase {
 
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
-		$hooks->set_network_mode( '0' );
+		$hooks->_set_network_mode( '0' );
 
 		$this->assertFalse( $hooks->get_network_mode() );
 
-		$hooks->set_network_mode( 'hey!' );
+		$hooks->_set_network_mode( 'hey!' );
 
 		$this->assertTrue( $hooks->get_network_mode() );
 	}
