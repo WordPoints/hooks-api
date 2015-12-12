@@ -25,7 +25,12 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_reactions() {
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$this->mock_apps();
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+
+		$this->assertFalse( $reactor->is_network_wide() );
 
 		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
@@ -33,6 +38,25 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
 		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
 		$this->assertNull( $reactor->network_reactions );
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$another = $this->factory->wordpoints->hook_reaction->create(
+			array( 'event' => 'another' )
+		);
+
+		$this->assertIsReaction( $another );
+
+		$this->assertEquals(
+			array( $reaction )
+			, $reactor->get_all_reactions_to_event( 'test_event' )
+		);
+
+		$this->assertEquals(
+			array( $reaction, $another )
+			, $reactor->get_all_reactions()
+		);
 	}
 
 	/**
@@ -47,7 +71,10 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->mock_apps();
 		$this->set_network_admin();
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+
+		$this->assertTrue( $reactor->is_network_wide() );
 
 		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
@@ -55,6 +82,29 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
 		$this->assertTrue( $reactor->reactions === $reactor->network_reactions );
 		$this->assertNull( $reactor->standard_reactions );
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->assertTrue( $reaction->is_network_wide() );
+
+		$another = $this->factory->wordpoints->hook_reaction->create(
+			array( 'event' => 'another' )
+		);
+
+		$this->assertIsReaction( $another );
+
+		$this->assertTrue( $another->is_network_wide() );
+
+		$this->assertEquals(
+			array( $reaction )
+			, $reactor->get_all_reactions_to_event( 'test_event' )
+		);
+
+		$this->assertEquals(
+			array( $reaction, $another )
+			, $reactor->get_all_reactions()
+		);
 	}
 
 	/**
@@ -70,11 +120,24 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->mock_apps();
 		$this->set_network_admin();
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+
+		$this->assertFalse( $reactor->is_network_wide() );
 
 		$this->assertNull( $reactor->reactions );
 		$this->assertNull( $reactor->network_reactions );
 		$this->assertNull( $reactor->standard_reactions );
+
+		$this->assertEquals(
+			array()
+			, $reactor->get_all_reactions_to_event( 'test_event' )
+		);
+
+		$this->assertEquals(
+			array()
+			, $reactor->get_all_reactions()
+		);
 	}
 
 	/**
@@ -89,13 +152,53 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+
+		$this->assertTrue( $reactor->is_network_wide() );
 
 		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
 		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
 		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->network_reactions );
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->assertFalse( $reaction->is_network_wide() );
+
+		$another = $this->factory->wordpoints->hook_reaction->create(
+			array( 'event' => 'another' )
+		);
+
+		$this->assertIsReaction( $another );
+
+		$this->assertFalse( $another->is_network_wide() );
+
+		$network_reaction = $reactor->network_reactions->create_reaction(
+			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
+		);
+
+		$this->assertTrue( $network_reaction->is_network_wide() );
+
+		$another_network = $reactor->network_reactions->create_reaction(
+			array( 'event' => 'another', 'target' => array( 'test_entity' ) )
+		);
+
+		$this->assertIsReaction( $another_network );
+
+		$this->assertTrue( $another_network->is_network_wide() );
+
+		$this->assertEquals(
+			array( $reaction, $network_reaction )
+			, $reactor->get_all_reactions_to_event( 'test_event' )
+		);
+
+		$this->assertEquals(
+			array( $reaction, $another, $network_reaction, $another_network )
+			, $reactor->get_all_reactions()
+		);
 	}
 
 	/**
@@ -189,95 +292,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals(
 			$reactor->settings_fields
 			, $reactor->get_settings_fields()
-		);
-	}
-
-	/**
-	 * Test getting all reactions to an event.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @requires WordPoints network-active
-	 */
-	public function test_get_all_reactions_to_event() {
-
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$this->factory->wordpoints->hook_reaction->create(
-			array( 'event' => 'another' )
-		);
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$network_reaction = $reactor->network_reactions->create_reaction(
-			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
-		);
-
-		$this->assertIsReaction( $network_reaction );
-
-		$this->assertEquals(
-			array( $reaction, $network_reaction )
-			, $reactor->get_all_reactions_to_event( 'test_event' )
-		);
-	}
-
-	/**
-	 * Test getting all reactions to an event when network reactions aren't supported.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @requires WordPoints network-active
-	 */
-	public function test_get_all_reactions_to_event_no_network() {
-
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$this->factory->wordpoints->hook_reaction->create(
-			array( 'event' => 'another' )
-		);
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$reactor->network_reaction_class = null;
-
-		$this->assertEquals(
-			array( $reaction )
-			, $reactor->get_all_reactions_to_event( 'test_event' )
-		);
-	}
-
-	/**
-	 * Test getting all reactions to an event when WordPoints isn't network-active.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @requires WordPoints !network-active
-	 */
-	public function test_get_all_reactions_to_event_not_network_active() {
-
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$this->factory->wordpoints->hook_reaction->create(
-			array( 'event' => 'another' )
-		);
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertEquals(
-			array( $reaction )
-			, $reactor->get_all_reactions_to_event( 'test_event' )
 		);
 	}
 

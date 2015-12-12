@@ -184,6 +184,10 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	/**
 	 * Get all reactions to a particular event for this reactor.
 	 *
+	 * On multisite it will return all reactions for the current site, both standard
+	 * ones and any network-wide ones (if this reactor offers a network storage
+	 * class). Or, if network mode is on, it will return only the network-wide ones.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $event_slug The event slug.
@@ -192,16 +196,49 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function get_all_reactions_to_event( $event_slug ) {
 
-		$reactions = $this->reactions->get_reactions_to_event( $event_slug );
+		$reactions = array();
 
-		if (
-			isset( $this->network_reactions_class )
-			&& is_wordpoints_network_active()
-		) {
+		foreach ( array( 'standard', 'network' ) as $store ) {
+
+			$storage = $this->{"{$store}_reactions"};
+
+			if ( ! $storage instanceof WordPoints_Hook_Reaction_StorageI ) {
+				continue;
+			}
+
 			$reactions = array_merge(
 				$reactions
-				, $this->network_reactions->get_reactions_to_event( $event_slug )
+				, $storage->get_reactions_to_event( $event_slug )
 			);
+		}
+
+		return $reactions;
+	}
+
+	/**
+	 * Get all reactions for this reactor.
+	 *
+	 * On multisite it will return all reactions for the current site, both standard
+	 * ones and any network-wide ones (if this reactor offers a network storage
+	 * class). Or, if network mode is on, it will return only the network-wide ones.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Hook_ReactionI[] All of the reaction objects.
+	 */
+	public function get_all_reactions() {
+
+		$reactions = array();
+
+		foreach ( array( 'standard', 'network' ) as $store ) {
+
+			$storage = $this->{"{$store}_reactions"};
+
+			if ( ! $storage instanceof WordPoints_Hook_Reaction_StorageI ) {
+				continue;
+			}
+
+			$reactions = array_merge( $reactions, $storage->get_reactions() );
 		}
 
 		return $reactions;

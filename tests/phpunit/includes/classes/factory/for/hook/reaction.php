@@ -49,8 +49,8 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 
 		if ( ! $hooks->events->is_registered( $args['event'] ) ) {
 
-			if ( 'test_event' === $args['event'] ) {
-				$this->factory->hook_event->create();
+			if ( 'test_event' === $args['event'] || 'another' === $args['event'] ) {
+				$this->factory->hook_event->create( array( 'slug' => $args['event'] ) );
 			} else {
 				return false;
 			}
