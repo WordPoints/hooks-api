@@ -36,8 +36,8 @@
             "errors": false
         },
         "\/hooks-api.php": {
-            "size": 2201,
-            "hash": "7ed4bba8e3977ff86a822982c2087d13",
+            "size": 2513,
+            "hash": "73ac7644ba766ac094ceee2dfe5d98a9",
             "errors": false
         },
         "\/includes\/actions.php": {
@@ -196,8 +196,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/relationship\/dynamic.php": {
-            "size": 1082,
-            "hash": "458492675a68dd45b2f89838d74ea03b",
+            "size": 1110,
+            "hash": "4fa352371b5cecb4e93e40eaf47ec81a",
             "errors": false
         },
         "\/includes\/classes\/entity\/relationship.php": {
@@ -301,8 +301,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/arg\/dynamic.php": {
-            "size": 1794,
-            "hash": "88cfd15d6bdc801ed829c23c7f22ff80",
+            "size": 1814,
+            "hash": "69066d67d76a67262feaac1035b4bef8",
             "errors": false
         },
         "\/includes\/classes\/hook\/arg.php": {
@@ -341,13 +341,13 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/comment\/leave.php": {
-            "size": 797,
-            "hash": "d65918739618dafafaa1980140d33fff",
+            "size": 1569,
+            "hash": "fb7cf63669ef5384736d38b265a80944",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/dynamic.php": {
-            "size": 1620,
-            "hash": "a12e43b08213d4a2c21adaf9d1cca558",
+            "size": 1640,
+            "hash": "f9b9dd821c6ae4e0ecff48956266fc01",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/media\/upload.php": {
@@ -356,8 +356,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/post\/publish.php": {
-            "size": 780,
-            "hash": "7dc6081b027080a01afa622569de4316",
+            "size": 1302,
+            "hash": "25e70a11c76339817359f8112e98e42b",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/user\/register.php": {
@@ -486,8 +486,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor.php": {
-            "size": 4398,
-            "hash": "9b9c4a1c6ee683e62ddd59c199759db0",
+            "size": 7194,
+            "hash": "af377d9acdae5204db88f8ddccd46f9d",
             "errors": false
         },
         "\/includes\/classes\/hook\/router.php": {
@@ -506,8 +506,8 @@
             "errors": false
         },
         "\/includes\/classes\/hooks.php": {
-            "size": 2482,
-            "hash": "3f07d11e4b4efbcec88c0d180fc91f81",
+            "size": 4100,
+            "hash": "9dd852da3929d3e8656d626a76d5740a",
             "errors": false
         },
         "\/includes\/classes\/index.php": {
@@ -521,10 +521,20 @@
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 16272,
-            "hash": "99c05ead969cb875cb12280a276c47b3",
+            "size": 17262,
+            "hash": "44046077c9bb3ecfef913a13240d17f6",
+            "errors": false
+        },
+        "\/includes\/integration\/actions.php": {
+            "size": 220,
+            "hash": "8e6e193c8d593c7cbc5c5e88a74bbc96",
+            "errors": false
+        },
+        "\/includes\/integration\/functions.php": {
+            "size": 859,
+            "hash": "0c93ea66a121539e822c61d35df69aa6",
             "errors": false
         }
     },
-    "config_signature": "928348e66c32b33f91b532c0b3eee183"
+    "config_signature": "1e0276f6834d5f3b8cfea9f559b1ea1b"
 }

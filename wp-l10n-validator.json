@@ -46,7 +46,8 @@
 		"$validator->add_error": [ 2 ],
 
 		"(unknown)->extensions->get": [ 1 ],
-		"(unknown)->get_meta": true
+		"(unknown)->get_meta": true,
+		"(unknown)->reactors->get": [ 1 ]
 	},
 	"ignored-properties": {
 		"WordPoints_Entity_Attr::$data_type": true,
@@ -68,7 +69,7 @@
 		"WordPoints_Hook_Reactor::$slug": true,
 		"WordPoints_Hook_Reactor::$arg_types": true,
 		"WordPoints_Hook_Reactor::$network_reactions_class": true,
-		"WordPoints_Hook_Reactor::$reactions_class": true,
+		"WordPoints_Hook_Reactor::$standard_reactions_class": true,
 		"WordPoints_Un_Installer_Base::$type": true
 	},
 	"ignored-atts": [
