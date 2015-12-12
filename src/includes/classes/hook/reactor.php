@@ -16,13 +16,18 @@
  *
  * @since 1.0.0
  *
- * @property-read WordPoints_Hook_Reaction_StorageI $reactions          Object for
- *                accessing hook reactions for this reactor based on the current
- *                network mode.
- * @property-read WordPoints_Hook_Reaction_StorageI $standard_reactions Object for
- *                accessing standard hook reactions for this reactor.
- * @property-read WordPoints_Hook_Reaction_StorageI $network_reactions  Object for
- *                accessing network hook reactions for this reactor.
+ * @property-read WordPoints_Hook_Reaction_StorageI|null $reactions
+ *                Object for accessing hook reactions for this reactor based on the
+ *                current network mode. If a reactor doesn't support network
+ *                reactions and network mode is on, this property is not available.
+ *
+ * @property-read WordPoints_Hook_Reaction_StorageI|null $standard_reactions
+ *                Object for accessing standard hook reactions for this reactor. Not
+ *                available when network mode is on.
+ *
+ * @property-read WordPoints_Hook_Reaction_StorageI|null $network_reactions
+ *                Object for accessing network hook reactions for this reactor. May
+ *                not be available for all reactors.
  */
 abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
@@ -54,6 +59,24 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $settings_fields;
 
 	/**
+	 * The storage object for the standard reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_StorageI
+	 */
+	protected $standard_reactions;
+
+	/**
+	 * The storage object for the network-wide reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_StorageI
+	 */
+	protected $network_reactions;
+
+	/**
 	 * The reaction storage class this reactor uses.
 	 *
 	 * @since 1.0.0
@@ -76,15 +99,23 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function __get( $var ) {
 
+		$network_mode = wordpoints_hooks()->get_network_mode();
+
 		switch ( $var ) {
 			case 'reactions':
-				$var = wordpoints_hooks()->get_network_mode()
-					? 'network_reactions'
-					: 'standard_reactions';
+				$var = $network_mode ? 'network_reactions' : 'standard_reactions';
 				// fall through
 
 			case 'standard_reactions':
 			case 'network_reactions':
+				if ( $network_mode && 'standard_reactions' === $var ) {
+					return null;
+				}
+
+				if ( 'network_reactions' === $var && ! $this->is_network_wide() ) {
+					return null;
+				}
+
 				if ( ! isset( $this->$var ) ) {
 					if ( isset( $this->{"{$var}_class"} ) ) {
 						$this->$var = new $this->{"{$var}_class"}(
@@ -131,6 +162,23 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function get_settings_fields() {
 		return $this->settings_fields;
+	}
+
+	/**
+	 * Check whether this reactor is network-wide.
+	 *
+	 * When a reactor is not network-wide, network reactions are not supported. For
+	 * example, the points reactor is not network-wide when WordPoints isn't network-
+	 * active, because the points types are created per-site. We default all reactors
+	 * to being network wide only when WordPoints is network-active, but some may
+	 * need to override this.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether this reactor is network-wide.
+	 */
+	public function is_network_wide() {
+		return is_wordpoints_network_active();
 	}
 
 	/**

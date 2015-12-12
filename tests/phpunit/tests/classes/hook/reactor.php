@@ -17,43 +17,109 @@
 class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
-	 * Test accessing the reactions storage object.
+	 * Test accessing the reactions storage objects.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPoints !network-active
 	 */
 	public function test_get_reactions() {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
 		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
 		$this->assertFalse( $reactor->reactions->is_network_wide() );
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
+		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
+		$this->assertNull( $reactor->network_reactions );
 	}
 
 	/**
-	 * Test accessing the network reactions storage object.
+	 * Test accessing the reactions storage objects in network mode.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPoints network-active
 	 */
-	public function test_get_network_reactions() {
+	public function test_get_reactions_network_mode_on() {
+
+		$this->mock_apps();
+		$this->set_network_admin();
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 
-		$reactor->network_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options_Network';
-
-		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->network_reactions );
-		$this->assertEquals( 'test_reactor', $reactor->network_reactions->get_reactor_slug() );
+		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->reactions );
+		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
 		$this->assertTrue( $reactor->network_reactions->is_network_wide() );
-		$this->assertTrue( $reactor->network_reactions === $reactor->network_reactions );
+		$this->assertTrue( $reactor->reactions === $reactor->reactions );
+		$this->assertTrue( $reactor->reactions === $reactor->network_reactions );
+		$this->assertNull( $reactor->standard_reactions );
+	}
+
+	/**
+	 * Test accessing the reactions storage objects in network mode when not network-
+	 * active.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @requires WordPoints !network-active
+	 */
+	public function test_get_reactions_network_mode_on_not_network_active() {
+
+		$this->mock_apps();
+		$this->set_network_admin();
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+
+		$this->assertNull( $reactor->reactions );
+		$this->assertNull( $reactor->network_reactions );
+		$this->assertNull( $reactor->standard_reactions );
+	}
+
+	/**
+	 * Test accessing the reactions storage objects when network active but not in
+	 * network mode.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @requires WordPoints network-active
+	 */
+	public function test_get_reactions_network_active_network_mode_off() {
+
+		$this->mock_apps();
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+
+		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
+		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
+		$this->assertTrue( $reactor->reactions === $reactor->reactions );
+		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
+		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->network_reactions );
+	}
+
+	/**
+	 * Test accessing the standard reactions storage object when no class is specified.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @requires WordPoints !network-active
+	 */
+	public function test_get_standard_reactions_not() {
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+
+		$reactor->standard_reactions_class = null;
+
+		$this->assertNull( $reactor->standard_reactions );
 	}
 
 	/**
 	 * Test accessing the network reactions storage object when no class is specified.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPoints network-active
 	 */
 	public function test_get_network_reactions_not() {
 
@@ -208,12 +274,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$network_reaction = $reactor->network_reactions->create_reaction(
-			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
-		);
-
-		$this->assertIsReaction( $network_reaction );
 
 		$this->assertEquals(
 			array( $reaction )
