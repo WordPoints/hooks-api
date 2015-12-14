@@ -344,7 +344,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		</script>
 
 		<div class="wordpoints-hook-reaction-group-container">
-			<p class="description">
+			<p class="description wordpoints-hook-reaction-group-description">
 				<?php echo esc_html( $meta_box['args']['event']->get_description() ); ?>
 			</p>
 
