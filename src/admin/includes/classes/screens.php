@@ -39,7 +39,13 @@ class WordPoints_Admin_Screens extends WordPoints_Class_Registry {
 	 */
 	public function set_current_screen( $current_screen ) {
 
-		$screen = $this->get( $current_screen->id );
+		$screen_id = $current_screen->id;
+
+		if ( is_network_admin() ) {
+			$screen_id = substr( $screen_id, 0, -8 /* -network */ );
+		}
+
+		$screen = $this->get( $screen_id );
 
 		if ( ! ( $screen instanceof WordPoints_Admin_Screen ) ) {
 			return;
@@ -47,10 +53,7 @@ class WordPoints_Admin_Screens extends WordPoints_Class_Registry {
 
 		$this->current_screen = $screen;
 
-		add_action(
-			"load-{$current_screen->id}"
-			, array( $this->current_screen, 'load' )
-		);
+		add_action( "load-{$screen_id}", array( $this->current_screen, 'load' ) );
 	}
 
 	/**
