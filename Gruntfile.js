@@ -36,7 +36,7 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		_watch: {
+		watch: {
 			autoloader: {
 				files: [
 					SOURCE_DIR + 'includes/classes/**/*.php',
@@ -64,29 +64,6 @@ module.exports = function( grunt ) {
 	});
 
 	// Register tasks.
-
-	// We use browserify's watch mechanism instead of the normal watch task, because
-	// it is much faster. See https://core.trac.wordpress.org/changeset/31629
-	grunt.renameTask( 'watch', '_watch' );
-
-	grunt.registerTask( 'watch', function() {
-		if ( ! this.args.length || this.args.indexOf( 'browserify' ) > -1 ) {
-			grunt.config( 'browserify.options', {
-				browserifyOptions: {
-					debug: true
-				},
-				watchifyOptions: {
-					verbose: true
-				},
-				watch: true
-			} );
-
-			grunt.task.run( 'browserify' );
-		}
-
-		grunt.task.run( '_' + this.nameArgs );
-	} );
-
 	grunt.registerTask( 'autoloader', 'Generate the autoloader backup file.', function() {
 
 		var before = 'require_once( dirname( __FILE__ ) . \'',
