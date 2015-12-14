@@ -68,6 +68,20 @@ class WordPoints_Hooks extends WordPoints_App {
 
 		if ( ! isset( $this->network_mode ) ) {
 			$this->network_mode = is_network_admin();
+
+			// See https://core.trac.wordpress.org/ticket/22589
+			if (
+				defined( 'DOING_AJAX' )
+				&& DOING_AJAX
+				&& is_multisite()
+				&& isset( $_SERVER['HTTP_REFERER'] )
+				&& preg_match(
+					'#^' . preg_quote( network_admin_url(), '#' ) . '#i'
+					, esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) )
+				)
+			) {
+				$this->network_mode = true;
+			}
 		}
 
 		return $this->network_mode;
