@@ -102,7 +102,9 @@ abstract class WordPoints_Admin_Screen {
 
 			<?php settings_errors(); ?>
 
-			<?php wordpoints_admin_show_tabs( $this->tabs, false ); ?>
+			<?php if ( ! empty( $this->tabs ) ) : ?>
+				<?php wordpoints_admin_show_tabs( $this->tabs, false ); ?>
+			<?php endif; ?>
 
 			<?php $this->display_content(); ?>
 
