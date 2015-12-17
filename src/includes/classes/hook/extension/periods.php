@@ -104,13 +104,20 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 				return false;
 			}
 
-			if ( ! $this->event_args->get_from_hierarchy( $period['args'] ) ) {
-				$this->validator->add_error(
-					__( 'Invalid period.', 'wordpoints' ) // TODO better error message
-					, 'args'
-				);
+			foreach ( $period['args'] as $args ) {
 
-				return false;
+				if ( ! is_array( $args ) ) {
+					return false;
+				}
+
+				if ( ! $this->event_args->get_from_hierarchy( $args ) ) {
+					$this->validator->add_error(
+						__( 'Invalid period.', 'wordpoints' ) // TODO better error message
+						, 'args'
+					);
+
+					return false;
+				}
 			}
 		}
 
