@@ -315,6 +315,34 @@ $lighter_border_color: #ddd;
 	}
 
 	/*
+	 * Sections.
+	 *
+	 * - Title
+	 */
+
+	.section-title {
+		font-size: 14px;
+		background-color: $background_color;
+		padding: 9px 5px 9px 8px;
+		border: 1px solid $lighter_border_color;
+		border-left: none;
+		border-right: none;
+	}
+
+	.section-title h4 {
+		margin: 0;
+	}
+
+	/*
+	 * - Content.
+	 */
+
+	.section-content {
+		margin-top: 5px;
+		padding: 5px;
+	}
+
+	/*
 	 * Conditions.
 	 *
 	 * - Buttons.
@@ -329,23 +357,6 @@ $lighter_border_color: #ddd;
 
 	.conditions .button-link .dashicons {
 		vertical-align: middle;
-	}
-
-	/*
-	 * - Title.
-	 */
-
-	.conditions-title {
-		font-size: 14px;
-		background-color: $background_color;
-		padding: 9px 5px 9px 8px;
-		border: 1px solid $lighter_border_color;
-		border-left: none;
-		border-right: none;
-	}
-
-	.conditions-title h4 {
-		margin: 0;
 	}
 
 	/*
@@ -364,15 +375,6 @@ $lighter_border_color: #ddd;
 
 	.condition-selectors select {
 		float: left;
-	}
-
-	/*
-	 * - Groups.
-	 */
-
-	.condition-groups {
-		margin-top: 5px;
-		padding: 5px;
 	}
 
 	/*

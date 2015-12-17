@@ -592,11 +592,21 @@ Fields = Backbone.Model.extend({
 		var $template = $( '<div></div>' ).html( this.templateSelect( data ) ),
 			options = '';
 
-		_.each( data.options, function ( option ) {
+		_.each( data.options, function ( option, index ) {
+
+			var value, label;
+
+			if ( option.value ) {
+				value = option.value;
+				label = option.label;
+			} else {
+				value = index;
+				label = option;
+			}
 
 			options += $( '<option></option>' )
-				.attr( 'value', option.value )
-				.text( option.label ? option.label : option.value )
+				.attr( 'value', value )
+				.text( label ? label : value )
 				.prop( 'outerHTML' );
 		});
 

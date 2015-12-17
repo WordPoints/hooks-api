@@ -214,7 +214,7 @@ function wordpoints_hooks_admin_register_scripts() {
 		, 'wordpoints-templates'
 		, '
 			<script type="text/template" id="tmpl-wordpoints-hook-condition-groups">
-				<div class="conditions-title">
+				<div class="conditions-title section-title">
 					<h4>' . esc_html__( 'Conditions', 'wordpoints' ) . '</h4>
 					<button type="button" class="add-new button-secondary button-link">
 						<span class="screen-reader-text">' . esc_html__( 'Add New Condition', 'wordpoints' ) . '</span>
@@ -236,7 +236,7 @@ function wordpoints_hooks_admin_register_scripts() {
 						' . esc_html_x( 'Cancel', 'reaction condition', 'wordpoints' ) . '
 					</button>
 				</div>
-				<div class="condition-groups"></div>
+				<div class="condition-groups section-content"></div>
 			</script>
 
 			<script type="text/template" id="tmpl-wordpoints-hook-reaction-condition-group">
@@ -259,6 +259,26 @@ function wordpoints_hooks_admin_register_scripts() {
 					{{ data.label }}
 					<select name="{{ data.name }}"></select>
 				</label>
+			</script>
+		'
+	);
+
+	wp_register_script(
+		'wordpoints-hooks-extension-periods'
+		, $assets_url . '/js/hooks/extensions/periods.js'
+		, array( 'wordpoints-hooks-views' )
+		, WORDPOINTS_VERSION
+	);
+
+	wp_script_add_data(
+		'wordpoints-hooks-extension-periods'
+		, 'wordpoints-templates'
+		, '
+			<script type="text/template" id="tmpl-wordpoints-hook-periods">
+				<div class="periods-title section-title">
+					<h4>' . esc_html__( 'Rate Limit', 'wordpoints' ) . '</h4>
+				</div>
+				<div class="periods section-content"></div>
 			</script>
 		'
 	);

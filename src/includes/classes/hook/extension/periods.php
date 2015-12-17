@@ -20,6 +20,28 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	protected $slug = 'periods';
 
 	/**
+	 * @since 1.0.0
+	 */
+	public function get_ui_script_data() {
+
+		$periods = array(
+			MINUTE_IN_SECONDS   => __( 'Minute', 'wordpoints' ),
+			HOUR_IN_SECONDS     => __( 'Hour',   'wordpoints' ),
+			DAY_IN_SECONDS      => __( 'Day',    'wordpoints' ),
+			WEEK_IN_SECONDS     => __( 'Week',   'wordpoints' ),
+			30 * DAY_IN_SECONDS => __( 'Month',  'wordpoints' ),
+		);
+
+		return array(
+			'periods' => $periods,
+			'l10n' => array(
+				// TODO this should be supplied per-reactor
+				'label' => __( 'Award each user no more than once per:', 'wordpoints' ),
+			),
+		);
+	}
+
+	/**
 	 * Validate the periods.
 	 *
 	 * @since 1.0.0
@@ -76,22 +98,22 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			return false;
 		}
 
-		if ( ! isset( $period['args'] ) ) {
-			// TODO is there a default period args?
-			$period['args'] = array();
-		}
+		if ( isset( $period['args'] ) ) {
 
-		if ( ! is_array( $period['args'] ) ) {
-			return false;
-		}
+			if ( ! is_array( $period['args'] ) ) {
+				return false;
+			}
 
-		if ( ! $this->event_args->get_from_hierarchy( $period['args'] ) ) {
-			$this->validator->add_error(
-				__( 'Invalid period.', 'wordpoints' ) // TODO better error message
-				, 'args'
-			);
+			if ( ! $this->event_args->get_from_hierarchy( $period['args'] ) ) {
+				$this->validator->add_error(
+					__( 'Invalid period.', 'wordpoints' )
+					// TODO better error message
+					,
+					'args'
+				);
 
-			return false;
+				return false;
+			}
 		}
 
 		if ( ! isset( $period['settings'] ) ) {

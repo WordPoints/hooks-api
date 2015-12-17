@@ -152,18 +152,20 @@
 	 * Dialog.
 	 */
   /*
+	 * Sections.
+	 *
+	 * - Title
+	 */
+  /*
+	 * - Content.
+	 */
+  /*
 	 * Conditions.
 	 *
 	 * - Buttons.
 	 */
   /*
-	 * - Title.
-	 */
-  /*
 	 * - Add New Form.
-	 */
-  /*
-	 * - Groups.
 	 */
   /*
 	 * - Group.
@@ -309,6 +311,24 @@
   width: 100%;
 }
 
+.wordpoints-hook-reaction .section-title {
+  font-size: 14px;
+  background-color: #f7f7f7;
+  padding: 9px 5px 9px 8px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+}
+
+.wordpoints-hook-reaction .section-title h4 {
+  margin: 0;
+}
+
+.wordpoints-hook-reaction .section-content {
+  margin-top: 5px;
+  padding: 5px;
+}
+
 .wordpoints-hook-reaction .conditions .add-new,
 .wordpoints-hook-reaction .conditions .delete {
   float: right;
@@ -318,19 +338,6 @@
 
 .wordpoints-hook-reaction .conditions .button-link .dashicons {
   vertical-align: middle;
-}
-
-.wordpoints-hook-reaction .conditions-title {
-  font-size: 14px;
-  background-color: #f7f7f7;
-  padding: 9px 5px 9px 8px;
-  border: 1px solid #ddd;
-  border-left: none;
-  border-right: none;
-}
-
-.wordpoints-hook-reaction .conditions-title h4 {
-  margin: 0;
 }
 
 .wordpoints-hook-reaction .add-condition-form {
@@ -345,11 +352,6 @@
 
 .wordpoints-hook-reaction .condition-selectors select {
   float: left;
-}
-
-.wordpoints-hook-reaction .condition-groups {
-  margin-top: 5px;
-  padding: 5px;
 }
 
 .wordpoints-hook-reaction .condition-group-title {
