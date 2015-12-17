@@ -106,10 +106,8 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 			if ( ! $this->event_args->get_from_hierarchy( $period['args'] ) ) {
 				$this->validator->add_error(
-					__( 'Invalid period.', 'wordpoints' )
-					// TODO better error message
-					,
-					'args'
+					__( 'Invalid period.', 'wordpoints' ) // TODO better error message
+					, 'args'
 				);
 
 				return false;
@@ -159,8 +157,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		if ( empty( $periods ) ) {
 			return true;
 		}
-
-		$reaction_id = $reaction->get_id();
 
 		$this->event_args = $event_args;
 
