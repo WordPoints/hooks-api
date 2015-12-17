@@ -69,8 +69,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 			if ( $period ) {
 				$periods[ $index ] = $period;
-			} else {
-				unset( $periods[ $index ] );
 			}
 
 			$this->validator->pop_field();
@@ -101,24 +99,44 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		if ( isset( $period['args'] ) ) {
 
 			if ( ! is_array( $period['args'] ) ) {
+				$this->validator->add_error(
+					__( 'Period does not match expected format.', 'wordpoints' )
+					, 'args'
+				);
+
 				return false;
 			}
 
-			foreach ( $period['args'] as $args ) {
+			$this->validator->push_field( 'args' );
+
+			foreach ( $period['args'] as $index => $args ) {
+
+				$this->validator->push_field( $index );
 
 				if ( ! is_array( $args ) ) {
+					$this->validator->add_error(
+						__( 'Period does not match expected format.', 'wordpoints' )
+					);
+
+					$this->validator->pop_field();
+					$this->validator->pop_field();
 					return false;
 				}
 
 				if ( ! $this->event_args->get_from_hierarchy( $args ) ) {
 					$this->validator->add_error(
 						__( 'Invalid period.', 'wordpoints' ) // TODO better error message
-						, 'args'
 					);
 
+					$this->validator->pop_field();
+					$this->validator->pop_field();
 					return false;
 				}
+
+				$this->validator->pop_field();
 			}
+
+			$this->validator->pop_field();
 		}
 
 		if ( ! isset( $period['length'] ) ) {
@@ -135,7 +153,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 				, 'length'
 			);
 
-			$period = false;
+			return false;
 		}
 
 		return $period;

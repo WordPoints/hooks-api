@@ -212,7 +212,7 @@ final class WordPoints_Hook_Reaction_Validator {
 
 		$field_stack = $this->field_stack;
 
-		if ( ! empty( $field ) ) {
+		if ( null !== $field ) {
 			$field_stack[] = $field;
 		}
 
