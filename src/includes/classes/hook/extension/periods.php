@@ -190,8 +190,14 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		WordPoints_Hook_Reaction_Validator $reaction
 	) {
 
+		if ( isset( $settings['args'] ) ) {
+			$period_args = $settings['args'];
+		} else {
+			$period_args = array( $reaction->get_meta( 'target' ) );
+		}
+
 		$period = $this->get_period_by_reaction(
-			$this->get_arg_values( $settings['args'] )
+			$this->get_arg_values( $period_args )
 			, $reaction
 		);
 
@@ -220,17 +226,17 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 		$values = array();
 
-		foreach ( $period_args as $arg_slug => $sub_args ) {
+		foreach ( $period_args as $arg_hierarchy ) {
 
-			$this->event_args->descend( $arg_slug );
+			$arg = $this->event_args->get_from_hierarchy(
+				$arg_hierarchy
+			);
 
-			if ( is_array( $sub_args ) ) {
-				$values = array_merge( $values, $this->get_arg_values( $sub_args ) );
-			} else {
-				$values[ $arg_slug ] = $this->event_args->get_current()->get_the_value();
+			if ( ! $arg instanceof WordPoints_EntityishI ) {
+				continue;
 			}
 
-			$this->event_args->ascend();
+			$values[ implode( '.', $arg_hierarchy ) ] = $arg->get_the_value();
 		}
 
 		return $values;
