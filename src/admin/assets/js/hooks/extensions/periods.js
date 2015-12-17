@@ -44,7 +44,7 @@ Periods = Extension.extend({
 
 			var $periods = $( '<div></div>' ).html( this.template() );
 
-			var name = [ 'periods', 0, 'settings', 'length' ];
+			var name = [ 'periods', 0, 'length' ];
 
 			$periods.find( '.periods' ).html(
 				Fields.create(

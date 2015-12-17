@@ -114,26 +114,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			}
 		}
 
-		if ( ! isset( $period['settings'] ) ) {
-			$this->validator->add_error(
-				__( 'Period settings are missing.', 'wordpoints' )
-			);
-
-			return false;
-		}
-
-		if ( ! isset( $period['settings']['length'] ) ) {
+		if ( ! isset( $period['length'] ) ) {
 			$this->validator->add_error(
 				__( 'Period length setting is missing.', 'wordpoints' )
-				, 'settings'
 			);
 
 			return false;
 		}
 
-		$this->validator->push_field( 'settings' );
-
-		if ( false === wordpoints_posint( $period['settings']['length'] ) ) {
+		if ( false === wordpoints_posint( $period['length'] ) ) {
 			$this->validator->add_error(
 				__( 'Period length must be a positive integer.', 'wordpoints' )
 				, 'length'
@@ -141,8 +130,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 			$period = false;
 		}
-
-		$this->validator->pop_field();
 
 		return $period;
 	}
@@ -200,7 +187,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			return true;
 		}
 
-		if ( ! empty( $settings['settings']['absolute'] ) ) {
+		if ( ! empty( $settings['absolute'] ) ) {
 			return ( $period->expiration < current_time( 'timestamp' ) );
 		} else {
 			return false;
