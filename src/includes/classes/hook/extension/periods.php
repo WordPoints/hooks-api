@@ -165,7 +165,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		$this->event_args = $event_args;
 
 		foreach ( $periods as $period ) {
-			if ( ! $this->has_period_ended( $period, $reaction_id ) ) {
+			if ( ! $this->has_period_ended( $period, $reaction ) ) {
 				return false;
 			}
 		}
@@ -180,16 +180,19 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $settings    The period's settings.
-	 * @param int   $reaction_id The ID of the reaction.
+	 * @param array                              $settings The period's settings.
+	 * @param WordPoints_Hook_Reaction_Validator $reaction The reaction object.
 	 *
 	 * @return bool Whether the period has ended.
 	 */
-	final private function has_period_ended( array $settings, $reaction_id ) {
+	final private function has_period_ended(
+		array $settings,
+		WordPoints_Hook_Reaction_Validator $reaction
+	) {
 
 		$period = $this->get_period_by_reaction(
 			$this->get_arg_values( $settings['args'] )
-			, $reaction_id
+			, $reaction
 		);
 
 		// If the period isn't found, we know that we can still fire.
@@ -277,17 +280,24 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $args        The values of the args this period relates to.
-	 * @param int   $reaction_id The reaction ID.
+	 * @param array                              $args     The values of the args
+	 *                                                     this period relates to.
+	 * @param WordPoints_Hook_Reaction_Validator $reaction The reaction object.
 	 *
 	 * @return object|false The period data, or false if not found.
 	 */
-	final private function get_period_by_reaction( array $args, $reaction_id ) {
+	final private function get_period_by_reaction(
+		array $args,
+		WordPoints_Hook_Reaction_Validator $reaction
+	) {
 
 		// The periods for a reaction are differentiated by a hash of specific args.
 		$arg_hash = md5( serialize( $args ) );
 
-		$cache_key = "{$this->slug}-{$reaction_id}-{$arg_hash}";
+		$reaction_id = $reaction->get_id();
+		$event_slug = $reaction->get_event_slug();
+
+		$cache_key = "{$event_slug}-{$reaction_id}-{$arg_hash}";
 
 		// Before we run the query, we try to lookup the ID in the cache.
 		$period_id = wp_cache_get( $cache_key, 'wordpoints_hook_period_ids' );
@@ -308,7 +318,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 					WHERE `hook_id` = %s
 						AND `arg_hash` = %s
 				"
-				, "{$this->slug}-{$reaction_id}"
+				, "{$event_slug}-{$reaction_id}"
 				, $arg_hash
 			)
 		);
