@@ -172,8 +172,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	/**
 	 * Check whether a period has ended.
 	 *
-	 * TODO should these be final?
-	 *
 	 * @since 1.0.0
 	 *
 	 * @param array                              $settings The period's settings.
@@ -181,7 +179,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @return bool Whether the period has ended.
 	 */
-	final private function has_period_ended(
+	protected function has_period_ended(
 		array $settings,
 		WordPoints_Hook_Reaction_Validator $reaction
 	) {
@@ -218,7 +216,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @return array The arg values.
 	 */
-	final private function get_arg_values( array $period_args ) {
+	protected function get_arg_values( array $period_args ) {
 
 		$values = array();
 
@@ -247,7 +245,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @return object|false The period data, or false if not found.
 	 */
-	final private function get_period( $period_id ) {
+	protected function get_period( $period_id ) {
 
 		$period = wp_cache_get( $period_id, 'wordpoints_hook_period' );
 
@@ -288,7 +286,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @return object|false The period data, or false if not found.
 	 */
-	final private function get_period_by_reaction(
+	protected function get_period_by_reaction(
 		array $args,
 		WordPoints_Hook_Reaction_Validator $reaction
 	) {
