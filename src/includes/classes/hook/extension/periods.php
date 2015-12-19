@@ -308,7 +308,8 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	) {
 
 		// The periods for a reaction are differentiated by a hash of specific args.
-		$arg_hash = md5( serialize( $args ) );
+		// We just store the hash because it is shorter.
+		$arg_hash = wordpoints_hash( wp_json_encode( $args ) );
 
 		$reaction_id = $reaction->get_id();
 		$event_slug = $reaction->get_event_slug();
