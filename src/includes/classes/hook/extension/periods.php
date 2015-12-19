@@ -97,57 +97,17 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 
 		if ( isset( $period['args'] ) ) {
-
-			if ( ! is_array( $period['args'] ) ) {
-				$this->validator->add_error(
-					__( 'Period does not match expected format.', 'wordpoints' )
-					, 'args'
-				);
-
-				return false;
-			}
-
-			$this->validator->push_field( 'args' );
-
-			foreach ( $period['args'] as $index => $args ) {
-
-				$this->validator->push_field( $index );
-
-				if ( ! is_array( $args ) ) {
-					$this->validator->add_error(
-						__( 'Period does not match expected format.', 'wordpoints' )
-					);
-
-					$this->validator->pop_field();
-					$this->validator->pop_field();
-					return false;
-				}
-
-				if ( ! $this->event_args->get_from_hierarchy( $args ) ) {
-					$this->validator->add_error(
-						__( 'Invalid period.', 'wordpoints' ) // TODO better error message
-					);
-
-					$this->validator->pop_field();
-					$this->validator->pop_field();
-					return false;
-				}
-
-				$this->validator->pop_field();
-			}
-
-			$this->validator->pop_field();
+			$this->validate_period_args( $period['args'] );
 		}
 
 		if ( ! isset( $period['length'] ) ) {
+
 			$this->validator->add_error(
 				__( 'Period length setting is missing.', 'wordpoints' )
 			);
 
-			return false;
-		}
+		} elseif ( false === wordpoints_posint( $period['length'] ) ) {
 
-		if ( false === wordpoints_posint( $period['length'] ) ) {
 			$this->validator->add_error(
 				__( 'Period length must be a positive integer.', 'wordpoints' )
 				, 'length'
@@ -157,6 +117,50 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 
 		return $period;
+	}
+
+	/**
+	 * Validate the period args.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $args The args the period is related to.
+	 */
+	protected function validate_period_args( $args ) {
+
+		if ( ! is_array( $args ) ) {
+
+			$this->validator->add_error(
+				__( 'Period does not match expected format.', 'wordpoints' )
+				, 'args'
+			);
+
+			return;
+		}
+
+		$this->validator->push_field( 'args' );
+
+		foreach ( $args as $index => $hierarchy ) {
+
+			$this->validator->push_field( $index );
+
+			if ( ! is_array( $hierarchy ) ) {
+
+				$this->validator->add_error(
+					__( 'Period does not match expected format.', 'wordpoints' )
+				);
+
+			} elseif ( ! $this->event_args->get_from_hierarchy( $hierarchy ) ) {
+
+				$this->validator->add_error(
+					__( 'Invalid period.', 'wordpoints' ) // TODO better error message
+				);
+			}
+
+			$this->validator->pop_field();
+		}
+
+		$this->validator->pop_field();
 	}
 
 	/**
