@@ -6,8 +6,8 @@
             "errors": false
         },
         "\/admin\/includes\/actions.php": {
-            "size": 549,
-            "hash": "12e9134db1fe471adb1dac526a4fc33a",
+            "size": 593,
+            "hash": "f4d27283a1b2bbf019bed357e7826920",
             "errors": false
         },
         "\/admin\/includes\/classes\/ajax\/hooks.php": {
@@ -16,28 +16,28 @@
             "errors": false
         },
         "\/admin\/includes\/classes\/screen\/points\/types.php": {
-            "size": 14311,
-            "hash": "598a8770de1d496e98e91c6b7b5f1f2a",
+            "size": 14354,
+            "hash": "0e13b26a2924c388fb5aa7391d20695f",
             "errors": false
         },
         "\/admin\/includes\/classes\/screen.php": {
-            "size": 2037,
-            "hash": "e530a03e61231d22eb693c639ab0ea58",
+            "size": 2101,
+            "hash": "a379aec4b2f0fc6b0912ca20f842d58d",
             "errors": false
         },
         "\/admin\/includes\/classes\/screens.php": {
-            "size": 1139,
-            "hash": "9dbd3c1a3baa68bc20e5eb3fce0e8111",
+            "size": 1244,
+            "hash": "1b269527539056eaba2aa50437a4a40f",
             "errors": false
         },
         "\/admin\/includes\/functions.php": {
-            "size": 12762,
-            "hash": "1e7567f633b2ca22516217115ad5df1e",
+            "size": 13320,
+            "hash": "d9afc7c6c894d00ab531839f3baafd1a",
             "errors": false
         },
         "\/hooks-api.php": {
-            "size": 2513,
-            "hash": "73ac7644ba766ac094ceee2dfe5d98a9",
+            "size": 2201,
+            "hash": "7ed4bba8e3977ff86a822982c2087d13",
             "errors": false
         },
         "\/includes\/actions.php": {
@@ -47,7 +47,7 @@
         },
         "\/includes\/class-un-installer.php": {
             "size": 800,
-            "hash": "566da0526580f20eb9a2ca60e68a292f",
+            "hash": "c864201f7dc28df72052053238a3aa0b",
             "errors": false
         },
         "\/includes\/classes\/app\/registry.php": {
@@ -391,8 +391,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/periods.php": {
-            "size": 6473,
-            "hash": "d94b44dbfc364e75cafe5e1bb5817a1e",
+            "size": 9654,
+            "hash": "cb2301901072fb40f7acd6e19324846f",
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/reversei.php": {
@@ -406,8 +406,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/extension.php": {
-            "size": 2505,
-            "hash": "dfbe3bec7e8c5b73e36017179674e05b",
+            "size": 2851,
+            "hash": "9bcdba280edf684620b5d6536b3e5e42",
             "errors": false
         },
         "\/includes\/classes\/hook\/firer\/reverse.php": {
@@ -421,8 +421,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/firer.php": {
-            "size": 1219,
-            "hash": "bb4529380f85638318e3a283ff75df23",
+            "size": 1227,
+            "hash": "83dec3271f8fb4fb03859810775a68e4",
             "errors": false
         },
         "\/includes\/classes\/hook\/fireri.php": {
@@ -456,8 +456,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/validator.php": {
-            "size": 7612,
-            "hash": "a9bff8a0d8abe8270b3220ee90ea7fbc",
+            "size": 7610,
+            "hash": "321a3d437b6d4a109b1ec6d399dc8673",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction.php": {
@@ -506,8 +506,8 @@
             "errors": false
         },
         "\/includes\/classes\/hooks.php": {
-            "size": 4100,
-            "hash": "9dd852da3929d3e8656d626a76d5740a",
+            "size": 4461,
+            "hash": "c54dc620d82e06c51724232f30651923",
             "errors": false
         },
         "\/includes\/classes\/index.php": {
@@ -524,17 +524,7 @@
             "size": 17262,
             "hash": "44046077c9bb3ecfef913a13240d17f6",
             "errors": false
-        },
-        "\/includes\/integration\/actions.php": {
-            "size": 220,
-            "hash": "8e6e193c8d593c7cbc5c5e88a74bbc96",
-            "errors": false
-        },
-        "\/includes\/integration\/functions.php": {
-            "size": 859,
-            "hash": "0c93ea66a121539e822c61d35df69aa6",
-            "errors": false
         }
     },
-    "config_signature": "1e0276f6834d5f3b8cfea9f559b1ea1b"
+    "config_signature": "e28975ef522a5d8d4261e126d2473e41"
 }
