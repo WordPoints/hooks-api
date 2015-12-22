@@ -200,14 +200,8 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		WordPoints_Hook_Reaction_Validator $reaction
 	) {
 
-		if ( isset( $settings['args'] ) ) {
-			$period_args = $settings['args'];
-		} else {
-			$period_args = array( $reaction->get_meta( 'target' ) );
-		}
-
 		$period = $this->get_period_by_reaction(
-			$this->get_arg_values( $period_args )
+			$this->get_period_signature( $settings, $reaction )
 			, $reaction
 		);
 
@@ -216,10 +210,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			return true;
 		}
 
-		if ( ! empty( $settings['absolute'] ) ) {
-			return ( $period->expiration < current_time( 'timestamp' ) );
+		$now = current_time( 'timestamp' );
+
+		if ( ! empty( $settings['relative'] ) ) {
+			return ( $period->hit_time < $now - $settings['length'] );
 		} else {
-			return false;
+			return (
+				(int) ( $period->hit_time / $settings['length'] )
+				< (int) ( $now / $settings['length'] )
+			);
 		}
 	}
 
@@ -272,9 +271,9 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			$period = $wpdb->get_row(
 				$wpdb->prepare(
 					"
-					SELECT `id`, `hook_id`, `arg_hash`, `expiration`, `meta`
-					FROM {$wpdb->wordpoints_hook_periods}
-					WHERE `id` = %d
+						SELECT `id`, `reaction_id`, `signature`, `hit_time`, `meta`
+						FROM `{$wpdb->wordpoints_hook_periods}`
+						WHERE `id` = %d
 					"
 					, $period_id
 				)
@@ -284,7 +283,12 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 				return false;
 			}
 
-			wp_cache_set( $period->hook_id . $period->arg_hash, $period->id, 'wordpoints_hook_period_ids' );
+			wp_cache_set(
+				"{$period->reaction_id}-{$period->signature}"
+				, $period->id
+				, 'wordpoints_hook_period_ids'
+			);
+
 			wp_cache_set( $period->id, $period, 'wordpoints_hook_periods' );
 		}
 
@@ -296,25 +300,20 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array                              $args     The values of the args
+	 * @param string                             $signature The values of the args
 	 *                                                     this period relates to.
-	 * @param WordPoints_Hook_Reaction_Validator $reaction The reaction object.
+	 * @param WordPoints_Hook_Reaction_Validator $reaction  The reaction object.
 	 *
 	 * @return object|false The period data, or false if not found.
 	 */
 	protected function get_period_by_reaction(
-		array $args,
+		$signature,
 		WordPoints_Hook_Reaction_Validator $reaction
 	) {
 
-		// The periods for a reaction are differentiated by a hash of specific args.
-		// We just store the hash because it is shorter.
-		$arg_hash = wordpoints_hash( wp_json_encode( $args ) );
-
 		$reaction_id = $reaction->get_id();
-		$event_slug = $reaction->get_event_slug();
 
-		$cache_key = "{$event_slug}-{$reaction_id}-{$arg_hash}";
+		$cache_key = "{$reaction_id}-{$signature}";
 
 		// Before we run the query, we try to lookup the ID in the cache.
 		$period_id = wp_cache_get( $cache_key, 'wordpoints_hook_period_ids' );
@@ -335,8 +334,8 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 					WHERE `hook_id` = %s
 						AND `arg_hash` = %s
 				"
-				, "{$event_slug}-{$reaction_id}"
-				, $arg_hash
+				, $reaction_id
+				, $signature
 			)
 		);
 
@@ -348,6 +347,105 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		wp_cache_set( $period->id, $period, 'wordpoints_hook_periods' );
 
 		return $period;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function after_hit(
+		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_Event_Args $event_args
+	) {
+
+		$periods = $reaction->get_meta( 'periods' );
+
+		if ( empty( $periods ) ) {
+			return;
+		}
+
+		$this->event_args = $event_args;
+
+		foreach ( $periods as $settings ) {
+
+			$this->add_period(
+				$this->get_period_signature( $settings, $reaction )
+				, $reaction
+			);
+		}
+	}
+
+	/**
+	 * Get the signature for a period.
+	 *
+	 * The period signature is a hash value calculated based on the values of the
+	 * event args to which that period is related. This is calculated as a hash so
+	 * that it can be easily stored and queried at a fixed length.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array                              $settings The period settings.
+	 * @param WordPoints_Hook_Reaction_Validator $reaction The reaction.
+	 *
+	 * @return string The period signature.
+	 */
+	protected function get_period_signature(
+		array $settings,
+		WordPoints_Hook_Reaction_Validator $reaction
+	) {
+
+		if ( isset( $settings['args'] ) ) {
+			$period_args = $settings['args'];
+		} else {
+			$period_args = array( $reaction->get_meta( 'target' ) );
+		}
+
+		return wordpoints_hash(
+			wp_json_encode( $this->get_arg_values( $period_args ) )
+		);
+	}
+
+	/**
+	 * Add a period to the database.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string                             $signature The period signature.
+	 * @param WordPoints_Hook_Reaction_Validator $reaction  The reaction object.
+	 *
+	 * @return false|object The period data, or false if not found.
+	 */
+	protected function add_period(
+		$signature,
+		WordPoints_Hook_Reaction_Validator $reaction
+	) {
+
+		global $wpdb;
+
+		$reaction_id = $reaction->get_id();
+
+		$inserted = $wpdb->insert(
+			$wpdb->wordpoints_hook_periods
+			, array(
+				'reaction_id' => $reaction_id,
+				'signature'   => $signature,
+				'hit_time'    => current_time( 'timestamp' ),
+			)
+			, array( '%d', '%s', '%d' )
+		);
+
+		if ( ! $inserted ) {
+			return false;
+		}
+
+		$period_id = $wpdb->insert_id;
+
+		wp_cache_set(
+			"{$reaction_id}-{$signature}"
+			, $period_id
+			, 'wordpoints_hook_period_ids'
+		);
+
+		return $period_id;
 	}
 }
 

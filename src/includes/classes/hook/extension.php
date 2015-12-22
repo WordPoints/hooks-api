@@ -107,6 +107,19 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	);
 
 	/**
+	 * After a reaction has hit the target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_Reaction_Validator $reaction   The reaction.
+	 * @param WordPoints_Hook_Event_Args         $event_args The event args.
+	 */
+	abstract public function after_hit(
+		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_Event_Args $event_args
+	);
+
+	/**
 	 * Get the data the scripts need for the UI.
 	 *
 	 * @since 1.0.0

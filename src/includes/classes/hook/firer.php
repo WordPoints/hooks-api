@@ -41,9 +41,10 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 				$event_args->set_validator( $validator );
 				$reaction = $validator;
 
-				/** @var WordPoints_Hook_Extension $extension */
-				foreach ( $hooks->extensions->get_all() as $extension ) {
+				/** @var WordPoints_Hook_Extension[] $extensions */
+				$extensions = $hooks->extensions->get_all();
 
+				foreach ( $extensions as $extension ) {
 					if ( ! $extension->should_hit( $reaction, $event_args ) ) {
 						continue 2;
 					}
@@ -51,8 +52,9 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 
 				$reactor->hit( $event_args, $reaction );
 
-				// TODO hook docs (is this hook even needed?)
-				do_action( 'wordpoints_hook_event_hit', $reaction, $event_args, $reactor );
+				foreach ( $extensions as $extension ) {
+					$extension->after_hit( $reaction, $event_args );
+				}
 			}
 		}
 	}
