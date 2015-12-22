@@ -38,6 +38,15 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	public $hit_checks = array();
 
 	/**
+	 * The args passed to after_hit() each time it was called.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array[]
+	 */
+	public $hits = array();
+
+	/**
 	 * The settings passed to the validator each time it was called.
 	 *
 	 * @since 1.0.0
@@ -106,6 +115,21 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 
 		parent::update_settings( $reaction, $settings );
 	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function after_hit(
+		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_Event_Args $event_args
+	) {
+
+		$this->hits[] = array(
+			'reaction'   => $reaction,
+			'event_args' => $event_args,
+		);
+	}
+
 }
 
 // EOF

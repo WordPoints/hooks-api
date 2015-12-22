@@ -51,23 +51,18 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 
-		$this->listen_for_filter( 'wordpoints_hook_event_hit' );
-
 		$firer->do_event( 'test_event', $event_args );
-
-		$this->assertEquals(
-			3
-			, $this->filter_was_called( 'wordpoints_hook_event_hit' )
-		);
 
 		// The extensions should have each been checked.
 		$extension = $hooks->extensions->get( 'test_extension' );
 
 		$this->assertCount( 3, $extension->hit_checks );
+		$this->assertCount( 3, $extension->hits );
 
 		$extension = $hooks->extensions->get( 'another' );
 
 		$this->assertCount( 3, $extension->hit_checks );
+		$this->assertCount( 3, $extension->hits );
 
 		// The reactors should have been hit.
 		$reactor = $hooks->reactors->get( 'test_reactor' );
@@ -103,23 +98,18 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 
-		$this->listen_for_filter( 'wordpoints_hook_event_hit' );
-
 		$firer->do_event( 'test_event', $event_args );
-
-		$this->assertEquals(
-			0
-			, $this->filter_was_called( 'wordpoints_hook_event_hit' )
-		);
 
 		// The extensions should have each been checked.
 		$extension = $hooks->extensions->get( 'test_extension' );
 
 		$this->assertCount( 0, $extension->hit_checks );
+		$this->assertCount( 0, $extension->hits );
 
 		$extension = $hooks->extensions->get( 'another' );
 
 		$this->assertCount( 0, $extension->hit_checks );
+		$this->assertCount( 0, $extension->hits );
 	}
 
 	/**
@@ -153,23 +143,18 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 
-		$this->listen_for_filter( 'wordpoints_hook_event_hit' );
-
 		$firer->do_event( 'test_event', $event_args );
-
-		$this->assertEquals(
-			2
-			, $this->filter_was_called( 'wordpoints_hook_event_hit' )
-		);
 
 		// The extensions should have each been checked.
 		$extension = $hooks->extensions->get( 'test_extension' );
 
 		$this->assertCount( 2, $extension->hit_checks );
+		$this->assertCount( 2, $extension->hits );
 
 		$extension = $hooks->extensions->get( 'another' );
 
 		$this->assertCount( 2, $extension->hit_checks );
+		$this->assertCount( 2, $extension->hits );
 
 		// The reactors should have been hit.
 		$reactor = $hooks->reactors->get( 'test_reactor' );
@@ -206,14 +191,7 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 
-		$this->listen_for_filter( 'wordpoints_hook_event_hit' );
-
 		$firer->do_event( 'test_event', $event_args );
-
-		$this->assertEquals(
-			3
-			, $this->filter_was_called( 'wordpoints_hook_event_hit' )
-		);
 
 		// The reactors should have been hit.
 		$reactor = $hooks->reactors->get( 'test_reactor' );
@@ -265,23 +243,18 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 
-		$this->listen_for_filter( 'wordpoints_hook_event_hit' );
-
 		$firer->do_event( 'test_event', $event_args );
-
-		$this->assertEquals(
-			2
-			, $this->filter_was_called( 'wordpoints_hook_event_hit' )
-		);
 
 		// The extensions should have each been checked.
 		$extension = $hooks->extensions->get( 'test_extension' );
 
 		$this->assertCount( 2, $extension->hit_checks );
+		$this->assertCount( 2, $extension->hits );
 
 		$extension = $hooks->extensions->get( 'another' );
 
 		$this->assertCount( 2, $extension->hit_checks );
+		$this->assertCount( 2, $extension->hits );
 
 		// The reactors should have been hit.
 		$reactor = $hooks->reactors->get( 'test_reactor' );
@@ -328,26 +301,21 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 
-		$this->listen_for_filter( 'wordpoints_hook_event_hit' );
-
 		$extension = $hooks->extensions->get( 'test_extension' );
 		$extension->should_hit = false;
 
 		$firer->do_event( 'test_event', $event_args );
 
-		$this->assertEquals(
-			0
-			, $this->filter_was_called( 'wordpoints_hook_event_hit' )
-		);
-
 		// The extensions should have each been checked.
 		$extension = $hooks->extensions->get( 'test_extension' );
 
 		$this->assertCount( 3, $extension->hit_checks );
+		$this->assertCount( 0, $extension->hits );
 
 		$extension = $hooks->extensions->get( 'another' );
 
 		$this->assertCount( 0, $extension->hit_checks );
+		$this->assertCount( 0, $extension->hits );
 
 		// The reactors should have been hit.
 		$reactor = $hooks->reactors->get( 'test_reactor' );
