@@ -124,7 +124,6 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 		return $invalid_settings;
 	}
 
-
 	/**
 	 * Provides an array of possible settings settings which are not met.
 	 *

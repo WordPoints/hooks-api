@@ -166,8 +166,6 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$event_args->set_validator( $validator );
 
-		$this->create_points_type();
-
 		$result = $extension->validate_settings( $settings, $validator, $event_args );
 
 		$this->assertTrue( $validator->had_errors() );

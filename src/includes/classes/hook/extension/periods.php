@@ -166,7 +166,10 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function should_hit( WordPoints_Hook_Reaction_Validator $reaction, WordPoints_Hook_Event_Args $event_args ) {
+	public function should_hit(
+		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_Event_Args $event_args
+	) {
 
 		$periods = $reaction->get_meta( 'periods' );
 
