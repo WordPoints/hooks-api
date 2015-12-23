@@ -33,7 +33,7 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 					id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					reaction_id BIGINT(20) DEFAULT NULL,
 					signature CHAR(64) DEFAULT NULL,
-					hit_time BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+					hit_time DATETIME NOT NULL,
 					PRIMARY KEY  (id),
 					KEY reaction_id (reaction_id)',
 			),

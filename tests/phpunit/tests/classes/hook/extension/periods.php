@@ -350,8 +350,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 			$this->assertArrayHasKey( $index, $results );
 
+			$now = current_time( 'timestamp' );
+
 			$this->assertEquals( $reaction->ID, $results[ $index ]->reaction_id );
-			$this->assertLessThanOrEqual( 1, current_time( 'timestamp' ) - $results[ $index ]->hit_time );
+			$this->assertLessThanOrEqual( 1, $now - strtotime( $results[ $index ]->hit_time, $now ) );
 			$this->assertEquals( $period['signature'], $results[ $index ]->signature );
 		}
 	}
@@ -475,17 +477,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, wordpoints_hooks()->reactors->get( 'test_reactor' )->hits );
 
-		global $wpdb;
-
-		$updated = $wpdb->update(
-			$wpdb->wordpoints_hook_periods
-			, array( 'hit_time' => current_time( 'timestamp' ) - 61 )
-			, array( 'reaction_id' => $reaction->ID )
-			, array( '%d' )
-			, array( '%d' )
-		);
-
-		$this->assertEquals( 1, $updated );
+		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
 
 		$firer->do_event( 'test_event', $event_args );
 
@@ -714,17 +706,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		global $wpdb;
-
-		$updated = $wpdb->update(
-			$wpdb->wordpoints_hook_periods
-			, array( 'hit_time' => current_time( 'timestamp' ) - 61 )
-			, array( 'reaction_id' => $reaction->ID )
-			, array( '%d' )
-			, array( '%d' )
-		);
-
-		$this->assertEquals( 1, $updated );
+		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
 
 		// Increase the length.
 		$reaction->update_meta( 'periods', array( array( 'length' => 3600 ) ) );
@@ -779,18 +761,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		// Fast forward in time 61 seconds.
-		global $wpdb;
-
-		$updated = $wpdb->update(
-			$wpdb->wordpoints_hook_periods
-			, array( 'hit_time' => current_time( 'timestamp' ) - 61 )
-			, array( 'reaction_id' => $reaction->ID )
-			, array( '%d' )
-			, array( '%d' )
-		);
-
-		$this->assertEquals( 1, $updated );
+		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
 
 		$firer->do_event( 'test_event', $event_args );
 
@@ -802,6 +773,29 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$firer->do_event( 'test_event', $event_args );
 
 		$this->assertCount( 2, $test_reactor->hits );
+	}
+
+	/**
+	 * Travel forward in time by modifying the hit time of a period.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $reaction_id The ID of the reaction the period is for.
+	 * @param int $seconds     The number of seconds to travel forward.
+	 */
+	protected function fast_forward( $reaction_id, $seconds ) {
+
+		global $wpdb;
+
+		$updated = $wpdb->update(
+			$wpdb->wordpoints_hook_periods
+			, array( 'hit_time' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $seconds ) )
+			, array( 'reaction_id' => $reaction_id )
+			, array( '%s' )
+			, array( '%d' )
+		);
+
+		$this->assertEquals( 1, $updated );
 	}
 }
 

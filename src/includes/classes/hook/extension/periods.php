@@ -214,12 +214,13 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 
 		$now = current_time( 'timestamp' );
+		$hit_time = strtotime( $period->hit_time, $now );
 
 		if ( ! empty( $settings['relative'] ) ) {
-			return ( $period->hit_time < $now - $settings['length'] );
+			return ( $hit_time < $now - $settings['length'] );
 		} else {
 			return (
-				(int) ( $period->hit_time / $settings['length'] )
+				(int) ( $hit_time / $settings['length'] )
 				< (int) ( $now / $settings['length'] )
 			);
 		}
@@ -431,9 +432,9 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			, array(
 				'reaction_id' => $reaction_id,
 				'signature'   => $signature,
-				'hit_time'    => current_time( 'timestamp' ),
+				'hit_time'    => current_time( 'mysql' ),
 			)
-			, array( '%d', '%s', '%d' )
+			, array( '%d', '%s', '%s' )
 		);
 
 		if ( ! $inserted ) {
