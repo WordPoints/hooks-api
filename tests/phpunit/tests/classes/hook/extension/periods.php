@@ -72,18 +72,18 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			'none' => array( array() ),
 			'empty' => array( array( 'periods' => array() ) ),
 			'no_args' => array(
-				array( 'periods' => array( array( 'length' => 60 ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ) ),
 				array( array( 'signature' => '7228811153da11efc20245206d55935d4face04940fa8c80c0ad1b1f0cb52932' ) ),
 			),
 			'relative' => array(
-				array( 'periods' => array( array( 'length' => 60, 'relative' => true ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS, 'relative' => true ) ) ),
 				array( array( 'signature' => '7228811153da11efc20245206d55935d4face04940fa8c80c0ad1b1f0cb52932' ) ),
 			),
 			'entity' => array(
 				array(
 					'periods' => array(
 						array(
-							'length' => 60,
+							'length' => MINUTE_IN_SECONDS,
 							'args' => array( array( 'test_entity' ) ),
 						),
 					),
@@ -94,7 +94,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 				array(
 					'periods' => array(
 						array(
-							'length' => 60,
+							'length' => MINUTE_IN_SECONDS,
 							'args' => array( array( 'test_entity', 'child' ) ),
 						),
 					),
@@ -105,7 +105,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 				array(
 					'periods' => array(
 						array(
-							'length' => 60,
+							'length' => MINUTE_IN_SECONDS,
 							'args' => array(
 								array( 'test_entity' ),
 								array( 'test_entity', 'child' ),
@@ -119,11 +119,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 				array(
 					'periods' => array(
 						array(
-							'length' => 60,
+							'length' => MINUTE_IN_SECONDS,
 							'args' => array( array( 'test_entity', 'child' ) ),
 						),
 						array(
-							'length' => 3600,
+							'length' => HOUR_IN_SECONDS,
 						),
 					),
 				),
@@ -213,19 +213,19 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 				array( 'periods', 0, 'length' ),
 			),
 			'negative_length' => array(
-				array( 'periods' => array( array( 'length' => -60 ) ) ),
+				array( 'periods' => array( array( 'length' => -MINUTE_IN_SECONDS ) ) ),
 				array( 'periods', 0, 'length' ),
 			),
 			'args_not_array' => array(
-				array( 'periods' => array( array( 'length' => 60, 'args' => 'not_array' ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS, 'args' => 'not_array' ) ) ),
 				array( 'periods', 0, 'args' ),
 			),
 			'arg_not_array' => array(
-				array( 'periods' => array( array( 'length' => 60, 'args' => array( 'not_array' ) ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS, 'args' => array( 'not_array' ) ) ) ),
 				array( 'periods', 0, 'args', 0 ),
 			),
 			'invalid_entity' => array(
-				array( 'periods' => array( array( 'length' => 60, 'args' => array( array( 'invalid_entity' ) ) ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS, 'args' => array( array( 'invalid_entity' ) ) ) ) ),
 				array( 'periods', 0, 'args', 0 ),
 				2,
 			),
@@ -495,11 +495,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		return array(
 			'absolute' => array(
-				array( 'periods' => array( array( 'length' => 60 ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ) ),
 				array( array( 'signature' => '7228811153da11efc20245206d55935d4face04940fa8c80c0ad1b1f0cb52932' ) ),
 			),
 			'relative' => array(
-				array( 'periods' => array( array( 'length' => 60, 'relative' => true ) ) ),
+				array( 'periods' => array( array( 'length' => MINUTE_IN_SECONDS, 'relative' => true ) ) ),
 				array( array( 'signature' => '7228811153da11efc20245206d55935d4face04940fa8c80c0ad1b1f0cb52932' ) ),
 			),
 		);
@@ -519,8 +519,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		$settings = array( 'periods' => array( array( 'length' => 60 ) ) );
-		$settings['target'] = array( 'test_entity' );
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
@@ -574,8 +576,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		$settings = array( 'periods' => array( array( 'length' => 60 ) ) );
-		$settings['target'] = array( 'test_entity' );
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
@@ -627,8 +631,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		$settings = array( 'periods' => array( array( 'length' => 60 ) ) );
-		$settings['target'] = array( 'test_entity' );
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
@@ -678,8 +684,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		$settings = array( 'periods' => array( array( 'length' => 60 ) ) );
-		$settings['target'] = array( 'test_entity' );
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
@@ -709,14 +717,20 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
 
 		// Increase the length.
-		$reaction->update_meta( 'periods', array( array( 'length' => 3600 ) ) );
+		$reaction->update_meta(
+			'periods'
+			, array( array( 'length' => HOUR_IN_SECONDS ) )
+		);
 
 		$firer->do_event( 'test_event', $event_args );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
 		// Back to the shorter length.
-		$reaction->update_meta( 'periods', array( array( 'length' => 60 ) ) );
+		$reaction->update_meta(
+			'periods'
+			, array( array( 'length' => MINUTE_IN_SECONDS ) )
+		);
 
 		$firer->do_event( 'test_event', $event_args );
 
@@ -737,9 +751,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		$settings = array( 'periods' => array( array( 'length' => HOUR_IN_SECONDS ) ) );
-		$settings['target'] = array( 'test_entity' );
-
+		$settings = array(
+			'periods' => array( array( 'length' => HOUR_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
 		$this->assertIsReaction( $reaction );
@@ -768,7 +783,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->assertCount( 1, $test_reactor->hits );
 
 		// Decrease the length.
-		$reaction->update_meta( 'periods', array( array( 'length' => MINUTE_IN_SECONDS ) ) );
+		$reaction->update_meta(
+			'periods'
+			, array( array( 'length' => MINUTE_IN_SECONDS ) )
+		);
 
 		$firer->do_event( 'test_event', $event_args );
 
