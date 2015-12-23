@@ -32,6 +32,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			30 * DAY_IN_SECONDS => __( 'Month',  'wordpoints' ),
 		);
 
+		/**
+		 * Filter the list of periods displayed in the hooks UI.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string[] $periods The period titles, indexed by length in seconds.
+		 */
+		$periods = apply_filters( 'wordpoints_hooks_ui_data_periods', $periods );
+
 		return array(
 			'periods' => $periods,
 			'l10n' => array(
