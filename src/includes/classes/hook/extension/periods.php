@@ -337,6 +337,8 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 					FROM `{$wpdb->wordpoints_hook_periods}`
 					WHERE `reaction_id` = %d
 						AND `signature` = %s
+					ORDER BY `hit_time`
+					LIMIT 1
 				"
 				, $reaction_id
 				, $signature
