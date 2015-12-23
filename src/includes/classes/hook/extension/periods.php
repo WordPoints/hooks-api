@@ -274,7 +274,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			$period = $wpdb->get_row(
 				$wpdb->prepare(
 					"
-						SELECT `id`, `reaction_id`, `signature`, `hit_time`, `meta`
+						SELECT `id`, `reaction_id`, `signature`, `hit_time`
 						FROM `{$wpdb->wordpoints_hook_periods}`
 						WHERE `id` = %d
 					"
@@ -332,7 +332,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		$period = $wpdb->get_row(
 			$wpdb->prepare(
 				"
-					SELECT `id`, `reaction_id`, `signature`, `hit_time`, `meta`
+					SELECT `id`, `reaction_id`, `signature`, `hit_time`
 					FROM `{$wpdb->wordpoints_hook_periods}`
 					WHERE `reaction_id` = %d
 						AND `signature` = %s
