@@ -169,7 +169,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals(
@@ -206,7 +205,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertTrue(
@@ -245,7 +243,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertTrue( $reactor->reactions->delete_reaction( $reaction->ID ) );
@@ -276,7 +273,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 1, $reaction->ID );
@@ -308,7 +304,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction[] $reactions */
 		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 3 );
 
 		$this->assertEquals( 1, $reactions[0]->ID );
@@ -317,7 +312,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$this->assertTrue( $reactor->reactions->delete_reaction( 1 ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 4, $reaction->ID );
@@ -325,7 +319,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 		// When the newest reaction is deleted, the ID is reused.
 		$this->assertTrue( $reactor->reactions->delete_reaction( 4 ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 4, $reaction->ID );
@@ -347,7 +340,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 1, $reaction->ID );

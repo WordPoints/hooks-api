@@ -11,6 +11,14 @@
  * A registry for factories to be used in the unit tests.
  *
  * @since 1.0.0
+ *
+ * @property-read WordPoints_PHPUnit_Factory_For_Hook_Action $hook_action
+ * @property-read WordPoints_PHPUnit_Factory_For_Hook_Condition $hook_condition
+ * @property-read WordPoints_PHPUnit_Factory_For_Hook_Event $hook_event
+ * @property-read WordPoints_PHPUnit_Factory_For_Hook_Reaction $hook_reaction
+ * @property-read WordPoints_PHPUnit_Factory_For_Hook_Reactor $hook_reactor
+ * @property-read WordPoints_PHPUnit_Factory_For_Post_Type $post_type
+ * @property-read WordPoints_PHPUnit_Factory_For_User_Role $user_role
  */
 class WordPoints_PHPUnit_Factory extends WordPoints_Class_Registry_Persistent{
 

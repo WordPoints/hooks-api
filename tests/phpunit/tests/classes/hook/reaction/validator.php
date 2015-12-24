@@ -56,7 +56,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 			'target' => array( 'test_entity' ),
 		);
 
-		/** @var WordPoints_Hook_ReactionI $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create_and_get(
 			$settings
 		);

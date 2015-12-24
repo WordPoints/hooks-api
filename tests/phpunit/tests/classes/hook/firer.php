@@ -226,7 +226,6 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->factory->wordpoints->hook_reactor->create();
 
-		/** @var WordPoints_Hook_ReactionI $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 		$reaction->delete_meta( 'event' );
 

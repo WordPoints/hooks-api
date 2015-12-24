@@ -11,6 +11,8 @@
  * Parent test case.
  *
  * @since 1.0.0
+ *
+ * @property WordPoints_PHPUnit_Factory_Stub $factory The factory.
  */
 abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 

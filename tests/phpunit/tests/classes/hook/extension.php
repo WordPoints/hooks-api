@@ -119,7 +119,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			'other_settings' => 'here',
 		);
 
-		/** @var WordPoints_Hook_ReactionI $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$extension->update_settings( $reaction, $settings );
@@ -148,7 +147,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			'other_settings' => 'here',
 		);
 
-		/** @var WordPoints_Hook_ReactionI $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'test_extension' => array( 'key' => 'value' ) )
 		);

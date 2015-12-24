@@ -11,6 +11,10 @@
  * Factory for hook reactors, for use in the unit tests.
  *
  * @since 1.0.0
+ *
+ * @method string create( $args = array(), $generation_definitions = null )
+ * @method WordPoints_Hook_Reactor create_and_get( $args = array(), $generation_definitions = null )
+ * @method string[] create_many( $count, $args = array(), $generation_definitions = null )
  */
 class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_For_Thing {
 

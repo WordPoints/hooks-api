@@ -11,6 +11,10 @@
  * Factory for hook conditions, for use in the unit tests.
  *
  * @since 1.0.0
+ *
+ * @method WordPoints_Hook_ConditionI create( $args = array(), $generation_definitions = null )
+ * @method WordPoints_Hook_ConditionI create_and_get( $args = array(), $generation_definitions = null )
+ * @method WordPoints_Hook_ConditionI[] create_many( $count, $args = array(), $generation_definitions = null )
  */
 class WordPoints_PHPUnit_Factory_For_Hook_Condition extends WP_UnitTest_Factory_For_Thing {
 
@@ -33,7 +37,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Condition extends WP_UnitTest_Factory_
 	 */
 	function create_object( $args ) {
 
-		if ( 'unmet' === $args['slug'] )  {
+		if ( 'unmet' === $args['slug'] ) {
 			$args['class'] = 'WordPoints_PHPUnit_Mock_Hook_Condition_Unmet';
 		}
 

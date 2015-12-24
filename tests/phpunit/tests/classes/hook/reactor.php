@@ -39,7 +39,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
 		$this->assertNull( $reactor->network_reactions );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$another = $this->factory->wordpoints->hook_reaction->create(
@@ -83,7 +82,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertTrue( $reactor->reactions === $reactor->network_reactions );
 		$this->assertNull( $reactor->standard_reactions );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertTrue( $reaction->is_network_wide() );
@@ -163,7 +161,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
 		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->network_reactions );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertFalse( $reaction->is_network_wide() );
@@ -485,8 +482,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals(

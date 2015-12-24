@@ -32,7 +32,6 @@ class WordPoints_Hook_Reaction_Storage_Options_Network_Test extends WordPoints_P
 
 		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options_Network';
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 1, $reaction->ID );
