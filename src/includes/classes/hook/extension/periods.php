@@ -261,6 +261,8 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			$values[ implode( '.', $arg_hierarchy ) ] = $arg->get_the_value();
 		}
 
+		ksort( $values );
+
 		return $values;
 	}
 
