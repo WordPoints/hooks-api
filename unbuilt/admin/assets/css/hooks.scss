@@ -64,16 +64,21 @@ $lighter_border_color: #ddd;
  */
 
 /* In case the containers are in meta boxes. */
-#events-sortables .inside {
-	margin: 0;
-	padding: 0;
-}
+#events-sortables {
+	-webkit-column-width: 400px;
+	-moz-column-width: 400px;
+	column-width: 400px;
 
-@media screen and ( min-width: 1280px ) {
-	#events-sortables .postbox {
-		width: 48%;
-		float: left;
-		margin-right: 1%;
+	.postbox {
+		display: block;
+		break-inside: avoid-column;
+		-webkit-column-break-inside: avoid;
+		page-break-inside: avoid;
+	}
+
+	.inside {
+		margin: 0;
+		padding: 0;
 	}
 }
 

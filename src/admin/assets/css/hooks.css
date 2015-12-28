@@ -55,17 +55,22 @@
  * Hook Reactions Group Container.
  */
 /* In case the containers are in meta boxes. */
+#events-sortables {
+  -webkit-column-width: 400px;
+  -moz-column-width: 400px;
+  column-width: 400px;
+}
+
+#events-sortables .postbox {
+  display: block;
+  break-inside: avoid-column;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 #events-sortables .inside {
   margin: 0;
   padding: 0;
-}
-
-@media screen and (min-width: 1280px) {
-  #events-sortables .postbox {
-    width: 48%;
-    float: left;
-    margin-right: 1%;
-  }
 }
 
 .wordpoints-hook-reaction-group-container .wordpoints-hook-reaction-group-description {
