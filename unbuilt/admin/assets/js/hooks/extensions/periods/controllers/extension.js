@@ -7,6 +7,7 @@
  */
 var Extension = wp.wordpoints.hooks.controller.Extension,
 	Fields = wp.wordpoints.hooks.Fields,
+	Args = wp.wordpoints.hooks.Args,
 	template = wp.wordpoints.hooks.template,
 	$ = Backbone.$,
 	Periods;
@@ -14,8 +15,7 @@ var Extension = wp.wordpoints.hooks.controller.Extension,
 Periods = Extension.extend({
 
 	defaults: {
-		slug: 'periods',
-		events: [ 'user_visit' ]
+		slug: 'periods'
 	},
 
 	template: template( 'hook-periods' ),
@@ -50,7 +50,7 @@ Periods = Extension.extend({
 	},
 
 	showForReaction: function ( reaction ) {
-		return _.contains( this.get( 'events' ), reaction.model.get( 'event' ) );
+		return Args.isEventRepeatable( reaction.model.get( 'event' ) );
 	}
 
 } );

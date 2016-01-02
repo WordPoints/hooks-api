@@ -58,6 +58,13 @@ Args = Backbone.Model.extend({
 		return argsCollection;
 	},
 
+	isEventRepeatable: function ( slug ) {
+
+		var args = this.getEventArgs( slug );
+
+		return _.isEmpty( args.where( { is_stateful: false } ) );
+	},
+
 	parseArgSlug: function ( slug ) {
 
 		var isArray = false,
