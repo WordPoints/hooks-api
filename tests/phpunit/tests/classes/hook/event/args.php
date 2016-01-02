@@ -17,6 +17,67 @@
 class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
+	 * Test checking if an event is repeatable when it has no stateful args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_repeatable() {
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
+		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
+
+		$args = new WordPoints_Hook_Event_Args( array( $arg, $arg_2 ) );
+
+		$this->assertFalse( $args->is_event_repeatable() );
+	}
+
+	/**
+	 * Test checking if an event is repeatable when it has only stateful args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_repeatable_stateful_args() {
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
+		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
+
+		$arg->is_stateful = $arg_2->is_stateful = true;
+
+		$args = new WordPoints_Hook_Event_Args( array( $arg, $arg_2 ) );
+
+		$this->assertTrue( $args->is_event_repeatable() );
+	}
+
+	/**
+	 * Test checking if an event is repeatable when it has both types of args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_repeatable_stateful_and_signature() {
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
+		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
+
+		$arg->is_stateful = true;
+
+		$args = new WordPoints_Hook_Event_Args( array( $arg, $arg_2 ) );
+
+		$this->assertFalse( $args->is_event_repeatable() );
+	}
+
+	/**
+	 * Test checking if an event is repeatable when it has no args.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_repeatable_no_args() {
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+
+		$this->assertTrue( $args->is_event_repeatable() );
+	}
+
+	/**
 	 * Test getting the entities in the hierarchy.
 	 *
 	 * @since 1.0.0

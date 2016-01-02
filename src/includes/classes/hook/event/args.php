@@ -19,6 +19,15 @@
 class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 
 	/**
+	 * Whether the event is repeatable.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	protected $is_repeatable = true;
+
+	/**
 	 * The validator associated with the current hook reaction.
 	 *
 	 * @since 1.0.0
@@ -56,7 +65,31 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 			if ( $entity instanceof WordPoints_Entity ) {
 				$this->entities[ $arg->get_slug() ] = $entity;
 			}
+
+			// If any of the args aren't stateful the event isn't repeatable.
+			if ( $this->is_repeatable && ! $arg->is_stateful() ) {
+				$this->is_repeatable = false;
+			}
 		}
+	}
+
+	/**
+	 * Whether the event is repeatable.
+	 *
+	 * An event is repeatable if none of its args have their status toggled by the
+	 * event. In that case, it is possible for the event to occur with those same args
+	 * multiple times in a row without being reversed in between.
+	 *
+	 * An arg that has its status modified is called a signature arg. One that does
+	 * not is called a stateful arg. An event is repeatable if it has no signature
+	 * args, only stateful ones.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether the event is repeatable.
+	 */
+	public function is_event_repeatable() {
+		return $this->is_repeatable;
 	}
 
 	/**
