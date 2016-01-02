@@ -17,8 +17,18 @@ class WordPoints_PHPUnit_Mock_Hook_Arg extends WordPoints_Hook_Arg {
 	/**
 	 * @since 1.0.0
 	 */
+	public $is_stateful = false;
+
+	/**
+	 * @since 1.0.0
+	 */
+	public $value = 1;
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_value() {
-		return true;
+		return $this->value;
 	}
 
 	/**

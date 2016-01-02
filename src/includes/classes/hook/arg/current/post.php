@@ -17,6 +17,11 @@ class WordPoints_Hook_Arg_Current_Post extends WordPoints_Hook_Arg {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $is_stateful = true;
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_title() {
 		return __( 'Current Post', 'wordpoints' ); // TODO better title?
 	}

@@ -44,6 +44,18 @@ class WordPoints_Hook_Arg_Current_Site_Test extends WordPoints_PHPUnit_TestCase_
 		$this->assertEquals( get_current_blog_id(), $entity->get_the_id() );
 		$this->assertNotEmpty( $arg->get_title() );
 	}
+
+	/**
+	 * Test checking if the arg is stateful.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_stateful() {
+
+		$arg = new WordPoints_Hook_Arg_Current_Site( 'test_entity' );
+
+		$this->assertTrue( $arg->is_stateful() );
+	}
 }
 
 // EOF

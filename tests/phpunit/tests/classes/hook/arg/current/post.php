@@ -118,6 +118,18 @@ class WordPoints_Hook_Arg_Current_Post_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->assertNull( $entity->get_the_id() );
 	}
+
+	/**
+	 * Test checking if the arg is stateful.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_stateful() {
+
+		$arg = new WordPoints_Hook_Arg_Current_Post( 'test_entity' );
+
+		$this->assertTrue( $arg->is_stateful() );
+	}
 }
 
 // EOF

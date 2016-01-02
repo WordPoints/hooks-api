@@ -154,6 +154,22 @@ class WordPoints_Hook_Arg_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertNull( $entity->get_the_id() );
 		$this->assertEquals( $entity->get_title(), $arg->get_title() );
 	}
+
+	/**
+	 * Test checking if an arg is stateful.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_is_stateful() {
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test_entity' );
+
+		$this->assertFalse( $arg->is_stateful() );
+
+		$arg->is_stateful = true;
+
+		$this->assertTrue( $arg->is_stateful );
+	}
 }
 
 // EOF

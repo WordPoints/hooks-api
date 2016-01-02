@@ -17,6 +17,11 @@ class WordPoints_Hook_Arg_Current_User extends WordPoints_Hook_Arg {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $is_stateful = true;
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_value() {
 		return wp_get_current_user();
 	}

@@ -47,6 +47,15 @@ class WordPoints_Hook_Arg {
 	protected $action;
 
 	/**
+	 * Whether this arg is stateful or not.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	protected $is_stateful = false;
+
+	/**
 	 * Construct the arg with a slug.
 	 *
 	 * Slugs are typically the slug of the entity itself, but this isn't always the
@@ -149,6 +158,17 @@ class WordPoints_Hook_Arg {
 		}
 
 		return $entity->get_title();
+	}
+
+	/**
+	 * Check whether the arg is stateful.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether this arg is stateful.
+	 */
+	public function is_stateful() {
+		return $this->is_stateful;
 	}
 }
 
