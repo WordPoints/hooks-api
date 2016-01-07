@@ -28,6 +28,17 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	protected $is_repeatable = true;
 
 	/**
+	 * The slugs of the stateful args.
+	 *
+	 * Indexed by slug, so that `isset()` can be used.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string[]
+	 */
+	protected $stateful_args = array();
+
+	/**
 	 * The validator associated with the current hook reaction.
 	 *
 	 * @since 1.0.0
@@ -61,13 +72,16 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 		foreach ( $args as $arg ) {
 
 			$entity = $arg->get_entity();
+			$slug = $arg->get_slug();
 
 			if ( $entity instanceof WordPoints_Entity ) {
-				$this->entities[ $arg->get_slug() ] = $entity;
+				$this->entities[ $slug ] = $entity;
 			}
 
-			// If any of the args aren't stateful the event isn't repeatable.
-			if ( $this->is_repeatable && ! $arg->is_stateful() ) {
+			if ( $arg->is_stateful() ) {
+				$this->stateful_args[ $slug ] = $slug;
+			} else {
+				// If any of the args aren't stateful the event isn't repeatable.
 				$this->is_repeatable = false;
 			}
 		}
@@ -90,6 +104,28 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	 */
 	public function is_event_repeatable() {
 		return $this->is_repeatable;
+	}
+
+	/**
+	 * Get the stateful args for this event.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Entity[] The entity objects for the stateful args.
+	 */
+	public function get_stateful_args() {
+		return array_intersect_key( $this->entities, $this->stateful_args );
+	}
+
+	/**
+	 * Get the non-stateful args for this event.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Entity[] The entity objects for the non-stateful args.
+	 */
+	public function get_non_stateful_args() {
+		return array_diff_key( $this->entities, $this->stateful_args );
 	}
 
 	/**

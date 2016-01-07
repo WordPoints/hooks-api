@@ -23,12 +23,26 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable() {
 
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
 
 		$args = new WordPoints_Hook_Event_Args( array( $arg, $arg_2 ) );
 
 		$this->assertFalse( $args->is_event_repeatable() );
+
+		$this->assertSame( array(), $args->get_stateful_args() );
+		$this->assertEquals(
+			array(
+				'test' => $arg->get_entity(),
+				'another:test' => $arg_2->get_entity(),
+			)
+			, $args->get_non_stateful_args()
+		);
 	}
 
 	/**
@@ -38,6 +52,11 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable_stateful_args() {
 
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
 
@@ -46,6 +65,15 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$args = new WordPoints_Hook_Event_Args( array( $arg, $arg_2 ) );
 
 		$this->assertTrue( $args->is_event_repeatable() );
+
+		$this->assertSame( array(), $args->get_non_stateful_args() );
+		$this->assertEquals(
+			array(
+				'test' => $arg->get_entity(),
+				'another:test' => $arg_2->get_entity(),
+			)
+			, $args->get_stateful_args()
+		);
 	}
 
 	/**
@@ -55,6 +83,11 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable_stateful_and_signature() {
 
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
 
@@ -63,6 +96,15 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$args = new WordPoints_Hook_Event_Args( array( $arg, $arg_2 ) );
 
 		$this->assertFalse( $args->is_event_repeatable() );
+
+		$this->assertEquals(
+			array( 'test' => $arg->get_entity() )
+			, $args->get_stateful_args()
+		);
+		$this->assertEquals(
+			array( 'another:test' => $arg_2->get_entity() )
+			, $args->get_non_stateful_args()
+		);
 	}
 
 	/**
@@ -72,9 +114,16 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable_no_args() {
 
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+
 		$args = new WordPoints_Hook_Event_Args( array() );
 
 		$this->assertTrue( $args->is_event_repeatable() );
+		$this->assertSame( array(), $args->get_stateful_args() );
+		$this->assertSame( array(), $args->get_non_stateful_args() );
 	}
 
 	/**
