@@ -757,4 +757,60 @@ function wordpoints_parse_dynamic_slug( $slug ) {
 	return $parsed;
 }
 
+/**
+ * Get the GUID of the current entity context.
+ *
+ * Most entities exist only in the context of a specific site on the network (in
+ * multisite—when not on multisite they are just global to the install). An
+ * example of this would be a Post: a post on one site with the ID 5 is different
+ * than a post with that same ID on another site. To get the ID of such an entity's
+ * context, you would pass `array( 'network', 'site' )` as the value of the `$slugs`
+ * arg.
+ *
+ * Some entities exist in the context of the network itself, not any particular
+ * site. You can get the ID for the context of such an entity by passing `array(
+ * 'network' )` as the value of `$slugs`.
+ *
+ * Still other entities are global to the install, existing across all networks even
+ * on a multi-network installation. An example of this would be a User: the user with
+ * the ID 3 is the same on every site on the network, and every network in the
+ * install.
+ *
+ * Some entities might exist in other contexts entirely.
+ *
+ * @since 1.0.0
+ *
+ * @param string[] $slugs The slug(s) of the (sub)context you want to get the current
+ *                        value of.
+ *
+ * @return array|false The IDs of the context(s) you passed in, indexed by context
+ *                     slug, or false if any of the contexts isn't current.
+ */
+function wordpoints_entities_get_current_context_id( array $slugs ) {
+
+	$current_context = array();
+
+	/** @var WordPoints_Class_Registry $contexts */
+	$contexts = wordpoints_entities()->contexts;
+
+	foreach ( $slugs as $slug ) {
+
+		$context = $contexts->get( $slug );
+
+		if ( ! $context instanceof WordPoints_Entity_Context ) {
+			return false;
+		}
+
+		$id = $context->get_current_id();
+
+		if ( false === $id ) {
+			return false;
+		}
+
+		$current_context[ $slug ] = $id;
+	}
+
+	return $current_context;
+}
+
 // EOF

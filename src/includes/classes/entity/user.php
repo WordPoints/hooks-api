@@ -17,6 +17,11 @@ class WordPoints_Entity_User extends WordPoints_Entity {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $context = array();
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $id_field = 'ID';
 
 	/**

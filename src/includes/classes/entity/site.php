@@ -19,6 +19,11 @@ class WordPoints_Entity_Site extends WordPoints_Entity {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $context = array( 'network' );
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $id_field = 'blog_id';
 
 	/**

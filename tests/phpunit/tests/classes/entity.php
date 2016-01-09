@@ -435,6 +435,8 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals( 1, $entity->get_the_value() );
 		$this->assertEquals( 1, $entity->get_the_id() );
 		$this->assertEquals( 'test', $entity->get_the_attr_value( 'type' ) );
+		$this->assertEquals( array( 'network' => 1, 'site' => 1 ), $entity->get_the_context() );
+		$this->assertEquals( array( 'network' => 1, 'site' => 1, 'test' => 1 ), $entity->get_the_guid() );
 	}
 
 	/**
@@ -453,6 +455,8 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals( 1, $entity->get_the_value() );
 		$this->assertEquals( 1, $entity->get_the_id() );
 		$this->assertEquals( 'test', $entity->get_the_attr_value( 'type' ) );
+		$this->assertEquals( array( 'network' => 1, 'site' => 1 ), $entity->get_the_context() );
+		$this->assertEquals( array( 'network' => 1, 'site' => 1, 'test' => 1 ), $entity->get_the_guid() );
 	}
 
 	/**
@@ -472,6 +476,8 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertNull( $entity->get_the_value() );
 		$this->assertNull( $entity->get_the_id() );
 		$this->assertNull( $entity->get_the_attr_value( 'type' ) );
+		$this->assertNull( $entity->get_the_context() );
+		$this->assertNull( $entity->get_the_guid() );
 	}
 
 	/**
@@ -491,6 +497,8 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertNull( $entity->get_the_value() );
 		$this->assertNull( $entity->get_the_id() );
 		$this->assertNull( $entity->get_the_attr_value( 'type' ) );
+		$this->assertNull( $entity->get_the_context() );
+		$this->assertNull( $entity->get_the_guid() );
 	}
 
 	/**
@@ -507,6 +515,8 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals( 1, $entity->get_the_value() );
 		$this->assertEquals( 1, $entity->get_the_id() );
 		$this->assertEquals( 'test', $entity->get_the_attr_value( 'type' ) );
+		$this->assertEquals( array( 'network' => 1, 'site' => 1 ), $entity->get_the_context() );
+		$this->assertEquals( array( 'network' => 1, 'site' => 1, 'test' => 1 ), $entity->get_the_guid() );
 
 		$mock = new WordPoints_Mock_Filter( false );
 
@@ -517,6 +527,8 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertNull( $entity->get_the_value() );
 		$this->assertNull( $entity->get_the_id() );
 		$this->assertNull( $entity->get_the_attr_value( 'type' ) );
+		$this->assertNull( $entity->get_the_context() );
+		$this->assertNull( $entity->get_the_guid() );
 	}
 
 	/**
@@ -546,6 +558,31 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$entity->set( 'human_id_field', 'title' );
 
 		$this->assertNull( $entity->get_the_human_id() );
+	}
+
+	/**
+	 * Test get_context()'s default value.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_context_default() {
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+
+		$this->assertEquals( array( 'network', 'site' ), $entity->get_context() );
+	}
+
+	/**
+	 * Test get_context()'s default value.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_context() {
+
+		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
+		$entity->set( 'context', array( 'test' ) );
+
+		$this->assertEquals( array( 'test' ), $entity->get_context() );
 	}
 }
 

@@ -28,6 +28,21 @@ abstract class WordPoints_Entity
 	//
 
 	/**
+	 * The context in which this type of entity exists.
+	 *
+	 * Most entities exist only in the context of a specific site on the network (in
+	 * multisite—when not on multisite they are just global to the install). Entities
+	 * with other contexts need to specify that by overriding this property.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wordpoints_entities_get_current_context_id()
+	 *
+	 * @var string[]
+	 */
+	protected $context = array( 'network', 'site' );
+
+	/**
 	 * The field the entity is identified by.
 	 *
 	 * You must either define this or override get_id_field() in your subclass.
@@ -70,6 +85,17 @@ abstract class WordPoints_Entity
 	 * @var mixed
 	 */
 	protected $the_entity;
+
+	/**
+	 * The GUID of the context in which the entity exists.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wordpoints_entities_get_current_context_id()
+	 *
+	 * @var array
+	 */
+	protected $the_context = array();
 
 	/**
 	 * Get an entity by its ID.
@@ -169,6 +195,20 @@ abstract class WordPoints_Entity
 	//
 
 	/**
+	 * Get the slug(s) of the context in which this type of entity exists.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wordpoints_entities_get_current_context_id()
+	 *
+	 * @return string[] The slug(s) of the context in which this type of entity
+	 *                  must exist.
+	 */
+	public function get_context() {
+		return $this->context;
+	}
+
+	/**
 	 * Get the attribute that holds the entity's unique ID.
 	 *
 	 * @since 1.0.0
@@ -262,7 +302,7 @@ abstract class WordPoints_Entity
 	 */
 	public function set_the_value( $value ) {
 
-		$this->the_value = $this->the_entity = null;
+		$this->the_value = $this->the_entity = $this->the_context = null;
 
 		if ( $this->is_entity( $value ) ) {
 
@@ -278,8 +318,11 @@ abstract class WordPoints_Entity
 			}
 		}
 
-		$this->the_value = $value;
-		$this->the_entity = $entity;
+		$this->the_value   = $value;
+		$this->the_entity  = $entity;
+		$this->the_context = wordpoints_entities_get_current_context_id(
+			$this->get_context()
+		);
 
 		return true;
 	}
@@ -319,6 +362,43 @@ abstract class WordPoints_Entity
 	 */
 	public function get_the_human_id() {
 		return $this->get_entity_human_id( $this->the_entity );
+	}
+
+	/**
+	 * Get the context in which the current entity exists.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wordpoints_entities_get_current_context_id()
+	 *
+	 * @return array|null The context values indexed by context slugs.
+	 */
+	public function get_the_context() {
+		return $this->the_context;
+	}
+
+	/**
+	 * Get the Globally Unique ID of the entity.
+	 *
+	 * The GUID is an array of values that includes the GUID of the entity context
+	 * in addition to the ID of the entity itself.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array|false|null The GUID, false if it could not be determined, or
+	 *                          null if the value isn't set.
+	 */
+	public function get_the_guid() {
+
+		$guid = $this->get_the_context();
+
+		if ( ! is_array( $guid ) ) {
+			return $guid;
+		}
+
+		$guid[ $this->slug ] = $this->get_the_id();
+
+		return $guid;
 	}
 }
 
