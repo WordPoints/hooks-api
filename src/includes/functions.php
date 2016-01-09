@@ -301,6 +301,22 @@ function wordpoints_hook_firers_init( $firers ) {
 function wordpoints_entities_app_init( $entities ) {
 
 	$entities->sub_apps->register( 'children', 'WordPoints_Class_Registry_Children' );
+	$entities->sub_apps->register( 'contexts', 'WordPoints_Class_Registry' );
+}
+
+/**
+ * Register entity contexts when the registry is initialized.
+ *
+ * @since 1.0.0
+ *
+ * @WordPress\action wordpoints_init_app_registry-entities-contexts
+ *
+ * @param WordPoints_Class_Registry $contexts The entity context registry.
+ */
+function wordpoints_entity_contexts_init( $contexts ) {
+
+	$contexts->register( 'network', 'WordPoints_Entity_Context_Network' );
+	$contexts->register( 'site', 'WordPoints_Entity_Context_Site' );
 }
 
 /**

@@ -30,6 +30,7 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$sub_apps = $entities->sub_apps;
 
 		$this->assertTrue( $sub_apps->is_registered( 'children' ) );
+		$this->assertTrue( $sub_apps->is_registered( 'contexts' ) );
 	}
 
 	/**
@@ -323,6 +324,26 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertTrue(
 			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
 		);
+	}
+
+	/**
+	 * Test the entity context registration function.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_entity_contexts_init
+	 */
+	public function test_contexts() {
+
+		$this->mock_apps();
+
+		$entities = wordpoints_entities();
+		$contexts = $entities->contexts;
+
+		wordpoints_entity_contexts_init( $contexts );
+
+		$this->assertTrue( $contexts->is_registered( 'network' ) );
+		$this->assertTrue( $contexts->is_registered( 'site' ) );
 	}
 }
 
