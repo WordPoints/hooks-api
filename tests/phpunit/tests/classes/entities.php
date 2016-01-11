@@ -309,7 +309,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'slug'           => 'site',
 					'id_field'       => 'blog_id',
 					'human_id_field' => 'blogname',
-					'context'        => array( 'site' ),
+					'context'        => array( 'network' ),
 					'create_func'    => array( $this, 'create_site' ),
 					'delete_func'    => array( $this, 'delete_site' ),
 				),
