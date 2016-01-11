@@ -93,9 +93,9 @@ abstract class WordPoints_Entity
 	 *
 	 * @see wordpoints_entities_get_current_context_id()
 	 *
-	 * @var array
+	 * @var array|false|null
 	 */
-	protected $the_context = array();
+	protected $the_context;
 
 	/**
 	 * Get an entity by its ID.
