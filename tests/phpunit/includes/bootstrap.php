@@ -10,6 +10,7 @@
 spl_autoload_register( 'wordpoints_hooks_api_phpunit_autoloader' );
 
 $factory = WordPoints_PHPUnit_Factory::init();
+$factory->register( 'entity', 'WordPoints_PHPUnit_Factory_For_Entity' );
 $factory->register( 'hook_reaction', 'WordPoints_PHPUnit_Factory_For_Hook_Reaction' );
 $factory->register( 'hook_reactor', 'WordPoints_PHPUnit_Factory_For_Hook_Reactor' );
 $factory->register( 'hook_event', 'WordPoints_PHPUnit_Factory_For_Hook_Event' );
