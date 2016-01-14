@@ -106,6 +106,23 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	}
 
 	/**
+	 * Get the primary arg for this event.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Entity|false The entity objects for the primary arg, or
+	 *                                 false if this entity has none.
+	 */
+	public function get_primary_arg() {
+
+		if ( ! $this->primary_arg_slug ) {
+			return false;
+		}
+
+		return $this->entities[ $this->primary_arg_slug ];
+	}
+
+	/**
 	 * Get the stateful args for this event.
 	 *
 	 * @since 1.0.0
@@ -121,23 +138,6 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 		}
 
 		return $stateful;
-	}
-
-	/**
-	 * Get the primary arg for this event.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return WordPoints_Entity|false The entity objects for the primary arg, or
-	 *                                 false if this entity has none.
-	 */
-	public function get_primary_arg() {
-
-		if ( ! $this->primary_arg_slug ) {
-			return false;
-		}
-
-		return $this->entities[ $this->primary_arg_slug ];
 	}
 
 	/**
