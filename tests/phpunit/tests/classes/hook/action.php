@@ -98,10 +98,7 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$action = new WordPoints_Hook_Action(
 			'test'
@@ -121,10 +118,7 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$action = new WordPoints_PHPUnit_Mock_Hook_Action(
 			'test'
@@ -144,10 +138,7 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$action = new WordPoints_Hook_Action(
 			'test'
@@ -166,10 +157,7 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$action = new WordPoints_Hook_Action(
 			'test'

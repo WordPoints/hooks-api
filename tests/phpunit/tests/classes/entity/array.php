@@ -49,10 +49,7 @@ class WordPoints_Entity_Array_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$array = new WordPoints_Entity_Array( 'test_entity' );
 
@@ -95,10 +92,7 @@ class WordPoints_Entity_Array_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$array = new WordPoints_Entity_Array( 'test_entity' );
 

@@ -149,10 +149,7 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
 		$relationship->set( 'related_entity_slug', 'test_entity' );
@@ -172,10 +169,7 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
 		$relationship->set( 'related_entity_slug', 'test_entity' );
@@ -192,10 +186,7 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
 		$relationship->set( 'related_entity_slug', 'test_entity{}' );
@@ -215,10 +206,7 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
 		$relationship->set( 'related_entity_slug', 'test_entity' );
@@ -238,10 +226,7 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
 		$relationship->set( 'related_entity_slug', 'test_entity{}' );

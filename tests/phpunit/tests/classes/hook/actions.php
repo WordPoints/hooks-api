@@ -86,10 +86,7 @@ class WordPoints_Hook_Actions_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			, array( 'action' => __METHOD__ )
 		);
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$this->factory->wordpoints->entity->create();
 
 		/** @var WordPoints_Hook_ActionI $action */
 		$action = $actions->get(

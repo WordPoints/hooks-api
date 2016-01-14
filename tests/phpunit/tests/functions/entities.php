@@ -174,15 +174,12 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$user_id = $this->factory->user->create();
 
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
+		$entity_slug = $this->factory->wordpoints->entity->create();
 
 		$this->listen_for_filter( 'wordpoints_entity_user_can_view' );
 
 		$this->assertTrue(
-			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+			wordpoints_entity_user_can_view( $user_id, $entity_slug, 1 )
 		);
 
 		$this->assertEquals(
@@ -193,7 +190,7 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		add_filter( 'wordpoints_entity_user_can_view', '__return_false' );
 
 		$this->assertFalse(
-			wordpoints_entity_user_can_view( $user_id, 'test_entity', 1 )
+			wordpoints_entity_user_can_view( $user_id, $entity_slug, 1 )
 		);
 	}
 
