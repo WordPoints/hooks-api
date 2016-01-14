@@ -28,15 +28,13 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	protected $is_repeatable = true;
 
 	/**
-	 * The slugs of the stateful args.
-	 *
-	 * Indexed by slug, so that `isset()` can be used.
+	 * The slug of the primary arg for this event, if it has one.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var string[]
+	 * @var string|false
 	 */
-	protected $stateful_args = array();
+	protected $primary_arg_slug = false;
 
 	/**
 	 * The validator associated with the current hook reaction.
@@ -74,15 +72,16 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 			$entity = $arg->get_entity();
 			$slug = $arg->get_slug();
 
-			if ( $entity instanceof WordPoints_Entity ) {
-				$this->entities[ $slug ] = $entity;
+			if ( ! $entity instanceof WordPoints_Entity ) {
+				continue;
 			}
 
-			if ( $arg->is_stateful() ) {
-				$this->stateful_args[ $slug ] = $slug;
-			} else {
+			$this->entities[ $slug ] = $entity;
+
+			if ( ! $arg->is_stateful() ) {
 				// If any of the args aren't stateful the event isn't repeatable.
 				$this->is_repeatable = false;
+				$this->primary_arg_slug = $slug;
 			}
 		}
 	}
@@ -114,18 +113,31 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	 * @return WordPoints_Entity[] The entity objects for the stateful args.
 	 */
 	public function get_stateful_args() {
-		return array_intersect_key( $this->entities, $this->stateful_args );
+
+		$stateful = $this->entities;
+
+		if ( $this->primary_arg_slug ) {
+			unset( $stateful[ $this->primary_arg_slug ] );
+		}
+
+		return $stateful;
 	}
 
 	/**
-	 * Get the non-stateful args for this event.
+	 * Get the primary arg for this event.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WordPoints_Entity[] The entity objects for the non-stateful args.
+	 * @return WordPoints_Entity|false The entity objects for the primary arg, or
+	 *                                 false if this entity has none.
 	 */
-	public function get_non_stateful_args() {
-		return array_diff_key( $this->entities, $this->stateful_args );
+	public function get_primary_arg() {
+
+		if ( ! $this->primary_arg_slug ) {
+			return false;
+		}
+
+		return $this->entities[ $this->primary_arg_slug ];
 	}
 
 	/**
