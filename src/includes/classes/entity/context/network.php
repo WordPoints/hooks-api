@@ -25,7 +25,7 @@ class WordPoints_Entity_Context_Network extends WordPoints_Entity_Context {
 			return 1;
 		}
 
-		return (int) $GLOBALS['current_site']->id;
+		return (int) get_current_site()->id;
 	}
 }
 
