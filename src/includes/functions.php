@@ -813,4 +813,16 @@ function wordpoints_entities_get_current_context_id( array $slugs ) {
 	return $current_context;
 }
 
+function wordpoints_hooks_get_event_signature( WordPoints_Hook_Event_Args $event_args ) {
+
+	$entity = $event_args->get_primary_arg();
+
+	// TODO what if GUID isn't set?
+	if ( ! $entity ) {
+		return str_repeat( '-', 64 );
+	}
+
+	return wordpoints_hash( wp_json_encode( $entity->get_the_guid() ) );
+}
+
 // EOF

@@ -96,13 +96,13 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_Reaction_Validator $reaction   The reaction.
-	 * @param WordPoints_Hook_Event_Args         $event_args The event args.
+	 * @param WordPoints_Hook_ReactionI  $reaction   The reaction.
+	 * @param WordPoints_Hook_Event_Args $event_args The event args.
 	 *
 	 * @return bool Whether the target should be hit by this hook firing.
 	 */
 	abstract public function should_hit(
-		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_ReactionI $reaction,
 		WordPoints_Hook_Event_Args $event_args
 	);
 
@@ -111,11 +111,11 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_Reaction_Validator $reaction   The reaction.
-	 * @param WordPoints_Hook_Event_Args         $event_args The event args.
+	 * @param WordPoints_Hook_ReactionI  $reaction   The reaction.
+	 * @param WordPoints_Hook_Event_Args $event_args The event args.
 	 */
 	public function after_hit(
-		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_ReactionI $reaction,
 		WordPoints_Hook_Event_Args $event_args
 	) {}
 

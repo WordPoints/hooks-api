@@ -245,6 +245,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->mock_apps();
 
+		$extensions = wordpoints_hooks()->extensions;
+		$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Periods' );
+		$extension = $extensions->get( 'conditions' );
+
 		wordpoints_entities()->children->register(
 			'test_entity'
 			, 'child'
@@ -253,9 +257,9 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$settings['target'] = array( 'test_entity' );
 
-		$extension = new WordPoints_Hook_Extension_Periods();
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( $settings, $reactor );
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+		$this->assertIsReaction( $reaction );
+
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -266,11 +270,8 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$event_args->set_validator( $validator );
+		$this->assertTrue( $extension->should_hit( $reaction, $event_args ) );
 
-		$this->assertTrue( $extension->should_hit( $validator, $event_args ) );
-
-		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 	}
 
@@ -305,8 +306,6 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertIsReaction( $reaction );
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( $reaction, $reactor );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -317,11 +316,8 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$event_args->set_validator( $validator );
+		$extension->after_hit( $reaction, $event_args );
 
-		$extension->after_hit( $validator, $event_args );
-
-		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 
 		$this->assertPeriodsExist( $periods, $reaction );

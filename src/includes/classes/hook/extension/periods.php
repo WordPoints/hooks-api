@@ -176,7 +176,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 * @since 1.0.0
 	 */
 	public function should_hit(
-		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_ReactionI $reaction,
 		WordPoints_Hook_Event_Args $event_args
 	) {
 
@@ -202,14 +202,14 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array                              $settings The period's settings.
-	 * @param WordPoints_Hook_Reaction_Validator $reaction The reaction object.
+	 * @param array                     $settings The period's settings.
+	 * @param WordPoints_Hook_ReactionI $reaction The reaction object.
 	 *
 	 * @return bool Whether the period has ended.
 	 */
 	protected function has_period_ended(
 		array $settings,
-		WordPoints_Hook_Reaction_Validator $reaction
+		WordPoints_Hook_ReactionI $reaction
 	) {
 
 		$period = $this->get_period_by_reaction(
@@ -315,18 +315,18 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                             $signature The values of the args
-	 *                                                     this period relates to.
-	 * @param WordPoints_Hook_Reaction_Validator $reaction  The reaction object.
+	 * @param string                   $signature The values of the args this period
+	 *                                            relates to.
+	 * @param WordPoints_Hook_Reaction $reaction  The reaction object.
 	 *
 	 * @return object|false The period data, or false if not found.
 	 */
 	protected function get_period_by_reaction(
 		$signature,
-		WordPoints_Hook_Reaction_Validator $reaction
+		WordPoints_Hook_Reaction $reaction
 	) {
 
-		$reaction_id = $reaction->get_id();
+		$reaction_id = $reaction->ID;
 
 		$cache_key = "{$reaction_id}-{$signature}";
 
@@ -370,7 +370,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 * @since 1.0.0
 	 */
 	public function after_hit(
-		WordPoints_Hook_Reaction_Validator $reaction,
+		WordPoints_Hook_ReactionI $reaction,
 		WordPoints_Hook_Event_Args $event_args
 	) {
 
@@ -400,14 +400,14 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array                              $settings The period settings.
-	 * @param WordPoints_Hook_Reaction_Validator $reaction The reaction.
+	 * @param array                     $settings The period settings.
+	 * @param WordPoints_Hook_ReactionI $reaction The reaction.
 	 *
 	 * @return string The period signature.
 	 */
 	protected function get_period_signature(
 		array $settings,
-		WordPoints_Hook_Reaction_Validator $reaction
+		WordPoints_Hook_ReactionI $reaction
 	) {
 
 		if ( isset( $settings['args'] ) ) {
@@ -426,19 +426,19 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                             $signature The period signature.
-	 * @param WordPoints_Hook_Reaction_Validator $reaction  The reaction object.
+	 * @param string                    $signature The period signature.
+	 * @param WordPoints_Hook_ReactionI $reaction  The reaction object.
 	 *
 	 * @return false|object The period data, or false if not found.
 	 */
 	protected function add_period(
 		$signature,
-		WordPoints_Hook_Reaction_Validator $reaction
+		WordPoints_Hook_ReactionI $reaction
 	) {
 
 		global $wpdb;
 
-		$reaction_id = $reaction->get_id();
+		$reaction_id = $reaction->ID;
 
 		$inserted = $wpdb->insert(
 			$wpdb->wordpoints_hook_periods

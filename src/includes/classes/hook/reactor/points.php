@@ -111,7 +111,7 @@ class WordPoints_Hook_Reactor_Points
 	 */
 	public function hit(
 		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_Reaction_Validator $reaction
+		WordPoints_Hook_ReactionI $reaction
 	) {
 
 		$target = $event_args->get_from_hierarchy(

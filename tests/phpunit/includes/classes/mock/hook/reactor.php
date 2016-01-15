@@ -113,7 +113,10 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	public function hit( WordPoints_Hook_Event_Args $event_args, WordPoints_Hook_Reaction_Validator $reaction ) {
+	public function hit(
+		WordPoints_Hook_Event_Args $event_args,
+		WordPoints_Hook_ReactionI $reaction
+	) {
 		$this->hits[] = array( 'action' => $event_args, 'reaction' => $reaction );
 	}
 }

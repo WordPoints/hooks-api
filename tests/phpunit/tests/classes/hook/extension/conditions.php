@@ -198,7 +198,19 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->mock_apps();
 
-		wordpoints_entities()->children->register(
+		$extensions = wordpoints_hooks()->extensions;
+		$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
+		$extension = $extensions->get( 'conditions' );
+
+		wordpoints_hooks()->events->args->register(
+			'test_event'
+			, 'another'
+			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
+		);
+
+		$entities = wordpoints_entities();
+		$entities->register( 'another', 'WordPoints_PHPUnit_Mock_Entity' );
+		$entities->children->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -212,9 +224,9 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$extension = new WordPoints_Hook_Extension_Conditions();
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( $settings, $reactor );
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+		$this->assertIsReaction( $reaction );
+
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -225,11 +237,8 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$event_args->set_validator( $validator );
+		$this->assertTrue( $extension->should_hit( $reaction, $event_args ) );
 
-		$this->assertTrue( $extension->should_hit( $validator, $event_args ) );
-
-		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 	}
 
@@ -246,6 +255,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->mock_apps();
 
+		$extensions = wordpoints_hooks()->extensions;
+		$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
+		$extension = $extensions->get( 'conditions' );
+
 		wordpoints_entities()->children->register(
 			'test_entity'
 			, 'child'
@@ -260,20 +273,17 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'slug' => 'unmet', 'data_type' => 'entity' )
 		);
 
-		$extension = new WordPoints_Hook_Extension_Conditions();
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( $settings, $reactor );
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+		$this->assertIsReaction( $reaction );
+
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$event_args->set_validator( $validator );
+		$this->assertFalse( $extension->should_hit( $reaction, $event_args ) );
 
-		$this->assertFalse( $extension->should_hit( $validator, $event_args ) );
-
-		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 	}
 }

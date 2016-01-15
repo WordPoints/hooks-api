@@ -38,8 +38,7 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 					continue;
 				}
 
-				$event_args->set_validator( $validator );
-				$reaction = $validator;
+				unset( $validator );
 
 				/** @var WordPoints_Hook_Extension[] $extensions */
 				$extensions = $hooks->extensions->get_all();
