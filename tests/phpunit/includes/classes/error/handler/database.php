@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Database error handler for the PHPUnit tests.
+ *
+ * @package wordpoints-hooks-api
+ * @since   1.0.0
+ */
+
+/**
+ * Handles database errors in the PHPUnit tests.
+ *
+ * @since 1.0.0
+ */
+class WordPoints_PHPUnit_Error_Handler_Database implements ArrayAccess {
+
+	/**
+	 * Just a stub.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return false Always.
+	 */
+	public function offsetExists( $offset ) {
+		return false;
+	}
+
+	/**
+	 * Just a stub.
+	 *
+	 * @since 1.0.0
+	 */
+	public function offsetGet( $offset ) {}
+
+	/**
+	 * Triggers an error when it is added to the stack.
+	 *
+	 * @since 1.0.0
+	 */
+	public function offsetSet( $offset, $value ) {
+
+		trigger_error(
+			"WordPress Database Error: {$value['error_str']} [{$value['query']}]"
+			, E_USER_WARNING
+		);
+	}
+
+	/**
+	 * Just a stub.
+	 *
+	 * @since 1.0.0
+	 */
+	public function offsetUnset( $offset ) {}
+}
+
+// EOF

@@ -19,4 +19,7 @@ $factory->register( 'hook_condition', 'WordPoints_PHPUnit_Factory_For_Hook_Condi
 $factory->register( 'post_type', 'WordPoints_PHPUnit_Factory_For_Post_Type' );
 $factory->register( 'user_role', 'WordPoints_PHPUnit_Factory_For_User_Role' );
 
+global $EZSQL_ERROR;
+$EZSQL_ERROR = new WordPoints_PHPUnit_Error_Handler_Database();
+
 // EOF
