@@ -22,10 +22,22 @@ interface WordPoints_Hook_Reaction_StorageI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $reactor_slug The slug of the reactor the reactions belong to.
-	 * @param bool   $network_wide Whether this object will store network-wide reactions.
+	 * @param string                  $slug    The slug of this storage group.
+	 * @param WordPoints_Hook_Reactor $reactor The reactor the reactions belong to.
 	 */
-	public function __construct( $reactor_slug, $network_wide );
+	public function __construct( $slug, WordPoints_Hook_Reactor $reactor );
+
+	/**
+	 * Get the slug of this reaction storage group.
+	 *
+	 * This isn't the slug of the storage method itself, but the identifier for the
+	 * group of reactions a particular object happens to be storing.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The slug of this storage group.
+	 */
+	public function get_slug();
 
 	/**
 	 * Get the slug of the reactor this object stores reactions for.
@@ -37,13 +49,16 @@ interface WordPoints_Hook_Reaction_StorageI {
 	public function get_reactor_slug();
 
 	/**
-	 * Check whether this object stores network-wide reactions.
+	 * Get the ID of the current context in which reactions are being stored.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool Whether this object stores network-wide reactions.
+	 * @see wordpoints_entities_get_current_context_id()
+	 *
+	 * @return array|false The ID of the context(s) in which this method is currently
+	 *                     storing reactions, or false if out of context.
 	 */
-	public function is_network_wide();
+	public function get_context_id();
 
 	/**
 	 * Check whether a reaction exists.

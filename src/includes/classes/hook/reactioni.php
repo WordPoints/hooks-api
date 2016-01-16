@@ -34,7 +34,7 @@ interface WordPoints_Hook_ReactionI {
 	 *
 	 * @return bool Whether this reaction is network-wide.
 	 */
-	public function is_network_wide();
+	public function get_context_id();
 
 	/**
 	 * Get the slug of the event this reaction is for.
@@ -64,6 +64,19 @@ interface WordPoints_Hook_ReactionI {
 	 * @return string The reactor slug.
 	 */
 	public function get_reactor_slug();
+
+	/**
+	 * Get the slug of the reaction storage group this reaction belongs to.
+	 *
+	 * Each reactor can store reactions in multiple different groups. For example,
+	 * there are 'standard' and 'network' reactions. This method returns the slug of
+	 * the group which this reaction is from.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The storage group slug.
+	 */
+	public function get_storage_group_slug();
 
 	/**
 	 * Get a piece of metadata for this reaction.

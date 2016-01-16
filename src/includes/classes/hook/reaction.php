@@ -20,24 +20,6 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	protected $ID;
 
 	/**
-	 * The slug of the reactor this reaction is for.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	protected $reactor_slug;
-
-	/**
-	 * Whether this reaction is network-wide.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var bool
-	 */
-	protected $network_wide;
-
-	/**
 	 * The reaction storage object.
 	 *
 	 * @since 1.0.0
@@ -55,10 +37,8 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 */
 	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage ) {
 
-		$this->ID           = wordpoints_int( $id );
-		$this->storage      = $storage;
-		$this->reactor_slug = $this->storage->get_reactor_slug();
-		$this->network_wide = $this->storage->is_network_wide();
+		$this->ID      = wordpoints_int( $id );
+		$this->storage = $storage;
 	}
 
 	/**
@@ -77,14 +57,21 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 * @since 1.0.0
 	 */
 	public function get_reactor_slug() {
-		return $this->reactor_slug;
+		return $this->storage->get_reactor_slug();
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function is_network_wide() {
-		return $this->network_wide;
+	public function get_storage_group_slug() {
+		return $this->storage->get_slug();
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_context_id() {
+		return $this->storage->get_context_id();
 	}
 }
 

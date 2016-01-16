@@ -23,7 +23,10 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 	 */
 	public function test_nonexistent_reaction_exists() {
 
-		$storage = new WordPoints_Hook_Reaction_Storage_Options( 'test', false );
+		$storage = new WordPoints_Hook_Reaction_Storage_Options(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertFalse( $storage->reaction_exists( 1 ) );
 	}
@@ -54,7 +57,10 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 	 */
 	public function test_get_reactions_none() {
 
-		$storage = new WordPoints_Hook_Reaction_Storage_Options( 'test', false );
+		$storage = new WordPoints_Hook_Reaction_Storage_Options(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertSame( array(), $storage->get_reactions() );
 	}
@@ -87,7 +93,10 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 	 */
 	public function test_get_reactions_to_event_no_reactions() {
 
-		$storage = new WordPoints_Hook_Reaction_Storage_Options( 'test', false );
+		$storage = new WordPoints_Hook_Reaction_Storage_Options(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertSame(
 			array()
@@ -150,7 +159,10 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 	 */
 	public function test_get_reaction_event_from_index_nonexistent() {
 
-		$storage = new WordPoints_Hook_Reaction_Storage_Options( 'test', false );
+		$storage = new WordPoints_Hook_Reaction_Storage_Options(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertFalse( $storage->get_reaction_event_from_index( 1 ) );
 	}
@@ -184,7 +196,10 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 	 */
 	public function test_update_reaction_event_from_index_nonexistent() {
 
-		$storage = new WordPoints_Hook_Reaction_Storage_Options( 'test', false );
+		$storage = new WordPoints_Hook_Reaction_Storage_Options(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertFalse(
 			$storage->update_reaction_event_in_index( 1, 'test_event' )
@@ -224,7 +239,10 @@ class WordPoints_Hook_Reaction_Storage_Options_Test extends WordPoints_PHPUnit_T
 	 */
 	public function test_delete_reaction_nonexistent() {
 
-		$storage = new WordPoints_Hook_Reaction_Storage_Options( 'test', false );
+		$storage = new WordPoints_Hook_Reaction_Storage_Options(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertFalse( $storage->delete_reaction( 1 ) );
 	}

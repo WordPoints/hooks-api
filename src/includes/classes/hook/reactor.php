@@ -119,8 +119,8 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 				if ( ! isset( $this->$var ) ) {
 					if ( isset( $this->{"{$var}_class"} ) ) {
 						$this->$var = new $this->{"{$var}_class"}(
-							$this->slug
-							, ( 'network_reactions' === $var )
+							substr( $var, 0, -10 /* _reactions */ )
+							, $this
 						);
 					}
 				}

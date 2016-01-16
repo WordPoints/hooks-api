@@ -23,14 +23,33 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_construct() {
 
-		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage( 'test', false );
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' );
+		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
+			'test_storage'
+			, $reactor
+		);
 
-		$this->assertEquals( 'test', $storage->get_reactor_slug() );
-		$this->assertFalse( $storage->is_network_wide() );
+		$this->assertEquals( 'test_storage', $storage->get_slug() );
+		$this->assertEquals( 'test_reactor', $storage->get_reactor_slug() );
+	}
 
-		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage( 'test', true );
+	/**
+	 * Test getting the context defaults to the current site.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_context_id() {
 
-		$this->assertTrue( $storage->is_network_wide() );
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' );
+		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
+			'test_storage'
+			, $reactor
+		);
+
+		$this->assertEquals(
+			array( 'network' => 1, 'site' => 1 )
+			, $storage->get_context_id()
+		);
 	}
 
 	/**
@@ -40,7 +59,10 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_get_reaction_nonexistent() {
 
-		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage( 'test', false );
+		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
+			'test_storage'
+			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
+		);
 
 		$this->assertFalse( $storage->get_reaction( 1 ) );
 	}
@@ -54,11 +76,9 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->mock_apps();
 
-		$this->factory->wordpoints->hook_reactor->create();
-
 		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
-			'test_reactor'
-			, false
+			'test_storage'
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$settings = array(
@@ -92,8 +112,8 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 		$this->factory->wordpoints->hook_reactor->create();
 
 		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
-			'test_reactor'
-			, false
+			'test_storage'
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		// Event is missing.
@@ -121,8 +141,8 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
 		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
-			'test_reactor'
-			, false
+			'test_storage'
+			, $reactor
 		);
 
 		$settings = array(
@@ -156,11 +176,9 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
-		$this->factory->wordpoints->hook_reactor->create();
-
 		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
-			'test_reactor'
-			, false
+			'test_storage'
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$settings = array(
@@ -190,11 +208,9 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->mock_apps();
 
-		$this->factory->wordpoints->hook_reactor->create();
-
 		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
-			'test_reactor'
-			, false
+			'test_storage'
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$settings = array(
@@ -420,7 +436,6 @@ class WordPoints_Hook_Reaction_Storage_Test extends WordPoints_PHPUnit_TestCase_
 	 * @since 1.0.0
 	 */
 	public function test_update_reaction_calls_hook() {
-
 
 		$this->mock_apps();
 

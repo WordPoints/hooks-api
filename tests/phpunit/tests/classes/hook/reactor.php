@@ -34,7 +34,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
-		$this->assertFalse( $reactor->reactions->is_network_wide() );
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
 		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
 		$this->assertNull( $reactor->network_reactions );
@@ -77,22 +76,17 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
-		$this->assertTrue( $reactor->network_reactions->is_network_wide() );
 		$this->assertTrue( $reactor->reactions === $reactor->reactions );
 		$this->assertTrue( $reactor->reactions === $reactor->network_reactions );
 		$this->assertNull( $reactor->standard_reactions );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertTrue( $reaction->is_network_wide() );
-
 		$another = $this->factory->wordpoints->hook_reaction->create(
 			array( 'event' => 'another' )
 		);
 
 		$this->assertIsReaction( $another );
-
-		$this->assertTrue( $another->is_network_wide() );
 
 		$this->assertEquals(
 			array( $reaction )
@@ -163,29 +157,21 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertFalse( $reaction->is_network_wide() );
-
 		$another = $this->factory->wordpoints->hook_reaction->create(
 			array( 'event' => 'another' )
 		);
 
 		$this->assertIsReaction( $another );
 
-		$this->assertFalse( $another->is_network_wide() );
-
 		$network_reaction = $reactor->network_reactions->create_reaction(
 			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
 		);
-
-		$this->assertTrue( $network_reaction->is_network_wide() );
 
 		$another_network = $reactor->network_reactions->create_reaction(
 			array( 'event' => 'another', 'target' => array( 'test_entity' ) )
 		);
 
 		$this->assertIsReaction( $another_network );
-
-		$this->assertTrue( $another_network->is_network_wide() );
 
 		$this->assertEquals(
 			array( $reaction, $network_reaction )

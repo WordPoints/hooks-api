@@ -283,7 +283,10 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 * @return string The name of the option where the settings are stored.
 	 */
 	public function get_settings_option_name( $id ) {
-		return "wordpoints_{$this->reactor_slug}_hook_reaction-{$id}";
+
+		$reactor_slug = $this->reactor->get_slug();
+
+		return "wordpoints_{$reactor_slug}_hook_reaction-{$id}";
 	}
 
 	/**
@@ -294,7 +297,10 @@ class WordPoints_Hook_Reaction_Storage_Options extends WordPoints_Hook_Reaction_
 	 * @return string The name of the option where the reaction index is stored.
 	 */
 	protected function get_reaction_index_option_name() {
-		return "wordpoints_{$this->reactor_slug}_hook_reaction_index";
+
+		$reactor_slug = $this->reactor->get_slug();
+
+		return "wordpoints_{$reactor_slug}_hook_reaction_index";
 	}
 }
 

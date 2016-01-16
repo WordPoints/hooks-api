@@ -18,22 +18,33 @@
 abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_Reaction_StorageI {
 
 	/**
-	 * The slug of the reactor which these reactions belong to.
+	 * The slug of this storage group.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
-	protected $reactor_slug;
+	protected $slug;
 
 	/**
-	 * Whether this object is storing network-wide reactions.
+	 * The reactor that these reactions belong to.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var bool
+	 * @var WordPoints_Hook_Reactor
 	 */
-	protected $network_wide;
+	protected $reactor;
+
+	/**
+	 * The slugs of the contexts in which the reactions are stored.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wordpoints_entities_get_current_context_id()
+	 *
+	 * @var string[]
+	 */
+	protected $context = array( 'network', 'site' );
 
 	/**
 	 * The name of the class to use for reaction objects.
@@ -47,36 +58,33 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	protected $reaction_class;
 
 	/**
-	 * The hooks app.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Hooks
 	 */
-	protected $hooks;
+	public function __construct( $slug, WordPoints_Hook_Reactor $reactor ) {
+
+		$this->slug = $slug;
+		$this->reactor = $reactor;
+	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function __construct( $reactor_slug, $network_wide ) {
-
-		$this->reactor_slug = $reactor_slug;
-		$this->network_wide = $network_wide;
-		$this->hooks = wordpoints_hooks();
+	public function get_slug() {
+		return $this->slug;
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_reactor_slug() {
-		return $this->reactor_slug;
+		return $this->reactor->get_slug();
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function is_network_wide() {
-		return $this->network_wide;
+	public function get_context_id() {
+		return wordpoints_entities_get_current_context_id( $this->context );
 	}
 
 	/**
@@ -125,10 +133,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 			return false;
 		}
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = $this->hooks->reactors->get( $this->reactor_slug );
-
-		$validator = new WordPoints_Hook_Reaction_Validator( $settings, $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( $settings, $this->reactor );
 		$settings = $validator->validate();
 
 		if ( $validator->had_errors() ) {
@@ -150,10 +155,10 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 
 		unset( $settings['event'] );
 
-		$reactor->update_settings( $reaction, $settings );
+		$this->reactor->update_settings( $reaction, $settings );
 
 		/** @var WordPoints_Hook_Extension $extension */
-		foreach ( $this->hooks->extensions->get_all() as $extension ) {
+		foreach ( wordpoints_hooks()->extensions->get_all() as $extension ) {
 			$extension->update_settings( $reaction, $settings );
 		}
 
