@@ -32,13 +32,6 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 
 		parent::setUp();
 
-		global $wpdb, $EZSQL_ERROR;
-
-		if ( $EZSQL_ERROR instanceof WordPoints_PHPUnit_Error_Handler_Database ) {
-			$wpdb->suppress_errors = true;
-			$wpdb->show_errors = false;
-		}
-
 		if ( ! isset( $this->factory->wordpoints ) ) {
 			$this->factory->wordpoints = WordPoints_PHPUnit_Factory::$factory;
 		}

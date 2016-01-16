@@ -39,6 +39,12 @@ class WordPoints_PHPUnit_Error_Handler_Database implements ArrayAccess {
 	 */
 	public function offsetSet( $offset, $value ) {
 
+		global $wpdb;
+
+		if ( $wpdb->suppress_errors ) {
+			return;
+		}
+
 		trigger_error(
 			"WordPress Database Error: {$value['error_str']} [{$value['query']}]"
 			, E_USER_WARNING
