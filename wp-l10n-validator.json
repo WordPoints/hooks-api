@@ -23,6 +23,7 @@
 		"WordPoints_Hook_Reaction::get_meta": true,
 		"WordPoints_Hook_Router::add_event_to_action": true,
 		"WordPoints_Hook_Router::remove_event_from_action": true,
+		"WordPoints_Hooks::current_mode": true,
 
 		"$actions->register": [ 1, 2 ],
 		"$admin->sub_apps->register": [ 1, 2 ],
@@ -66,7 +67,9 @@
 		"WordPoints_Hook_Action::$arg_index": true,
 		"WordPoints_Hook_Event_Dynamic::$generic_entity_slug": true,
 		"WordPoints_Hook_Extension::$slug": true,
+		"WordPoints_Hook_Reaction_Storage::$context": true,
 		"WordPoints_Hook_Reaction_Storage::$reaction_class": true,
+		"WordPoints_Hook_Reaction_Storage_Options::$context": true,
 		"WordPoints_Hook_Reaction_Storage_Options::$reaction_class": true,
 		"WordPoints_Hook_Reactor::$slug": true,
 		"WordPoints_Hook_Reactor::$arg_types": true,

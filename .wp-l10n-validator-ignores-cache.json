@@ -25,22 +25,22 @@
             }
         },
         "WordPointsHooksAdminData.events[": {
-            "340": false
+            "341": false
         },
         "] =": {
-            "343": false
+            "344": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
-            "342": false
-        },
-        ";": {
             "343": false
         },
+        ";": {
+            "344": false
+        },
         "1": {
-            "565": false
+            "566": false
         },
         "2": {
-            "565": false
+            "566": false
         }
     },
     "\/admin\/includes\/classes\/screen.php": {
@@ -87,7 +87,7 @@
     },
     "\/includes\/class-un-installer.php": {
         "WordPoints_Hooks_API_Un_Installer": {
-            "45": false
+            "55": false
         }
     },
     "\/includes\/classes\/app.php": {
@@ -196,7 +196,7 @@
     },
     "\/includes\/classes\/hook\/extension\/periods.php": {
         "-": {
-            "320": false
+            "331": false
         }
     },
     "\/includes\/classes\/hook\/reactor\/points.php": {
@@ -235,7 +235,14 @@
     },
     "\/includes\/functions.php": {
         "approved": {
-            "133": {
+            "111": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "134": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -244,7 +251,7 @@
             }
         },
         "publish": {
-            "146": {
+            "147": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -253,7 +260,7 @@
             }
         },
         "wp": {
-            "199": {
+            "200": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -262,7 +269,7 @@
             }
         },
         "WordPoints_Hook_Arg": {
-            "224": {
+            "225": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -271,7 +278,7 @@
             }
         },
         "WordPoints_Hook_Arg_Current_User": {
-            "237": {
+            "238": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -280,7 +287,14 @@
             }
         },
         "post\\\\": {
-            "443": {
+            "442": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "460": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -289,7 +303,21 @@
             }
         },
         "WordPoints_Hook_Arg_Dynamic": {
-            "463": {
+            "442": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "460": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "480": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -298,7 +326,7 @@
             }
         },
         "comment\\\\": {
-            "463": {
+            "480": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
