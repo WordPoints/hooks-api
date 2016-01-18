@@ -58,13 +58,13 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
-	 * Test accessing the reactions storage objects in network mode.
+	 * Test accessing the reactions storage objects in network context.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @requires WordPoints network-active
 	 */
-	public function test_get_reactions_network_mode_on() {
+	public function test_get_reactions_network_context() {
 
 		$this->mock_apps();
 		$this->set_network_admin();
@@ -100,14 +100,15 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
-	 * Test accessing the reactions storage objects in network mode when not network-
-	 * active.
+	 * Test accessing the reactions storage objects in network context when not
+	 * network-active.
 	 *
 	 * @since 1.0.0
 	 *
+	 * @requires WordPress multisite
 	 * @requires WordPoints !network-active
 	 */
-	public function test_get_reactions_network_mode_on_not_network_active() {
+	public function test_get_reactions_network_context_on_not_network_active() {
 
 		$this->mock_apps();
 		$this->set_network_admin();
@@ -134,13 +135,13 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
 	 * Test accessing the reactions storage objects when network active but not in
-	 * network mode.
+	 * network context.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @requires WordPoints network-active
 	 */
-	public function test_get_reactions_network_active_network_mode_off() {
+	public function test_get_reactions_network_active_not_network_context() {
 
 		$this->mock_apps();
 

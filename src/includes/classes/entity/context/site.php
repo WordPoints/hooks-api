@@ -25,8 +25,7 @@ class WordPoints_Entity_Context_Site extends WordPoints_Entity_Context {
 			return 1;
 		}
 
-		// Todo special handling for Ajax, ect.
-		if ( is_network_admin() ) {
+		if ( wordpoints_is_network_context() ) {
 			return false;
 		}
 

@@ -30,13 +30,13 @@
 class WordPoints_Hooks extends WordPoints_App {
 
 	/**
-	 * Whether network-wide mode is turned on.
+	 * The current mode of the API.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var bool
+	 * @var string
 	 */
-	protected $network_mode = null;
+	protected $current_mode;
 
 	/**
 	 * Register the sub apps when the app is constructed.
@@ -58,71 +58,44 @@ class WordPoints_Hooks extends WordPoints_App {
 	}
 
 	/**
-	 * Gets whether network-wide mode is on.
+	 * Gets the current mode that the API is in.
+	 *
+	 * By default 'standard' mode is on, unless in network context (such as in the
+	 * network admin) on multisite, when 'network' mode is the default.
+	 *
+	 * The current mode is used by reactors to determine which reaction type to offer
+	 * access to through the $reactions property. This is allows for generic code for
+	 * handling reactions to reference the $reactions property of the reactor, and
+	 * what type of reactions it will get will be determined based on the current
+	 * mode that is set.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool Whether network-wide mode is on.
+	 * @return string The slug of the current mode.
 	 */
-	public function get_network_mode() {
+	public function get_current_mode() {
 
-		if ( ! isset( $this->network_mode ) ) {
-			$this->network_mode = is_network_admin();
-
-			// See https://core.trac.wordpress.org/ticket/22589
-			if (
-				defined( 'DOING_AJAX' )
-				&& DOING_AJAX
-				&& is_multisite()
-				&& isset( $_SERVER['HTTP_REFERER'] )
-				&& preg_match(
-					'#^' . preg_quote( network_admin_url(), '#' ) . '#i'
-					, esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) )
-				)
-			) {
-				$this->network_mode = true;
-			}
+		if ( ! isset( $this->current_mode ) ) {
+			$this->current_mode = ( wordpoints_is_network_context() ? 'network' : 'standard' );
 		}
 
-		return $this->network_mode;
+		return $this->current_mode;
 	}
 
 	/**
-	 * Sets whether network-wide mode is on.
+	 * Sets the current mode of the API.
 	 *
-	 * This function should not be used, especially to turn network mode off when
-	 * WordPoints has turned it on. I won't even say, "Unless you really know what
-	 * you're doing," because trust me, if you're trying to do that, you don't. Here
-	 * be dragons!
-	 *
-	 * For those of you that are specifically looking for something to break, here is
-	 * how to do it.
-	 *
-	 * What network mode does is tell the hooks API that it is in the context of the
-	 * network itself, and not of any particular site. This feature is what allows us
-	 * to have network-wide reactions in addition to the standard, per-site
-	 * reactions. When network mode is on, it means that we don't want to do anything
-	 * with standard reactions at all, because even though there may be a "current
-	 * site" that we could pull them from, we're actually supposed to be pretending
-	 * that we aren't on a particular site on the network, but in network-wide
-	 * context. So when network mode is turned on, you won't be able to do anything
-	 * with standard reactions, only network-wide ones.
-	 *
-	 * This is why turning it off is so dangerous—it would allow you to accidentally
-	 * do things with standard reactions when you probably aren't expected to. The
-	 * user is in the context of the network, for example in the network admin, so
-	 * they're only expecting network-wide reactions to be affected. If you did
-	 * something with standard reactions, you'd end up affecting a particular site,
-	 * when the user doesn't think he is.
+	 * This function should be used very sparingly. The default mode which is set by
+	 * WordPoints should work for you in most cases. The primary reason that you
+	 * would ever need to set the mode yourself is if you have created your own
+	 * custom mode. Otherwise you probably shouldn't be using this function.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @internal
-	 *
-	 * @param bool $on Whether network-wide mode should be on (or off).
+	 * @param string $mode The slug of the mode to set as the current mode.
 	 */
-	public function _set_network_mode( $on = true ) {
-		$this->network_mode = (bool) $on;
+	public function set_current_mode( $mode ) {
+		$this->current_mode = $mode;
 	}
 }
 

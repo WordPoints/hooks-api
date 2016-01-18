@@ -99,36 +99,40 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 */
 	public function __get( $var ) {
 
-		$network_mode = wordpoints_hooks()->get_network_mode();
-
-		switch ( $var ) {
-			case 'reactions':
-				$var = $network_mode ? 'network_reactions' : 'standard_reactions';
-				// fall through
-
-			case 'standard_reactions':
-			case 'network_reactions':
-				if ( $network_mode && 'standard_reactions' === $var ) {
-					return null;
-				}
-
-				if ( 'network_reactions' === $var && ! $this->is_network_wide() ) {
-					return null;
-				}
-
-				if ( ! isset( $this->$var ) ) {
-					if ( isset( $this->{"{$var}_class"} ) ) {
-						$this->$var = new $this->{"{$var}_class"}(
-							substr( $var, 0, -10 /* _reactions */ )
-							, $this
-						);
-					}
-				}
-
-				return $this->$var;
+		if ( 'reactions' === $var ) {
+			$mode = wordpoints_hooks()->get_current_mode();
+			$var  = "{$mode}_reactions";
+		} elseif ( '_reactions' !== substr( $var, -10 ) ) {
+			return null;
+		} else {
+			$mode = substr( $var, 0, -10 /* _reactions */ );
 		}
 
-		return null;
+		if ( 'network_reactions' === $var && ! $this->is_network_wide() ) {
+			return null;
+		}
+
+		if ( ! isset( $this->$var ) ) {
+
+			if ( isset( $this->{"{$var}_class"} ) ) {
+				$this->$var = new $this->{"{$var}_class"}( $mode, $this );
+			} else {
+				return null;
+			}
+		}
+
+		$store = $this->$var;
+
+		if ( ! $store instanceof WordPoints_Hook_Reaction_StorageI ) {
+			return null;
+		}
+
+		// Allowing access to stores out-of-context would lead to strange behavior.
+		if ( false === $store->get_context_id() ) {
+			return null;
+		}
+
+		return $store;
 	}
 
 	/**

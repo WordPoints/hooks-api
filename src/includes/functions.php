@@ -813,6 +813,46 @@ function wordpoints_entities_get_current_context_id( array $slugs ) {
 	return $current_context;
 }
 
+/**
+ * Checks if we are in network context.
+ *
+ * There are times on multisite when we are in the context of the network as a whole,
+ * and not in the context of any particular site. This includes the network admin
+ * screens, and Ajax requests that originate from them.
+ *
+ * @since 1.0.0
+ *
+ * @return bool Whether we are in network context.
+ */
+function wordpoints_is_network_context() {
+
+	if ( is_network_admin() ) {
+		return true;
+	}
+
+	// See https://core.trac.wordpress.org/ticket/22589
+	if (
+		defined( 'DOING_AJAX' )
+		&& DOING_AJAX
+		&& isset( $_SERVER['HTTP_REFERER'] )
+		&& preg_match(
+			'#^' . preg_quote( network_admin_url(), '#' ) . '#i'
+			, esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) )
+		)
+	) {
+		return true;
+	}
+
+	/**
+	 * Filter whether we are currently in network context.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool $in_network_context Whether we are in network context.
+	 */
+	return apply_filters( 'wordpoints_is_network_context', false );
+}
+
 function wordpoints_hooks_get_event_signature( WordPoints_Hook_Event_Args $event_args ) {
 
 	$entity = $event_args->get_primary_arg();

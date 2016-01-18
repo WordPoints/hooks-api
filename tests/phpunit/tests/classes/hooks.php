@@ -53,55 +53,37 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 	}
 
 	/**
-	 * Test setting the network mode.
+	 * Test setting the current mode.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_set_network_mode() {
+	public function test_set_current_mode() {
 
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
-		$hooks->_set_network_mode( false );
+		$hooks->set_current_mode( 'standard' );
 
-		$this->assertFalse( $hooks->get_network_mode() );
+		$this->assertEquals( 'standard', $hooks->get_current_mode() );
 
-		$hooks->_set_network_mode( true );
+		$hooks->set_current_mode( 'network' );
 
-		$this->assertTrue( $hooks->get_network_mode() );
+		$this->assertEquals( 'network', $hooks->get_current_mode() );
 	}
 
 	/**
-	 * Test setting the network mode to a non-boolean value.
+	 * Test that current mode is 'standard' by default.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_set_network_mode_non_boolean() {
+	public function test_standard_mode_by_default() {
 
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
-		$hooks->_set_network_mode( '0' );
-
-		$this->assertFalse( $hooks->get_network_mode() );
-
-		$hooks->_set_network_mode( 'hey!' );
-
-		$this->assertTrue( $hooks->get_network_mode() );
+		$this->assertEquals( 'standard', $hooks->get_current_mode() );
 	}
 
 	/**
-	 * Test that network mode is off by default.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_network_mode_off_by_default() {
-
-		$hooks = new WordPoints_Hooks( 'hooks' );
-
-		$this->assertFalse( $hooks->get_network_mode() );
-	}
-
-	/**
-	 * Test that network mode is on by default in the network admin.
+	 * Test that current mode is 'network' by default in the network admin.
 	 *
 	 * @since 1.0.0
 	 */
@@ -111,7 +93,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
-		$this->assertTrue( $hooks->get_network_mode() );
+		$this->assertEquals( 'network', $hooks->get_current_mode() );
 	}
 }
 

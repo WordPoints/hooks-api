@@ -45,6 +45,8 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 
 		$reactors->register( $slug, $class, $args );
 
+		wordpoints_entity_contexts_init( wordpoints_entities()->contexts );
+
 		return $slug;
 	}
 
