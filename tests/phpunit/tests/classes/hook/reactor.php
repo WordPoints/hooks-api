@@ -30,7 +30,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$this->assertFalse( $reactor->is_network_wide() );
+		$this->assertEquals( array( 'network', 'site' ), $reactor->get_context() );
 
 		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
@@ -72,7 +72,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$this->assertTrue( $reactor->is_network_wide() );
+		$this->assertEquals( array( 'network' ), $reactor->get_context() );
 
 		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
@@ -116,7 +116,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$this->assertFalse( $reactor->is_network_wide() );
+		$this->assertEquals( array( 'network', 'site' ), $reactor->get_context() );
 
 		$this->assertNull( $reactor->reactions );
 		$this->assertNull( $reactor->network_reactions );
@@ -148,7 +148,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$this->assertTrue( $reactor->is_network_wide() );
+		$this->assertEquals( array( 'network' ), $reactor->get_context() );
 
 		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
 		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );

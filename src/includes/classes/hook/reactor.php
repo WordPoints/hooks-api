@@ -108,7 +108,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 			$mode = substr( $var, 0, -10 /* _reactions */ );
 		}
 
-		if ( 'network_reactions' === $var && ! $this->is_network_wide() ) {
+		if ( 'network_reactions' === $var && array( 'network' ) !== $this->get_context() ) {
 			return null;
 		}
 
@@ -169,7 +169,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	}
 
 	/**
-	 * Check whether this reactor is network-wide.
+	 * Check what context this reactor exists in.
 	 *
 	 * When a reactor is not network-wide, network reactions are not supported. For
 	 * example, the points reactor is not network-wide when WordPoints isn't network-
@@ -179,10 +179,13 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool Whether this reactor is network-wide.
+	 * @return string[] The slug(s) of the context in which this reactor exists.
 	 */
-	public function is_network_wide() {
-		return is_wordpoints_network_active();
+	public function get_context() {
+
+		return is_wordpoints_network_active()
+			? array( 'network' )
+			: array( 'network', 'site' );
 	}
 
 	/**
