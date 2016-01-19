@@ -17,6 +17,11 @@
 class WordPoints_Is_Network_Context_Function_Test extends WordPoints_PHPUnit_TestCase {
 
 	/**
+	 * @since 1.0.0
+	 */
+	protected $backup_globals = array( '_SERVER' );
+
+	/**
 	 * Test that it is false by default.
 	 *
 	 * @since 1.0.0
@@ -41,8 +46,6 @@ class WordPoints_Is_Network_Context_Function_Test extends WordPoints_PHPUnit_Tes
 	 * Test that true for Ajax requests from the network admin.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @backupGlobals enabled
 	 */
 	public function test_network_admin_ajax() {
 
