@@ -120,7 +120,11 @@ class WordPoints_Hook_Arg {
 		);
 
 		if ( $entity instanceof WordPoints_Entity ) {
-			$entity->set_the_value( $this->get_value() );
+			$value = $this->get_value();
+
+			if ( $value ) {
+				$entity->set_the_value( $value );
+			}
 		}
 
 		return $entity;
