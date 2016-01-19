@@ -23,6 +23,11 @@ class WordPoints_Hook_Arg_Current_Site extends WordPoints_Hook_Arg {
 	 * @since 1.0.0
 	 */
 	public function get_value() {
+
+		if ( wordpoints_is_network_context() ) {
+			return false;
+		}
+
 		return get_current_blog_id();
 	}
 
