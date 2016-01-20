@@ -37,6 +37,13 @@ class WordPoints_Class_Registry implements WordPoints_Class_RegistryI {
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_all_slugs() {
+		return array_keys( $this->classes );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get( $slug, array $args = array() ) {
 
 		if ( ! isset( $this->classes[ $slug ] ) ) {

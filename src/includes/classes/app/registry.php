@@ -45,6 +45,13 @@ class WordPoints_App_Registry
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_all_slugs() {
+		return $this->registry->get_all_slugs();
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get( $slug, array $args = array() ) {
 		return $this->registry->get( $slug, $args );
 	}

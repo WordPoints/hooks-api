@@ -29,7 +29,16 @@ interface WordPoints_Class_Registry_ChildrenI {
 	public function get_all();
 
 	/**
-	 * Get all objects that are children of a certain parent..
+	 * Get all of the slugs of the registered classes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[][] The slugs, indexed by parent slug.
+	 */
+	public function get_all_slugs();
+
+	/**
+	 * Get all objects that are children of a certain parent.
 	 *
 	 * @since 1.0.0
 	 *
@@ -38,6 +47,17 @@ interface WordPoints_Class_Registry_ChildrenI {
 	 * @return object[] The child objects, indexed by slug.
 	 */
 	public function get_children( $parent_slug );
+
+	/**
+	 * Get the slugs of all of the classes that are children of a certain parent.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $parent_slug The parent slug.
+	 *
+	 * @return string[] The child slugs.
+	 */
+	public function get_children_slugs( $parent_slug );
 
 	/**
 	 * Get an object by its slug.

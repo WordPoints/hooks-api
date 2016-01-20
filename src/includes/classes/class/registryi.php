@@ -33,6 +33,15 @@ interface WordPoints_Class_RegistryI {
 	public function get_all();
 
 	/**
+	 * Get all of the slugs of the registered classes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[] The slugs of the registered classes.
+	 */
+	public function get_all_slugs();
+
+	/**
 	 * Get an object by its slug.
 	 *
 	 * @since 1.0.0

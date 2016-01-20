@@ -50,6 +50,13 @@ class WordPoints_Class_Registry_Children
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_all_slugs() {
+		return array_map( 'array_keys', $this->classes );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_children( $parent_slug, array $args = array() ) {
 
 		$items = array();
@@ -63,6 +70,20 @@ class WordPoints_Class_Registry_Children
 		}
 
 		return $items;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_children_slugs( $parent_slug ) {
+
+		$slugs = array();
+
+		if ( isset( $this->classes[ $parent_slug ] ) ) {
+			$slugs = array_keys( $this->classes[ $parent_slug ] );
+		}
+
+		return $slugs;
 	}
 
 	/**

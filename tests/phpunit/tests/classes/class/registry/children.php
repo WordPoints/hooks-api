@@ -35,6 +35,16 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 			'WordPoints_PHPUnit_Mock_Object'
 			, $registry->get( 'parent', 'test' )
 		);
+
+		$this->assertEquals(
+			array( 'test' )
+			, $registry->get_children_slugs( 'parent' )
+		);
+
+		$this->assertEquals(
+			array( 'parent' => array( 'test' ) )
+			, $registry->get_all_slugs()
+		);
 	}
 
 	/**
@@ -135,6 +145,16 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 		);
 
 		$this->assertEquals( 'test_2', $objects['test_2']->calls[0]['arguments'][0] );
+
+		$this->assertEquals(
+			array( 'test', 'test_2' )
+			, $registry->get_children_slugs( 'parent' )
+		);
+
+		$this->assertEquals(
+			array( 'parent' => array( 'test', 'test_2' ) )
+			, $registry->get_all_slugs()
+		);
 	}
 
 	/**
@@ -162,6 +182,11 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 		);
 
 		$this->assertEquals( 'test', $object->calls[0]['arguments'][0] );
+
+		$this->assertEquals(
+			array( 'test', 'test_2' )
+			, $registry->get_children_slugs( 'parent' )
+		);
 	}
 
 	/**
@@ -228,6 +253,14 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(
 			'test'
 			, $objects['parent_2']['test']->calls[0]['arguments'][0]
+		);
+
+		$this->assertEquals(
+			array(
+				'parent' => array( 'test', 'test_2' ),
+				'parent_2' => array( 'test' ),
+			)
+			, $registry->get_all_slugs()
 		);
 	}
 
@@ -370,6 +403,55 @@ class WordPoints_Class_Registry_Children_Test extends PHPUnit_Framework_TestCase
 		$registry = new WordPoints_Class_Registry_Children;
 
 		$this->assertFalse( $registry->get( 'parent', 'test' ) );
+	}
+
+	/**
+	 * Test getting children when none are registered.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_children_unregistered() {
+
+		$registry = new WordPoints_Class_Registry_Children;
+
+		$this->assertSame( array(), $registry->get_children( 'parent' ) );
+	}
+
+	/**
+	 * Test getting all classes when none are registered.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_all_unregistered() {
+
+		$registry = new WordPoints_Class_Registry_Children;
+
+		$this->assertSame( array(), $registry->get_all() );
+	}
+
+
+	/**
+	 * Test getting children slugs when none are registered.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_children_slugs_unregistered() {
+
+		$registry = new WordPoints_Class_Registry_Children;
+
+		$this->assertSame( array(), $registry->get_children_slugs( 'parent' ) );
+	}
+
+	/**
+	 * Test getting all slugs when none are registered.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_all_slugs_unregistered() {
+
+		$registry = new WordPoints_Class_Registry_Children;
+
+		$this->assertSame( array(), $registry->get_all_slugs() );
 	}
 
 	/**
