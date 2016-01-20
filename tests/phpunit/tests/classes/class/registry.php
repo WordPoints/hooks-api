@@ -14,7 +14,7 @@
  *
  * @covers WordPoints_Class_Registry
  */
-class WordPoints_Class_Registry_Test extends PHPUnit_Framework_TestCase {
+class WordPoints_Class_Registry_Test extends WordPoints_PHPUnit_TestCase_Class_Registry {
 
 	/**
 	 * @since 1.0.0
