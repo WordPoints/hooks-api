@@ -41,6 +41,7 @@
 		"$events->register": [ 1, 2 ],
 		"$firers->register": [ 1, 2 ],
 		"$extensions->register": [ 1, 2 ],
+		"$reaction_groups->register": [ 1, 2, 3 ],
 		"$reaction->get_meta": true,
 		"$reaction->update_meta": [ 1 ],
 		"$reactors->register": [ 1, 2 ],
@@ -54,6 +55,7 @@
 	"ignored-properties": {
 		"WordPoints_Entity_Attr::$data_type": true,
 		"WordPoints_Entity_Attr::$field": true,
+		"WordPoints_Entity_Context::$parent_slug": true,
 		"WordPoints_Entity_Relationship::$primary_entity_slug": true,
 		"WordPoints_Entity_Relationship::$related_entity_slug": true,
 		"WordPoints_Entity_Relationship::$related_ids_field": true,

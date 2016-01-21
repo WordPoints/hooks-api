@@ -235,14 +235,14 @@
     },
     "\/includes\/functions.php": {
         "approved": {
-            "111": {
+            "137": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "134": {
+            "160": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -251,7 +251,7 @@
             }
         },
         "publish": {
-            "147": {
+            "173": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -260,7 +260,7 @@
             }
         },
         "wp": {
-            "200": {
+            "226": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -269,7 +269,7 @@
             }
         },
         "WordPoints_Hook_Arg": {
-            "225": {
+            "251": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -278,7 +278,7 @@
             }
         },
         "WordPoints_Hook_Arg_Current_User": {
-            "238": {
+            "264": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -287,14 +287,14 @@
             }
         },
         "post\\\\": {
-            "442": {
+            "468": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "460": {
+            "486": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -303,21 +303,21 @@
             }
         },
         "WordPoints_Hook_Arg_Dynamic": {
-            "442": {
+            "468": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "460": {
+            "486": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "480": {
+            "506": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -326,7 +326,7 @@
             }
         },
         "comment\\\\": {
-            "480": {
+            "506": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -346,6 +346,19 @@
     "\/includes\/classes\/hook\/event\/dynamic.php": {
         "\\\\": {
             "52": false
+        }
+    },
+    "\/includes\/classes\/hook\/reaction\/storage\/options.php": {
+        "-": {
+            "305": false
+        }
+    },
+    "\/includes\/classes\/hook\/reactor.php": {
+        "network": {
+            "150": false
+        },
+        "site": {
+            "150": false
         }
     }
 }
