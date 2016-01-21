@@ -27,6 +27,22 @@ class WordPoints_Entity_Context_Test extends WordPoints_PHPUnit_TestCase {
 
 		$this->assertEquals( 'test', $context->get_slug() );
 	}
+
+	/**
+	 * Test getting the parent slug.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_parent_slug() {
+
+		$context = new WordPoints_PHPUnit_Mock_Entity_Context( 'test' );
+
+		$this->assertNull( $context->get_parent_slug() );
+
+		$context->set( 'parent_slug', 'test_parent' );
+
+		$this->assertEquals( 'test_parent', $context->get_parent_slug() );
+	}
 }
 
 // EOF

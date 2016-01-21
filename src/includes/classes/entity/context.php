@@ -37,6 +37,15 @@ abstract class WordPoints_Entity_Context {
 	protected $slug;
 
 	/**
+	 * The slug of the parent of this context, if this is a sub-context.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $parent_slug;
+
+	/**
 	 * @since 1.0.0
 	 *
 	 * @param string $slug The slug of this context.
@@ -54,6 +63,21 @@ abstract class WordPoints_Entity_Context {
 	 */
 	public function get_slug() {
 		return $this->slug;
+	}
+
+	/**
+	 * Get the slug of the parent of this context, if it is a sub-context.
+	 *
+	 * Most contexts are really children of other contexts. For example, the 'site'
+	 * context is a child of the 'network' context, since sites can only exist within
+	 * a network.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|null The slug of the parent context, or null if none.
+	 */
+	public function get_parent_slug() {
+		return $this->parent_slug;
 	}
 
 	/**

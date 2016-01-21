@@ -19,6 +19,11 @@ class WordPoints_Entity_Context_Site extends WordPoints_Entity_Context {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $parent_slug = 'network';
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_current_id() {
 
 		if ( ! is_multisite() ) {
