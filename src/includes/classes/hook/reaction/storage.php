@@ -42,7 +42,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	 *
 	 * @see wordpoints_entities_get_current_context_id()
 	 *
-	 * @var string[]
+	 * @var string
 	 */
 	protected $context = 'site';
 
