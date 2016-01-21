@@ -38,10 +38,10 @@ class WordPoints_Entities_Get_Current_Context_ID_Functions_Test extends WordPoin
 	 */
 	public function data_provider_contexts() {
 		return array(
-			'empty' => array( array(), array() ),
-			'single' => array( array( 'network' ), array( 'network' => 1 ) ),
-			'multiple' => array( array( 'network', 'site' ), array( 'network' => 1, 'site' => 1 ) ),
-			'unregistered' => array( array( 'unregistered' ), false ),
+			'empty' => array( '', array() ),
+			'single' => array( 'network', array( 'network' => 1 ) ),
+			'multiple' => array( 'site', array( 'site' => 1, 'network' => 1 ) ),
+			'unregistered' => array( 'unregistered', false ),
 		);
 	}
 
@@ -61,7 +61,7 @@ class WordPoints_Entities_Get_Current_Context_ID_Functions_Test extends WordPoin
 		);
 
 		$this->assertFalse(
-			wordpoints_entities_get_current_context_id( array( 'test' ) )
+			wordpoints_entities_get_current_context_id( 'test' )
 		);
 	}
 }

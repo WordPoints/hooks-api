@@ -53,7 +53,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		if ( isset( $data['context'] ) ) {
 			$this->assertEquals( $data['context'], $entity->get_context() );
 		} else {
-			$this->assertEquals( array( 'network', 'site' ), $entity->get_context() );
+			$this->assertEquals( 'site', $entity->get_context() );
 		}
 
 		$this->assertEquals(
@@ -186,7 +186,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'slug'           => 'user',
 					'id_field'       => 'ID',
 					'human_id_field' => 'display_name',
-					'context'        => array(),
+					'context'        => '',
 					'create_func'    => array( $factory->user, 'create_and_get' ),
 					'delete_func'    => array( $this, 'delete_user' ),
 					'children'       => array(
@@ -309,7 +309,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'slug'           => 'site',
 					'id_field'       => 'blog_id',
 					'human_id_field' => 'blogname',
-					'context'        => array( 'network' ),
+					'context'        => 'network',
 					'create_func'    => array( $this, 'create_site' ),
 					'delete_func'    => array( $this, 'delete_site' ),
 				),

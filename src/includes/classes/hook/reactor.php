@@ -143,13 +143,11 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string[] The slug(s) of the context in which this reactor exists.
+	 * @return string The slug of the context in which this reactor exists.
 	 */
 	public function get_context() {
 
-		return is_wordpoints_network_active()
-			? array( 'network' )
-			: array( 'network', 'site' );
+		return is_wordpoints_network_active() ? 'network' : 'site';
 	}
 
 	/**

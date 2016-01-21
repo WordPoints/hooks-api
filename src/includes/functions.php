@@ -790,12 +790,12 @@ function wordpoints_parse_dynamic_slug( $slug ) {
  * multisite—when not on multisite they are just global to the install). An
  * example of this would be a Post: a post on one site with the ID 5 is different
  * than a post with that same ID on another site. To get the ID of such an entity's
- * context, you would pass `array( 'network', 'site' )` as the value of the `$slugs`
- * arg.
+ * context, you would pass 'site' as the value of the `$slug` arg, and the IDs for
+ * both the 'site' and 'network' contexts would be returned.
  *
  * Some entities exist in the context of the network itself, not any particular
- * site. You can get the ID for the context of such an entity by passing `array(
- * 'network' )` as the value of `$slugs`.
+ * site. You can get the ID for the context of such an entity by passing 'network'
+ * as the value of `$slug`.
  *
  * Still other entities are global to the install, existing across all networks even
  * on a multi-network installation. An example of this would be a User: the user with
@@ -806,20 +806,20 @@ function wordpoints_parse_dynamic_slug( $slug ) {
  *
  * @since 1.0.0
  *
- * @param string[] $slugs The slug(s) of the (sub)context you want to get the current
- *                        value of.
+ * @param string $slug The slug of the context you want to get the current GUID of.
  *
- * @return array|false The IDs of the context(s) you passed in, indexed by context
- *                     slug, or false if any of the contexts isn't current.
+ * @return array|false The ID of the context you passed in and the IDs of its parent
+ *                     contexts, indexed by context slug, or false if any of the
+ *                     contexts isn't current.
  */
-function wordpoints_entities_get_current_context_id( array $slugs ) {
+function wordpoints_entities_get_current_context_id( $slug ) {
 
 	$current_context = array();
 
 	/** @var WordPoints_Class_Registry $contexts */
 	$contexts = wordpoints_entities()->contexts;
 
-	foreach ( $slugs as $slug ) {
+	while ( $slug ) {
 
 		$context = $contexts->get( $slug );
 
@@ -834,6 +834,8 @@ function wordpoints_entities_get_current_context_id( array $slugs ) {
 		}
 
 		$current_context[ $slug ] = $id;
+
+		$slug = $context->get_parent_slug();
 	}
 
 	return $current_context;

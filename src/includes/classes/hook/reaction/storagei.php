@@ -55,7 +55,7 @@ interface WordPoints_Hook_Reaction_StorageI {
 	 *
 	 * @see wordpoints_entities_get_current_context_id()
 	 *
-	 * @return array|false The ID of the context(s) in which this method is currently
+	 * @return array|false The ID of the context in which this method is currently
 	 *                     storing reactions, or false if out of context.
 	 */
 	public function get_context_id();

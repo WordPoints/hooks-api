@@ -17,7 +17,7 @@ class WordPoints_Hook_Reaction_Storage_Options_Network extends WordPoints_Hook_R
 	/**
 	 * @since 1.0.0
 	 */
-	protected $context = array( 'network' );
+	protected $context = 'network';
 
 	/**
 	 * @since 1.0.0

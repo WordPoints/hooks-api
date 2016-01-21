@@ -36,7 +36,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	protected $reactor;
 
 	/**
-	 * The slugs of the contexts in which the reactions are stored.
+	 * The slug of the contexts in which the reactions are stored.
 	 *
 	 * @since 1.0.0
 	 *
@@ -44,7 +44,7 @@ abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_React
 	 *
 	 * @var string[]
 	 */
-	protected $context = array( 'network', 'site' );
+	protected $context = 'site';
 
 	/**
 	 * The name of the class to use for reaction objects.

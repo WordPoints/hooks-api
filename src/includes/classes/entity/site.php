@@ -19,7 +19,7 @@ class WordPoints_Entity_Site extends WordPoints_Entity {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $context = array( 'network' );
+	protected $context = 'network';
 
 	/**
 	 * @since 1.0.0

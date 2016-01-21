@@ -351,7 +351,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor;
 
-		$this->assertEquals( array( 'network', 'site' ), $reactor->get_context() );
+		$this->assertEquals( 'site', $reactor->get_context() );
 	}
 
 	/**
@@ -365,7 +365,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor;
 
-		$this->assertEquals( array( 'network' ), $reactor->get_context() );
+		$this->assertEquals( 'network', $reactor->get_context() );
 	}
 
 	/**

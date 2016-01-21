@@ -17,7 +17,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted extends WordPoints
 	/**
 	 * @since 1.0.0
 	 */
-	public $context = array( 'test_context' );
+	public $context = 'test_context';
 }
 
 // EOF

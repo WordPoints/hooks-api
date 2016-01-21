@@ -38,9 +38,9 @@ abstract class WordPoints_Entity
 	 *
 	 * @see wordpoints_entities_get_current_context_id()
 	 *
-	 * @var string[]
+	 * @var string
 	 */
-	protected $context = array( 'network', 'site' );
+	protected $context = 'site';
 
 	/**
 	 * The field the entity is identified by.
@@ -195,14 +195,13 @@ abstract class WordPoints_Entity
 	//
 
 	/**
-	 * Get the slug(s) of the context in which this type of entity exists.
+	 * Get the slug of the context in which this type of entity exists.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @see wordpoints_entities_get_current_context_id()
 	 *
-	 * @return string[] The slug(s) of the context in which this type of entity
-	 *                  must exist.
+	 * @return string The slug of the context in which this type of entity exists.
 	 */
 	public function get_context() {
 		return $this->context;

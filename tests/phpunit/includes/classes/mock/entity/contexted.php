@@ -17,7 +17,7 @@ class WordPoints_PHPUnit_Mock_Entity_Contexted extends WordPoints_PHPUnit_Mock_E
 	/**
 	 * @since 1.0.0
 	 */
-	protected $context = array( 'test_context' );
+	protected $context = 'test_context';
 }
 
 // EOF

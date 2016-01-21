@@ -569,7 +569,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 
-		$this->assertEquals( array( 'network', 'site' ), $entity->get_context() );
+		$this->assertEquals( 'site', $entity->get_context() );
 	}
 
 	/**
@@ -580,9 +580,9 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_get_context() {
 
 		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
-		$entity->set( 'context', array( 'test' ) );
+		$entity->set( 'context', 'test_context' );
 
-		$this->assertEquals( array( 'test' ), $entity->get_context() );
+		$this->assertEquals( 'test_context', $entity->get_context() );
 	}
 }
 
