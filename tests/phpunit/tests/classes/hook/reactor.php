@@ -17,26 +17,155 @@
 class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
-	 * Test accessing the reactions storage objects.
+	 * Test getting a reaction group.
 	 *
 	 * @since 1.0.0
+	 */
+	public function test_get_reaction_group() {
+
+		$this->mock_apps();
+
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+
+		$reaction_group = $reactor->get_reaction_group( 'standard' );
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage'
+			, $reaction_group
+		);
+
+		$this->assertEquals( 'test_reactor', $reaction_group->get_reactor_slug() );
+	}
+
+	/**
+	 * Test getting an unregistered reaction group.
 	 *
-	 * @requires WordPoints !network-active
+	 * @since 1.0.0
+	 */
+	public function test_get_reaction_group_unregistered() {
+
+		$this->mock_apps();
+
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array( 'groups' => array() )
+		);
+
+		$this->assertFalse( $reactor->get_reaction_group( 'standard' ) );
+	}
+
+	/**
+	 * Test getting a reaction group when out of context.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_reaction_group_out_of_context() {
+
+		$this->mock_apps();
+
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				),
+			)
+		);
+
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
+		);
+
+		$this->assertFalse( $reactor->get_reaction_group( 'standard' ) );
+	}
+
+	/**
+	 * Test accessing the $reactions property.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reactions() {
+
+		$this->mock_apps();
+
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+
+		$reaction_group = $reactor->reactions;
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage'
+			, $reaction_group
+		);
+
+		$this->assertEquals( 'test_reactor', $reaction_group->get_reactor_slug() );
+	}
+
+	/**
+	 * Test accessing the $reactions property when no group is registered for the
+	 * current mode.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reactions_unregistered() {
+
+		$this->mock_apps();
+
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array( 'groups' => array() )
+		);
+
+		$this->assertNull( $reactor->reactions );
+	}
+
+	/**
+	 * Test accessing the $reactions property when the group for the current mode is
+	 * out of context.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reactions_out_of_context() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->set_current_mode( 'standard' );
+
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				),
+			)
+		);
+
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
+		);
+
+		$this->assertNull( $reactor->reactions );
+	}
+
+	/**
+	 * Test getting all reactions.
+	 *
+	 * @since 1.0.0
 	 */
 	public function test_get_reactions() {
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context'
+		);
 
-		$this->assertEquals( array( 'network', 'site' ), $reactor->get_context() );
-
-		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
-		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
-		$this->assertTrue( $reactor->reactions === $reactor->reactions );
-		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
-		$this->assertNull( $reactor->network_reactions );
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
+					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				),
+			)
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
@@ -44,177 +173,126 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'event' => 'another' )
 		);
 
-		$this->assertIsReaction( $another );
+		$custom_group = $reactor->get_reaction_group( 'custom' );
 
-		$this->assertEquals(
-			array( $reaction )
-			, $reactor->get_all_reactions_to_event( 'test_event' )
-		);
-
-		$this->assertEquals(
-			array( $reaction, $another )
-			, $reactor->get_all_reactions()
-		);
-	}
-
-	/**
-	 * Test accessing the reactions storage objects in network context.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @requires WordPoints network-active
-	 */
-	public function test_get_reactions_network_context() {
-
-		$this->mock_apps();
-		$this->set_network_admin();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$this->assertEquals( array( 'network' ), $reactor->get_context() );
-
-		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->reactions );
-		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
-		$this->assertTrue( $reactor->reactions === $reactor->reactions );
-		$this->assertTrue( $reactor->reactions === $reactor->network_reactions );
-		$this->assertNull( $reactor->standard_reactions );
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$another = $this->factory->wordpoints->hook_reaction->create(
-			array( 'event' => 'another' )
-		);
-
-		$this->assertIsReaction( $another );
-
-		$this->assertEquals(
-			array( $reaction )
-			, $reactor->get_all_reactions_to_event( 'test_event' )
-		);
-
-		$this->assertEquals(
-			array( $reaction, $another )
-			, $reactor->get_all_reactions()
-		);
-	}
-
-	/**
-	 * Test accessing the reactions storage objects in network context when not
-	 * network-active.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @requires WordPress multisite
-	 * @requires WordPoints !network-active
-	 */
-	public function test_get_reactions_network_context_on_not_network_active() {
-
-		$this->mock_apps();
-		$this->set_network_admin();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$this->assertEquals( array( 'network', 'site' ), $reactor->get_context() );
-
-		$this->assertNull( $reactor->reactions );
-		$this->assertNull( $reactor->network_reactions );
-		$this->assertNull( $reactor->standard_reactions );
-
-		$this->assertEquals(
-			array()
-			, $reactor->get_all_reactions_to_event( 'test_event' )
-		);
-
-		$this->assertEquals(
-			array()
-			, $reactor->get_all_reactions()
-		);
-	}
-
-	/**
-	 * Test accessing the reactions storage objects when network active but not in
-	 * network context.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @requires WordPoints network-active
-	 */
-	public function test_get_reactions_network_active_not_network_context() {
-
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$this->assertEquals( array( 'network' ), $reactor->get_context() );
-
-		$this->assertInstanceOf( $reactor->standard_reactions_class, $reactor->reactions );
-		$this->assertEquals( 'test_reactor', $reactor->reactions->get_reactor_slug() );
-		$this->assertTrue( $reactor->reactions === $reactor->reactions );
-		$this->assertTrue( $reactor->reactions === $reactor->standard_reactions );
-		$this->assertInstanceOf( $reactor->network_reactions_class, $reactor->network_reactions );
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$another = $this->factory->wordpoints->hook_reaction->create(
-			array( 'event' => 'another' )
-		);
-
-		$this->assertIsReaction( $another );
-
-		$network_reaction = $reactor->network_reactions->create_reaction(
+		$custom_reaction = $custom_group->create_reaction(
 			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
 		);
 
-		$another_network = $reactor->network_reactions->create_reaction(
+		$another_custom = $custom_group->create_reaction(
 			array( 'event' => 'another', 'target' => array( 'test_entity' ) )
 		);
 
-		$this->assertIsReaction( $another_network );
+		$this->assertIsReaction( $another_custom );
 
 		$this->assertEquals(
-			array( $reaction, $network_reaction )
+			array( $reaction, $custom_reaction )
 			, $reactor->get_all_reactions_to_event( 'test_event' )
 		);
 
 		$this->assertEquals(
-			array( $reaction, $another, $network_reaction, $another_network )
+			array( $reaction, $another, $custom_reaction, $another_custom )
 			, $reactor->get_all_reactions()
 		);
 	}
 
 	/**
-	 * Test accessing the standard reactions storage object when no class is specified.
+	 * Test getting all reactions when some groups have none registered.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @requires WordPoints !network-active
 	 */
-	public function test_get_standard_reactions_not() {
+	public function test_get_reactions_unregistered() {
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$this->mock_apps();
 
-		$reactor->standard_reactions_class = null;
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context'
+		);
 
-		$this->assertNull( $reactor->standard_reactions );
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
+					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				),
+			)
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$another = $this->factory->wordpoints->hook_reaction->create(
+			array( 'event' => 'another' )
+		);
+
+		$this->assertEquals(
+			array( $reaction )
+			, $reactor->get_all_reactions_to_event( 'test_event' )
+		);
+
+		$this->assertEquals(
+			array( $reaction, $another )
+			, $reactor->get_all_reactions()
+		);
 	}
 
 	/**
-	 * Test accessing the network reactions storage object when no class is specified.
+	 * Test getting reactions when a reaction group is out of context.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @requires WordPoints network-active
 	 */
-	public function test_get_network_reactions_not() {
+	public function test_get_reactions_out_of_context() {
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$this->mock_apps();
 
-		$reactor->network_reactions_class = null;
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context'
+		);
 
-		$this->assertNull( $reactor->network_reactions );
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
+					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				),
+			)
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$another = $this->factory->wordpoints->hook_reaction->create(
+			array( 'event' => 'another' )
+		);
+
+		$this->assertIsReaction( $another );
+
+		$custom_group = $reactor->get_reaction_group( 'custom' );
+
+		$custom_group->create_reaction(
+			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
+		);
+
+		$another_custom = $custom_group->create_reaction(
+			array( 'event' => 'another', 'target' => array( 'test_entity' ) )
+		);
+
+		$this->assertIsReaction( $another_custom );
+
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
+		);
+
+		$this->assertEquals(
+			array( $reaction )
+			, $reactor->get_all_reactions_to_event( 'test_event' )
+		);
+
+		$this->assertEquals(
+			array( $reaction, $another )
+			, $reactor->get_all_reactions()
+		);
 	}
 
 	/**
@@ -260,6 +338,34 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( $reactor->arg_types )
 			, $reactor->get_arg_types()
 		);
+	}
+
+	/**
+	 * Test getting the reactor context.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @requires WordPoints !network-active
+	 */
+	public function test_get_context() {
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor;
+
+		$this->assertEquals( array( 'network', 'site' ), $reactor->get_context() );
+	}
+
+	/**
+	 * Test getting the reactor context when WordPoints is network active.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @requires WordPoints network-active
+	 */
+	public function test_get_context_network_active() {
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor;
+
+		$this->assertEquals( array( 'network' ), $reactor->get_context() );
 	}
 
 	/**
@@ -467,7 +573,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 

@@ -73,9 +73,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 		$this->assertEquals( 'test_reactor', $validator->get_reactor_slug() );
 		$this->assertEquals( array( 'test_entity' ), $validator->get_meta( 'target' ) );
 		$this->assertNull( $validator->get_meta( 'nonexistent' ) );
-
-		unset( $settings['event'] );
-
 		$this->assertEquals( $settings, $validator->get_all_meta() );
 	}
 

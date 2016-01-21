@@ -20,14 +20,6 @@
  *                Object for accessing hook reactions for this reactor based on the
  *                current network mode. If a reactor doesn't support network
  *                reactions and network mode is on, this property is not available.
- *
- * @property-read WordPoints_Hook_Reaction_StorageI|null $standard_reactions
- *                Object for accessing standard hook reactions for this reactor. Not
- *                available when network mode is on.
- *
- * @property-read WordPoints_Hook_Reaction_StorageI|null $network_reactions
- *                Object for accessing network hook reactions for this reactor. May
- *                not be available for all reactors.
  */
 abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
@@ -59,80 +51,52 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $settings_fields;
 
 	/**
-	 * The storage object for the standard reactions.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Hook_Reaction_StorageI
-	 */
-	protected $standard_reactions;
-
-	/**
-	 * The storage object for the network-wide reactions.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Hook_Reaction_StorageI
-	 */
-	protected $network_reactions;
-
-	/**
-	 * The reaction storage class this reactor uses.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	protected $standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-	/**
-	 * The network reaction storage class this reactor uses.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	protected $network_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options_Network';
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function __get( $var ) {
 
-		if ( 'reactions' === $var ) {
-			$mode = wordpoints_hooks()->get_current_mode();
-			$var  = "{$mode}_reactions";
-		} elseif ( '_reactions' !== substr( $var, -10 ) ) {
-			return null;
-		} else {
-			$mode = substr( $var, 0, -10 /* _reactions */ );
-		}
-
-		if ( 'network_reactions' === $var && array( 'network' ) !== $this->get_context() ) {
+		if ( 'reactions' !== $var ) {
 			return null;
 		}
 
-		if ( ! isset( $this->$var ) ) {
+		$reaction_group = $this->get_reaction_group(
+			wordpoints_hooks()->get_current_mode()
+		);
 
-			if ( isset( $this->{"{$var}_class"} ) ) {
-				$this->$var = new $this->{"{$var}_class"}( $mode, $this );
-			} else {
-				return null;
-			}
-		}
-
-		$store = $this->$var;
-
-		if ( ! $store instanceof WordPoints_Hook_Reaction_StorageI ) {
+		if ( ! $reaction_group ) {
 			return null;
 		}
 
-		// Allowing access to stores out-of-context would lead to strange behavior.
-		if ( false === $store->get_context_id() ) {
-			return null;
+		return $reaction_group;
+	}
+
+	/**
+	 * Get a reaction group's storage object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the reaction group to get.
+	 *
+	 * @return WordPoints_Hook_Reaction_StorageI|false The reaction storage object.
+	 */
+	public function get_reaction_group( $slug ) {
+
+		$reaction_group = wordpoints_hooks()->reaction_groups->get(
+			$this->slug
+			, $slug
+			, array( $this )
+		);
+
+		if ( ! $reaction_group instanceof WordPoints_Hook_Reaction_StorageI ) {
+			return false;
 		}
 
-		return $store;
+		// Allowing access to groups out-of-context would lead to strange behavior.
+		if ( false === $reaction_group->get_context_id() ) {
+			return false;
+		}
+
+		return $reaction_group;
 	}
 
 	/**
@@ -195,6 +159,9 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * ones and any network-wide ones (if this reactor offers a network storage
 	 * class). Or, if network mode is on, it will return only the network-wide ones.
 	 *
+	 * Speaking more generally, it will return the reactions from all reaction groups
+	 * that are available in the current context.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $event_slug The event slug.
@@ -205,11 +172,15 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
 		$reactions = array();
 
-		foreach ( array( 'standard', 'network' ) as $store ) {
+		$slugs = wordpoints_hooks()->reaction_groups->get_children_slugs(
+			$this->slug
+		);
 
-			$storage = $this->{"{$store}_reactions"};
+		foreach ( $slugs as $slug ) {
 
-			if ( ! $storage instanceof WordPoints_Hook_Reaction_StorageI ) {
+			$storage = $this->get_reaction_group( $slug );
+
+			if ( ! $storage ) {
 				continue;
 			}
 
@@ -229,6 +200,9 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * ones and any network-wide ones (if this reactor offers a network storage
 	 * class). Or, if network mode is on, it will return only the network-wide ones.
 	 *
+	 * Speaking more generally, it will return the reactions from all reaction groups
+	 * that are available in the current context.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @return WordPoints_Hook_ReactionI[] All of the reaction objects.
@@ -237,11 +211,15 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
 		$reactions = array();
 
-		foreach ( array( 'standard', 'network' ) as $store ) {
+		$slugs = wordpoints_hooks()->reaction_groups->get_children_slugs(
+			$this->slug
+		);
 
-			$storage = $this->{"{$store}_reactions"};
+		foreach ( $slugs as $slug ) {
 
-			if ( ! $storage instanceof WordPoints_Hook_Reaction_StorageI ) {
+			$storage = $this->get_reaction_group( $slug );
+
+			if ( ! $storage ) {
 				continue;
 			}
 

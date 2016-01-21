@@ -17,22 +17,51 @@
 class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
+	 * The reactor for use in the tests.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reactor
+	 */
+	protected $reactor;
+
+	/**
+	 * The reaction for use in the tests.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_Options
+	 */
+	protected $reaction;
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function setUp() {
+
+		parent::setUp();
+
+		$this->mock_apps();
+
+		$this->reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
+				),
+			)
+		);
+
+		$this->reaction = $this->factory->wordpoints->hook_reaction->create();
+	}
+
+	/**
 	 * Test getting the event slug.
 	 *
 	 * @since 1.0.0
 	 */
 	public function test_get_event_slug() {
 
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertEquals( 'test_event', $reaction->get_event_slug() );
+		$this->assertEquals( 'test_event', $this->reaction->get_event_slug() );
 	}
 
 	/**
@@ -42,22 +71,13 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_update_event_slug() {
 
-		$this->mock_apps();
+		$this->assertTrue( $this->reaction->update_event_slug( 'another_event' ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertTrue( $reaction->update_event_slug( 'another_event' ) );
-
-		$this->assertEquals( 'another_event', $reaction->get_event_slug() );
+		$this->assertEquals( 'another_event', $this->reaction->get_event_slug() );
 
 		$this->assertEquals(
-			array( $reaction )
-			, $reactor->reactions->get_reactions_to_event( 'another_event' )
+			array( $this->reaction )
+			, $this->reactor->reactions->get_reactions_to_event( 'another_event' )
 		);
 	}
 
@@ -68,18 +88,9 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_get_meta() {
 
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
 		$this->assertEquals(
 			array( 'test_entity' )
-			, $reaction->get_meta( 'target' )
+			, $this->reaction->get_meta( 'target' )
 		);
 	}
 
@@ -90,16 +101,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_get_meta_nonexistent() {
 
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertFalse( $reaction->get_meta( 'key' ) );
+		$this->assertFalse( $this->reaction->get_meta( 'key' ) );
 	}
 
 	/**
@@ -109,18 +111,9 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_add_meta() {
 
-		$this->mock_apps();
+		$this->assertTrue( $this->reaction->add_meta( 'key', 'value' ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertTrue( $reaction->add_meta( 'key', 'value' ) );
-
-		$this->assertEquals( 'value', $reaction->get_meta( 'key' ) );
+		$this->assertEquals( 'value', $this->reaction->get_meta( 'key' ) );
 	}
 
 	/**
@@ -130,20 +123,11 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_add_meta_exists() {
 
-		$this->mock_apps();
+		$this->assertTrue( $this->reaction->add_meta( 'key', 'value' ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$this->assertFalse( $this->reaction->add_meta( 'key', 'another' ) );
 
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertTrue( $reaction->add_meta( 'key', 'value' ) );
-
-		$this->assertFalse( $reaction->add_meta( 'key', 'another' ) );
-
-		$this->assertEquals( 'value', $reaction->get_meta( 'key' ) );
+		$this->assertEquals( 'value', $this->reaction->get_meta( 'key' ) );
 	}
 
 	/**
@@ -153,18 +137,9 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_update_meta() {
 
-		$this->mock_apps();
+		$this->assertTrue( $this->reaction->update_meta( 'key', 'value' ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertTrue( $reaction->update_meta( 'key', 'value' ) );
-
-		$this->assertEquals( 'value', $reaction->get_meta( 'key' ) );
+		$this->assertEquals( 'value', $this->reaction->get_meta( 'key' ) );
 	}
 
 	/**
@@ -174,20 +149,11 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_update_meta_exists() {
 
-		$this->mock_apps();
+		$this->assertTrue( $this->reaction->add_meta( 'key', 'value' ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$this->assertTrue( $this->reaction->update_meta( 'key', 'another' ) );
 
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create(
-			array( 'key' => 'value' )
-		);
-
-		$this->assertTrue( $reaction->update_meta( 'key', 'another' ) );
-
-		$this->assertEquals( 'another', $reaction->get_meta( 'key' ) );
+		$this->assertEquals( 'another', $this->reaction->get_meta( 'key' ) );
 	}
 
 	/**
@@ -197,18 +163,9 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_delete_meta() {
 
-		$this->mock_apps();
+		$this->assertTrue( $this->reaction->delete_meta( 'target' ) );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertTrue( $reaction->delete_meta( 'target' ) );
-
-		$this->assertFalse( $reaction->get_meta( 'target' ) );
+		$this->assertFalse( $this->reaction->get_meta( 'target' ) );
 	}
 
 	/**
@@ -218,16 +175,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_delete_meta_nonexistent() {
 
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertFalse( $reaction->delete_meta( 'key' ) );
+		$this->assertFalse( $this->reaction->delete_meta( 'key' ) );
 	}
 
 	/**
@@ -237,16 +185,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_get_all_meta() {
 
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$all_meta = $reaction->get_all_meta();
+		$all_meta = $this->reaction->get_all_meta();
 		$this->assertArrayHasKey( 'target', $all_meta );
 		$this->assertEquals( array( 'test_entity' ), $all_meta['target'] );
 	}
@@ -260,18 +199,9 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_options() {
 
-		$this->mock_apps();
+		$this->assertEquals( 1, $this->reaction->ID );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options';
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$this->assertEquals( 1, $reaction->ID );
-
-		$this->assertTrue( $reaction->add_meta( 'key', 'value' ) );
+		$this->assertTrue( $this->reaction->add_meta( 'key', 'value' ) );
 
 		// Create another site.
 		$site_id = $this->factory->blog->create();
@@ -286,12 +216,14 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->assertTrue( $reaction_2->add_meta( 'key', 'another' ) );
 
-		$this->assertTrue( $reactor->reactions->delete_reaction( $reaction_2->ID ) );
+		$this->assertTrue(
+			$this->reactor->reactions->delete_reaction( $reaction_2->ID )
+		);
 
 		restore_current_blog();
 
 		// The value should still be the same.
-		$this->assertEquals( 'value', $reaction->get_meta( 'key' ) );
+		$this->assertEquals( 'value', $this->reaction->get_meta( 'key' ) );
 	}
 
 	/**
@@ -303,12 +235,13 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_network_options() {
 
-		$this->mock_apps();
-
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Storage_Options_Network';
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array(
+				'groups' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Storage_Options_Network',
+				),
+			)
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 

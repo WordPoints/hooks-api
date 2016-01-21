@@ -24,6 +24,7 @@
  * @property-read WordPoints_Hook_Events               $events     The events registry.
  * @property-read WordPoints_Class_Registry_Persistent $firers     The firers registry.
  * @property-read WordPoints_Class_Registry_Persistent $reactors   The reactors registry.
+ * @property-read WordPoints_Class_Registry_Children   $reaction_groups The reaction groups registry.
  * @property-read WordPoints_Class_Registry_Persistent $extensions The extensions registry.
  * @property-read WordPoints_Class_Registry_Children   $conditions The conditions registry.
  */
@@ -51,6 +52,7 @@ class WordPoints_Hooks extends WordPoints_App {
 		$sub_apps->register( 'events', 'WordPoints_Hook_Events' );
 		$sub_apps->register( 'firers', 'WordPoints_Class_Registry_Persistent' );
 		$sub_apps->register( 'reactors', 'WordPoints_Class_Registry_Persistent' );
+		$sub_apps->register( 'reaction_groups', 'WordPoints_Class_Registry_Children' );
 		$sub_apps->register( 'extensions', 'WordPoints_Class_Registry_Persistent' );
 		$sub_apps->register( 'conditions', 'WordPoints_Class_Registry_Children' );
 

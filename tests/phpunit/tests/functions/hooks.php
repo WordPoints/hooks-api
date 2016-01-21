@@ -100,6 +100,48 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	}
 
 	/**
+	 * Test the reaction group registration function.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_hook_reaction_groups_init
+	 *
+	 * @requires WordPoints !network-active
+	 */
+	public function test_reaction_groups() {
+
+		$this->mock_apps();
+
+		$reaction_groups = new WordPoints_Class_Registry_Children();
+
+		wordpoints_hook_reaction_groups_init( $reaction_groups );
+
+		$this->assertTrue( $reaction_groups->is_registered( 'points', 'standard' ) );
+		$this->assertFalse( $reaction_groups->is_registered( 'points', 'network' ) );
+	}
+
+	/**
+	 * Test the reaction group registration function with WordPoints network active.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_hook_reaction_groups_init
+	 *
+	 * @requires WordPoints network-active
+	 */
+	public function test_reaction_groups_network_active() {
+
+		$this->mock_apps();
+
+		$reaction_groups = new WordPoints_Class_Registry_Children();
+
+		wordpoints_hook_reaction_groups_init( $reaction_groups );
+
+		$this->assertTrue( $reaction_groups->is_registered( 'points', 'standard' ) );
+		$this->assertTrue( $reaction_groups->is_registered( 'points', 'network' ) );
+	}
+
+	/**
 	 * Test the extension registration function.
 	 *
 	 * @since 1.0.0

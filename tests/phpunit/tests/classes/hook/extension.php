@@ -128,7 +128,7 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			, $reaction->get_meta( 'test_extension' )
 		);
 
-		$this->assertNull( $reaction->get_meta( 'other_settings' ) );
+		$this->assertFalse( $reaction->get_meta( 'other_settings' ) );
 	}
 
 	/**
@@ -153,8 +153,8 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$extension->update_settings( $reaction, $settings );
 
-		$this->assertNull( $reaction->get_meta( 'test_extension' ) );
-		$this->assertNull( $reaction->get_meta( 'other_settings' ) );
+		$this->assertFalse( $reaction->get_meta( 'test_extension' ) );
+		$this->assertFalse( $reaction->get_meta( 'other_settings' ) );
 	}
 }
 
