@@ -47,6 +47,15 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	public $hits = array();
 
 	/**
+	 * The args passed to after_reverse() each time it was called.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array[]
+	 */
+	public $after_reverse = array();
+
+	/**
 	 * The settings passed to the validator each time it was called.
 	 *
 	 * @since 1.0.0
@@ -130,6 +139,20 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 		);
 	}
 
+	/**
+	 * @since 1.0.0
+	 */
+	public function after_reverse(
+		$event_slug,
+		WordPoints_Hook_Event_Args $event_args,
+		WordPoints_Hook_Reactor $reactor
+	) {
+		$this->after_reverse[] = array(
+			'event_slug' => $event_slug,
+			'event_args' => $event_args,
+			'reactor'    => $reactor,
+		);
+	}
 }
 
 // EOF

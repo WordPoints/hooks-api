@@ -120,6 +120,21 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	) {}
 
 	/**
+	 * Called after a reverse action is called.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string                     $event_slug The event slug.
+	 * @param WordPoints_Hook_Event_Args $event_args The event args.
+	 * @param WordPoints_Hook_Reactor    $reactor    The reactor object.
+	 */
+	public function after_reverse(
+		$event_slug,
+		WordPoints_Hook_Event_Args $event_args,
+		WordPoints_Hook_Reactor $reactor
+	) {}
+
+	/**
 	 * Get the data the scripts need for the UI.
 	 *
 	 * @since 1.0.0

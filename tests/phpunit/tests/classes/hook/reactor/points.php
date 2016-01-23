@@ -270,7 +270,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	}
 
 	/**
-	 * Test spamming an event.
+	 * Test reversing an event.
 	 *
 	 * @since 1.0.0
 	 *
@@ -278,7 +278,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 *
 	 * @param array $settings Reaction settings.
 	 */
-	public function test_spam_hits( array $settings ) {
+	public function test_reverse_hits( array $settings ) {
 
 		$settings['event'] = 'user_register';
 
@@ -316,25 +316,25 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 1, $query->count() );
 
-		$reactor->spam_hits( 'user_register', $event_args );
+		$reactor->reverse_hits( 'user_register', $event_args );
 
 		$this->assertEquals( 0, $query->count() );
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
 		$query = new WordPoints_Points_Logs_Query(
-			array( 'log_type' => 'spam-user_register' )
+			array( 'log_type' => 'reverse-user_register' )
 		);
 
 		$this->assertEquals( 0, $query->count() );
 	}
 
 	/**
-	 * Test spamming an event doesn't undo auto-reversed transactions.
+	 * Test reversing an event doesn't undo auto-reversed transactions.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_spam_hits_auto_reversed() {
+	public function test_reverse_hits_auto_reversed() {
 
 		$settings = array(
 			'target'      => array( 'user' ),
@@ -384,7 +384,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		wordpoints_update_points_log_meta( $log_id, 'auto_reversed', true );
 
-		$reactor->spam_hits( 'user_register', $event_args );
+		$reactor->reverse_hits( 'user_register', $event_args );
 
 		$this->assertEquals( 1, $query->count() );
 
@@ -395,11 +395,11 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	}
 
 	/**
-	 * Test spamming an event only spams the event for the specific entities.
+	 * Test reversing an event only reverses the event for the specific entities.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_spam_hits_different_entities() {
+	public function test_reverse_hits_different_entities() {
 
 		$settings = array(
 			'target'      => array( 'user' ),
@@ -448,7 +448,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 		// A different user ID for the user arg.
 		$entity->set_the_value( $this->factory->user->create() );
 
-		$reactor->spam_hits( 'user_register', $event_args );
+		$reactor->reverse_hits( 'user_register', $event_args );
 
 		$this->assertEquals( 1, $query->count() );
 

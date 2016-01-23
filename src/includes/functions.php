@@ -312,7 +312,6 @@ function wordpoints_hook_firers_init( $firers ) {
 
 	$firers->register( 'fire', 'WordPoints_Hook_Firer' );
 	$firers->register( 'reverse', 'WordPoints_Hook_Firer_Reverse' );
-	$firers->register( 'spam', 'WordPoints_Hook_Firer_Spam' );
 }
 
 /**
@@ -499,7 +498,6 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 				'actions' => array(
 					'fire' => array( 'comment_approve', 'comment_new' ),
 					'reverse' => 'comment_deapprove',
-					'spam' => 'comment_spam',
 				),
 				'args' => array(
 					"comment\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',

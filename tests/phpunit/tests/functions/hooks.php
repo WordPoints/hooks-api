@@ -382,7 +382,6 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		wordpoints_hook_firers_init( $firers );
 
 		$this->assertTrue( $firers->is_registered( 'fire' ) );
-		$this->assertTrue( $firers->is_registered( 'spam' ) );
 		$this->assertTrue( $firers->is_registered( 'reverse' ) );
 	}
 }

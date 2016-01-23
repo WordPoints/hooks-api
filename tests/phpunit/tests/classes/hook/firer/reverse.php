@@ -29,22 +29,22 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$hooks->extensions->register(
 			'test_extension'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
 		$hooks->extensions->register(
 			'another'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse' )
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor' )
 		);
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array(
 				'slug' => 'another',
-				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor',
 			)
 		);
 
@@ -85,12 +85,12 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$hooks->extensions->register(
 			'test_extension'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
 		$hooks->extensions->register(
 			'another'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -120,13 +120,13 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$hooks = wordpoints_hooks();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse' )
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor' )
 		);
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array(
 				'slug' => 'another',
-				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor',
 			)
 		);
 
@@ -140,56 +140,6 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertCount( 1, $reactor->reverse_hits );
 
-		$reactor = $hooks->reactors->get( 'another' );
-
-		$this->assertCount( 1, $reactor->reverse_hits );
-	}
-
-	/**
-	 * Test firing an event when one reactor doesn't react to reverse.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_do_event_non_reverse_reactor() {
-
-		$this->mock_apps();
-
-		$hooks = wordpoints_hooks();
-
-		$hooks->extensions->register(
-			'test_extension'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
-		);
-
-		$hooks->extensions->register(
-			'another'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
-		);
-
-		$this->factory->wordpoints->hook_reactor->create();
-
-		$this->factory->wordpoints->hook_reactor->create(
-			array(
-				'slug' => 'another',
-				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse',
-			)
-		);
-
-		$event_args = new WordPoints_Hook_Event_Args( array() );
-		$firer = new WordPoints_Hook_Firer_Reverse( 'test_firer' );
-
-		$firer->do_event( 'test_event', $event_args );
-
-		// The extensions should have each been called.
-		$extension = $hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		$extension = $hooks->extensions->get( 'another' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		// The reverse reactor should have been hit.
 		$reactor = $hooks->reactors->get( 'another' );
 
 		$this->assertCount( 1, $reactor->reverse_hits );
@@ -213,17 +163,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$hooks->extensions->register(
 			'another'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reverse'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse' )
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor' )
 		);
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array(
 				'slug' => 'another',
-				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reverse',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor',
 			)
 		);
 

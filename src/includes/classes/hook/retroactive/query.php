@@ -83,7 +83,7 @@ abstract class WordPoints_Hook_Reactor_Retroactive implements WordPoints_Hook_Re
 		$query->set_target( $query->get_reaction()->get_meta( 'target' ) );
 	}
 
-	public function spam_hits() {
+	public function reverse_hits() {
 //		if ( ! $logs ) {
 //			// Check if this reversal was part of a retroactive fire.
 //			if ( $event instanceof WordPoints_Hook_Event_RetroactiveI ) {

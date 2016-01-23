@@ -12,9 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Reactor_Points
-	extends WordPoints_Hook_Reactor
-	implements WordPoints_Hook_Reactor_SpamI {
+class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 
 	/**
 	 * @since 1.0.0
@@ -141,7 +139,7 @@ class WordPoints_Hook_Reactor_Points
 	/**
 	 * @since 1.0.0
 	 */
-	public function spam_hits( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
+	public function reverse_hits( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
 
 		$meta_queries = array(
 			array(
@@ -183,7 +181,7 @@ class WordPoints_Hook_Reactor_Points
 				$log->user_id
 				, -$log->points
 				, $log->points_type
-				, "spam-{$log->log_type}"
+				, "reverse-{$log->log_type}"
 				, array( 'original_log_id' => $log->id )
 			);
 
