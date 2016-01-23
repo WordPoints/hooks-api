@@ -349,7 +349,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			$now = current_time( 'timestamp' );
 
 			$this->assertEquals( $reaction->ID, $results[ $index ]->reaction_id );
-			$this->assertLessThanOrEqual( 1, $now - strtotime( $results[ $index ]->hit_time, $now ) );
+			$this->assertLessThanOrEqual( 2, $now - strtotime( $results[ $index ]->hit_time, $now ) );
 			$this->assertEquals( $period['signature'], $results[ $index ]->signature );
 		}
 	}
