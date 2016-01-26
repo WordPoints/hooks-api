@@ -270,7 +270,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$this->assertTrue( $extension->should_hit( $reaction, $event_args ) );
+		$fire = new WordPoints_Hook_Fire(
+			new WordPoints_Hook_Firer( 'test_firer' )
+			, $event_args
+			, $reaction
+		);
+
+		$this->assertTrue( $extension->should_hit( $fire ) );
 
 		$this->assertNull( $event_args->get_current() );
 	}
@@ -316,7 +322,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$extension->after_hit( $reaction, $event_args );
+		$fire = new WordPoints_Hook_Fire(
+			new WordPoints_Hook_Firer( 'test_firer' )
+			, $event_args
+			, $reaction
+		);
+
+		$extension->after_hit( $fire );
 
 		$this->assertNull( $event_args->get_current() );
 

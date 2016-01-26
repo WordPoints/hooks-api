@@ -40,19 +40,21 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 
 				unset( $validator );
 
+				$fire = new WordPoints_Hook_Fire( $this, $event_args, $reaction );
+
 				/** @var WordPoints_Hook_Extension[] $extensions */
 				$extensions = $hooks->extensions->get_all();
 
 				foreach ( $extensions as $extension ) {
-					if ( ! $extension->should_hit( $reaction, $event_args ) ) {
+					if ( ! $extension->should_hit( $fire ) ) {
 						continue 2;
 					}
 				}
 
-				$reactor->hit( $event_args, $reaction );
+				$reactor->hit( $fire );
 
 				foreach ( $extensions as $extension ) {
-					$extension->after_hit( $reaction, $event_args );
+					$extension->after_hit( $fire );
 				}
 			}
 		}

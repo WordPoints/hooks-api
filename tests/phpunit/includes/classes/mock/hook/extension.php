@@ -76,15 +76,9 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function should_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	) {
+	public function should_hit( WordPoints_Hook_Fire $fire ) {
 
-		$this->hit_checks[] = array(
-			'reaction'   => $reaction,
-			'event_args' => $event_args,
-		);
+		$this->hit_checks[] = $fire;
 
 		return $this->should_hit;
 	}
@@ -128,15 +122,9 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function after_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	) {
+	public function after_hit( WordPoints_Hook_Fire $fire ) {
 
-		$this->hits[] = array(
-			'reaction'   => $reaction,
-			'event_args' => $event_args,
-		);
+		$this->hits[] = $fire;
 	}
 
 	/**

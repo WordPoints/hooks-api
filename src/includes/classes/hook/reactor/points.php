@@ -107,12 +107,11 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	public function hit(
-		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_ReactionI $reaction
-	) {
+	public function hit( WordPoints_Hook_Fire $fire ) {
 
-		$target = $event_args->get_from_hierarchy(
+		$reaction = $fire->reaction;
+
+		$target = $fire->event_args->get_from_hierarchy(
 			$reaction->get_meta( 'target' )
 		);
 
@@ -122,7 +121,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 
 		$meta = array();
 
-		foreach ( $event_args->get_entities() as $entity ) {
+		foreach ( $fire->event_args->get_entities() as $entity ) {
 			$meta[ $entity->get_slug() ] = $entity->get_the_id();
 		}
 

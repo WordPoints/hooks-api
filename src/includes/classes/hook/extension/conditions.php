@@ -193,14 +193,11 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function should_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	) {
+	public function should_hit( WordPoints_Hook_Fire $fire ) {
 
-		$conditions = $reaction->get_meta( 'conditions' );
+		$conditions = $fire->reaction->get_meta( 'conditions' );
 
-		if ( $conditions && ! $this->conditions_are_met( $conditions, $event_args ) ) {
+		if ( $conditions && ! $this->conditions_are_met( $conditions, $fire->event_args ) ) {
 			return false;
 		}
 

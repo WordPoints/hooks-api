@@ -84,6 +84,7 @@ require_once( dirname( __FILE__ ) . 'hook/events.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/conditions.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/periods.php' );
+require_once( dirname( __FILE__ ) . 'hook/fire.php' );
 require_once( dirname( __FILE__ ) . 'hook/firer.php' );
 require_once( dirname( __FILE__ ) . 'hook/firer/reverse.php' );
 require_once( dirname( __FILE__ ) . 'hook/fireri.php' );

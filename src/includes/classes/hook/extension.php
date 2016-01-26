@@ -96,28 +96,20 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_ReactionI  $reaction   The reaction.
-	 * @param WordPoints_Hook_Event_Args $event_args The event args.
+	 * @param WordPoints_Hook_Fire $fire The hook fire object.
 	 *
 	 * @return bool Whether the target should be hit by this hook firing.
 	 */
-	abstract public function should_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	);
+	abstract public function should_hit( WordPoints_Hook_Fire $fire );
 
 	/**
 	 * After a reaction has hit the target.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_ReactionI  $reaction   The reaction.
-	 * @param WordPoints_Hook_Event_Args $event_args The event args.
+	 * @param WordPoints_Hook_Fire $fire The hook fire object.
 	 */
-	public function after_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	) {}
+	public function after_hit( WordPoints_Hook_Fire $fire ) {}
 
 	/**
 	 * Called after a reverse action is called.

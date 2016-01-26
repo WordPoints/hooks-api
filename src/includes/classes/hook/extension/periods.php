@@ -175,21 +175,18 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function should_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	) {
+	public function should_hit( WordPoints_Hook_Fire $fire ) {
 
-		$periods = $reaction->get_meta( 'periods' );
+		$periods = $fire->reaction->get_meta( 'periods' );
 
 		if ( empty( $periods ) ) {
 			return true;
 		}
 
-		$this->event_args = $event_args;
+		$this->event_args = $fire->event_args;
 
 		foreach ( $periods as $period ) {
-			if ( ! $this->has_period_ended( $period, $reaction ) ) {
+			if ( ! $this->has_period_ended( $period, $fire->reaction ) ) {
 				return false;
 			}
 		}
@@ -369,24 +366,21 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function after_hit(
-		WordPoints_Hook_ReactionI $reaction,
-		WordPoints_Hook_Event_Args $event_args
-	) {
+	public function after_hit( WordPoints_Hook_Fire $fire ) {
 
-		$periods = $reaction->get_meta( 'periods' );
+		$periods = $fire->reaction->get_meta( 'periods' );
 
 		if ( empty( $periods ) ) {
 			return;
 		}
 
-		$this->event_args = $event_args;
+		$this->event_args = $fire->event_args;
 
 		foreach ( $periods as $settings ) {
 
 			$this->add_period(
-				$this->get_period_signature( $settings, $reaction )
-				, $reaction
+				$this->get_period_signature( $settings, $fire->reaction )
+				, $fire->reaction
 			);
 		}
 	}
