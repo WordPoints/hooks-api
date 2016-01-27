@@ -50,13 +50,13 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		);
 
 		$this->factory->wordpoints->hook_reactor->create();
-		$this->factory->wordpoints->hook_reaction->create_many( 2 );
+		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 2 );
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array( 'slug' => 'another' )
 		);
 
-		$this->factory->wordpoints->hook_reaction->create(
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'reactor' => 'another' )
 		);
 
@@ -81,9 +81,16 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 2, $reactor->hits );
 
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ) );
+
 		$reactor = $hooks->reactors->get( 'another' );
 
 		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged(
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+		);
 	}
 
 	/**
@@ -146,7 +153,7 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		);
 
 		$this->factory->wordpoints->hook_reactor->create();
-		$this->factory->wordpoints->hook_reaction->create_many( 2 );
+		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 2 );
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array( 'slug' => 'another' )
@@ -173,6 +180,9 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 2, $reactor->hits );
 
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ) );
+
 		$reactor = $hooks->reactors->get( 'another' );
 
 		$this->assertCount( 0, $reactor->hits );
@@ -190,13 +200,13 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$hooks = wordpoints_hooks();
 
 		$this->factory->wordpoints->hook_reactor->create();
-		$this->factory->wordpoints->hook_reaction->create_many( 2 );
+		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 2 );
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array( 'slug' => 'another' )
 		);
 
-		$this->factory->wordpoints->hook_reaction->create(
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'reactor' => 'another' )
 		);
 
@@ -210,9 +220,14 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 2, $reactor->hits );
 
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ) );
+
 		$reactor = $hooks->reactors->get( 'another' );
 
 		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged( array( 'reaction_id' => $other_reaction->ID ) );
 	}
 
 	/**
@@ -242,13 +257,13 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'test_extension' => array( 'fail' => true ) )
 		);
 
-		$this->factory->wordpoints->hook_reaction->create();
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array( 'slug' => 'another' )
 		);
 
-		$this->factory->wordpoints->hook_reaction->create(
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'reactor' => 'another' )
 		);
 
@@ -273,9 +288,13 @@ class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 1, $reactor->hits );
 
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
 		$reactor = $hooks->reactors->get( 'another' );
 
 		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged( array( 'reaction_id' => $other_reaction->ID ) );
 	}
 
 	/**

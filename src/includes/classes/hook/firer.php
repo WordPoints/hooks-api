@@ -74,6 +74,8 @@ class WordPoints_Hook_Firer implements WordPoints_Hook_FirerI {
 					}
 				}
 
+				$fire->hit_logger->log_hit();
+
 				$reactor->hit( $fire );
 
 				foreach ( $extensions as $extension ) {

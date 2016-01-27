@@ -88,6 +88,7 @@ require_once( dirname( __FILE__ ) . 'hook/fire.php' );
 require_once( dirname( __FILE__ ) . 'hook/firer.php' );
 require_once( dirname( __FILE__ ) . 'hook/firer/reverse.php' );
 require_once( dirname( __FILE__ ) . 'hook/fireri.php' );
+require_once( dirname( __FILE__ ) . 'hook/hit/logger.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/options.php' );
 require_once( dirname( __FILE__ ) . 'hook/reaction/storage.php' );

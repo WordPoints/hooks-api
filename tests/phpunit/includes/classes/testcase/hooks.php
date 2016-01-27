@@ -186,6 +186,57 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 
 		$this->assertInstanceOf( 'WordPoints_Hook_ReactionI', $reaction );
 	}
+
+	/**
+	 * Assert that one or more hits were logged.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $data  The hit data.
+	 * @param int   $count The number of expected logs.
+	 */
+	public function assertHitsLogged( array $data, $count = 1 ) {
+
+		global $wpdb;
+
+		$now = current_time( 'timestamp' );
+
+		$data = array_merge(
+			$data
+			, array(
+				'fire_type' => 'test_firer',
+				'signature' => str_repeat( '-', 64 ),
+				'event' => 'test_event',
+				'reactor' => 'test_reactor',
+				'reaction_type' => 'standard',
+				'reaction_id' => 1,
+			)
+		);
+
+		ksort( $data );
+
+		$hits = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+					SELECT *
+					FROM `{$wpdb->wordpoints_hook_hits}`
+					WHERE `event` = %s
+					AND `fire_type` = %s
+					AND `reaction_id` = %d
+					AND `reaction_type` = %s
+					AND `reactor` = %s
+					AND `signature` = %s
+				"
+				, $data
+			)
+		);
+
+		$this->assertCount( $count, $hits );
+
+		foreach ( $hits as $hit ) {
+			$this->assertLessThanOrEqual( 2, $now - strtotime( $hit->date, $now ) );
+		}
+	}
 }
 
 // EOF

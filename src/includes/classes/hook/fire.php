@@ -42,6 +42,15 @@ class WordPoints_Hook_Fire {
 	public $reaction;
 
 	/**
+	 * The hit logger for this fire.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Hit_Logger
+	 */
+	public $hit_logger;
+
+	/**
 	 * @param WordPoints_Hook_Firer      $firer      The firer.
 	 * @param WordPoints_Hook_Event_Args $event_args The event args.
 	 * @param WordPoints_Hook_ReactionI  $reaction   The reaction.
@@ -52,9 +61,10 @@ class WordPoints_Hook_Fire {
 		WordPoints_Hook_ReactionI $reaction
 	) {
 
-		$this->firer = $firer;
+		$this->firer      = $firer;
 		$this->event_args = $event_args;
-		$this->reaction = $reaction;
+		$this->reaction   = $reaction;
+		$this->hit_logger = new WordPoints_Hook_Hit_Logger( $this );
 	}
 }
 
