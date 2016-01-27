@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Firer_Reverse implements WordPoints_Hook_FirerI {
+class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 
 	/**
 	 * @since 1.0.0

@@ -17,6 +17,18 @@
 class WordPoints_Hook_Firer_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
+	 * Test getting the slug.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_slug() {
+
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$this->assertEquals( 'test_firer', $firer->get_slug() );
+	}
+
+	/**
 	 * Test firing an event.
 	 *
 	 * @since 1.0.0

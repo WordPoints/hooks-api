@@ -15,6 +15,15 @@
 interface WordPoints_Hook_FirerI {
 
 	/**
+	 * Get the slug of this firer.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
+	public function get_slug();
+
+	/**
 	 * Fire an event.
 	 *
 	 * @since 1.0.0

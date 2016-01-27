@@ -407,7 +407,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$this->assertPeriodsExist( $periods, $reaction );
@@ -478,7 +478,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$this->assertPeriodsExist( $periods, $reaction );
@@ -552,7 +552,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
@@ -605,7 +605,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
@@ -660,7 +660,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
@@ -711,7 +711,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
@@ -777,7 +777,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$firer = new WordPoints_Hook_Firer();
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
 		$firer->do_event( 'test_event', $event_args );
 
 		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
