@@ -59,7 +59,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'fire', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -68,7 +68,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -93,12 +93,12 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->reverse_hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'reverse', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
 		);
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reaction_id' => $reaction->ID,
 				'superseded_by' => $reactor->reverse_hits[0]->hit_id,
 			)
@@ -110,7 +110,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -118,7 +118,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $reaction->ID,
 				'superseded_by' => $reactor->reverse_hits[0]->hit_id,
@@ -224,7 +224,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'fire', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -233,7 +233,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -257,7 +257,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		// The first reactor should not have been hit.
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'reverse', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
 			, 0
 		);
 
@@ -268,7 +268,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -318,7 +318,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'fire', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -327,7 +327,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -351,7 +351,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		// The first reactor should not have been hit.
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'reverse', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
 			, 0
 		);
 
@@ -362,7 +362,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -412,7 +412,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'fire', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -421,7 +421,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -446,7 +446,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		// The first reactor should not have been hit.
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'reverse', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
 			, 0
 		);
 
@@ -457,7 +457,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -507,7 +507,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'fire', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -516,7 +516,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -542,13 +542,13 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 0, $reactor->reverse_hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'reverse', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
 			, 0
 		);
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reaction_id' => $reaction->ID,
 				'event' => 'another_event',
 			)
@@ -561,7 +561,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -570,7 +570,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 				'event' => 'another_event',
@@ -622,7 +622,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'fire', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -631,7 +631,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'fire',
+				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -665,13 +665,13 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 0, $reactor->reverse_hits );
 
 		$this->assertHitsLogged(
-			array( 'fire_type' => 'reverse', 'reaction_id' => $reaction->ID )
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
 			, 0
 		);
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reaction_id' => $reaction->ID,
 				'signature' => wordpoints_hooks_get_event_signature( $event_args ),
 			)
@@ -684,7 +684,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 			)
@@ -693,7 +693,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'reverse',
+				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
 				'signature' => wordpoints_hooks_get_event_signature( $event_args ),

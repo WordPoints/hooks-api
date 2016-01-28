@@ -73,7 +73,7 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 				"
 					SELECT *
 					FROM `{$wpdb->wordpoints_hook_hits}`
-					WHERE `fire_type` = 'fire'
+					WHERE `firer` = 'fire'
 					AND `signature` = %s
 					AND `event` = %s
 					AND `superseded_by` IS NULL

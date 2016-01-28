@@ -131,7 +131,7 @@ class WordPoints_Hook_Fire {
 				"
 					SELECT *
 					FROM `{$wpdb->wordpoints_hook_hits}`
-					WHERE `fire_type` != %s
+					WHERE `firer` != %s
 					AND `signature` = %s
 					AND `event` = %s
 					AND `reactor` = %s

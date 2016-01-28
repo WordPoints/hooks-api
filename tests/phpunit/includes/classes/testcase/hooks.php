@@ -210,7 +210,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 
 		$data = array_merge(
 			array(
-				'fire_type' => 'test_firer',
+				'firer' => 'test_firer',
 				'signature' => str_repeat( '-', 64 ),
 				'event' => 'test_event',
 				'reactor' => 'test_reactor',
@@ -229,7 +229,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 					SELECT *
 					FROM `{$wpdb->wordpoints_hook_hits}`
 					WHERE `event` = %s
-					AND `fire_type` = %s
+					AND `firer` = %s
 					AND `reaction_id` = %d
 					AND `reaction_type` = %s
 					AND `reactor` = %s

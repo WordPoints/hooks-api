@@ -88,7 +88,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'another_firer',
+				'firer' => 'another_firer',
 				'reaction_id' => $reaction->ID,
 			)
 		);
@@ -172,7 +172,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertHitsLogged(
 			array(
-				'fire_type' => 'another_firer',
+				'firer' => 'another_firer',
 				'reaction_id' => $reaction->ID,
 			)
 		);

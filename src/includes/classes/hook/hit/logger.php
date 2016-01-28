@@ -47,7 +47,7 @@ class WordPoints_Hook_Hit_Logger {
 		$inserted = $wpdb->insert(
 			$wpdb->wordpoints_hook_hits
 			, array(
-				'fire_type' => $this->fire->firer->get_slug(),
+				'firer' => $this->fire->firer->get_slug(),
 				'signature' => $signature,
 				'event' => $this->fire->reaction->get_event_slug(),
 				'reactor' => $this->fire->reaction->get_reactor_slug(),
