@@ -35,6 +35,8 @@ class WordPoints_Hook_Hit_Logger {
 	 * Logs a hit for this fire.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @return int|false The hit ID, or false if logging the hit failed.
 	 */
 	public function log_hit() {
 
@@ -60,6 +62,18 @@ class WordPoints_Hook_Hit_Logger {
 		}
 
 		$hit_id = $wpdb->insert_id;
+
+		$supersedes = $this->fire->get_superseded_hit();
+
+		if ( $supersedes ) {
+			$wpdb->update(
+				$wpdb->wordpoints_hook_hits
+				, array( 'superseded_by' => $hit_id )
+				, array( 'id' => $supersedes->id )
+				, array( '%d' )
+				, array( '%d' )
+			);
+		}
 
 		return $hit_id;
 	}

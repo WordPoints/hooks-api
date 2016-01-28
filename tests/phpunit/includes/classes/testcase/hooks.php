@@ -201,16 +201,24 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 
 		$now = current_time( 'timestamp' );
 
+		$superseded_by = null;
+
+		if ( isset( $data['superseded_by'] ) ) {
+			$superseded_by = $data['superseded_by'];
+			unset( $data['superseded_by'] );
+		}
+
 		$data = array_merge(
-			$data
-			, array(
+			array(
 				'fire_type' => 'test_firer',
 				'signature' => str_repeat( '-', 64 ),
 				'event' => 'test_event',
 				'reactor' => 'test_reactor',
 				'reaction_type' => 'standard',
 				'reaction_id' => 1,
+				'superseded_by' => null,
 			)
+			, $data
 		);
 
 		ksort( $data );
@@ -231,9 +239,12 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 			)
 		);
 
+		$hits = wp_list_filter( $hits, array( 'superseded_by' => $superseded_by ) );
+
 		$this->assertCount( $count, $hits );
 
 		foreach ( $hits as $hit ) {
+			$this->assertEquals( $superseded_by, $hit->superseded_by );
 			$this->assertLessThanOrEqual( 2, $now - strtotime( $hit->date, $now ) );
 		}
 	}

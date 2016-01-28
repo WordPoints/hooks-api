@@ -138,7 +138,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	public function reverse_hits( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
+	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
 		$meta_queries = array(
 			array(
@@ -149,7 +149,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 			),
 		);
 
-		foreach ( $event_args->get_entities() as $slug => $entity ) {
+		foreach ( $fire->event_args->get_entities() as $slug => $entity ) {
 
 			$meta_queries[] = array(
 				'key'   => $slug,
@@ -159,7 +159,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 
 		$query = new WordPoints_Points_Logs_Query(
 			array(
-				'log_type'   => $event_slug,
+				'log_type'   => $fire->reaction->get_event_slug(),
 				'meta_query' => $meta_queries,
 			)
 		);

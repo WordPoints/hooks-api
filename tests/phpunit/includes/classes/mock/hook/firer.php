@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_PHPUnit_Mock_Hook_Firer implements WordPoints_Hook_FirerI {
+class WordPoints_PHPUnit_Mock_Hook_Firer extends WordPoints_Hook_Firer {
 
 	/**
 	 * @since 1.0.0

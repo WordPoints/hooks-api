@@ -119,12 +119,8 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	public function reverse_hits( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
-
-		$this->reverse_hits[] = array(
-			'event_slug' => $event_slug,
-			'event_args' => $event_args,
-		);
+	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
+		$this->reverse_hits[] = $fire;
 	}
 }
 

@@ -328,7 +328,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 1, $query->count() );
 
-		$reactor->reverse_hits( 'user_register', $event_args );
+		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 0, $query->count() );
 
@@ -402,7 +402,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		wordpoints_update_points_log_meta( $log_id, 'auto_reversed', true );
 
-		$reactor->reverse_hits( 'user_register', $event_args );
+		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 1, $query->count() );
 
@@ -472,7 +472,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 		// A different user ID for the user arg.
 		$entity->set_the_value( $this->factory->user->create() );
 
-		$reactor->reverse_hits( 'user_register', $event_args );
+		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 1, $query->count() );
 

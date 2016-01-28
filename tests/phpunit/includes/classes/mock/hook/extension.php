@@ -123,23 +123,14 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	 * @since 1.0.0
 	 */
 	public function after_hit( WordPoints_Hook_Fire $fire ) {
-
 		$this->hits[] = $fire;
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function after_reverse(
-		$event_slug,
-		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_Reactor $reactor
-	) {
-		$this->after_reverse[] = array(
-			'event_slug' => $event_slug,
-			'event_args' => $event_args,
-			'reactor'    => $reactor,
-		);
+	public function after_reverse( WordPoints_Hook_Fire $fire ) {
+		$this->after_reverse[] = $fire;
 	}
 }
 
