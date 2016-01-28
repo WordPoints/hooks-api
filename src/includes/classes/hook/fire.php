@@ -55,9 +55,9 @@ class WordPoints_Hook_Fire {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var int
+	 * @var int|false
 	 */
-	public $hit_id;
+	public $hit_id = false;
 
 	/**
 	 * The hit this fire supersedes, if any.
