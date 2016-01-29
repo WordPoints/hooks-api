@@ -42,13 +42,13 @@ class WordPoints_Hook_Hit_Logger {
 
 		global $wpdb;
 
-		$signature = wordpoints_hooks_get_event_signature( $this->fire->event_args );
+		$signature = wordpoints_hooks_get_event_primary_arg_guid_json( $this->fire->event_args );
 
 		$inserted = $wpdb->insert(
 			$wpdb->wordpoints_hook_hits
 			, array(
 				'firer' => $this->fire->firer->get_slug(),
-				'signature' => $signature,
+				'primary_arg_guid' => $signature,
 				'event' => $this->fire->reaction->get_event_slug(),
 				'reactor' => $this->fire->reaction->get_reactor_slug(),
 				'reaction_type' => $this->fire->reaction->get_storage_group_slug(),

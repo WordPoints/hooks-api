@@ -74,7 +74,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_is_repeatable_stateful_and_signature() {
+	public function test_is_repeatable_primary_and_stateful() {
 
 		$this->mock_apps();
 

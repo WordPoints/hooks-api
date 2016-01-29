@@ -132,7 +132,7 @@ class WordPoints_Hook_Fire {
 					SELECT *
 					FROM `{$wpdb->wordpoints_hook_hits}`
 					WHERE `firer` != %s
-					AND `signature` = %s
+					AND `primary_arg_guid` = %s
 					AND `event` = %s
 					AND `reactor` = %s
 					AND `reaction_type` = %s
@@ -140,7 +140,7 @@ class WordPoints_Hook_Fire {
 					AND `superseded_by` IS NULL
 				"
 				, $this->firer->get_slug()
-				, wordpoints_hooks_get_event_signature( $this->event_args )
+				, wordpoints_hooks_get_event_primary_arg_guid_json( $this->event_args )
 				, $this->reaction->get_event_slug()
 				, $this->reaction->get_reactor_slug()
 				, $this->reaction->get_storage_group_slug()

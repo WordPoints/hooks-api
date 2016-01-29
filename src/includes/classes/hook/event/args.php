@@ -89,13 +89,12 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	/**
 	 * Whether the event is repeatable.
 	 *
-	 * An event is repeatable if none of its args have their status toggled by the
-	 * event. In that case, it is possible for the event to occur with those same args
-	 * multiple times in a row without being reversed in between.
-	 *
-	 * An arg that has its status modified is called a signature arg. One that does
-	 * not is called a stateful arg. An event is repeatable if it has no signature
-	 * args, only stateful ones.
+	 * An arg that has its status modified is called the primary arg of the event,
+	 * because each event can have no more than one of these. An arg whose status is
+	 * not toggled is called a stateful arg. An event is repeatable if it has no
+	 * primary arg, only stateful ones: in that case, it is possible for the event to
+	 * occur with the same args multiple times in a row without being reversed in
+	 * between.
 	 *
 	 * @since 1.0.0
 	 *

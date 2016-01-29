@@ -879,16 +879,26 @@ function wordpoints_is_network_context() {
 	return apply_filters( 'wordpoints_is_network_context', false );
 }
 
-function wordpoints_hooks_get_event_signature( WordPoints_Hook_Event_Args $event_args ) {
+/**
+ * Get the GUID of the primary arg of an event, serialized as JSON.
+ *
+ * If the event does not have a primary arg, an empty string will be returned.
+ *
+ * @since 1.0.0
+ *
+ * @param WordPoints_Hook_Event_Args $event_args The event args.
+ *
+ * @return string The primary arg's GUID, JSON encoded.
+ */
+function wordpoints_hooks_get_event_primary_arg_guid_json( WordPoints_Hook_Event_Args $event_args ) {
 
 	$entity = $event_args->get_primary_arg();
 
-	// TODO what if GUID isn't set?
 	if ( ! $entity ) {
-		return str_repeat( '-', 64 );
+		return '';
 	}
 
-	return wordpoints_hash( wp_json_encode( $entity->get_the_guid() ) );
+	return wp_json_encode( $entity->get_the_guid() );
 }
 
 // EOF

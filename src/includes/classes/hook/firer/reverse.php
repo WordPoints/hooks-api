@@ -74,11 +74,11 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 					SELECT *
 					FROM `{$wpdb->wordpoints_hook_hits}`
 					WHERE `firer` = 'fire'
-					AND `signature` = %s
+					AND `primary_arg_guid` = %s
 					AND `event` = %s
 					AND `superseded_by` IS NULL
 				"
-				, wordpoints_hooks_get_event_signature( $event_args )
+				, wordpoints_hooks_get_event_primary_arg_guid_json( $event_args )
 				, $event_slug
 			)
 		);

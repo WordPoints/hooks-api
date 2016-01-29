@@ -580,11 +580,11 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	}
 
 	/**
-	 * Test firing an event only reverses fires with the same signature.
+	 * Test firing an event only reverses fires with the same primary arg value.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_do_event_different_signature() {
+	public function test_do_event_different_primary_arg_value() {
 
 		$this->mock_apps();
 
@@ -673,7 +673,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			array(
 				'firer' => 'reverse',
 				'reaction_id' => $reaction->ID,
-				'signature' => wordpoints_hooks_get_event_signature( $event_args ),
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json( $event_args ),
 			)
 			, 0
 		);
@@ -696,7 +696,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
-				'signature' => wordpoints_hooks_get_event_signature( $event_args ),
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json( $event_args ),
 			)
 			, 0
 		);
