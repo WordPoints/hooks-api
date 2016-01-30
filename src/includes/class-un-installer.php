@@ -46,7 +46,8 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 					reaction_id BIGINT(20) UNSIGNED NOT NULL,
 					date DATETIME NOT NULL,
 					superseded_by BIGINT(20) UNSIGNED DEFAULT NULL,
-					PRIMARY KEY  (id)', // TODO keys
+					PRIMARY KEY  (id)
+					KEY unsuperseded (event(191),firer(191),primary_arg_guid(191),superseded_by)',
 			),
 		),
 	);
