@@ -56,6 +56,19 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_guid() {
+
+		return array(
+			'id' => $this->ID,
+			'reactor' => $this->get_reactor_slug(),
+			'group' => $this->get_storage_group_slug(),
+			'context_id' => $this->get_context_id(),
+		);
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function get_reactor_slug() {
 		return $this->storage->get_reactor_slug();
 	}

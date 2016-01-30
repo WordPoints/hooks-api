@@ -34,9 +34,19 @@ class WordPoints_Hook_Reaction_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals( 1, $reaction->ID );
 		$this->assertEquals( 'test_reactor', $reaction->get_reactor_slug() );
 		$this->assertEquals( 'test_storage', $reaction->get_storage_group_slug() );
-		$this->assertEquals(
-			array( 'network' => 1, 'site' => 1 )
+		$this->assertSame(
+			array( 'site' => 1, 'network' => 1 )
 			, $reaction->get_context_id()
+		);
+
+		$this->assertSame(
+			array(
+				'id' => 1,
+				'reactor' => 'test_reactor',
+				'group' => 'test_storage',
+				'context_id' => array( 'site' => 1, 'network' => 1 ),
+			)
+			, $reaction->get_guid()
 		);
 	}
 

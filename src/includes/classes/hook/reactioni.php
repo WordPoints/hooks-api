@@ -28,6 +28,19 @@ interface WordPoints_Hook_ReactionI {
 	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage );
 
 	/**
+	 * Get a Globally Unique ID for this reaction.
+	 *
+	 * The GUID uniquely identifies this reaction, differentiating from any other
+	 * reaction on this multi-network. It is composed of the reaction 'id', the
+	 * 'reactor' slug, the reaction 'group', and the reaction 'context_id'.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array The GUID for this reaction.
+	 */
+	public function get_guid();
+
+	/**
 	 * Check whether this reaction is network-wide.
 	 *
 	 * @since 1.0.0
