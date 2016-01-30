@@ -46,8 +46,8 @@
             "errors": false
         },
         "\/includes\/class-un-installer.php": {
-            "size": 1214,
-            "hash": "ff80dc092f168e1a65b19b4a1bf2779d",
+            "size": 1282,
+            "hash": "7789d6044f6b4c25ab1ca1d94fe973d1",
             "errors": false
         },
         "\/includes\/classes\/app\/registry.php": {
@@ -261,8 +261,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity.php": {
-            "size": 8763,
-            "hash": "850c32190fbb501ee1c9cf49cba9cf7a",
+            "size": 8780,
+            "hash": "00e1208605b014faf9019d417f139608",
             "errors": false
         },
         "\/includes\/classes\/entityish.php": {
@@ -351,8 +351,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/args.php": {
-            "size": 4958,
-            "hash": "e3adbb0e4ef14c6a65514b52ca9ce6a0",
+            "size": 4951,
+            "hash": "bbbb672994365dcd396d8bf8f4cab810",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/comment\/leave.php": {
@@ -421,13 +421,13 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/fire.php": {
-            "size": 2935,
-            "hash": "915bc6efe1cbb04095b6512d26c441fa",
+            "size": 3181,
+            "hash": "27ebc88eaa3358a78c50bc21e601d91e",
             "errors": false
         },
         "\/includes\/classes\/hook\/firer\/reverse.php": {
-            "size": 1953,
-            "hash": "ca5488d7c1f3f03a3090a2d7818483c0",
+            "size": 1968,
+            "hash": "53340fcc687933cf897e7f4e31874d12",
             "errors": false
         },
         "\/includes\/classes\/hook\/firer.php": {
@@ -441,8 +441,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/hit\/logger.php": {
-            "size": 2603,
-            "hash": "395cca1ec0c9012cd8b83bdeda787a75",
+            "size": 2633,
+            "hash": "f6ff58d83a0507bae18f62880e02aa0a",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/options.php": {
@@ -526,9 +526,9 @@
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 21534,
-            "hash": "354de7543327a6a143f37c110748776e",
-            "errors": true
+            "size": 21779,
+            "hash": "eeaa1d5fec705ff332a3ee1b54b84223",
+            "errors": false
         }
     },
     "config_signature": "4b8ca08687d2747605112fe66447e5c4"
