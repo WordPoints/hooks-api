@@ -106,7 +106,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_hit_superseding_not_same_type() {
+	public function test_hit_superseding_must_be_different_type() {
 
 		$this->mock_apps();
 
@@ -127,6 +127,298 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$hit_id = $fire->hit();
 
 		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ), 2 );
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'superseded_by' => $hit_id,
+			)
+			, 0
+		);
+	}
+
+	/**
+	 * Test that the superseded hit must be for the same event.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_superseding_must_be_same_event() {
+
+		$this->mock_apps();
+
+		// First we create a hit that could be superseded.
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+
+		$fire->hit();
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
+		// Then log another hit from a different event.
+		$reaction->update_event_slug( 'another_event' );
+
+		$firer = new WordPoints_Hook_Firer( 'another_firer' );
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+		$hit_id = $fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'another_firer',
+				'event' => 'another_event',
+				'reaction_id' => $reaction->ID,
+			)
+		);
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'superseded_by' => $hit_id,
+			)
+			, 0
+		);
+	}
+
+	/**
+	 * Test that the superseded hit must have the same arg GUID.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_superseding_must_be_same_primary_arg_guid() {
+
+		$this->mock_apps();
+
+		$entity_slug = $this->factory->wordpoints->entity->create();
+
+		// First we create a hit that could be superseded.
+		$reaction   = $this->factory->wordpoints->hook_reaction->create();
+		$arg        = new WordPoints_Hook_Arg( $entity_slug );
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+		$firer      = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+
+		$entity = $event_args->get_from_hierarchy( array( $entity_slug ) );
+		$entity->set_the_value( 1 );
+
+		$fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'primary_arg_guid' => array( $entity_slug => 1, 'test_context' => 1 ),
+			)
+		);
+
+		// Then log another hit with a different primary arg GUID.
+		$entity->set_the_value( 5 );
+
+		$firer = new WordPoints_Hook_Firer( 'another_firer' );
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+		$hit_id = $fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'another_firer',
+				'primary_arg_guid' => array( $entity_slug => 5, 'test_context' => 1 ),
+				'reaction_id' => $reaction->ID,
+			)
+		);
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'primary_arg_guid' => array( $entity_slug => 1, 'test_context' => 1 ),
+				'superseded_by' => $hit_id,
+			)
+			, 0
+		);
+	}
+
+	/**
+	 * Test that the superseded hit must be for the same reactor.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_superseding_must_be_same_reactor() {
+
+		$this->mock_apps();
+
+		// First we create a hit that could be superseded.
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+
+		$fire->hit();
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
+		// Then log another hit from a different reactor.
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'slug' => 'another_reactor' )
+		);
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reactor' => 'another_reactor' )
+		);
+
+		$this->assertEquals( $reaction->ID, $other_reaction->ID );
+
+		$firer = new WordPoints_Hook_Firer( 'another_firer' );
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $other_reaction );
+		$hit_id = $fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'another_firer',
+				'reactor' => 'another_reactor',
+				'reaction_id' => $reaction->ID,
+			)
+		);
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'superseded_by' => $hit_id,
+			)
+			, 0
+		);
+	}
+
+	/**
+	 * Test that the superseded hit must be for the same reaction group.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_superseding_must_be_same_reaction_group() {
+
+		$this->mock_apps();
+
+		// First we create a hit that could be superseded.
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+
+		$fire->hit();
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
+		// Then log another hit from a different reaction group.
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reaction_group' => 'test_group' )
+		);
+
+		$this->assertEquals( 'test_group', $other_reaction->get_storage_group_slug() );
+		$this->assertEquals( $reaction->ID, $other_reaction->ID );
+		$this->assertEquals(
+			$reaction->get_context_id()
+			, $other_reaction->get_context_id()
+		);
+
+		$firer = new WordPoints_Hook_Firer( 'another_firer' );
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $other_reaction );
+		$hit_id = $fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'another_firer',
+				'reaction_type' => 'test_group',
+				'reaction_id' => $reaction->ID,
+			)
+		);
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'superseded_by' => $hit_id,
+			)
+			, 0
+		);
+	}
+
+	/**
+	 * Test that the superseded hit must be for the same reaction context ID.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_superseding_must_be_same_reaction_context_id() {
+
+		$this->mock_apps();
+
+		// First we create a hit that could be superseded.
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+
+		$fire->hit();
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
+		// Then log another hit from a different reaction context ID.
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reaction $reaction */
+		$reaction->context_id = array( 'test_context' => 5 );
+
+		$firer = new WordPoints_Hook_Firer( 'another_firer' );
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+		$hit_id = $fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'another_firer',
+				'reaction_context_id' => $reaction->context_id,
+				'reaction_id' => $reaction->ID,
+			)
+		);
+
+		$this->assertHitsLogged(
+			array(
+				'reaction_id' => $reaction->ID,
+				'superseded_by' => $hit_id,
+			)
+			, 0
+		);
+	}
+
+	/**
+	 * Test that the superseded hit must be for the same reaction.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_superseding_must_be_same_reaction() {
+
+		$this->mock_apps();
+
+		// First we create a hit that could be superseded.
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+
+		$fire->hit();
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
+		// Then log another hit from a different reaction.
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$firer = new WordPoints_Hook_Firer( 'another_firer' );
+		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $other_reaction );
+		$hit_id = $fire->hit();
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'another_firer',
+				'reaction_id' => $other_reaction->ID,
+			)
+		);
 
 		$this->assertHitsLogged(
 			array(

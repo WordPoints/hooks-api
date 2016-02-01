@@ -136,6 +136,7 @@ class WordPoints_Hook_Fire {
 					AND `event` = %s
 					AND `reactor` = %s
 					AND `reaction_type` = %s
+					AND `reaction_context_id` = %s
 					AND `reaction_id` = %d
 					AND `superseded_by` IS NULL
 				"
@@ -144,6 +145,7 @@ class WordPoints_Hook_Fire {
 				, $this->reaction->get_event_slug()
 				, $this->reaction->get_reactor_slug()
 				, $this->reaction->get_storage_group_slug()
+				, wp_json_encode( $this->reaction->get_context_id() )
 				, $this->reaction->ID
 			)
 		);

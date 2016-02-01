@@ -13,16 +13,14 @@
  * @since 1.0.0
  */
 class WordPoints_PHPUnit_Mock_Entity_Context_OutOfState
-	extends WordPoints_PHPUnit_Mock_Entity_Context {
+	extends WordPoints_Entity_Context {
 
 	/**
-	 * The ID of the current context.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @var string|int
 	 */
-	public $current_id = false;
+	public function get_current_id() {
+		return false;
+	}
 }
 
 // EOF

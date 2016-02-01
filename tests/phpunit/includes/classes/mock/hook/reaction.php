@@ -20,6 +20,27 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction_Opt
 	 * @var WordPoints_PHPUnit_Mock_Hook_Reaction_Storage
 	 */
 	public $storage;
+
+	/**
+	 * The ID of the context in which this reaction exists.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	public $context_id;
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_context_id() {
+
+		if ( isset( $this->context_id ) ) {
+			return $this->context_id;
+		}
+
+		return parent::get_context_id();
+	}
 }
 
 // EOF

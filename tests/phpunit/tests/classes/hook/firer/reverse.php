@@ -370,6 +370,117 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	}
 
 	/**
+	 * Test firing an event when one reaction group from a different context ID.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_do_event_reaction_group_different_context_id() {
+
+		$this->mock_apps();
+
+		$hooks = wordpoints_hooks();
+
+		$hooks->extensions->register(
+			'test_extension'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		$hooks->extensions->register(
+			'another'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		$this->factory->wordpoints->hook_reactor->create();
+
+		$hooks->reaction_groups->register(
+			'test_reactor'
+			, 'standard'
+			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted'
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'slug' => 'another' )
+		);
+
+		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reactor' => 'another' )
+		);
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$firer = new WordPoints_Hook_Firer( 'fire' );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		// The reactors should have been hit.
+		$reactor = $hooks->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reaction_id' => $reaction->ID,
+				'reaction_context_id' => $reaction->get_context_id(),
+			)
+		);
+
+		$reactor = $hooks->reactors->get( 'another' );
+
+		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reactor' => 'another',
+				'reaction_id' => $another_reaction->ID,
+			)
+		);
+
+		// Change the storage group's context ID.
+		WordPoints_PHPUnit_Mock_Entity_Context::$current_id = 2;
+
+		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		// The extensions should have each been called only once.
+		$extension = $hooks->extensions->get( 'test_extension' );
+
+		$this->assertCount( 1, $extension->after_reverse );
+
+		$extension = $hooks->extensions->get( 'another' );
+
+		$this->assertCount( 1, $extension->after_reverse );
+
+		// The first reactor should not have been hit.
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'reverse',
+				'reaction_id' => $reaction->ID,
+				'reaction_context_id' => $reaction->get_context_id(),
+			)
+			, 0
+		);
+
+		// The other reactor should have one hit.
+		$reactor = $hooks->reactors->get( 'another' );
+
+		$this->assertCount( 1, $reactor->reverse_hits );
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'reverse',
+				'reactor' => 'another',
+				'reaction_id' => $another_reaction->ID,
+				'reaction_context_id' => $another_reaction->get_context_id(),
+			)
+		);
+	}
+
+	/**
 	 * Test firing an event when one reaction no longer exists.
 	 *
 	 * @since 1.0.0
@@ -610,7 +721,14 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			array( 'reactor' => 'another' )
 		);
 
-		$event_args = new WordPoints_Hook_Event_Args( array() );
+		$entity_slug = $this->factory->wordpoints->entity->create();
+
+		$event_args = new WordPoints_Hook_Event_Args(
+			array( new WordPoints_Hook_Arg( $entity_slug ) )
+		);
+
+		$entity = $event_args->get_from_hierarchy( array( $entity_slug ) );
+		$entity->set_the_value( 1 );
 
 		$firer = new WordPoints_Hook_Firer( 'fire' );
 
@@ -622,7 +740,11 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
+			array(
+				'firer' => 'fire',
+				'reaction_id' => $reaction->ID,
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json( $event_args ),
+			)
 		);
 
 		$reactor = $hooks->reactors->get( 'another' );
@@ -634,19 +756,14 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 				'firer' => 'fire',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json( $event_args ),
 			)
 		);
 
 		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
 
-		// Change the event args.
-		$event_args = new WordPoints_Hook_Event_Args(
-			array(
-				new WordPoints_Hook_Arg(
-					$this->factory->wordpoints->entity->create()
-				)
-			)
-		);
+		// Change the event arg ID.
+		$entity->set_the_value( 2 );
 
 		$firer->do_event( 'test_event', $event_args );
 
@@ -665,7 +782,11 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 0, $reactor->reverse_hits );
 
 		$this->assertHitsLogged(
-			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
+			array(
+				'firer' => 'reverse',
+				'reaction_id' => $reaction->ID,
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json( $event_args ),
+			)
 			, 0
 		);
 
@@ -687,6 +808,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 				'firer' => 'reverse',
 				'reactor' => 'another',
 				'reaction_id' => $another_reaction->ID,
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json( $event_args ),
 			)
 			, 0
 		);

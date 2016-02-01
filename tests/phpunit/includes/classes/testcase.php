@@ -93,6 +93,8 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 				$GLOBALS[ $key ] = $value;
 			}
 		}
+
+		WordPoints_PHPUnit_Mock_Entity_Context::$current_id = 1;
 	}
 
 	/**

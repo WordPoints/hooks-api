@@ -21,13 +21,13 @@ class WordPoints_PHPUnit_Mock_Entity_Context extends WordPoints_Entity_Context {
 	 *
 	 * @var string|int
 	 */
-	public $current_id;
+	public static $current_id = 1;
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_current_id() {
-		return $this->current_id;
+		return self::$current_id;
 	}
 
 	/**

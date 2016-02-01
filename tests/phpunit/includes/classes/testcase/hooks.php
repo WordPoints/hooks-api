@@ -215,11 +215,21 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 				'event' => 'test_event',
 				'reactor' => 'test_reactor',
 				'reaction_type' => 'standard',
+				'reaction_context_id' => array( 'site' => 1, 'network' => 1 ),
 				'reaction_id' => 1,
-				'superseded_by' => null,
 			)
 			, $data
 		);
+
+		$data['reaction_context_id'] = wp_json_encode(
+			$data['reaction_context_id']
+		);
+
+		if ( is_array( $data['primary_arg_guid'] ) ) {
+			$data['primary_arg_guid'] = wp_json_encode(
+				$data['primary_arg_guid']
+			);
+		}
 
 		ksort( $data );
 
@@ -231,6 +241,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 					WHERE `event` = %s
 					AND `firer` = %s
 					AND `primary_arg_guid` = %s
+					AND `reaction_context_id` = %s
 					AND `reaction_id` = %d
 					AND `reaction_type` = %s
 					AND `reactor` = %s

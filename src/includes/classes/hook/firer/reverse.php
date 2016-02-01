@@ -31,7 +31,10 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 
 			$reactions = $reactor->get_reaction_group( $hit->reaction_type );
 
-			if ( ! $reactions ) {
+			if (
+				! $reactions
+				|| wp_json_encode( $reactions->get_context_id() ) !== $hit->reaction_context_id
+			) {
 				continue;
 			}
 
