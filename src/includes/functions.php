@@ -802,6 +802,8 @@ function wordpoints_parse_dynamic_slug( $slug ) {
  *
  * Some entities might exist in other contexts entirely.
  *
+ * The context IDs are returned in ascending hierarchical order.
+ *
  * @since 1.0.0
  *
  * @param string $slug The slug of the context you want to get the current GUID of.

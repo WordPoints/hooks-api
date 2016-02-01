@@ -71,6 +71,25 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			, $entity->get_the_attr_value( $data['human_id_field'] )
 		);
 
+		if ( isset( $data['context'] ) ) {
+
+			$this->assertSame( $data['the_context'], $entity->get_the_context() );
+
+		} else {
+
+			$the_context = array(
+				$data['slug'] => $the_id,
+				'site' => 1,
+				'network' => 1,
+			);
+
+			$this->assertSame( $the_context, $entity->get_the_guid() );
+
+			unset( $the_context[ $data['slug'] ] );
+
+			$this->assertSame( $the_context, $entity->get_the_context() );
+		}
+
 		$this->assertTrue( $entity->set_the_value( $the_id ) );
 		$this->assertEquals( $the_id, $entity->get_the_value() );
 		$this->assertEquals( $the_id, $entity->get_the_id() );
@@ -187,6 +206,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'id_field'       => 'ID',
 					'human_id_field' => 'display_name',
 					'context'        => '',
+					'the_context'    => array(),
 					'create_func'    => array( $factory->user, 'create_and_get' ),
 					'delete_func'    => array( $this, 'delete_user' ),
 					'children'       => array(
@@ -310,6 +330,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'id_field'       => 'blog_id',
 					'human_id_field' => 'blogname',
 					'context'        => 'network',
+					'the_context'    => array( 'network' => 1 ),
 					'create_func'    => array( $this, 'create_site' ),
 					'delete_func'    => array( $this, 'delete_site' ),
 				),

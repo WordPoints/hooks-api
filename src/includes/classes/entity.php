@@ -382,6 +382,9 @@ abstract class WordPoints_Entity
 	 * The GUID is an array of values that includes the GUID of the entity context
 	 * in addition to the ID of the entity itself.
 	 *
+	 * The entity ID is first in the array, then the context IDs in ascending
+	 * hierarchical order.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @return array|false|null The GUID, false if it could not be determined, or
@@ -395,7 +398,7 @@ abstract class WordPoints_Entity
 			return $guid;
 		}
 
-		$guid[ $this->slug ] = $this->get_the_id();
+		$guid = array( $this->slug => $this->get_the_id() ) + $guid;
 
 		return $guid;
 	}
