@@ -898,7 +898,13 @@ function wordpoints_hooks_get_event_primary_arg_guid_json( WordPoints_Hook_Event
 		return '';
 	}
 
-	return wp_json_encode( $entity->get_the_guid() );
+	$the_guid = $entity->get_the_guid();
+
+	if ( ! $the_guid ) {
+		return '';
+	}
+
+	return wp_json_encode( $the_guid );
 }
 
 // EOF

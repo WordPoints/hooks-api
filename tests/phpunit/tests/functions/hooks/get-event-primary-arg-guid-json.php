@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * Test case for wordpoints_hooks_get_event_primary_arg_guid_json().
+ *
+ * @package wordpoints-hooks-api
+ * @since   1.0.0
+ */
+
+/**
+ * Tests wordpoints_hooks_get_event_primary_arg_guid_json().
+ *
+ * @since 1.0.0
+ *
+ * @covers ::wordpoints_hooks_get_event_primary_arg_guid_json
+ */
+class WordPoints_Hooks_Get_Event_Primary_Arg_GUID_JSON_Function_Test
+	extends WordPoints_PHPUnit_TestCase {
+
+	/**
+	 * Test that it returns the GUID serialized as JSON.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_returns_json_guid() {
+
+		$this->mock_apps();
+
+		$entity_slug = $this->factory->wordpoints->entity->create();
+
+		$arg = new WordPoints_Hook_Arg( $entity_slug );
+
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+		$event_args->get_from_hierarchy( array( $entity_slug ) )->set_the_value( 5 );
+
+		$guid = wordpoints_hooks_get_event_primary_arg_guid_json( $event_args );
+
+		$this->assertEquals( '{"test_entity":5,"test_context":null}', $guid );
+	}
+
+	/**
+	 * Test that it returns an empty string if the event doesn't have a primary arg.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_no_primary_arg() {
+
+		$this->mock_apps();
+
+		$entity_slug = $this->factory->wordpoints->entity->create();
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( $entity_slug );
+		$arg->get_entity()->set_the_value( 5 );
+		$arg->is_stateful = true;
+
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+
+		$guid = wordpoints_hooks_get_event_primary_arg_guid_json( $event_args );
+
+		$this->assertEquals( '', $guid );
+	}
+
+	/**
+	 * Test that it returns an empty string if the entity GUID isn't set.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_entity_guid_not_set() {
+
+		$this->mock_apps();
+
+		$entity_slug = $this->factory->wordpoints->entity->create();
+
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
+		);
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( $entity_slug );
+		$arg->get_entity()->set_the_value( 5 );
+		$arg->is_stateful = true;
+
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+
+		$guid = wordpoints_hooks_get_event_primary_arg_guid_json( $event_args );
+
+		$this->assertEquals( '', $guid );
+	}
+}
+
+// EOF
