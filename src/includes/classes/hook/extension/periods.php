@@ -274,7 +274,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 */
 	protected function get_period( $period_id ) {
 
-		$period = wp_cache_get( $period_id, 'wordpoints_hook_period' );
+		$period = wp_cache_get( $period_id, 'wordpoints_hook_periods' );
 
 		if ( ! $period ) {
 
@@ -296,12 +296,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			if ( ! $period ) {
 				return false;
 			}
-
-			wp_cache_set(
-				"{$period->reaction_id}-{$period->signature}"
-				, $period->id
-				, 'wordpoints_hook_period_ids'
-			);
 
 			wp_cache_set( $period->id, $period, 'wordpoints_hook_periods' );
 		}
@@ -330,7 +324,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		$cache_key = wp_json_encode( $reaction_guid ) . "-{$signature}";
 
 		// Before we run the query, we try to lookup the ID in the cache.
-		$period_id = wp_cache_get( $cache_key, 'wordpoints_hook_period_ids' );
+		$period_id = wp_cache_get( $cache_key, 'wordpoints_hook_period_ids_by_reaction' );
 
 		// If we found it, we can retrieve the period by ID instead.
 		if ( $period_id ) {
@@ -367,7 +361,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			return false;
 		}
 
-		wp_cache_set( $cache_key, $period->id, 'wordpoints_hook_period_ids' );
+		wp_cache_set( $cache_key, $period->id, 'wordpoints_hook_period_ids_by_reaction' );
 		wp_cache_set( $period->id, $period, 'wordpoints_hook_periods' );
 
 		return $period;
@@ -457,7 +451,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		wp_cache_set(
 			wp_json_encode( $fire->reaction->get_guid() ) . "-{$signature}"
 			, $period_id
-			, 'wordpoints_hook_period_ids'
+			, 'wordpoints_hook_period_ids_by_reaction'
 		);
 
 		return $period_id;

@@ -909,4 +909,25 @@ function wordpoints_hooks_get_event_primary_arg_guid_json( WordPoints_Hook_Event
 	return wp_json_encode( $the_guid );
 }
 
+/**
+ * Register the global cache groups.
+ *
+ * @since 1.0.0
+ *
+ * @WordPress\action init 5 Earlier than the default so that the groups will be
+ *                          registered before any other code runs.
+ */
+function wordpoints_hooks_api_add_global_cache_groups() {
+
+	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
+
+		wp_cache_add_global_groups(
+			array(
+				'wordpoints_hook_periods',
+				'wordpoints_hook_period_ids_by_reaction',
+			)
+		);
+	}
+}
+
 // EOF

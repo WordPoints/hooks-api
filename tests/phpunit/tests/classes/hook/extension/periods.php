@@ -997,6 +997,135 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 	}
 
 	/**
+	 * Test that caching of the periods is used.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_caching() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->extensions->register(
+			'periods'
+			, 'WordPoints_Hook_Extension_Periods'
+		);
+
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		$event_args = new WordPoints_Hook_Event_Args(
+			array( new WordPoints_Hook_Arg( 'test_entity' ) )
+		);
+
+		$get_period_queries = new WordPoints_Mock_Filter();
+		$get_period_queries->count_callback = array( $this, 'is_get_period_query' );
+		add_filter( 'query', array( $get_period_queries, 'filter' ) );
+
+		$get_by_reaction_queries = new WordPoints_Mock_Filter();
+		$get_by_reaction_queries->count_callback = array( $this, 'is_get_period_by_reaction_query' );
+		add_filter( 'query', array( $get_by_reaction_queries, 'filter' ) );
+
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 0, $get_period_queries->call_count );
+		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
+
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 1, $get_period_queries->call_count );
+		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 1, $get_period_queries->call_count );
+		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
+
+		$this->assertCount( 1, $test_reactor->hits );
+	}
+
+	/**
+	 * Test should_hit() when the period isn't cached.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_should_hit_uncached() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->extensions->register(
+			'periods'
+			, 'WordPoints_Hook_Extension_Periods'
+		);
+
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		$event_args = new WordPoints_Hook_Event_Args(
+			array( new WordPoints_Hook_Arg( 'test_entity' ) )
+		);
+
+		$get_period_queries = new WordPoints_Mock_Filter();
+		$get_period_queries->count_callback = array( $this, 'is_get_period_query' );
+		add_filter( 'query', array( $get_period_queries, 'filter' ) );
+
+		$get_by_reaction_queries = new WordPoints_Mock_Filter();
+		$get_by_reaction_queries->count_callback = array( $this, 'is_get_period_by_reaction_query' );
+		add_filter( 'query', array( $get_by_reaction_queries, 'filter' ) );
+
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 0, $get_period_queries->call_count );
+		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
+
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$this->flush_cache();
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 0, $get_period_queries->call_count );
+		$this->assertEquals( 2, $get_by_reaction_queries->call_count );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 0, $get_period_queries->call_count );
+		$this->assertEquals( 2, $get_by_reaction_queries->call_count );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertEquals( 0, $get_period_queries->call_count );
+		$this->assertEquals( 2, $get_by_reaction_queries->call_count );
+
+		$this->assertCount( 1, $test_reactor->hits );
+	}
+
+	/**
 	 * Travel forward in time by modifying the hit time of a period.
 	 *
 	 * @since 1.0.0
@@ -1017,6 +1146,51 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$this->assertEquals( 1, $updated );
+
+		// The periods cache will still hold the old date.
+		$this->flush_cache();
+	}
+
+	/**
+	 * Check whether a database query is to retrieve a period.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $sql The database query string.
+	 *
+	 * @return bool Whether the query is to retrieve a period.
+	 */
+	public function is_get_period_query( $sql ) {
+
+		global $wpdb;
+
+		return false !== strpos( $sql, "SELECT *, `period`.`id` AS `id`
+						FROM `{$wpdb->wordpoints_hook_periods}` AS `period`
+						INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
+							ON `hit`.`id` = `period`.`hit_id`
+						WHERE `period`.`id` "
+		);
+	}
+
+	/**
+	 * Check whether a database query is to retrieve a period by reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $sql The database query string.
+	 *
+	 * @return bool Whether the query is to get a period by reaction.
+	 */
+	public function is_get_period_by_reaction_query( $sql ) {
+
+		global $wpdb;
+
+		return false !== strpos( $sql, "SELECT *, `period`.`id` AS `id`
+					FROM `{$wpdb->wordpoints_hook_periods}` AS `period`
+					INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
+						ON `hit`.`id` = period.`hit_id`
+					WHERE `period`.`signature` "
+		);
 	}
 }
 

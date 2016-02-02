@@ -25,6 +25,8 @@ add_action( 'wordpoints_init_app_registry-hooks-conditions', 'wordpoints_hook_co
 
 add_action( 'wordpoints_modules_loaded', 'wordpoints_init_hooks' );
 
+add_action( 'init', 'wordpoints_hooks_api_add_global_cache_groups', 5 );
+
 add_filter( 'wordpoints_user_can_view_points_log', 'wordpoints_hooks_user_can_view_points_log' );
 
 // EOF
