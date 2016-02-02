@@ -41,11 +41,11 @@ interface WordPoints_Hook_ReactionI {
 	public function get_guid();
 
 	/**
-	 * Check whether this reaction is network-wide.
+	 * Get the context of this reaction.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool Whether this reaction is network-wide.
+	 * @return array|false The context of this reaction, or false if out of context.
 	 */
 	public function get_context_id();
 
