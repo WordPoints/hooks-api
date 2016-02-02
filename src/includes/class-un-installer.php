@@ -31,11 +31,10 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 			'tables' => array(
 				'wordpoints_hook_periods' => '
 					id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-					reaction_id BIGINT(20) NOT NULL,
+					hit_id BIGINT(20) UNSIGNED NOT NULL,
 					signature CHAR(64) NOT NULL,
-					hit_time DATETIME NOT NULL,
 					PRIMARY KEY  (id),
-					KEY period_signature (reaction_id,signature(8))',
+					KEY period_signature (hit_id,signature(8))',
 				'wordpoints_hook_hits' => '
 					id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					firer VARCHAR(255) NOT NULL,

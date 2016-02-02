@@ -328,6 +328,8 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, $reaction
 		);
 
+		$fire->hit();
+
 		$extension->after_hit( $fire );
 
 		$this->assertNull( $event_args->get_current() );
@@ -349,7 +351,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		global $wpdb;
 
 		$results = $wpdb->get_results(
-			"SELECT * FROM `{$wpdb->wordpoints_hook_periods}`"
+			"
+				SELECT `hit`.`reaction_id`, `hit`.`date`, `period`.`signature`
+				FROM `{$wpdb->wordpoints_hook_periods}` AS `period`
+				INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
+					ON `hit`.`id` = period.`hit_id`
+			"
 		);
 
 		$this->assertCount( count( $periods ), $results );
@@ -361,7 +368,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			$now = current_time( 'timestamp' );
 
 			$this->assertEquals( $reaction->ID, $results[ $index ]->reaction_id );
-			$this->assertLessThanOrEqual( 2, $now - strtotime( $results[ $index ]->hit_time, $now ) );
+			$this->assertLessThanOrEqual( 2, $now - strtotime( $results[ $index ]->date, $now ) );
 			$this->assertEquals( $period['signature'], $results[ $index ]->signature );
 		}
 	}
@@ -483,13 +490,15 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
-		$this->assertCount( 1, wordpoints_hooks()->reactors->get( 'test_reactor' )->hits );
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
 
-		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 1 );
 
 		$firer->do_event( 'test_event', $event_args );
 
-		$this->assertCount( 2, wordpoints_hooks()->reactors->get( 'test_reactor' )->hits );
+		$this->assertCount( 2, $test_reactor->hits );
 	}
 
 	/**
@@ -626,6 +635,192 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 	}
 
 	/**
+	 * Test that the periods are per-reactor.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_periods_per_reactor() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->extensions->register(
+			'periods'
+			, 'WordPoints_Hook_Extension_Periods'
+		);
+
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$event_args->add_entity(
+			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
+		);
+
+		wordpoints_hooks()->events->args->register(
+			'test_event'
+			, 'another:test_entity'
+			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
+		);
+
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$firer->do_event( 'test_event', $event_args );
+
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		// Create another reaction for another reactor.
+		$settings['reactor'] = 'another_reactor';
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $other_reaction );
+
+		$this->assertEquals( $reaction->ID, $other_reaction->ID );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$other_reactor = wordpoints_hooks()->reactors->get( 'another_reactor' );
+
+		$this->assertCount( 1, $other_reactor->hits );
+	}
+
+	/**
+	 * Test that the periods are per-reaction group.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_periods_per_reaction_group() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->extensions->register(
+			'periods'
+			, 'WordPoints_Hook_Extension_Periods'
+		);
+
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$event_args->add_entity(
+			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
+		);
+
+		wordpoints_hooks()->events->args->register(
+			'test_event'
+			, 'another:test_entity'
+			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
+		);
+
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$firer->do_event( 'test_event', $event_args );
+
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		// Create another reaction for a different reaction group.
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reaction_group' => 'test_group' )
+		);
+
+		$this->assertEquals( 'test_group', $other_reaction->get_storage_group_slug() );
+		$this->assertEquals( $reaction->ID, $other_reaction->ID );
+		$this->assertEquals(
+			$reaction->get_context_id()
+			, $other_reaction->get_context_id()
+		);
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertCount( 2, $test_reactor->hits );
+	}
+
+	/**
+	 * Test that the periods are per-reaction context ID.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_periods_per_reaction_context_id() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->extensions->register(
+			'periods'
+			, 'WordPoints_Hook_Extension_Periods'
+		);
+
+		$settings = array(
+			'periods' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			'target'  => array( 'test_entity' ),
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		wordpoints_hooks()->reaction_groups->register(
+			$reaction->get_reactor_slug()
+			, $reaction->get_storage_group_slug()
+			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted'
+		);
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$event_args->add_entity(
+			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
+		);
+
+		wordpoints_hooks()->events->args->register(
+			'test_event'
+			, 'another:test_entity'
+			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
+		);
+
+		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$firer->do_event( 'test_event', $event_args );
+
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		// Then perform the event with a different reaction context ID.
+		WordPoints_PHPUnit_Mock_Entity_Context::$current_id = 5;
+
+		$firer->do_event( 'test_event', $event_args );
+
+		$this->assertCount( 2, $test_reactor->hits );
+	}
+
+	/**
 	 * Test that the periods are per arg value.
 	 *
 	 * @since 1.0.0
@@ -722,7 +917,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
+		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 1 );
 
 		// Increase the length.
 		$reaction->update_meta(
@@ -784,7 +979,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$this->fast_forward( $reaction->ID, MINUTE_IN_SECONDS + 1 );
+		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 1 );
 
 		$firer->do_event( 'test_event', $event_args );
 
@@ -806,17 +1001,17 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $reaction_id The ID of the reaction the period is for.
-	 * @param int $seconds     The number of seconds to travel forward.
+	 * @param int $hit_id  The ID of the reaction the period is for.
+	 * @param int $seconds The number of seconds to travel forward.
 	 */
-	protected function fast_forward( $reaction_id, $seconds ) {
+	protected function fast_forward( $hit_id, $seconds ) {
 
 		global $wpdb;
 
 		$updated = $wpdb->update(
-			$wpdb->wordpoints_hook_periods
-			, array( 'hit_time' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $seconds ) )
-			, array( 'reaction_id' => $reaction_id )
+			$wpdb->wordpoints_hook_hits
+			, array( 'date' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $seconds ) )
+			, array( 'id' => $hit_id )
 			, array( '%s' )
 			, array( '%d' )
 		);

@@ -43,12 +43,9 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 		$reactors = $hooks->reactors;
 
 		if ( ! $reactors->is_registered( $args['reactor'] ) ) {
-
-			if ( 'test_reactor' === $args['reactor'] ) {
-				$this->factory->hook_reactor->create();
-			} else {
-				return false;
-			}
+			$this->factory->hook_reactor->create(
+				array( 'slug' => $args['reactor'] )
+			);
 		}
 
 		if ( ! $hooks->events->is_registered( $args['event'] ) ) {

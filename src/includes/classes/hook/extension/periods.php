@@ -220,7 +220,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 
 		$now = current_time( 'timestamp' );
-		$hit_time = strtotime( $period->hit_time, $now );
+		$hit_time = strtotime( $period->date, $now );
 
 		if ( ! empty( $settings['relative'] ) ) {
 			return ( $hit_time < $now - $settings['length'] );
@@ -283,9 +283,11 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 			$period = $wpdb->get_row(
 				$wpdb->prepare(
 					"
-						SELECT `id`, `reaction_id`, `signature`, `hit_time`
-						FROM `{$wpdb->wordpoints_hook_periods}`
-						WHERE `id` = %d
+						SELECT *, `period`.`id` AS `id`
+						FROM `{$wpdb->wordpoints_hook_periods}` AS `period`
+						INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
+							ON `hit`.`id` = `period`.`hit_id`
+						WHERE `period`.`id` = %d
 					"
 					, $period_id
 				)
@@ -308,7 +310,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	}
 
 	/**
-	 * Get a period from the database by args reaction ID.
+	 * Get a period from the database by reaction.
 	 *
 	 * @since 1.0.0
 	 *
@@ -323,9 +325,9 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		WordPoints_Hook_Reaction $reaction
 	) {
 
-		$reaction_id = $reaction->ID;
+		$reaction_guid = $reaction->get_guid();
 
-		$cache_key = "{$reaction_id}-{$signature}";
+		$cache_key = wp_json_encode( $reaction_guid ) . "-{$signature}";
 
 		// Before we run the query, we try to lookup the ID in the cache.
 		$period_id = wp_cache_get( $cache_key, 'wordpoints_hook_period_ids' );
@@ -341,15 +343,23 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		$period = $wpdb->get_row(
 			$wpdb->prepare(
 				"
-					SELECT `id`, `reaction_id`, `signature`, `hit_time`
-					FROM `{$wpdb->wordpoints_hook_periods}`
-					WHERE `reaction_id` = %d
-						AND `signature` = %s
-					ORDER BY `hit_time`
+					SELECT *, `period`.`id` AS `id`
+					FROM `{$wpdb->wordpoints_hook_periods}` AS `period`
+					INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
+						ON `hit`.`id` = period.`hit_id`
+					WHERE `period`.`signature` = %s
+						AND `hit`.`reactor` = %s
+						AND `hit`.`reaction_type` = %s
+						AND `hit`.`reaction_context_id` = %s
+						AND `hit`.`reaction_id` = %d
+					ORDER BY `hit`.`date`
 					LIMIT 1
 				"
-				, $reaction_id
 				, $signature
+				, $reaction_guid['reactor']
+				, $reaction_guid['group']
+				, wp_json_encode( $reaction_guid['context_id'] )
+				, $reaction_guid['id']
 			)
 		);
 
@@ -380,7 +390,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 			$this->add_period(
 				$this->get_period_signature( $settings, $fire->reaction )
-				, $fire->reaction
+				, $fire
 			);
 		}
 	}
@@ -420,28 +430,22 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                    $signature The period signature.
-	 * @param WordPoints_Hook_ReactionI $reaction  The reaction object.
+	 * @param string               $signature The period signature.
+	 * @param WordPoints_Hook_Fire $fire      The fire object.
 	 *
 	 * @return false|object The period data, or false if not found.
 	 */
-	protected function add_period(
-		$signature,
-		WordPoints_Hook_ReactionI $reaction
-	) {
+	protected function add_period( $signature, WordPoints_Hook_Fire $fire ) {
 
 		global $wpdb;
-
-		$reaction_id = $reaction->ID;
 
 		$inserted = $wpdb->insert(
 			$wpdb->wordpoints_hook_periods
 			, array(
-				'reaction_id' => $reaction_id,
-				'signature'   => $signature,
-				'hit_time'    => current_time( 'mysql' ),
+				'hit_id' => $fire->hit_id,
+				'signature' => $signature,
 			)
-			, array( '%d', '%s', '%s' )
+			, array( '%d', '%s' )
 		);
 
 		if ( ! $inserted ) {
@@ -451,7 +455,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		$period_id = $wpdb->insert_id;
 
 		wp_cache_set(
-			"{$reaction_id}-{$signature}"
+			wp_json_encode( $fire->reaction->get_guid() ) . "-{$signature}"
 			, $period_id
 			, 'wordpoints_hook_period_ids'
 		);
