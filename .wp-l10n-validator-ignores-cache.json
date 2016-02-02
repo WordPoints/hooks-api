@@ -28,6 +28,7 @@
             "341": false
         },
         "] =": {
+            "343": false,
             "344": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
@@ -74,17 +75,6 @@
             }
         }
     },
-    "\/hooks-api.php": {
-        "Module Name: Hooks API\n\t\tAuthor:      J.D. Grimes\n\t\tAuthor URI:  http:\/\/codesymphony.co\/\n\t\tModule URI:  https:\/\/github.com\/WordPoints\/hooks-api\/\n\t\tVersion:     1.0.0\n\t\tLicense:     GPLv2+\n\t\tDescription: Provides a new API for hooks.": {
-            "30": {
-                "name": "WordPoints_Modules::register",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
-        }
-    },
     "\/includes\/class-un-installer.php": {
         "WordPoints_Hooks_API_Un_Installer": {
             "56": false
@@ -93,38 +83,6 @@
     "\/includes\/classes\/app.php": {
         "-": {
             "109": false
-        }
-    },
-    "\/includes\/classes\/data\/type.php": {
-        "error": {
-            "106": false
-        },
-        "min": {
-            "238": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
-        },
-        "number": {
-            "245": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 2,
-                "parentheses": 1
-            }
-        },
-        "max": {
-            "243": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
         }
     },
     "\/includes\/classes\/entity\/post\/terms.php": {
@@ -138,6 +96,15 @@
             }
         }
     },
+    "\/includes\/classes\/entity\/relationship\/dynamic.php": {
+        "\\\\": {
+            "30": false,
+            "31": false
+        },
+        "{}": {
+            "34": false
+        }
+    },
     "\/includes\/classes\/hook\/condition\/entity\/array\/contains.php": {
         "min": {
             "68": {
@@ -149,6 +116,13 @@
             }
         },
         "number": {
+            "70": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 2,
+                "parentheses": 1
+            },
             "76": {
                 "name": "array",
                 "type": "unknown",
@@ -189,6 +163,11 @@
             }
         }
     },
+    "\/includes\/classes\/hook\/event\/dynamic.php": {
+        "\\\\": {
+            "52": false
+        }
+    },
     "\/includes\/classes\/hook\/extension\/conditions.php": {
         "entity": {
             "274": false
@@ -196,11 +175,24 @@
     },
     "\/includes\/classes\/hook\/extension\/periods.php": {
         "-": {
-            "328": false
+            "330": false
+        }
+    },
+    "\/includes\/classes\/hook\/reaction\/storage\/options.php": {
+        "-": {
+            "291": false,
+            "305": false
         }
     },
     "\/includes\/classes\/hook\/reactor\/points.php": {
         "text": {
+            "32": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "36": {
                 "name": "array",
                 "type": "unknown",
@@ -226,6 +218,14 @@
                 "arg_count": 1,
                 "parentheses": 1
             }
+        }
+    },
+    "\/includes\/classes\/hook\/reactor.php": {
+        "network": {
+            "150": false
+        },
+        "site": {
+            "150": false
         }
     },
     "\/includes\/classes\/hook\/router.php": {
@@ -305,32 +305,6 @@
                 "arg_count": 0,
                 "parentheses": 1
             }
-        }
-    },
-    "\/includes\/classes\/entity\/relationship\/dynamic.php": {
-        "\\\\": {
-            "31": false
-        },
-        "{}": {
-            "34": false
-        }
-    },
-    "\/includes\/classes\/hook\/event\/dynamic.php": {
-        "\\\\": {
-            "52": false
-        }
-    },
-    "\/includes\/classes\/hook\/reaction\/storage\/options.php": {
-        "-": {
-            "305": false
-        }
-    },
-    "\/includes\/classes\/hook\/reactor.php": {
-        "network": {
-            "150": false
-        },
-        "site": {
-            "150": false
         }
     }
 }
