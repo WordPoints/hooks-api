@@ -314,15 +314,15 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                   $signature The values of the args this period
-	 *                                            relates to.
-	 * @param WordPoints_Hook_Reaction $reaction  The reaction object.
+	 * @param string                    $signature The values of the args this period
+	 *                                             relates to.
+	 * @param WordPoints_Hook_ReactionI $reaction  The reaction object.
 	 *
 	 * @return object|false The period data, or false if not found.
 	 */
 	protected function get_period_by_reaction(
 		$signature,
-		WordPoints_Hook_Reaction $reaction
+		WordPoints_Hook_ReactionI $reaction
 	) {
 
 		$reaction_guid = $reaction->get_guid();
