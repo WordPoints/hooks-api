@@ -133,6 +133,22 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	}
 
 	/**
+	 * Get the data the scripts need for the UI.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Any data that needs to be present for the scripts in the UI.
+	 */
+	public function get_ui_script_data() {
+
+		return array(
+			'slug'         => $this->get_slug(),
+			'fields'       => $this->get_settings_fields(),
+			'arg_types'    => $this->get_arg_types(),
+		);
+	}
+
+	/**
 	 * Check what context this reactor exists in.
 	 *
 	 * When a reactor is not network-wide, network reactions are not supported. For

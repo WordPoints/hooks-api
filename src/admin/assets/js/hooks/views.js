@@ -1495,6 +1495,12 @@ Reaction = Base.extend({
 			value = value.join( ',' );
 		}
 
+		var label = this.Reactor.get( 'target_label' );
+
+		if ( ! label ) {
+			label = l10n.target_label;
+		}
+
 		var field = Fields.create(
 			this.model
 			, 'target'
@@ -1502,7 +1508,7 @@ Reaction = Base.extend({
 			, {
 				type: 'select',
 				options: options,
-				label: this.Reactor.get( 'target_label' )
+				label: label
 			}
 		);
 

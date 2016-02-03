@@ -44,8 +44,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		return array(
 			'periods' => $periods,
 			'l10n' => array(
-				// TODO this should be supplied per-reactor
-				'label' => __( 'Award each user no more than once per:', 'wordpoints' ),
+				'label' => __( 'Trigger reaction no more than once per:', 'wordpoints' ),
 			),
 		);
 	}

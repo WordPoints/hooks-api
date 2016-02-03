@@ -63,6 +63,19 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_ui_script_data() {
+
+		$data = parent::get_ui_script_data();
+
+		$data['target_label'] = __( 'Award To', 'wordpoints' );
+		$data['periods_label'] = __( 'Award each user no more than once per:', 'wordpoints' );
+
+		return $data;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function validate_settings(
 		array $settings,
 		WordPoints_Hook_Reaction_Validator $validator,

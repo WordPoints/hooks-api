@@ -107,6 +107,7 @@ function wordpoints_hooks_admin_register_scripts() {
 			'deleteText'      => __( 'Delete', 'wordpoints' ),
 			'cancelText'      => __( 'Cancel', 'wordpoints' ),
 			'separator'       => __( ' » ', 'wordpoints' ),
+			'target_label'    => __( 'Target', 'wordpoints' ),
 		)
 	);
 
@@ -311,12 +312,7 @@ function wordpoints_hooks_ui_setup_script_data() {
 	foreach ( $hooks->reactors->get_all() as $slug => $reactor ) {
 
 		if ( $reactor instanceof WordPoints_Hook_Reactor ) {
-			$reactor_data[ $slug ] = array(
-				'slug'         => $reactor->get_slug(),
-				'fields'       => $reactor->get_settings_fields(),
-				'arg_types'    => $reactor->get_arg_types(),
-				'target_label' => __( 'Award To', 'wordpoints' ),
-			);
+			$reactor_data[ $slug ] = $reactor->get_ui_script_data();
 		}
 
 		if ( wp_script_is( "wordpoints-hooks-reactor-{$slug}", 'registered' ) ) {

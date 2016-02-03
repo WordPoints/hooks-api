@@ -46,6 +46,12 @@ Periods = Extension.extend({
 
 			var name = [ 'periods', 0, 'length' ];
 
+			var label = reaction.Reactor.get( 'periods_label' );
+
+			if ( ! label ) {
+				label = this.data.l10n.label;
+			}
+
 			$periods.find( '.periods' ).html(
 				Fields.create(
 					reaction.model
@@ -54,7 +60,7 @@ Periods = Extension.extend({
 					, {
 						type: 'select',
 						options: this.data.periods,
-						label: this.data.l10n.label
+						label: label
 					}
 				)
 			);
