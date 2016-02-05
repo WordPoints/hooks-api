@@ -80,8 +80,7 @@ Condition = Base.extend({
 		fieldName.push( 'type' );
 
 		fields += Fields.create(
-			this.model.reaction
-			, fieldName
+			fieldName
 			, this.model.get( 'type' )
 			, { type: 'hidden' }
 		);

@@ -30,7 +30,6 @@ Points = Reactor.extend({
 		_.forEach( this.get( 'fields' ), function ( field, name ) {
 
 			fields += Fields.create(
-				reaction.model,
 				name,
 				reaction.model.get( name ),
 				field

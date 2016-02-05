@@ -69,8 +69,7 @@ Condition = Backbone.Model.extend({
 			fieldName.push( name );
 
 			fieldsHTML += Fields.create(
-				condition.model.reaction
-				, fieldName
+				fieldName
 				, condition.model.attributes.settings[ name ]
 				, setting
 			);
@@ -1264,8 +1263,7 @@ Condition = Base.extend({
 		fieldName.push( 'type' );
 
 		fields += Fields.create(
-			this.model.reaction
-			, fieldName
+			fieldName
 			, this.model.get( 'type' )
 			, { type: 'hidden' }
 		);

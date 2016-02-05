@@ -40,8 +40,7 @@ Periods = Extension.extend({
 
 			$periods.find( '.periods' ).html(
 				Fields.create(
-					reaction.model
-					, name
+					name
 					, reaction.model.get( name )
 					, {
 						type: 'select',

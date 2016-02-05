@@ -566,14 +566,14 @@ Fields = Backbone.Model.extend({
 		};
 	},
 
-	create: function ( reaction, name, value, data ) {
+	create: function ( name, value, data ) {
 
 		if ( typeof value === 'undefined' && data['default'] ) {
 			value = data['default'];
 		}
 
 		data = _.extend(
-			{ name: this.getFieldName( reaction, name ), value: value }
+			{ name: this.getFieldName( name ), value: value }
 			, data
 		);
 
@@ -626,29 +626,18 @@ Fields = Backbone.Model.extend({
 		return $template.html();
 	},
 
-	getPrefix: function ( reaction ) {
-		// The reaction might not have been created yet, so we can't rely on the id.
-		return 'wordpoints_hook_reaction_' + reaction.cid + '_';
-	},
-
-	getFieldName: function ( reaction, field ) {
-
-		var name = this.getPrefix( reaction );
+	getFieldName: function ( field ) {
 
 		if ( _.isArray( field ) ) {
-			name += field.shift() + '[' + field.join( '][' ) + ']';
-		} else {
-			name += field;
+			field = field.shift() + '[' + field.join( '][' ) + ']';
 		}
 
-		return name;
+		return field;
 	},
 
 	getAttrSlug: function ( reaction, fieldName ) {
 
-		var pregex = new RegExp( '^' + this.getPrefix( reaction ) );
-
-		var name = fieldName.replace( pregex, '' );
+		var name = fieldName;
 
 		var nameParts = [],
 			firstBracket = name.indexOf( '[' );
@@ -675,26 +664,13 @@ Fields = Backbone.Model.extend({
 	},
 
 	// Get the data from a form as key => value pairs.
-	getFormData: function ( reaction, $form, prefix ) {
+	getFormData: function ( reaction, $form ) {
 
 		var formObj = {},
-			pregex,
 			inputs = $form.find( ':input' ).serializeArray();
 
-		if ( typeof prefix === 'undefined' ) {
-			prefix = '';
-		}
-
-		prefix = this.getPrefix( reaction ) + prefix;
-		pregex = new RegExp( '^' + prefix );
-
 		_.each( inputs, function ( input ) {
-
-			if ( ! input.name.match( pregex ) ) {
-				return;
-			}
-
-			formObj[ input.name.replace( pregex, '' ) ] = input.value;
+			formObj[ input.name ] = input.value;
 		} );
 
 		return this.arrayify( formObj );
@@ -785,7 +761,6 @@ Fields = Backbone.Model.extend({
 		_.each( this.get( 'fields' ), function ( field, name ) {
 
 			fieldsHTML += this.create(
-				reaction.model,
 				name,
 				reaction.model.get( name ),
 				field
@@ -1502,8 +1477,7 @@ Reaction = Base.extend({
 		}
 
 		var field = Fields.create(
-			this.model
-			, 'target'
+			'target'
 			, value
 			, {
 				type: 'select',
@@ -1666,7 +1640,7 @@ Reaction = Base.extend({
 					return;
 				}
 
-				fieldName = Fields.getFieldName( this.model, error.field );
+				fieldName = Fields.getFieldName( error.field );
 
 				// When a field is specified, we try to locate it.
 				$field = this.$(

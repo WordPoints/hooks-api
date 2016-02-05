@@ -28,8 +28,7 @@ Condition = Backbone.Model.extend({
 			fieldName.push( name );
 
 			fieldsHTML += Fields.create(
-				condition.model.reaction
-				, fieldName
+				fieldName
 				, condition.model.attributes.settings[ name ]
 				, setting
 			);

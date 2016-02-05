@@ -129,8 +129,7 @@ Reaction = Base.extend({
 		}
 
 		var field = Fields.create(
-			this.model
-			, 'target'
+			'target'
 			, value
 			, {
 				type: 'select',
@@ -293,7 +292,7 @@ Reaction = Base.extend({
 					return;
 				}
 
-				fieldName = Fields.getFieldName( this.model, error.field );
+				fieldName = Fields.getFieldName( error.field );
 
 				// When a field is specified, we try to locate it.
 				$field = this.$(
