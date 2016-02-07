@@ -22,9 +22,23 @@ class WordPoints_Is_Network_Context_Function_Test extends WordPoints_PHPUnit_Tes
 	protected $backup_globals = array( '_SERVER' );
 
 	/**
+	 * Test that it is false when not on multisite.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @requires WordPress !multisite
+	 */
+	public function test_not_multisite() {
+
+		$this->assertFalse( wordpoints_is_network_context() );
+	}
+
+	/**
 	 * Test that it is false by default.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPress multisite
 	 */
 	public function test_not() {
 
@@ -35,6 +49,8 @@ class WordPoints_Is_Network_Context_Function_Test extends WordPoints_PHPUnit_Tes
 	 * Test that true in the network admin.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPress multisite
 	 */
 	public function test_network_admin() {
 
@@ -46,6 +62,8 @@ class WordPoints_Is_Network_Context_Function_Test extends WordPoints_PHPUnit_Tes
 	 * Test that true for Ajax requests from the network admin.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPress multisite
 	 */
 	public function test_network_admin_ajax() {
 
@@ -62,6 +80,8 @@ class WordPoints_Is_Network_Context_Function_Test extends WordPoints_PHPUnit_Tes
 	 * Test that true in the network admin.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPress multisite
 	 */
 	public function test_has_filter() {
 

@@ -854,6 +854,10 @@ function wordpoints_entities_get_current_context_id( $slug ) {
  */
 function wordpoints_is_network_context() {
 
+	if ( ! is_multisite() ) {
+		return false;
+	}
+
 	if ( is_network_admin() ) {
 		return true;
 	}
