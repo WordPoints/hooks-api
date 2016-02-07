@@ -60,13 +60,13 @@
             }
         },
         "attr": {
-            "349": false
+            "345": false
         },
         "relationship": {
-            "354": false
+            "350": false
         },
         "entity": {
-            "375": {
+            "371": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -175,7 +175,7 @@
     },
     "\/includes\/classes\/hook\/extension\/periods.php": {
         "-": {
-            "330": false
+            "323": false
         }
     },
     "\/includes\/classes\/hook\/reaction\/storage\/options.php": {
@@ -186,13 +186,6 @@
     },
     "\/includes\/classes\/hook\/reactor\/points.php": {
         "text": {
-            "32": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "36": {
                 "name": "array",
                 "type": "unknown",
@@ -222,10 +215,10 @@
     },
     "\/includes\/classes\/hook\/reactor.php": {
         "network": {
-            "150": false
+            "166": false
         },
         "site": {
-            "150": false
+            "166": false
         }
     },
     "\/includes\/classes\/hook\/router.php": {
@@ -235,6 +228,13 @@
     },
     "\/includes\/functions.php": {
         "approved": {
+            "137": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "160": {
                 "name": "array",
                 "type": "unknown",
@@ -280,6 +280,13 @@
             }
         },
         "post\\\\": {
+            "467": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "485": {
                 "name": "array",
                 "type": "unknown",
@@ -289,6 +296,20 @@
             }
         },
         "WordPoints_Hook_Arg_Dynamic": {
+            "467": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "485": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "504": {
                 "name": "array",
                 "type": "unknown",

@@ -31,8 +31,8 @@
             "errors": false
         },
         "\/admin\/includes\/functions.php": {
-            "size": 13320,
-            "hash": "d9afc7c6c894d00ab531839f3baafd1a",
+            "size": 13191,
+            "hash": "5e1756968ccfa995f85ea23c0be5a836",
             "errors": false
         },
         "\/hooks-api.php": {
@@ -41,8 +41,8 @@
             "errors": false
         },
         "\/includes\/actions.php": {
-            "size": 1377,
-            "hash": "86f7723ba491d53de62c357631ca974d",
+            "size": 1451,
+            "hash": "412ff3adb033428a6a25e976611d9179",
             "errors": false
         },
         "\/includes\/class-un-installer.php": {
@@ -406,8 +406,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/periods.php": {
-            "size": 10077,
-            "hash": "eff3a4fc273c9b877b547ddecbe1b6ec",
+            "size": 9940,
+            "hash": "507ddf1487d78df11ba54398f0d6b7fc",
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/reversals.php": {
@@ -481,18 +481,18 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/reactioni.php": {
-            "size": 3478,
-            "hash": "5159ca9db88b89a61c692f8034405596",
+            "size": 3493,
+            "hash": "29858597ae8673bc5edbebdaf99cc3c0",
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor\/points.php": {
-            "size": 4495,
-            "hash": "cfe893fb280ed253f746eb9cc644945e",
+            "size": 4772,
+            "hash": "773dd8019b1be8d48a7e37dfb8cecc1f",
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor.php": {
-            "size": 6675,
-            "hash": "06e4891b441c71c55106d2acafb20289",
+            "size": 7037,
+            "hash": "a655e2c49087e1a198f4e99a34c2d3f7",
             "errors": false
         },
         "\/includes\/classes\/hook\/router.php": {
@@ -526,8 +526,8 @@
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 21911,
-            "hash": "28097a6deb500cd05523f81d61d397a9",
+            "size": 22423,
+            "hash": "c35a7b68ba680428e41a048cc8591c0b",
             "errors": false
         }
     },
