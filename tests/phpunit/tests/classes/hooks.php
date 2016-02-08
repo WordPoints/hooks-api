@@ -87,6 +87,8 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 	 * Test that current mode is 'network' by default in the network admin.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @requires WordPress multisite
 	 */
 	public function test_network_mode_on_if_network_admin() {
 
