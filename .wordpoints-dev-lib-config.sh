@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION != '5.4' ]]; then echo 1; else echo 0; fi)
+export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then echo 1; else echo 0; fi)
 
 wpcept-setup() {
 
