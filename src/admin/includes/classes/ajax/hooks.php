@@ -52,24 +52,113 @@ class WordPoints_Admin_Ajax_Hooks {
 	 *
 	 * @return array The hook reaction data extracted into an array.
 	 */
-	public static function prepare_hook_reaction( $reaction ) {
-
-		$reactor = $reaction->get_reactor_slug();
+	public static function prepare_hook_reaction( WordPoints_Hook_ReactionI $reaction ) {
 
 		return array_merge(
 			$reaction->get_all_meta()
 			, array(
 				'id' => $reaction->ID,
 				'event' => $reaction->get_event_slug(),
-				'reactor' => $reactor,
-				'nonce' => wp_create_nonce(
-					"wordpoints_update_hook_reaction|{$reactor}|{$reaction->ID}"
-				),
-				'delete_nonce' => wp_create_nonce(
-					"wordpoints_delete_hook_reaction|{$reactor}|{$reaction->ID}"
-				),
+				'reactor' => $reaction->get_reactor_slug(),
+				'nonce' => self::get_update_nonce( $reaction ),
+				'delete_nonce' => self::get_delete_nonce( $reaction ),
 			)
 		);
+	}
+
+	/**
+	 * Get a nonce for creating new reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_Reactor $reactor The reactor the nonce will be used to
+	 *                                         create new reactions for.
+	 *
+	 * @return string A nonce for creating a new reaction to this reactor.
+	 */
+	public static function get_create_nonce( WordPoints_Hook_Reactor $reactor ) {
+
+		return wp_create_nonce( self::get_create_nonce_action( $reactor ) );
+	}
+
+	/**
+	 * Get the action for a nonce for creating new reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_Reactor $reactor The reactor the nonce will be used to
+	 *                                         create new reactions for.
+	 *
+	 * @return string The nonce action for creating a new reaction to this reactor.
+	 */
+	public static function get_create_nonce_action(
+		WordPoints_Hook_Reactor $reactor
+	) {
+
+		return 'wordpoints_create_hook_reaction'
+		       . '|' . $reactor->get_slug()
+		       . '|' . wordpoints_hooks()->get_current_mode()
+		       . '|' . wp_json_encode( $reactor->reactions->get_context_id() );
+	}
+
+	/**
+	 * Get a nonce for updating a reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_ReactionI $reaction The reaction that will be updated.
+	 *
+	 * @return string A nonce for updating this reaction.
+	 */
+	public static function get_update_nonce( WordPoints_Hook_ReactionI $reaction ) {
+
+		return wp_create_nonce( self::get_update_nonce_action( $reaction ) );
+	}
+
+	/**
+	 * Get the action for a nonce for updating a reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_ReactionI $reaction The reaction that will be updated.
+	 *
+	 * @return string The action for a nonce for updating this reaction.
+	 */
+	public static function get_update_nonce_action(
+		WordPoints_Hook_ReactionI $reaction
+	) {
+		return 'wordpoints_update_hook_reaction|'
+		       . wp_json_encode( $reaction->get_guid() );
+	}
+
+	/**
+	 * Get a nonce for deleting a reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_ReactionI $reaction The reaction that will be deleted.
+	 *
+	 * @return string A nonce for deleting this reaction.
+	 */
+	public static function get_delete_nonce( WordPoints_Hook_ReactionI $reaction ) {
+
+		return wp_create_nonce( self::get_delete_nonce_action( $reaction ) );
+	}
+
+	/**
+	 * Get the action for a nonce for deleting a reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_ReactionI $reaction The reaction that will be deleted.
+	 *
+	 * @return string The action for a nonce for deleting this reaction.
+	 */
+	public static function get_delete_nonce_action(
+		WordPoints_Hook_ReactionI $reaction
+	) {
+		return 'wordpoints_delete_hook_reaction|'
+		       . wp_json_encode( $reaction->get_guid() );
 	}
 
 	//
@@ -120,9 +209,7 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$reactor = $this->get_reactor();
 
-		$this->verify_request(
-			"wordpoints_create_hook_reaction|{$this->reactor_slug}"
-		);
+		$this->verify_request( $this->get_create_nonce_action( $reactor ) );
 
 		$reaction = $reactor->reactions->create_reaction( $this->get_data() );
 
@@ -141,9 +228,7 @@ class WordPoints_Admin_Ajax_Hooks {
 		$reactor  = $this->get_reactor();
 		$reaction = $this->get_reaction();
 
-		$this->verify_request(
-			"wordpoints_update_hook_reaction|{$this->reactor_slug}|{$reaction->ID}"
-		);
+		$this->verify_request( $this->get_update_nonce_action( $reaction ) );
 
 		$reaction = $reactor->reactions->update_reaction(
 			$reaction->ID
@@ -165,9 +250,7 @@ class WordPoints_Admin_Ajax_Hooks {
 		$reactor  = $this->get_reactor();
 		$reaction = $this->get_reaction();
 
-		$this->verify_request(
-			"wordpoints_delete_hook_reaction|{$this->reactor_slug}|{$reaction->ID}"
-		);
+		$this->verify_request( $this->get_delete_nonce_action( $reaction ) );
 
 		$result = $reactor->reactions->delete_reaction( $reaction->ID );
 

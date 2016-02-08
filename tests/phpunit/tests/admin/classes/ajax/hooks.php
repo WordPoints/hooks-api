@@ -38,18 +38,18 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$reaction->add_meta( 'test', 'value' );
 
-		$reactor_slug = $reaction->get_reactor_slug();
+		$reaction_guid = wp_json_encode( $reaction->get_guid() );
 
 		$this->assertEquals(
 			array(
 				'id' => $reaction->ID,
 				'event' => $reaction->get_event_slug(),
-				'reactor' => $reactor_slug,
+				'reactor' => $reaction->get_reactor_slug(),
 				'nonce' => wp_create_nonce(
-					"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
+					"wordpoints_update_hook_reaction|{$reaction_guid}"
 				),
 				'delete_nonce' => wp_create_nonce(
-					"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
+					"wordpoints_delete_hook_reaction|{$reaction_guid}"
 				),
 				'test' => 'value',
 				'target' => array( 'test_entity' ),
@@ -73,9 +73,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reactor->get_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			'wordpoints_create_hook_reaction|' . $reactor_slug
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reactor );
 		$_POST['reactor'] = $reactor_slug;
 		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
 		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
@@ -98,10 +96,13 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$this->assertObjectHasAttribute( 'target', $response->data );
 		$this->assertEquals( $_POST['target'], $response->data->target );
 
+		$reaction = $reactor->reactions->get_reaction( $response->data->id );
+		$reaction_guid = wp_json_encode( $reaction->get_guid() );
+
 		$this->assertObjectHasAttribute( 'nonce', $response->data );
 		$this->assertEquals(
 			wp_create_nonce(
-				"wordpoints_update_hook_reaction|{$reactor_slug}|{$response->data->id}"
+				"wordpoints_update_hook_reaction|{$reaction_guid}"
 			)
 			, $response->data->nonce
 		);
@@ -109,7 +110,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$this->assertObjectHasAttribute( 'delete_nonce', $response->data );
 		$this->assertEquals(
 			wp_create_nonce(
-				"wordpoints_delete_hook_reaction|{$reactor_slug}|{$response->data->id}"
+				"wordpoints_delete_hook_reaction|{$reaction_guid}"
 			)
 			, $response->data->delete_nonce
 		);
@@ -124,18 +125,16 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->mock_apps();
 
-		$reactor_slug = $this->factory->wordpoints->hook_reactor->create();
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$_POST['nonce']   = wp_create_nonce(
-			'wordpoints_create_hook_reaction|' . $reactor_slug
-		);
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reactor );
+		$_POST['reactor'] = $reactor->get_slug();
 		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
 		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_create_hook_reaction' );
 	}
-	
+
 	/**
 	 * Test creating a hook reaction requires a valid nonce.
 	 *
@@ -147,9 +146,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->mock_apps();
 
-		$reactor_slug = $this->factory->wordpoints->hook_reactor->create();
-
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $this->factory->wordpoints->hook_reactor->create();
 		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
 		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
 
@@ -167,10 +164,8 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->mock_apps();
 
-		$reactor_slug = $this->factory->wordpoints->hook_reactor->create();
-
 		$_POST['nonce']   = 'invalid';
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $this->factory->wordpoints->hook_reactor->create();
 		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
 		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
 
@@ -188,10 +183,8 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->mock_apps();
 
-		$reactor_slug = $this->factory->wordpoints->hook_reactor->create();
-
-		$_POST['nonce']   = wp_create_nonce(
-			'wordpoints_create_hook_reaction|' . $reactor_slug
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce(
+			$this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
 		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
@@ -210,10 +203,8 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->mock_apps();
 
-		$reactor_slug = $this->factory->wordpoints->hook_reactor->create();
-
-		$_POST['nonce']   = wp_create_nonce(
-			'wordpoints_create_hook_reaction|' . $reactor_slug
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce(
+			$this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$_POST['reactor'] = 'invalid';
 		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
@@ -233,12 +224,10 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->mock_apps();
 
-		$reactor_slug = $this->factory->wordpoints->hook_reactor->create();
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$_POST['nonce']   = wp_create_nonce(
-			'wordpoints_create_hook_reaction|' . $reactor_slug
-		);
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reactor );
+		$_POST['reactor'] = $reactor->get_slug();
 		$_POST['event']   = 'invalid';
 		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
 
@@ -272,19 +261,15 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
 		$_POST['target']  = array( 'current:test_entity');
 
@@ -311,19 +296,15 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
 		$_POST['target']  = array( 'current:test_entity');
 
@@ -380,8 +361,6 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
@@ -390,7 +369,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$_POST['nonce']   = 'invalid';
 		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
 		$_POST['target']  = array( 'current:test_entity');
 
@@ -415,18 +394,14 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
+		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
 		$_POST['target']  = array( 'current:test_entity');
 
@@ -451,19 +426,15 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID + 1;
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
 		$_POST['target']  = array( 'current:test_entity');
 
@@ -488,17 +459,13 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 		$_POST['event']   = $reaction->get_event_slug();
 		$_POST['target']  = array( 'current:test_entity');
@@ -524,17 +491,13 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = 'invalid';
 		$_POST['event']   = $reaction->get_event_slug();
@@ -561,19 +524,15 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
 		wordpoints_hooks()->events->args->register(
 			$reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_update_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = 'invalid';
 		$_POST['target']  = array( 'current:test_entity');
 
@@ -614,9 +573,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reaction->get_reactor_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reactor_slug;
 
@@ -641,9 +598,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reaction->get_reactor_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reactor_slug;
 
@@ -723,9 +678,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reaction->get_reactor_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
 		$_POST['reactor'] = $reactor_slug;
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
@@ -751,9 +704,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reaction->get_reactor_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
 		$_POST['id']      = $reaction->ID + 1;
 		$_POST['reactor'] = $reactor_slug;
 
@@ -780,9 +731,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reaction->get_reactor_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
@@ -808,9 +757,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$reactor_slug = $reaction->get_reactor_slug();
 
-		$_POST['nonce']   = wp_create_nonce(
-			"wordpoints_delete_hook_reaction|{$reactor_slug}|{$reaction->ID}"
-		);
+		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = 'invalid';
 

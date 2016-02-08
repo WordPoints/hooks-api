@@ -352,7 +352,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			<div class="wordpoints-hook-reaction-group"
 				data-wordpoints-hooks-hook-event="<?php echo esc_attr( $event_slug ); ?>"
 				data-wordpoints-hooks-points-type="<?php echo esc_attr( $this->current_points_type ); ?>"
-				data-wordpoints-hooks-create-nonce="<?php echo esc_attr( wp_create_nonce( 'wordpoints_create_hook_reaction|points' ) ); ?>"
+				data-wordpoints-hooks-create-nonce="<?php echo esc_attr( WordPoints_Admin_Ajax_Hooks::get_create_nonce( $points_reactor ) ); ?>"
 				data-wordpoints-hooks-reactor="points">
 			</div>
 
