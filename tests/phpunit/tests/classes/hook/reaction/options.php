@@ -45,8 +45,8 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
+				'stores' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Store_Options',
 				),
 			)
 		);
@@ -237,8 +237,8 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Storage_Options_Network',
+				'stores' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Store_Options_Network',
 				),
 			)
 		);

@@ -342,7 +342,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 						ON `hit`.`id` = period.`hit_id`
 					WHERE `period`.`signature` = %s
 						AND `hit`.`reactor` = %s
-						AND `hit`.`reaction_type` = %s
+						AND `hit`.`reaction_store` = %s
 						AND `hit`.`reaction_context_id` = %s
 						AND `hit`.`reaction_id` = %d
 					ORDER BY `hit`.`date`
@@ -350,7 +350,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 				"
 				, $signature
 				, $reaction_guid['reactor']
-				, $reaction_guid['group']
+				, $reaction_guid['store']
 				, wp_json_encode( $reaction_guid['context_id'] )
 				, $reaction_guid['id']
 			)

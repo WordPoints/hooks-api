@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Reaction_Storage_Options_Network extends WordPoints_Hook_Reaction_Storage_Options {
+class WordPoints_Hook_Reaction_Store_Options_Network extends WordPoints_Hook_Reaction_Store_Options {
 
 	/**
 	 * @since 1.0.0

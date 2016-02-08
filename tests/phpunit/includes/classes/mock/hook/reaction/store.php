@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reaction_Storage_Options {
+class WordPoints_PHPUnit_Mock_Hook_Reaction_Store extends WordPoints_Hook_Reaction_Store_Options {
 
 	/**
 	 * @since 1.0.0
@@ -20,7 +20,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction_Storage extends WordPoints_Hook_Reac
 	protected $reaction_class = 'WordPoints_PHPUnit_Mock_Hook_Reaction';
 
 	/**
-	 * The ID of the context for this storage group.
+	 * The ID of the context for this store.
 	 *
 	 * @since 1.0.0
 	 *

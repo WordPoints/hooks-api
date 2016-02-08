@@ -19,7 +19,7 @@ add_action( 'wordpoints_init_app_registry-hooks-firers', 'wordpoints_hook_firers
 add_action( 'wordpoints_init_app_registry-hooks-events', 'wordpoints_hook_events_init' );
 add_action( 'wordpoints_init_app_registry-hooks-actions', 'wordpoints_hook_actions_init' );
 add_action( 'wordpoints_init_app_registry-hooks-reactors', 'wordpoints_hook_reactors_init' );
-add_action( 'wordpoints_init_app_registry-hooks-reaction_groups', 'wordpoints_hook_reaction_groups_init' );
+add_action( 'wordpoints_init_app_registry-hooks-reaction_stores', 'wordpoints_hook_reaction_stores_init' );
 add_action( 'wordpoints_init_app_registry-hooks-extensions', 'wordpoints_hook_extension_init' );
 add_action( 'wordpoints_init_app_registry-hooks-conditions', 'wordpoints_hook_conditions_init' );
 

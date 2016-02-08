@@ -48,7 +48,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 		$this->assertInstanceOf( 'WordPoints_Hook_Events', $hooks->events );
 		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->firers );
 		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->reactors );
-		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->reaction_groups );
+		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->reaction_stores );
 		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->extensions );
 		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->conditions );
 	}

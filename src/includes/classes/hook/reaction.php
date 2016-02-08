@@ -24,9 +24,9 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_Reaction_StorageI
+	 * @var WordPoints_Hook_Reaction_StoreI
 	 */
-	protected $storage;
+	protected $store;
 
 	//
 	// Public Methods.
@@ -35,10 +35,10 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	/**
 	 * @since 1.0.0
 	 */
-	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage ) {
+	public function __construct( $id, WordPoints_Hook_Reaction_StoreI $store ) {
 
-		$this->ID      = wordpoints_int( $id );
-		$this->storage = $storage;
+		$this->ID    = wordpoints_int( $id );
+		$this->store = $store;
 	}
 
 	/**
@@ -61,7 +61,7 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 		return array(
 			'id' => $this->ID,
 			'reactor' => $this->get_reactor_slug(),
-			'group' => $this->get_storage_group_slug(),
+			'store' => $this->get_store_slug(),
 			'context_id' => $this->get_context_id(),
 		);
 	}
@@ -70,21 +70,21 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 * @since 1.0.0
 	 */
 	public function get_reactor_slug() {
-		return $this->storage->get_reactor_slug();
+		return $this->store->get_reactor_slug();
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_storage_group_slug() {
-		return $this->storage->get_slug();
+	public function get_store_slug() {
+		return $this->store->get_slug();
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_context_id() {
-		return $this->storage->get_context_id();
+		return $this->store->get_context_id();
 	}
 }
 

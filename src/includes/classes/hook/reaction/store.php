@@ -15,10 +15,10 @@
  *
  * @since 1.0.0
  */
-abstract class WordPoints_Hook_Reaction_Storage implements WordPoints_Hook_Reaction_StorageI {
+abstract class WordPoints_Hook_Reaction_Store implements WordPoints_Hook_Reaction_StoreI {
 
 	/**
-	 * The slug of this storage group.
+	 * The slug of this store.
 	 *
 	 * @since 1.0.0
 	 *

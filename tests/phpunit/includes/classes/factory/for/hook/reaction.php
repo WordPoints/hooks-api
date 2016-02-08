@@ -64,26 +64,26 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 		/** @var WordPoints_Hook_Reactor $reactor */
 		$reactor = $reactors->get( $args['reactor'] );
 
-		if ( isset( $args['reaction_group'] ) ) {
+		if ( isset( $args['reaction_store'] ) ) {
 
-			$reaction_groups = $hooks->reaction_groups;
+			$reaction_stores = $hooks->reaction_stores;
 
-			if ( ! $reaction_groups->is_registered( $args['reactor'], $args['reaction_group'] ) ) {
-				$reaction_groups->register(
+			if ( ! $reaction_stores->is_registered( $args['reactor'], $args['reaction_store'] ) ) {
+				$reaction_stores->register(
 					'test_reactor'
-					, 'test_group'
-					, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage'
+					, 'test_store'
+					, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store'
 				);
 			}
 
-			$reactions = $reactor->get_reaction_group( $args['reaction_group'] );
+			$reactions = $reactor->get_reaction_store( $args['reaction_store'] );
 
 		} else {
 
 			$reactions = $reactor->reactions;
 		}
 
-		unset( $args['reactor'], $args['reaction_group'] );
+		unset( $args['reactor'], $args['reaction_store'] );
 
 		$reaction = $reactions->create_reaction( $args );
 

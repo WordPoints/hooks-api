@@ -22,17 +22,17 @@ interface WordPoints_Hook_ReactionI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int                               $id      The ID of a hook reaction.
-	 * @param WordPoints_Hook_Reaction_StorageI $storage The storage object.
+	 * @param int                             $id    The ID of a hook reaction.
+	 * @param WordPoints_Hook_Reaction_StoreI $store The storage object.
 	 */
-	public function __construct( $id, WordPoints_Hook_Reaction_StorageI $storage );
+	public function __construct( $id, WordPoints_Hook_Reaction_StoreI $store );
 
 	/**
 	 * Get a Globally Unique ID for this reaction.
 	 *
 	 * The GUID uniquely identifies this reaction, differentiating from any other
 	 * reaction on this multi-network. It is composed of the reaction 'id', the
-	 * 'reactor' slug, the reaction 'group', and the reaction 'context_id'.
+	 * 'reactor' slug, the reaction 'store', and the reaction 'context_id'.
 	 *
 	 * @since 1.0.0
 	 *
@@ -79,17 +79,17 @@ interface WordPoints_Hook_ReactionI {
 	public function get_reactor_slug();
 
 	/**
-	 * Get the slug of the reaction storage group this reaction belongs to.
+	 * Get the slug of the store this reaction is from.
 	 *
-	 * Each reactor can store reactions in multiple different groups. For example,
+	 * Each reactor can store reactions in multiple different stores. For example,
 	 * there are 'standard' and 'network' reactions. This method returns the slug of
-	 * the group which this reaction is from.
+	 * the store which this reaction is from.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string The storage group slug.
+	 * @return string The store slug.
 	 */
-	public function get_storage_group_slug();
+	public function get_store_slug();
 
 	/**
 	 * Get a piece of metadata for this reaction.

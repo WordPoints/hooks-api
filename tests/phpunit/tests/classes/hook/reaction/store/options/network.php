@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Test case for WordPoints_Hook_Reaction_Storage_Options_Network.
+ * Test case for WordPoints_Hook_Reaction_Store_Options_Network.
  *
  * @package wordpoints-hooks-api
  * @since   1.0.0
  */
 
 /**
- * Tests WordPoints_Hook_Reaction_Storage_Options_Network.
+ * Tests WordPoints_Hook_Reaction_Store_Options_Network.
  *
  * @since 1.0.0
  *
- * @covers WordPoints_Hook_Reaction_Storage_Options_Network
+ * @covers WordPoints_Hook_Reaction_Store_Options_Network
  */
-class WordPoints_Hook_Reaction_Storage_Options_Network_Test extends WordPoints_PHPUnit_TestCase_Hooks {
+class WordPoints_Hook_Reaction_Store_Options_Network_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
 	 * Test that network options are used.
@@ -30,8 +30,8 @@ class WordPoints_Hook_Reaction_Storage_Options_Network_Test extends WordPoints_P
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Storage_Options_Network',
+				'stores' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Store_Options_Network',
 				),
 			)
 		);

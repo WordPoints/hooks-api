@@ -276,11 +276,11 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	}
 
 	/**
-	 * Test firing an event when one reaction group is no longer registered.
+	 * Test firing an event when one reaction store is no longer registered.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_do_event_reaction_group_no_longer_registered() {
+	public function test_do_event_reaction_store_no_longer_registered() {
 
 		$this->mock_apps();
 
@@ -333,8 +333,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			)
 		);
 
-		// Deregister one reaction group.
-		$hooks->reaction_groups->deregister( 'test_reactor', 'standard' );
+		// Deregister one reaction store.
+		$hooks->reaction_stores->deregister( 'test_reactor', 'standard' );
 
 		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
 
@@ -370,11 +370,11 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	}
 
 	/**
-	 * Test firing an event when one reaction group from a different context ID.
+	 * Test firing an event when one reaction store from a different context ID.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_do_event_reaction_group_different_context_id() {
+	public function test_do_event_reaction_store_different_context_id() {
 
 		$this->mock_apps();
 
@@ -392,10 +392,10 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->factory->wordpoints->hook_reactor->create();
 
-		$hooks->reaction_groups->register(
+		$hooks->reaction_stores->register(
 			'test_reactor'
 			, 'standard'
-			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted'
+			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted'
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
@@ -439,7 +439,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			)
 		);
 
-		// Change the storage group's context ID.
+		// Change the store's context ID.
 		WordPoints_PHPUnit_Mock_Entity_Context::$current_id = 2;
 
 		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
@@ -540,7 +540,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		// Delete one reaction
 		$reactor = $hooks->reactors->get( 'test_reactor' );
-		$reactor->get_reaction_group( 'standard' )->delete_reaction( $reaction->ID );
+		$reactor->get_reaction_store( 'standard' )->delete_reaction( $reaction->ID );
 
 		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
 

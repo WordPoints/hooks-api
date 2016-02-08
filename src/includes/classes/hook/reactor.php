@@ -16,7 +16,7 @@
  *
  * @since 1.0.0
  *
- * @property-read WordPoints_Hook_Reaction_StorageI|null $reactions
+ * @property-read WordPoints_Hook_Reaction_StoreI|null $reactions
  *                Object for accessing hook reactions for this reactor based on the
  *                current network mode. If a reactor doesn't support network
  *                reactions and network mode is on, this property is not available.
@@ -59,44 +59,44 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 			return null;
 		}
 
-		$reaction_group = $this->get_reaction_group(
+		$reaction_store = $this->get_reaction_store(
 			wordpoints_hooks()->get_current_mode()
 		);
 
-		if ( ! $reaction_group ) {
+		if ( ! $reaction_store ) {
 			return null;
 		}
 
-		return $reaction_group;
+		return $reaction_store;
 	}
 
 	/**
-	 * Get a reaction group's storage object.
+	 * Get a reaction storage object.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $slug The slug of the reaction group to get.
+	 * @param string $slug The slug of the reaction store to get.
 	 *
-	 * @return WordPoints_Hook_Reaction_StorageI|false The reaction storage object.
+	 * @return WordPoints_Hook_Reaction_StoreI|false The reaction storage object.
 	 */
-	public function get_reaction_group( $slug ) {
+	public function get_reaction_store( $slug ) {
 
-		$reaction_group = wordpoints_hooks()->reaction_groups->get(
+		$reaction_store = wordpoints_hooks()->reaction_stores->get(
 			$this->slug
 			, $slug
 			, array( $this )
 		);
 
-		if ( ! $reaction_group instanceof WordPoints_Hook_Reaction_StorageI ) {
+		if ( ! $reaction_store instanceof WordPoints_Hook_Reaction_StoreI ) {
 			return false;
 		}
 
-		// Allowing access to groups out-of-context would lead to strange behavior.
-		if ( false === $reaction_group->get_context_id() ) {
+		// Allowing access to stores out-of-context would lead to strange behavior.
+		if ( false === $reaction_store->get_context_id() ) {
 			return false;
 		}
 
-		return $reaction_group;
+		return $reaction_store;
 	}
 
 	/**
@@ -173,7 +173,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * ones and any network-wide ones (if this reactor offers a network storage
 	 * class). Or, if network mode is on, it will return only the network-wide ones.
 	 *
-	 * Speaking more generally, it will return the reactions from all reaction groups
+	 * Speaking more generally, it will return the reactions from all reaction stores
 	 * that are available in the current context.
 	 *
 	 * @since 1.0.0
@@ -186,21 +186,21 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
 		$reactions = array();
 
-		$slugs = wordpoints_hooks()->reaction_groups->get_children_slugs(
+		$slugs = wordpoints_hooks()->reaction_stores->get_children_slugs(
 			$this->slug
 		);
 
 		foreach ( $slugs as $slug ) {
 
-			$storage = $this->get_reaction_group( $slug );
+			$store = $this->get_reaction_store( $slug );
 
-			if ( ! $storage ) {
+			if ( ! $store ) {
 				continue;
 			}
 
 			$reactions = array_merge(
 				$reactions
-				, $storage->get_reactions_to_event( $event_slug )
+				, $store->get_reactions_to_event( $event_slug )
 			);
 		}
 
@@ -214,7 +214,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * ones and any network-wide ones (if this reactor offers a network storage
 	 * class). Or, if network mode is on, it will return only the network-wide ones.
 	 *
-	 * Speaking more generally, it will return the reactions from all reaction groups
+	 * Speaking more generally, it will return the reactions from all reaction stores
 	 * that are available in the current context.
 	 *
 	 * @since 1.0.0
@@ -225,19 +225,19 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
 		$reactions = array();
 
-		$slugs = wordpoints_hooks()->reaction_groups->get_children_slugs(
+		$slugs = wordpoints_hooks()->reaction_stores->get_children_slugs(
 			$this->slug
 		);
 
 		foreach ( $slugs as $slug ) {
 
-			$storage = $this->get_reaction_group( $slug );
+			$store = $this->get_reaction_store( $slug );
 
-			if ( ! $storage ) {
+			if ( ! $store ) {
 				continue;
 			}
 
-			$reactions = array_merge( $reactions, $storage->get_reactions() );
+			$reactions = array_merge( $reactions, $store->get_reactions() );
 		}
 
 		return $reactions;

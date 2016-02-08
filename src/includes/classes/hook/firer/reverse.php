@@ -29,7 +29,7 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 				continue;
 			}
 
-			$reactions = $reactor->get_reaction_group( $hit->reaction_type );
+			$reactions = $reactor->get_reaction_store( $hit->reaction_store );
 
 			if (
 				! $reactions

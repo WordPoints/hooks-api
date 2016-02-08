@@ -37,19 +37,19 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	function create_object( $args ) {
 
 		$reactors = wordpoints_hooks()->reactors;
-		$reaction_groups = wordpoints_hooks()->reaction_groups;
+		$reaction_stores = wordpoints_hooks()->reaction_stores;
 
 		$slug = $args['slug'];
 		$class = $args['class'];
 
-		if ( isset( $args['groups'] ) ) {
+		if ( isset( $args['stores'] ) ) {
 
-			$groups = $args['groups'];
+			$stores = $args['stores'];
 
 		} else {
 
-			$groups = array(
-				'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage',
+			$stores = array(
+				'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store',
 			);
 
 			wordpoints_entities()->contexts->register(
@@ -58,16 +58,16 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 			);
 		}
 
-		unset( $args['slug'], $args['class'], $args['groups'] );
+		unset( $args['slug'], $args['class'], $args['stores'] );
 
 		$reactors->register( $slug, $class, $args );
 
-		foreach ( $groups as $group_slug => $group_class ) {
-			$reaction_groups->register( $slug, $group_slug, $group_class );
+		foreach ( $stores as $store_slug => $store_class ) {
+			$reaction_stores->register( $slug, $store_slug, $store_class );
 		}
 
 		// Make sure that contexts are registered, as they are needed when checking
-		// whether a reaction group should be made available.
+		// whether a reaction store should be made available.
 		wordpoints_entity_contexts_init( wordpoints_entities()->contexts );
 
 		return $slug;

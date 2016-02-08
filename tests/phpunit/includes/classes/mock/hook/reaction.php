@@ -17,9 +17,9 @@ class WordPoints_PHPUnit_Mock_Hook_Reaction extends WordPoints_Hook_Reaction_Opt
 	/**
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_PHPUnit_Mock_Hook_Reaction_Storage
+	 * @var WordPoints_PHPUnit_Mock_Hook_Reaction_Store
 	 */
-	public $storage;
+	public $store;
 
 	/**
 	 * The ID of the context in which this reaction exists.

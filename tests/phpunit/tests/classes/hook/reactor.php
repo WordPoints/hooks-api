@@ -17,55 +17,55 @@
 class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
-	 * Test getting a reaction group.
+	 * Test getting a reaction store.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_get_reaction_group() {
+	public function test_get_reaction_store() {
 
 		$this->mock_apps();
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$reaction_group = $reactor->get_reaction_group( 'standard' );
+		$reaction_store = $reactor->get_reaction_store( 'standard' );
 
 		$this->assertInstanceOf(
-			'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage'
-			, $reaction_group
+			'WordPoints_PHPUnit_Mock_Hook_Reaction_Store'
+			, $reaction_store
 		);
 
-		$this->assertEquals( 'test_reactor', $reaction_group->get_reactor_slug() );
+		$this->assertEquals( 'test_reactor', $reaction_store->get_reactor_slug() );
 	}
 
 	/**
-	 * Test getting an unregistered reaction group.
+	 * Test getting an unregistered reaction store.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_get_reaction_group_unregistered() {
+	public function test_get_reaction_store_unregistered() {
 
 		$this->mock_apps();
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
-			array( 'groups' => array() )
+			array( 'stores' => array() )
 		);
 
-		$this->assertFalse( $reactor->get_reaction_group( 'standard' ) );
+		$this->assertFalse( $reactor->get_reaction_store( 'standard' ) );
 	}
 
 	/**
-	 * Test getting a reaction group when out of context.
+	 * Test getting a reaction store when out of context.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_get_reaction_group_out_of_context() {
+	public function test_get_reaction_store_out_of_context() {
 
 		$this->mock_apps();
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				'stores' => array(
+					'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
 				),
 			)
 		);
@@ -75,7 +75,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
 		);
 
-		$this->assertFalse( $reactor->get_reaction_group( 'standard' ) );
+		$this->assertFalse( $reactor->get_reaction_store( 'standard' ) );
 	}
 
 	/**
@@ -89,18 +89,18 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$reaction_group = $reactor->reactions;
+		$reaction_store = $reactor->reactions;
 
 		$this->assertInstanceOf(
-			'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage'
-			, $reaction_group
+			'WordPoints_PHPUnit_Mock_Hook_Reaction_Store'
+			, $reaction_store
 		);
 
-		$this->assertEquals( 'test_reactor', $reaction_group->get_reactor_slug() );
+		$this->assertEquals( 'test_reactor', $reaction_store->get_reactor_slug() );
 	}
 
 	/**
-	 * Test accessing the $reactions property when no group is registered for the
+	 * Test accessing the $reactions property when no store is registered for the
 	 * current mode.
 	 *
 	 * @since 1.0.0
@@ -110,14 +110,14 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->mock_apps();
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
-			array( 'groups' => array() )
+			array( 'stores' => array() )
 		);
 
 		$this->assertNull( $reactor->reactions );
 	}
 
 	/**
-	 * Test accessing the $reactions property when the group for the current mode is
+	 * Test accessing the $reactions property when the store for the current mode is
 	 * out of context.
 	 *
 	 * @since 1.0.0
@@ -130,8 +130,8 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				'stores' => array(
+					'standard' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
 				),
 			)
 		);
@@ -160,9 +160,9 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
-					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				'stores' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Store_Options',
+					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
 				),
 			)
 		);
@@ -173,13 +173,13 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'event' => 'another' )
 		);
 
-		$custom_group = $reactor->get_reaction_group( 'custom' );
+		$custom_store = $reactor->get_reaction_store( 'custom' );
 
-		$custom_reaction = $custom_group->create_reaction(
+		$custom_reaction = $custom_store->create_reaction(
 			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
 		);
 
-		$another_custom = $custom_group->create_reaction(
+		$another_custom = $custom_store->create_reaction(
 			array( 'event' => 'another', 'target' => array( 'test_entity' ) )
 		);
 
@@ -197,7 +197,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
-	 * Test getting all reactions when some groups have none registered.
+	 * Test getting all reactions when some stores have none registered.
 	 *
 	 * @since 1.0.0
 	 */
@@ -212,9 +212,9 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
-					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				'stores' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Store_Options',
+					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
 				),
 			)
 		);
@@ -237,7 +237,7 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
-	 * Test getting reactions when a reaction group is out of context.
+	 * Test getting reactions when a reaction store is out of context.
 	 *
 	 * @since 1.0.0
 	 */
@@ -252,9 +252,9 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
-				'groups' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Storage_Options',
-					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted',
+				'stores' => array(
+					'standard' => 'WordPoints_Hook_Reaction_Store_Options',
+					'custom' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
 				),
 			)
 		);
@@ -267,13 +267,13 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertIsReaction( $another );
 
-		$custom_group = $reactor->get_reaction_group( 'custom' );
+		$custom_store = $reactor->get_reaction_store( 'custom' );
 
-		$custom_group->create_reaction(
+		$custom_store->create_reaction(
 			array( 'event' => 'test_event', 'target' => array( 'test_entity' ) )
 		);
 
-		$another_custom = $custom_group->create_reaction(
+		$another_custom = $custom_store->create_reaction(
 			array( 'event' => 'another', 'target' => array( 'test_entity' ) )
 		);
 

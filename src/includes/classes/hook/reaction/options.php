@@ -17,22 +17,22 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	/**
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_Reaction_Storage_Options
+	 * @var WordPoints_Hook_Reaction_Store_Options
 	 */
-	protected $storage;
+	protected $store;
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_event_slug() {
-		return $this->storage->get_reaction_event_from_index( $this->ID );
+		return $this->store->get_reaction_event_from_index( $this->ID );
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function update_event_slug( $event_slug ) {
-		return $this->storage->update_reaction_event_in_index(
+		return $this->store->update_reaction_event_in_index(
 			$this->ID
 			, $event_slug
 		);
@@ -116,8 +116,8 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	protected function get_settings() {
 
-		return $this->storage->get_option(
-			$this->storage->get_settings_option_name( $this->ID )
+		return $this->store->get_option(
+			$this->store->get_settings_option_name( $this->ID )
 		);
 	}
 
@@ -132,8 +132,8 @@ class WordPoints_Hook_Reaction_Options extends WordPoints_Hook_Reaction {
 	 */
 	protected function update_settings( $settings ) {
 
-		return $this->storage->update_option(
-			$this->storage->get_settings_option_name( $this->ID )
+		return $this->store->update_option(
+			$this->store->get_settings_option_name( $this->ID )
 			, $settings
 		);
 	}

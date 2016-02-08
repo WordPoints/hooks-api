@@ -289,11 +289,11 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
-	 * Test that the superseded hit must be for the same reaction group.
+	 * Test that the superseded hit must be for the same reaction store.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_hit_superseding_must_be_same_reaction_group() {
+	public function test_hit_superseding_must_be_same_reaction_store() {
 
 		$this->mock_apps();
 
@@ -308,12 +308,12 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
 
-		// Then log another hit from a different reaction group.
+		// Then log another hit from a different reaction store.
 		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
-			array( 'reaction_group' => 'test_group' )
+			array( 'reaction_store' => 'test_store' )
 		);
 
-		$this->assertEquals( 'test_group', $other_reaction->get_storage_group_slug() );
+		$this->assertEquals( 'test_store', $other_reaction->get_store_slug() );
 		$this->assertEquals( $reaction->ID, $other_reaction->ID );
 		$this->assertEquals(
 			$reaction->get_context_id()
@@ -327,7 +327,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertHitsLogged(
 			array(
 				'firer' => 'another_firer',
-				'reaction_type' => 'test_group',
+				'reaction_store' => 'test_store',
 				'reaction_id' => $reaction->ID,
 			)
 		);

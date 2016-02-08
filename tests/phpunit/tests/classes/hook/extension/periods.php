@@ -698,11 +698,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 	}
 
 	/**
-	 * Test that the periods are per-reaction group.
+	 * Test that the periods are per-reaction store.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_periods_per_reaction_group() {
+	public function test_periods_per_reaction_store() {
 
 		$this->mock_apps();
 
@@ -743,12 +743,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		// Create another reaction for a different reaction group.
+		// Create another reaction for a different reaction store.
 		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
-			array( 'reaction_group' => 'test_group' )
+			array( 'reaction_store' => 'test_store' )
 		);
 
-		$this->assertEquals( 'test_group', $other_reaction->get_storage_group_slug() );
+		$this->assertEquals( 'test_store', $other_reaction->get_store_slug() );
 		$this->assertEquals( $reaction->ID, $other_reaction->ID );
 		$this->assertEquals(
 			$reaction->get_context_id()
@@ -783,10 +783,10 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertIsReaction( $reaction );
 
-		wordpoints_hooks()->reaction_groups->register(
+		wordpoints_hooks()->reaction_stores->register(
 			$reaction->get_reactor_slug()
-			, $reaction->get_storage_group_slug()
-			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Storage_Contexted'
+			, $reaction->get_store_slug()
+			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted'
 		);
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );

@@ -100,45 +100,45 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	}
 
 	/**
-	 * Test the reaction group registration function.
+	 * Test the reaction store registration function.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @covers ::wordpoints_hook_reaction_groups_init
+	 * @covers ::wordpoints_hook_reaction_stores_init
 	 *
 	 * @requires WordPoints !network-active
 	 */
-	public function test_reaction_groups() {
+	public function test_reaction_stores() {
 
 		$this->mock_apps();
 
-		$reaction_groups = new WordPoints_Class_Registry_Children();
+		$reaction_stores = new WordPoints_Class_Registry_Children();
 
-		wordpoints_hook_reaction_groups_init( $reaction_groups );
+		wordpoints_hook_reaction_stores_init( $reaction_stores );
 
-		$this->assertTrue( $reaction_groups->is_registered( 'points', 'standard' ) );
-		$this->assertFalse( $reaction_groups->is_registered( 'points', 'network' ) );
+		$this->assertTrue( $reaction_stores->is_registered( 'points', 'standard' ) );
+		$this->assertFalse( $reaction_stores->is_registered( 'points', 'network' ) );
 	}
 
 	/**
-	 * Test the reaction group registration function with WordPoints network active.
+	 * Test the reaction store registration function with WordPoints network active.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @covers ::wordpoints_hook_reaction_groups_init
+	 * @covers ::wordpoints_hook_reaction_stores_init
 	 *
 	 * @requires WordPoints network-active
 	 */
-	public function test_reaction_groups_network_active() {
+	public function test_reaction_stores_network_active() {
 
 		$this->mock_apps();
 
-		$reaction_groups = new WordPoints_Class_Registry_Children();
+		$reaction_stores = new WordPoints_Class_Registry_Children();
 
-		wordpoints_hook_reaction_groups_init( $reaction_groups );
+		wordpoints_hook_reaction_stores_init( $reaction_stores );
 
-		$this->assertTrue( $reaction_groups->is_registered( 'points', 'standard' ) );
-		$this->assertTrue( $reaction_groups->is_registered( 'points', 'network' ) );
+		$this->assertTrue( $reaction_stores->is_registered( 'points', 'standard' ) );
+		$this->assertTrue( $reaction_stores->is_registered( 'points', 'network' ) );
 	}
 
 	/**

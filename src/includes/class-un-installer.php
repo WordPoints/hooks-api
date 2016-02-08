@@ -41,7 +41,7 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 					primary_arg_guid TEXT NOT NULL,
 					event VARCHAR(255) NOT NULL,
 					reactor VARCHAR(255) NOT NULL,
-					reaction_type VARCHAR(255) NOT NULL,
+					reaction_store VARCHAR(255) NOT NULL,
 					reaction_context_id TEXT NOT NULL,
 					reaction_id BIGINT(20) UNSIGNED NOT NULL,
 					date DATETIME NOT NULL,

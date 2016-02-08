@@ -39,27 +39,27 @@ function wordpoints_hook_reactors_init( $reactors ) {
 }
 
 /**
- * Register hook reaction groups when the reaction group registry is initialized.
+ * Register hook reaction stores when the reaction store registry is initialized.
  *
  * @since 1.0.0
  *
- * @WordPress\action wordpoints_init_app_registry-hooks-reaction_groups
+ * @WordPress\action wordpoints_init_app_registry-hooks-reaction_stores
  *
- * @param WordPoints_Class_Registry_Children $reaction_groups The group registry.
+ * @param WordPoints_Class_Registry_Children $reaction_stores The store registry.
  */
-function wordpoints_hook_reaction_groups_init( $reaction_groups ) {
+function wordpoints_hook_reaction_stores_init( $reaction_stores ) {
 
-	$reaction_groups->register(
+	$reaction_stores->register(
 		'points'
 		, 'standard'
-		, 'WordPoints_Hook_Reaction_Storage_Options'
+		, 'WordPoints_Hook_Reaction_Store_Options'
 	);
 
 	if ( is_wordpoints_network_active() ) {
-		$reaction_groups->register(
+		$reaction_stores->register(
 			'points'
 			, 'network'
-			, 'WordPoints_Hook_Reaction_Storage_Options_Network'
+			, 'WordPoints_Hook_Reaction_Store_Options_Network'
 		);
 	}
 }

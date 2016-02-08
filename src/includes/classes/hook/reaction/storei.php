@@ -15,27 +15,27 @@
  *
  * @since 1.0.0
  */
-interface WordPoints_Hook_Reaction_StorageI {
+interface WordPoints_Hook_Reaction_StoreI {
 
 	/**
 	 * Constructs the class with the reactor slug.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                  $slug    The slug of this storage group.
+	 * @param string                  $slug    The slug of this store.
 	 * @param WordPoints_Hook_Reactor $reactor The reactor the reactions belong to.
 	 */
 	public function __construct( $slug, WordPoints_Hook_Reactor $reactor );
 
 	/**
-	 * Get the slug of this reaction storage group.
+	 * Get the slug of this reaction store.
 	 *
 	 * This isn't the slug of the storage method itself, but the identifier for the
 	 * group of reactions a particular object happens to be storing.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string The slug of this storage group.
+	 * @return string The slug of this store.
 	 */
 	public function get_slug();
 

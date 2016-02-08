@@ -24,16 +24,16 @@ class WordPoints_Hook_Reaction_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_construct() {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' );
-		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
-			'test_storage'
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
+			'test_store'
 			, $reactor
 		);
 
-		$reaction = new WordPoints_PHPUnit_Mock_Hook_Reaction( 1, $storage );
+		$reaction = new WordPoints_PHPUnit_Mock_Hook_Reaction( 1, $store );
 
 		$this->assertEquals( 1, $reaction->ID );
 		$this->assertEquals( 'test_reactor', $reaction->get_reactor_slug() );
-		$this->assertEquals( 'test_storage', $reaction->get_storage_group_slug() );
+		$this->assertEquals( 'test_store', $reaction->get_store_slug() );
 		$this->assertSame(
 			array( 'site' => 1, 'network' => 1 )
 			, $reaction->get_context_id()
@@ -43,7 +43,7 @@ class WordPoints_Hook_Reaction_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array(
 				'id' => 1,
 				'reactor' => 'test_reactor',
-				'group' => 'test_storage',
+				'store' => 'test_store',
 				'context_id' => array( 'site' => 1, 'network' => 1 ),
 			)
 			, $reaction->get_guid()
@@ -57,12 +57,12 @@ class WordPoints_Hook_Reaction_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_construct_id_invalid() {
 
-		$storage = new WordPoints_PHPUnit_Mock_Hook_Reaction_Storage(
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
 			'test'
 			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
 		);
 
-		$reaction = new WordPoints_PHPUnit_Mock_Hook_Reaction( 'invalid', $storage );
+		$reaction = new WordPoints_PHPUnit_Mock_Hook_Reaction( 'invalid', $store );
 
 		$this->assertFalse( $reaction->ID );
 	}
