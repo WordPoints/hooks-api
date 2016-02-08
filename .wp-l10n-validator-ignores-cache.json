@@ -28,7 +28,6 @@
             "341": false
         },
         "] =": {
-            "343": false,
             "344": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
@@ -326,6 +325,13 @@
                 "arg_count": 0,
                 "parentheses": 1
             }
+        }
+    },
+    "\/admin\/includes\/classes\/ajax\/hooks.php": {
+        "|": {
+            "99": false,
+            "100": false,
+            "101": false
         }
     }
 }

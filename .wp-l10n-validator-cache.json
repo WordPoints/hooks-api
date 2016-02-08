@@ -11,13 +11,13 @@
             "errors": false
         },
         "\/admin\/includes\/classes\/ajax\/hooks.php": {
-            "size": 7696,
-            "hash": "e9202284694971b5d4938bb09b268032",
+            "size": 10236,
+            "hash": "fb1a2ef6016003b9cc00b4e2cd3e7b9c",
             "errors": false
         },
         "\/admin\/includes\/classes\/screen\/points\/types.php": {
-            "size": 14425,
-            "hash": "7d6219142a70b487c3bdb945074b19e7",
+            "size": 14430,
+            "hash": "020bbd639fab50166e0e01161be97747",
             "errors": false
         },
         "\/admin\/includes\/classes\/screen.php": {
