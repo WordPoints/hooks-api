@@ -5,7 +5,7 @@ export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then echo 1; else ech
 wpcept-setup() {
 
 	if [[ $DO_WP_CEPT == 0 ]]; then
-		return;
+		return
 	fi
 
 	if [[ $WP_VERSION != '4.4' ]]; then
@@ -24,6 +24,7 @@ wpcept-run() {
 
 	if [[ $DO_WP_CEPT == 0 ]]; then
 		echo Not running codecept tests.
+		return
 	fi
 
 	sed -i "s/http:\/\/wptests.local/127.0.0.1:8000/" codeception.yml
