@@ -36,3 +36,14 @@ wpcept-run() {
 
 	vendor/bin/wpcept run
 }
+
+fixed-codesniff-php-syntax() {
+
+	if wpdl-codesniff-php-syntax | grep "^[Parse error|Fatal error]"; then
+		exit 1;
+	fi;
+}
+
+alias codesniff-php-syntax='fixed-codesniff-php-syntax'
+
+# EOF
