@@ -29,7 +29,10 @@ wpcept-run() {
 
 	sed -i "s/http:\/\/wptests.local/127.0.0.1:8000/" codeception.yml
 
-	phantomjs --webdriver=4444 >/dev/null 2>&1 &
+	phantomjs --webdriver=4444 &
+
+	# Give PhantomJS time to start.
+	sleep 3
 
 	vendor/bin/wpcept run
 }
