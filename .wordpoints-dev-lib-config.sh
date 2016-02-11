@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then echo 1; else echo 0; fi)
+export WP_CEPT_SERVER='127.0.0.1:8888'
 
 wpcept-setup() {
 
@@ -17,7 +18,7 @@ wpcept-setup() {
 	composer require --prefer-source lucatume/wp-browser:master@dev
 
 	# We start the server up early so that it has time to prepare.
-	php -S 127.0.0.1:8000 -t "$WP_CORE_DIR" >/dev/null 2>&1 &
+	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" >/dev/null 2>&1 &
 }
 
 wpcept-run() {
@@ -27,7 +28,7 @@ wpcept-run() {
 		return
 	fi
 
-	sed -i "s/http:\/\/wptests.local/127.0.0.1:8000/" codeception.yml
+	sed -i "s/http:\/\/wptests.local/$WP_CEPT_SERVER/" codeception.yml
 
 	phantomjs --webdriver=4444 &
 
