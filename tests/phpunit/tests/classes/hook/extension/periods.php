@@ -356,6 +356,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 				FROM `{$wpdb->wordpoints_hook_periods}` AS `period`
 				INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
 					ON `hit`.`id` = period.`hit_id`
+				ORDER BY `period`.`id`
 			"
 		);
 
