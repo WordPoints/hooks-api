@@ -40,7 +40,7 @@ wpcept-run() {
 fixed-codesniff-php-syntax() {
 
 	if wpdl-codesniff-php-syntax | grep "^[Parse error|Fatal error]"; then
-		exit 1;
+		return 1;
 	fi;
 }
 
