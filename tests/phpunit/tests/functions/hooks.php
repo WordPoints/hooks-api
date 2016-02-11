@@ -200,6 +200,7 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$this->assertTrue( $actions->is_registered( 'comment_new' ) );
 		$this->assertTrue( $actions->is_registered( 'comment_deapprove' ) );
 		$this->assertTrue( $actions->is_registered( 'post_publish' ) );
+		$this->assertTrue( $actions->is_registered( 'post_depublish' ) );
 		$this->assertTrue( $actions->is_registered( 'post_delete' ) );
 		$this->assertTrue( $actions->is_registered( 'user_register' ) );
 		$this->assertTrue( $actions->is_registered( 'user_delete' ) );

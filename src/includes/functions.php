@@ -175,6 +175,18 @@ function wordpoints_hook_actions_init( $actions ) {
 	);
 
 	$actions->register(
+		'post_depublish'
+		, 'WordPoints_Hook_Action_Post_Publish'
+		, array(
+			'action' => 'transition_post_status',
+			'data'   => array(
+				'arg_index' => array( 'post' => 2 ),
+				'requirements' => array( 1 => 'publish' ),
+			),
+		)
+	);
+
+	$actions->register(
 		'add_attachment'
 		, 'WordPoints_Hook_Action'
 		, array(
@@ -189,7 +201,7 @@ function wordpoints_hook_actions_init( $actions ) {
 		'post_delete'
 		, 'WordPoints_Hook_Action'
 		, array(
-			'action' => 'post_delete',
+			'action' => 'delete_post',
 			'data'   => array(
 				'arg_index' => array( 'post' => 0 ),
 			),
@@ -478,7 +490,7 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, array(
 				'actions' => array(
 					'fire'    => 'post_publish',
-					'reverse' => 'post_delete', // TODO this should be hooked to post unpublish instead
+					'reverse' => array( 'post_depublish', 'post_delete' ),
 				),
 				'args'    => array(
 					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',

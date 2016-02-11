@@ -45,6 +45,14 @@ class WordPoints_Hook_Event_Media_Upload_Test extends WordPoints_PHPUnit_TestCas
 			)
 		);
 	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected function reverse_event( $arg_id, $index ) {
+
+		wp_delete_post( $arg_id, true );
+	}
 }
 
 // EOF

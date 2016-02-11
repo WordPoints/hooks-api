@@ -76,6 +76,25 @@ class WordPoints_Hook_Event_Comment_Leave_Test extends WordPoints_PHPUnit_TestCa
 			$comment_id,
 		);
 	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected function reverse_event( $arg_id, $index ) {
+
+		switch ( $index ) {
+
+			case 0:
+				wp_delete_comment( $arg_id, true );
+			break;
+
+			case 1:
+				wp_update_comment(
+					array( 'comment_ID' => $arg_id, 'comment_approved' => 0 )
+				);
+			break;
+		}
+	}
 }
 
 // EOF

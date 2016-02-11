@@ -36,6 +36,11 @@ class WordPoints_Hook_Event_User_Visit_Test extends WordPoints_PHPUnit_TestCase_
 	/**
 	 * @since 1.0.0
 	 */
+	protected $is_reversible = false;
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected function fire_event( $arg, $reactor_slug ) {
 
 		$user_id = $this->factory->user->create();

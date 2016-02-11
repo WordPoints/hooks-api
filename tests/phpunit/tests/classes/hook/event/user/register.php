@@ -39,6 +39,13 @@ class WordPoints_Hook_Event_User_Register_Test extends WordPoints_PHPUnit_TestCa
 	protected function fire_event( $arg, $reactor_slug ) {
 		return $this->factory->user->create();
 	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected function reverse_event( $arg_id, $index ) {
+		$this->delete_user( $arg_id );
+	}
 }
 
 // EOF

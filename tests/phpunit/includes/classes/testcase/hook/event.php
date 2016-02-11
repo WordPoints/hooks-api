@@ -45,6 +45,15 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	protected $expected_targets = array();
 
 	/**
+	 * Whether the event is reversible.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	protected $is_reversible = true;
+
+	/**
 	 * An instance of the event being tested.
 	 *
 	 * @since 1.0.0
@@ -182,7 +191,8 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 				);
 
 				$assertion = 'assert_user_has_points';
-				break;
+				$reverse_assertion = 'assert_user_has_no_points';
+			break;
 
 			default:
 				$this->fail( 'Unknown reactor: ' . $reactor_slug );
@@ -199,7 +209,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		$base_entity_ids = $this->fire_event( $arg->get_entity(), $reactor_slug );
 
-		foreach ( (array) $base_entity_ids as $base_entity_id ) {
+		foreach ( (array) $base_entity_ids as $index => $base_entity_id ) {
 
 			$hierarchy = new WordPoints_Hook_Event_Args( array( $arg ) );
 
@@ -214,6 +224,14 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 			$target_id = $target_entity->get_the_value();
 
 			call_user_func( array( $this, $assertion ), $target_id );
+
+
+			if ( $this->is_reversible ) {
+
+				$this->reverse_event( $base_entity_id, $index );
+
+				call_user_func( array( $this, $reverse_assertion ), $target_id );
+			}
 		}
 	}
 
@@ -319,6 +337,17 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	}
 
 	/**
+	 * Assert that a user has no points.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $user_id The ID of the user.
+	 */
+	protected function assert_user_has_no_points( $user_id ) {
+		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
+	}
+
+	/**
 	 * Fire the event.
 	 *
 	 * @since 1.0.0
@@ -326,9 +355,21 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	 * @param WordPoints_Entity $arg          The object for the main event arg.
 	 * @param string            $reactor_slug The reactor slug.
 	 *
-	 * @return mixed The ID of the the $arg in the event.
+	 * @return mixed The ID of the the $arg in the event. You may also return an
+	 *               array of args, for each of which the event has been fired.
 	 */
 	abstract protected function fire_event( $arg, $reactor_slug );
+
+	/**
+	 * Reverse fire the event.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $arg_id The ID of the arg the event is being reversed for.
+	 * @param mixed $index The index of this entity ID in the array of entity IDs
+	 *                     returned by self::fire_event().
+	 */
+	protected function reverse_event( $arg_id, $index ) {}
 }
 
 // EOF

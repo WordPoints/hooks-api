@@ -66,6 +66,25 @@ class WordPoints_Hook_Event_Post_Publish_Test extends WordPoints_PHPUnit_TestCas
 			),
 		);
 	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected function reverse_event( $arg_id, $index ) {
+
+		switch ( $index ) {
+
+			case 0:
+				wp_delete_post( $arg_id, true );
+			break;
+
+			case 1:
+				wp_update_post(
+					array( 'ID' => $arg_id, 'post_status' => 'publish' )
+				);
+			break;
+		}
+	}
 }
 
 // EOF
