@@ -3,6 +3,11 @@
 export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then echo 1; else echo 0; fi)
 export WP_CEPT_SERVER='127.0.0.1:8888'
 
+# Codeception requires PHP 5.4+.
+if [[ $TRAVIS_PHP_VERSION == '5.2' || $TRAVIS_PHP_VERSION == '5.3' ]]; then
+	CODESNIFF_PATH+=('!' -path "./tests/codeception/*")
+fi
+
 wpcept-setup() {
 
 	if [[ $DO_WP_CEPT == 0 ]]; then
