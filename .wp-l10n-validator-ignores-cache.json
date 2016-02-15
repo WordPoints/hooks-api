@@ -97,7 +97,6 @@
     },
     "\/includes\/classes\/entity\/relationship\/dynamic.php": {
         "\\\\": {
-            "30": false,
             "31": false
         },
         "{}": {
@@ -115,13 +114,6 @@
             }
         },
         "number": {
-            "70": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 2,
-                "parentheses": 1
-            },
             "76": {
                 "name": "array",
                 "type": "unknown",
@@ -185,7 +177,7 @@
     },
     "\/includes\/classes\/hook\/reactor\/points.php": {
         "text": {
-            "36": {
+            "38": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -194,7 +186,7 @@
             }
         },
         "number": {
-            "41": {
+            "43": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -203,7 +195,7 @@
             }
         },
         "hidden": {
-            "46": {
+            "48": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -227,13 +219,6 @@
     },
     "\/includes\/functions.php": {
         "approved": {
-            "137": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "160": {
                 "name": "array",
                 "type": "unknown",
@@ -243,7 +228,7 @@
             }
         },
         "publish": {
-            "173": {
+            "185": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -252,7 +237,7 @@
             }
         },
         "wp": {
-            "226": {
+            "238": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -261,7 +246,7 @@
             }
         },
         "WordPoints_Hook_Arg": {
-            "251": {
+            "263": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -270,7 +255,7 @@
             }
         },
         "WordPoints_Hook_Arg_Current_User": {
-            "264": {
+            "276": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -279,14 +264,14 @@
             }
         },
         "post\\\\": {
-            "467": {
+            "479": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "485": {
+            "497": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -295,21 +280,21 @@
             }
         },
         "WordPoints_Hook_Arg_Dynamic": {
-            "467": {
+            "479": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "485": {
+            "497": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "504": {
+            "516": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -318,7 +303,7 @@
             }
         },
         "comment\\\\": {
-            "504": {
+            "516": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -329,9 +314,13 @@
     },
     "\/admin\/includes\/classes\/ajax\/hooks.php": {
         "|": {
-            "99": false,
-            "100": false,
             "101": false
+        }
+    },
+    "\/includes\/classes\/hook\/reaction\/store\/options.php": {
+        "-": {
+            "291": false,
+            "305": false
         }
     }
 }
