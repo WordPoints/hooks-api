@@ -48,6 +48,14 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 					superseded_by BIGINT(20) UNSIGNED DEFAULT NULL,
 					PRIMARY KEY  (id),
 					KEY unsuperseded (event(191),firer(191),primary_arg_guid(191),superseded_by)',
+				'wordpoints_hook_hitmeta' => '
+					meta_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+					hit_id BIGINT(20) UNSIGNED NOT NULL,
+					meta_key VARCHAR(255) NOT NULL,
+					meta_value LONGTEXT,
+					PRIMARY KEY  (meta_id),
+					KEY hit_id (hit_id),
+					KEY meta_key (meta_key(191))',
 			),
 		),
 	);
