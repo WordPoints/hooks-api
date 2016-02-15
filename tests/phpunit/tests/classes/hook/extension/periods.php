@@ -918,7 +918,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 1 );
+		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 2 );
 
 		// Increase the length.
 		$reaction->update_meta(
@@ -980,7 +980,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 1 );
+		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 2 );
 
 		$firer->do_event( 'test_event', $event_args );
 
