@@ -175,7 +175,7 @@ class WordPointsLoader extends Module {
 
 		$result = shell_exec(
 			sprintf(
-				'mysqldump --host=%s -u %s -p%s %s 2>&1 1> %s'
+				'mysqldump --host=%s -u %s --password="%s" %s 2>&1 1> %s'
 				, escapeshellarg( DB_HOST )
 				, escapeshellarg( DB_USER )
 				, escapeshellarg( DB_PASSWORD )
@@ -238,7 +238,7 @@ class WordPointsLoader extends Module {
 
 		$result = shell_exec(
 			sprintf(
-				'cat %s | mysql --host=%s -u %s -p%s %s 2>&1 1> /dev/null'
+				'cat %s | mysql --host=%s -u %s --password="%s" %s 2>&1 1> /dev/null'
 				, escapeshellarg( $dump_file )
 				, escapeshellarg( DB_HOST )
 				, escapeshellarg( DB_USER )
