@@ -23,9 +23,10 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 
 		foreach ( $this->get_hits( $event_slug, $event_args ) as $hit ) {
 
+			/** @var WordPoints_Hook_Reactor $reactor */
 			$reactor = $hooks->reactors->get( $hit->reactor );
 
-			if ( ! $reactor instanceof WordPoints_Hook_Reactor ) {
+			if ( ! $reactor instanceof WordPoints_Hook_Reactor_ReverseI ) {
 				continue;
 			}
 

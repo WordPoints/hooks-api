@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
+class WordPoints_Hook_Reactor_Points
+	extends WordPoints_Hook_Reactor
+	implements WordPoints_Hook_Reactor_ReverseI {
 
 	/**
 	 * @since 1.0.0

@@ -66,15 +66,6 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	public $hits = array();
 
 	/**
-	 * A list of reverse hits this reactor has received.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array[]
-	 */
-	public $reverse_hits = array();
-
-	/**
 	 * @since 1.0.0
 	 */
 	public function __construct( $slug = null ) {
@@ -114,13 +105,6 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	 */
 	public function hit( WordPoints_Hook_Fire $fire ) {
 		$this->hits[] = $fire;
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
-		$this->reverse_hits[] = $fire;
 	}
 }
 

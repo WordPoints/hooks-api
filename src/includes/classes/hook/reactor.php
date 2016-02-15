@@ -289,15 +289,6 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * @param WordPoints_Hook_Fire $fire The hook fire object.
 	 */
 	abstract public function hit( WordPoints_Hook_Fire $fire );
-
-	/**
-	 * Reverses all hits matching this event and args.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Fire $fire The reverse fire object.
-	 */
-	abstract public function reverse_hit( WordPoints_Hook_Fire $fire );
 }
 
 // EOF

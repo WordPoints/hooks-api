@@ -99,6 +99,7 @@ require_once( dirname( __FILE__ ) . 'hook/reaction/validator.php' );
 require_once( dirname( __FILE__ ) . 'hook/reactioni.php' );
 require_once( dirname( __FILE__ ) . 'hook/reactor.php' );
 require_once( dirname( __FILE__ ) . 'hook/reactor/points.php' );
+require_once( dirname( __FILE__ ) . 'hook/reactor/reversei.php' );
 require_once( dirname( __FILE__ ) . 'hook/retroactive/conditions.php' );
 require_once( dirname( __FILE__ ) . 'hook/retroactive/query.php' );
 require_once( dirname( __FILE__ ) . 'hook/retroactive/query/modifieri.php' );

@@ -37,10 +37,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
@@ -147,10 +154,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$this->factory->wordpoints->hook_reaction->create(
@@ -202,10 +216,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
@@ -276,6 +297,101 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	}
 
 	/**
+	 * Test firing an event when one reactor is not reversible.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_do_event_reactor_not_reversible() {
+
+		$this->mock_apps();
+
+		$hooks = wordpoints_hooks();
+
+		$hooks->extensions->register(
+			'test_extension'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		$hooks->extensions->register(
+			'another'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		// The reactor will not be reversible by default.
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->factory->wordpoints->hook_reactor->create(
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
+		);
+
+		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reactor' => 'another' )
+		);
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$firer = new WordPoints_Hook_Firer( 'fire' );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		// The reactors should have been hit.
+		$reactor = $hooks->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged(
+			array( 'firer' => 'fire', 'reaction_id' => $reaction->ID )
+		);
+
+		$reactor = $hooks->reactors->get( 'another' );
+
+		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reactor' => 'another',
+				'reaction_id' => $another_reaction->ID,
+			)
+		);
+
+		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
+
+		$firer->do_event( 'test_event', $event_args );
+
+		// The extensions should have each been called only once.
+		$extension = $hooks->extensions->get( 'test_extension' );
+
+		$this->assertCount( 1, $extension->after_reverse );
+
+		$extension = $hooks->extensions->get( 'another' );
+
+		$this->assertCount( 1, $extension->after_reverse );
+
+		// The first reactor should not have been hit.
+		$this->assertHitsLogged(
+			array( 'firer' => 'reverse', 'reaction_id' => $reaction->ID )
+			, 0
+		);
+
+		// The other reactor should have one hit.
+		$reactor = $hooks->reactors->get( 'another' );
+
+		$this->assertCount( 1, $reactor->reverse_hits );
+
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'reverse',
+				'reactor' => 'another',
+				'reaction_id' => $another_reaction->ID,
+			)
+		);
+	}
+
+	/**
 	 * Test firing an event when one reaction store is no longer registered.
 	 *
 	 * @since 1.0.0
@@ -296,10 +412,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
@@ -390,7 +513,9 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
-		$this->factory->wordpoints->hook_reactor->create();
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
 
 		$hooks->reaction_stores->register(
 			'test_reactor'
@@ -401,7 +526,10 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
@@ -501,10 +629,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
@@ -596,10 +731,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
@@ -711,10 +853,17 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->factory->wordpoints->hook_reactor->create(
-			array( 'slug' => 'another' )
+			array(
+				'slug' => 'another',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible',
+			)
 		);
 
 		$another_reaction = $this->factory->wordpoints->hook_reaction->create(
