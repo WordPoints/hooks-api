@@ -22,6 +22,7 @@ require_once( dirname( __FILE__ ) . 'data/type.php' );
 require_once( dirname( __FILE__ ) . 'data/type/integer.php' );
 require_once( dirname( __FILE__ ) . 'data/type/text.php' );
 require_once( dirname( __FILE__ ) . 'data/typei.php' );
+require_once( dirname( __FILE__ ) . 'db/query.php' );
 require_once( dirname( __FILE__ ) . 'entity.php' );
 require_once( dirname( __FILE__ ) . 'entity/array.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr.php' );

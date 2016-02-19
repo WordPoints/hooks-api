@@ -946,4 +946,23 @@ function wordpoints_hooks_api_add_global_cache_groups() {
 	}
 }
 
+/**
+ * Escape a MySQL identifier.
+ *
+ * Quotes the identifier with backticks and escapes any backticks within it by
+ * doubling them.
+ *
+ * @since 1.0.0
+ *
+ * @link https://dev.mysql.com/doc/refman/5.7/en/identifiers.html#idm139700789409120
+ *
+ * @param string $identifier The identifier (column, table, alias, etc.).
+ *
+ * @return string The escaped identifier. Already quoted, do not place within
+ *                backticks.
+ */
+function wordpoints_escape_mysql_identifier( $identifier ) {
+	return '`' . str_replace( '`', '``', $identifier ) . '`';
+}
+
 // EOF
