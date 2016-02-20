@@ -23,7 +23,7 @@ wpcept-setup() {
 	composer require --prefer-source lucatume/wp-browser:master@dev
 
 	# We start the server up early so that it has time to prepare.
-	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" >/dev/null 2>&1 &
+	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" &
 }
 
 wpcept-run() {
@@ -40,7 +40,7 @@ wpcept-run() {
 	# Give PhantomJS time to start.
 	sleep 3
 
-	vendor/bin/wpcept run
+	vendor/bin/wpcept run --debug
 }
 
 fixed-codesniff-php-syntax() {
