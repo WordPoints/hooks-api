@@ -48,7 +48,7 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 				continue;
 			}
 
-			$fire = new WordPoints_Hook_Fire( $this, $event_args, $reaction, $hit );
+			$fire = new WordPoints_Hook_Fire( $this, $event_args, $reaction );
 
 			$reverse_hit_ids[ $hit->id ] = $fire->hit();
 
