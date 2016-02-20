@@ -2,11 +2,13 @@
 <ruleset name="WordPoints-Hooks">
 	<description>Sniffs for the coding standards of the WordPoints plugin</description>
 
-	<exclude-pattern>/src/includes/classes/hierarchy.php</exclude-pattern>
-	<exclude-pattern>/src/includes/classes/hook/retroactive/*</exclude-pattern>
-	<exclude-pattern>/src/includes/classes/hook/settings.php</exclude-pattern>
-	<exclude-pattern>/src/includes/classes/query/*</exclude-pattern>
-	<exclude-pattern>/src/includes/classes/specedi.php</exclude-pattern>
-	<exclude-pattern>/src/includes/classes/spec.php</exclude-pattern>
-	<exclude-pattern>/tests/classes/hook/retroactive/*</exclude-pattern>
+	<rule ref="WordPoints">
+		<exclude-pattern>/src/includes/classes/hierarchy.php</exclude-pattern>
+		<exclude-pattern>/src/includes/classes/hook/retroactive/*</exclude-pattern>
+		<exclude-pattern>/src/includes/classes/hook/settings.php</exclude-pattern>
+		<exclude-pattern>/src/includes/classes/query/*</exclude-pattern>
+		<exclude-pattern>/src/includes/classes/specedi.php</exclude-pattern>
+		<exclude-pattern>/src/includes/classes/spec.php</exclude-pattern>
+		<exclude-pattern>/tests/classes/hook/retroactive/*</exclude-pattern>
+	</rule>
 </ruleset>
