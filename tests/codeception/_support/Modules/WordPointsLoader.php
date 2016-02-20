@@ -173,16 +173,23 @@ class WordPointsLoader extends Module {
 	 */
 	protected function create_db_dump( $dump_file ) {
 
-		$result = shell_exec(
-			sprintf(
-				'mysqldump --host=%s -u %s --password=\'%s\' %s 2>&1 1> %s'
-				, escapeshellarg( DB_HOST )
-				, escapeshellarg( DB_USER )
-				, escapeshellarg( DB_PASSWORD )
-				, escapeshellarg( DB_NAME )
-				, escapeshellarg( $dump_file )
-			)
+		$command = 'mysqldump --host=%s -u %s --password="%s" %s 2>&1 1> %s';
+
+		$args = array(
+			escapeshellarg( DB_HOST ),
+			escapeshellarg( DB_USER ),
+			escapeshellarg( DB_PASSWORD ),
+			escapeshellarg( DB_NAME ),
+			escapeshellarg( $dump_file ),
 		);
+
+		// Omit the password if it is empty, because it can cause failures.
+		if ( '' === $args[2] ) {
+			unset( $args[2] );
+			$command = 'mysqldump --host=%s -u %s %s 2>&1 1> %s';
+		}
+
+		$result = shell_exec( vsprintf( $command, $args ) );
 
 		if ( ! empty( $result ) ) {
 			throw new ModuleException(
@@ -236,16 +243,23 @@ class WordPointsLoader extends Module {
 	 */
 	protected function load_dump_into_db( $dump_file ) {
 
-		$result = shell_exec(
-			sprintf(
-				'cat %s | mysql --host=%s -u %s --password="%s" %s 2>&1 1> /dev/null'
-				, escapeshellarg( $dump_file )
-				, escapeshellarg( DB_HOST )
-				, escapeshellarg( DB_USER )
-				, escapeshellarg( DB_PASSWORD )
-				, escapeshellarg( DB_NAME )
-			)
+		$command = 'cat %s | mysql --host=%s -u %s --password="%s" %s 2>&1 1> /dev/null';
+
+		$args = array(
+			escapeshellarg( $dump_file ),
+			escapeshellarg( DB_HOST ),
+			escapeshellarg( DB_USER ),
+			escapeshellarg( DB_PASSWORD ),
+			escapeshellarg( DB_NAME ),
 		);
+
+		// Omit the password if it is empty, because it can cause failures.
+		if ( '' === $args[3] ) {
+			unset( $args[3] );
+			$command = 'cat %s | mysql --host=%s -u %s %s 2>&1 1> /dev/null';
+		}
+
+		$result = shell_exec( vsprintf( $command, $args ) );
 
 		if ( ! empty( $result ) ) {
 			throw new ModuleException(
