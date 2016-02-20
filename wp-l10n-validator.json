@@ -6,12 +6,16 @@
 	"ignores-cache": "./.wp-l10n-validator-ignores-cache.json",
 	"ignores-tolerance": 25,
 	"ignored-functions": {
+		"wordpoints_escape_mysql_identifier": true,
+
 		"WordPoints_Admin_Ajax_Hooks::send_json_result": true,
 		"WordPoints_Admin_Ajax_Hooks::unexpected_error": true,
 		"WordPoints_Admin_Ajax_Hooks::verify_request": true,
 		"WordPoints_Admin_Screen_Points_Types::hooks->reactors->get": true,
 		"WordPoints_App::__construct": [ 1 ],
 		"WordPoints_Class_Autoloader::register_dir": true,
+		"WordPoints_DB_Query::get": true,
+		"WordPoints_DB_Query::prepare_column__in": true,
 		"WordPoints_Entityish::__construct": true,
 		"WordPoints_Hook_Action::get_arg_value": true,
 		"WordPoints_Hook_Condition_Entity_Array_Contains::validator->add_error": [ 2 ],

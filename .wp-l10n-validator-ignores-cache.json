@@ -76,7 +76,7 @@
     },
     "\/includes\/class-un-installer.php": {
         "WordPoints_Hooks_API_Un_Installer": {
-            "56": false
+            "62": false
         }
     },
     "\/includes\/classes\/app.php": {
@@ -219,6 +219,13 @@
     },
     "\/includes\/functions.php": {
         "approved": {
+            "137": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "160": {
                 "name": "array",
                 "type": "unknown",
@@ -228,6 +235,13 @@
             }
         },
         "publish": {
+            "173": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "185": {
                 "name": "array",
                 "type": "unknown",
@@ -319,8 +333,161 @@
     },
     "\/includes\/classes\/hook\/reaction\/store\/options.php": {
         "-": {
-            "291": false,
             "305": false
+        }
+    },
+    "\/includes\/classes\/db\/query.php": {
+        "results": {
+            "291": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "row": {
+            "291": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 1,
+                "parentheses": 1
+            }
+        },
+        "col": {
+            "291": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 2,
+                "parentheses": 1
+            }
+        },
+        "var": {
+            "291": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 3,
+                "parentheses": 1
+            }
+        },
+        "WordPoints Debug Error: invalid get method %s, possible values are %s": {
+            "295": {
+                "name": "sprintf",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "`\\n": {
+            "329": false
+        },
+        "=": {
+            "581": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "589": false
+        },
+        "<": {
+            "581": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 1,
+                "parentheses": 1
+            }
+        },
+        "<>": {
+            "581": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 3,
+                "parentheses": 1
+            }
+        },
+        "!=": {
+            "581": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 4,
+                "parentheses": 1
+            }
+        },
+        "<=": {
+            "581": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 5,
+                "parentheses": 1
+            }
+        },
+        ">=": {
+            "581": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 6,
+                "parentheses": 1
+            }
+        },
+        "(": {
+            "641": false
+        },
+        ")": {
+            "641": false,
+            "739": false
+        },
+        ",": {
+            "704": false
+        },
+        ".meta_value AS": {
+            "739": false
+        },
+        "id": {
+            "819": {
+                "name": "WordPoints_DB_Query::meta_query->get_sql",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 2,
+                "parentheses": 1
+            }
+        }
+    },
+    "\/includes\/classes\/hook\/firer\/reverse.php": {
+        "fire": {
+            "97": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        }
+    },
+    "\/includes\/classes\/hook\/hit\/logger.php": {
+        "row": {
+            "94": {
+                "name": "$query->get",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        }
+    },
+    "\/includes\/classes\/hook\/hit\/query.php": {
+        "date": {
+            "111": false
         }
     }
 }

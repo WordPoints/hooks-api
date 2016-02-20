@@ -46,8 +46,8 @@
             "errors": false
         },
         "\/includes\/class-un-installer.php": {
-            "size": 1376,
-            "hash": "a601d5f00148c3ede77e8af3cb0c5e7e",
+            "size": 1450,
+            "hash": "43f1e4525f116da0562b2b2cf95d9fc2",
             "errors": false
         },
         "\/includes\/classes\/app\/registry.php": {
@@ -108,6 +108,11 @@
         "\/includes\/classes\/data\/typei.php": {
             "size": 1092,
             "hash": "955fb648fbecbb4ad84b07c9dad1df39",
+            "errors": false
+        },
+        "\/includes\/classes\/db\/query.php": {
+            "size": 19542,
+            "hash": "0b17967f557b699a20a0e511887aead0",
             "errors": false
         },
         "\/includes\/classes\/entity\/array.php": {
@@ -411,8 +416,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/extension\/reversals.php": {
-            "size": 986,
-            "hash": "d514ce1dc6a8535dd1221554b28cbdf2",
+            "size": 985,
+            "hash": "788375846da087587ca49364b0fb10a6",
             "errors": false
         },
         "\/includes\/classes\/hook\/extension.php": {
@@ -421,13 +426,13 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/fire.php": {
-            "size": 3051,
-            "hash": "b137d727418d39c22180ebbb093f0a3e",
+            "size": 2302,
+            "hash": "6806da507db4b4ba812facbdfab9b105",
             "errors": false
         },
         "\/includes\/classes\/hook\/firer\/reverse.php": {
-            "size": 2117,
-            "hash": "38ac77d69a1acce4d0af17a1fd48d5b1",
+            "size": 2573,
+            "hash": "6a445fff96e315167e6e0713d5e35a41",
             "errors": false
         },
         "\/includes\/classes\/hook\/firer.php": {
@@ -441,8 +446,13 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/hit\/logger.php": {
-            "size": 2807,
-            "hash": "1e1464a4cb8fce3dde0f65b84c3e36bb",
+            "size": 1962,
+            "hash": "d8712e50cc7a459a877a833f90da7877",
+            "errors": false
+        },
+        "\/includes\/classes\/hook\/hit\/query.php": {
+            "size": 6091,
+            "hash": "8c69e074b935c012caab58eaf458440f",
             "errors": false
         },
         "\/includes\/classes\/hook\/reaction\/options.php": {
@@ -521,20 +531,20 @@
             "errors": false
         },
         "\/includes\/classes\/index.php": {
-            "size": 6845,
-            "hash": "dffb217bcb0f0a4366680fac6000fe7a",
+            "size": 6949,
+            "hash": "d1eefe193761e2a79c399c997cf8cb95",
             "errors": false
         },
         "\/includes\/constants.php": {
-            "size": 297,
-            "hash": "917ac89c306ee5df02de31f17684e10a",
+            "size": 378,
+            "hash": "2c36db502542d5cec375b6f5a1fadf3c",
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 22647,
-            "hash": "e20ae16e0bee9caf6c0d96061299d3b9",
+            "size": 23202,
+            "hash": "35cb77a195eb6d504c2b7ab69776babc",
             "errors": false
         }
     },
-    "config_signature": "87ad72d1d6dba16ab1a24f7ece13193f"
+    "config_signature": "c40a6f931d131db38fa57aa1f3c9da68"
 }
