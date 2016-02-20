@@ -21,7 +21,10 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 
 		$hooks = wordpoints_hooks();
 
-		foreach ( $this->get_hits( $event_slug, $event_args ) as $hit ) {
+		$hits = $this->get_hits( $event_slug, $event_args );
+		$reverse_hit_ids = array();
+
+		foreach ( $hits as $hit ) {
 
 			/** @var WordPoints_Hook_Reactor $reactor */
 			$reactor = $hooks->reactors->get( $hit->reactor );
@@ -47,7 +50,7 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 
 			$fire = new WordPoints_Hook_Fire( $this, $event_args, $reaction, $hit );
 
-			$fire->hit();
+			$reverse_hit_ids[ $hit->id ] = $fire->hit();
 
 			$reactor->reverse_hit( $fire );
 
@@ -55,6 +58,25 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 			foreach ( $hooks->extensions->get_all() as $extension ) {
 				$extension->after_reverse( $fire );
 			}
+		}
+
+		// Set the reversed_by meta key for all hits so that we know that they have
+		// been reverse fired, even if they didn't hit.
+		foreach ( $hits as $hit ) {
+
+			if ( isset( $reverse_hit_ids[ $hit->id ] ) ) {
+				$reversed_by = $reverse_hit_ids[ $hit->id ];
+			} else {
+				$reversed_by = 0;
+			}
+
+			add_metadata(
+				'wordpoints_hook_hit'
+				, $hit->id
+				, 'reversed_by'
+				, $reversed_by
+				, true
+			);
 		}
 	}
 
@@ -70,22 +92,19 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 	 */
 	protected function get_hits( $event_slug, WordPoints_Hook_Event_Args $event_args ) {
 
-		global $wpdb;
-
-		$hits = $wpdb->get_results(
-			$wpdb->prepare(
-				"
-					SELECT *
-					FROM `{$wpdb->wordpoints_hook_hits}`
-					WHERE `firer` = 'fire'
-					AND `primary_arg_guid` = %s
-					AND `event` = %s
-					AND `superseded_by` IS NULL
-				"
-				, wordpoints_hooks_get_event_primary_arg_guid_json( $event_args )
-				, $event_slug
+		$query = new WordPoints_Hook_Hit_Query(
+			array(
+				'firer' => 'fire',
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json(
+					$event_args
+				),
+				'event' => $event_slug,
+				'meta_key' => 'reversed_by',
+				'meta_compare' => 'NOT EXISTS',
 			)
 		);
+
+		$hits = $query->get();
 
 		if ( ! is_array( $hits ) ) {
 			return array();

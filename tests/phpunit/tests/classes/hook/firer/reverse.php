@@ -103,28 +103,16 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			array(
 				'firer' => 'fire',
 				'reaction_id' => $this->reaction->ID,
-				'superseded_by' => $this->reactor->reverse_hits[0]->hit_id,
+				'meta_query' => array(
+					array(
+						'key' => 'reversed_by',
+						'value' => $this->reactor->reverse_hits[0]->hit_id,
+					),
+				),
 			)
 		);
 
-		$this->assertCount( 1, $this->another_reactor->reverse_hits );
-
-		$this->assertHitsLogged(
-			array(
-				'firer' => 'reverse',
-				'reactor' => 'another',
-				'reaction_id' => $this->another_reaction->ID,
-			)
-		);
-
-		$this->assertHitsLogged(
-			array(
-				'firer' => 'fire',
-				'reactor' => 'another',
-				'reaction_id' => $this->reaction->ID,
-				'superseded_by' => $this->another_reactor->reverse_hits[0]->hit_id,
-			)
-		);
+		$this->assertOtherReactionReverseHit();
 	}
 
 	/**
@@ -186,21 +174,10 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $extension->after_reverse );
 
 		// The first reactor should not have been hit.
-		$this->assertHitsLogged(
-			array( 'firer' => 'reverse', 'reaction_id' => $this->reaction->ID )
-			, 0
-		);
+		$this->assertReactionNotReverseHit();
 
 		// The other reactor should have one hit.
-		$this->assertCount( 1, $this->another_reactor->reverse_hits );
-
-		$this->assertHitsLogged(
-			array(
-				'firer' => 'reverse',
-				'reactor' => 'another',
-				'reaction_id' => $this->another_reaction->ID,
-			)
-		);
+		$this->assertOtherReactionReverseHit();
 	}
 
 	/**
@@ -229,21 +206,10 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $extension->after_reverse );
 
 		// The first reactor should not have been hit.
-		$this->assertHitsLogged(
-			array( 'firer' => 'reverse', 'reaction_id' => $this->reaction->ID )
-			, 0
-		);
+		$this->assertReactionNotReverseHit();
 
 		// The other reactor should have one hit.
-		$this->assertCount( 1, $this->another_reactor->reverse_hits );
-
-		$this->assertHitsLogged(
-			array(
-				'firer' => 'reverse',
-				'reactor' => 'another',
-				'reaction_id' => $this->another_reaction->ID,
-			)
-		);
+		$this->assertOtherReactionReverseHit();
 	}
 
 	/**
@@ -272,21 +238,10 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $extension->after_reverse );
 
 		// The first reactor should not have been hit.
-		$this->assertHitsLogged(
-			array( 'firer' => 'reverse', 'reaction_id' => $this->reaction->ID )
-			, 0
-		);
+		$this->assertReactionNotReverseHit();
 
 		// The other reactor should have one hit.
-		$this->assertCount( 1, $this->another_reactor->reverse_hits );
-
-		$this->assertHitsLogged(
-			array(
-				'firer' => 'reverse',
-				'reactor' => 'another',
-				'reaction_id' => $this->another_reaction->ID,
-			)
-		);
+		$this->assertOtherReactionReverseHit();
 	}
 
 	/**
@@ -431,21 +386,10 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertCount( 1, $extension->after_reverse );
 
 		// The first reactor should not have been hit.
-		$this->assertHitsLogged(
-			array( 'firer' => 'reverse', 'reaction_id' => $this->reaction->ID )
-			, 0
-		);
+		$this->assertReactionNotReverseHit();
 
 		// The other reactor should have one hit.
-		$this->assertCount( 1, $this->another_reactor->reverse_hits );
-
-		$this->assertHitsLogged(
-			array(
-				'firer' => 'reverse',
-				'reactor' => 'another',
-				'reaction_id' => $this->another_reaction->ID,
-			)
-		);
+		$this->assertOtherReactionReverseHit();
 	}
 
 	/**
@@ -474,16 +418,24 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		// The reactors should not have been hit.
 		$this->assertCount( 0, $this->reactor->reverse_hits );
 
-		$this->assertHitsLogged(
-			array( 'firer' => 'reverse', 'reaction_id' => $this->reaction->ID )
-			, 0
-		);
-
+		// No reverse hit should have been logged.
 		$this->assertHitsLogged(
 			array(
 				'firer' => 'reverse',
 				'reaction_id' => $this->reaction->ID,
 				'event' => 'another_event',
+			)
+			, 0
+		);
+
+		// The original hit should not have been marked as non-reversed.
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reaction_id' => $this->reaction->ID,
+				'meta_query' => array(
+					array( 'key' => 'reversed_by', 'value' => 0 ),
+				),
 			)
 			, 0
 		);
@@ -690,6 +642,67 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->another_reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'reactor' => 'another' )
+		);
+	}
+
+	/**
+	 * Assert that the primary reaction wasn't hit.
+	 *
+	 * @since 1.0.0
+	 */
+	public function assertReactionNotReverseHit() {
+
+		$this->assertCount( 0, $this->reactor->reverse_hits );
+
+		// No hits should have been logged.
+		$this->assertHitsLogged(
+			array( 'firer' => 'reverse', 'reaction_id' => $this->reaction->ID )
+			, 0
+		);
+
+		// The original hit should have had its reversed_by meta key set to 0.
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reaction_id' => $this->reaction->ID,
+				'meta_query' => array(
+					array( 'key' => 'reversed_by', 'value' => 0 ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Assert that the other reaction was hit.
+	 *
+	 * @since 1.0.0
+	 */
+	public function assertOtherReactionReverseHit() {
+
+		$this->assertCount( 1, $this->another_reactor->reverse_hits );
+
+		// The reverse hit should have been logged.
+		$this->assertHitsLogged(
+			array(
+				'firer'       => 'reverse',
+				'reactor'     => 'another',
+				'reaction_id' => $this->another_reaction->ID,
+			)
+		);
+
+		// The original hit should have been marked as reversed.
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reactor' => 'another',
+				'reaction_id' => $this->another_reaction->ID,
+				'meta_query' => array(
+					array(
+						'key' => 'reversed_by',
+						'value' => $this->another_reactor->reverse_hits[0]->hit_id,
+					),
+				),
+			)
 		);
 	}
 }

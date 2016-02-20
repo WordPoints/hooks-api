@@ -24,6 +24,8 @@ class WordPoints_Hook_Hit_Logger {
 	protected $fire;
 
 	/**
+	 * @since 1.0.0
+	 *
 	 * @param WordPoints_Hook_Fire $fire The fire that might be logged as a hit.
 	 */
 	public function __construct( WordPoints_Hook_Fire $fire ) {
@@ -63,18 +65,6 @@ class WordPoints_Hook_Hit_Logger {
 		}
 
 		$hit_id = $wpdb->insert_id;
-
-		$supersedes = $this->fire->get_superseded_hit();
-
-		if ( $supersedes ) {
-			$wpdb->update(
-				$wpdb->wordpoints_hook_hits
-				, array( 'superseded_by' => $hit_id )
-				, array( 'id' => $supersedes->id )
-				, array( '%d' )
-				, array( '%d' )
-			);
-		}
 
 		return $hit_id;
 	}

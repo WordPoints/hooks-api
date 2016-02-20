@@ -197,16 +197,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 	 */
 	public function assertHitsLogged( array $data, $count = 1 ) {
 
-		global $wpdb;
-
 		$now = current_time( 'timestamp' );
-
-		$superseded_by = null;
-
-		if ( isset( $data['superseded_by'] ) ) {
-			$superseded_by = $data['superseded_by'];
-			unset( $data['superseded_by'] );
-		}
 
 		$data = array_merge(
 			array(
@@ -231,31 +222,17 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 			);
 		}
 
-		ksort( $data );
+		if ( ! isset( $data['meta_key'] ) && ! isset( $data['meta_query'] ) ) {
+			$data['meta_key'] = 'reversed_by';
+			$data['meta_compare'] = 'NOT EXISTS';
+		}
 
-		$hits = $wpdb->get_results(
-			$wpdb->prepare(
-				"
-					SELECT *
-					FROM `{$wpdb->wordpoints_hook_hits}`
-					WHERE `event` = %s
-					AND `firer` = %s
-					AND `primary_arg_guid` = %s
-					AND `reaction_context_id` = %s
-					AND `reaction_id` = %d
-					AND `reaction_store` = %s
-					AND `reactor` = %s
-				"
-				, $data
-			)
-		);
-
-		$hits = wp_list_filter( $hits, array( 'superseded_by' => $superseded_by ) );
+		$query = new WordPoints_Hook_Hit_Query( $data );
+		$hits = $query->get();
 
 		$this->assertCount( $count, $hits );
 
 		foreach ( $hits as $hit ) {
-			$this->assertEquals( $superseded_by, $hit->superseded_by );
 			$this->assertLessThanOrEqual( 2, $now - strtotime( $hit->date, $now ) );
 		}
 	}
