@@ -429,48 +429,6 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	}
 
 	/**
-	 * Test that meta_query_meta_table_id_filter() corrects the name of the column.
-	 *
-	 * @since        1.0.0
-	 *
-	 * @dataProvider data_provider_meta_query_meta_table_id_filter
-	 *
-	 * @param string $key    The column name.
-	 * @param string $result The expected filtered column name.
-	 */
-	public function test_meta_query_meta_table_id_filter( $key, $result = null ) {
-
-		$query = new WordPoints_PHPUnit_Mock_DB_Query();
-
-		$query->meta_type = 'test_meta_type';
-		$query->meta_object_id_column = 'object_id';
-
-		if ( null === $result ) {
-			$result = $key;
-		}
-
-		$this->assertEquals(
-			$result
-			, $query->meta_query_meta_table_id_filter( $key )
-		);
-	}
-
-	/**
-	 * Provides sets of columns to pass to the date query filter.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string[][] The lists of columns.
-	 */
-	public function data_provider_meta_query_meta_table_id_filter() {
-		return array(
-			'empty' => array( '' ),
-			'post_id' => array( 'post_id' ),
-			'meta_type' => array( 'test_meta_type_id', 'object_id' ),
-		);
-	}
-
-	/**
 	 * Test the 'fields' query arg as a string.
 	 *
 	 * @since 1.0.0

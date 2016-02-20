@@ -27,11 +27,6 @@ class WordPoints_PHPUnit_Mock_DB_Query extends WordPoints_DB_Query {
 	/**
 	 * @since 1.0.0
 	 */
-	public $meta_object_id_column = 'wordpoints_db_query_test_id';
-
-	/**
-	 * @since 1.0.0
-	 */
 	public $meta_type = 'wordpoints_db_query_test';
 
 	/**
@@ -42,9 +37,8 @@ class WordPoints_PHPUnit_Mock_DB_Query extends WordPoints_DB_Query {
 		global $wpdb;
 
 		$this->table_name = $wpdb->prefix . 'wordpoints_db_query_test';
-		$this->meta_table_name = $wpdb->prefix . 'wordpoints_db_query_testmeta';
 
-		$wpdb->wordpoints_db_query_testmeta = $this->meta_table_name;
+		$wpdb->wordpoints_db_query_testmeta = $wpdb->prefix . 'wordpoints_db_query_testmeta';
 
 		parent::__construct( $args );
 	}

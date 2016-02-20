@@ -69,7 +69,7 @@ class WordPoints_DB_Query {
 	protected $columns = array();
 
 	/**
-	 * A table in which metadata for the objects in the main table.
+	 * The slug of the meta type.
 	 *
 	 * If this is defined, the 'meta_query', 'meta_key', 'meta_value',
 	 * 'meta_compare', and 'meta_type' args are supported, and will be passed to
@@ -79,25 +79,7 @@ class WordPoints_DB_Query {
 	 *
 	 * @var string
 	 */
-	protected $meta_table_name;
-
-	/**
-	 * The slug of the meta type.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
 	protected $meta_type;
-
-	/**
-	 * The name of the column in the meta table that holds the ID of the object.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	protected $meta_object_id_column;
 
 	/**
 	 * The default values for the query args.
@@ -377,27 +359,6 @@ class WordPoints_DB_Query {
 		);
 
 		return $valid_columns;
-	}
-
-	/**
-	 * Filter the meta table id column name for the meta query.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @WordPress\filter sanitize_key Added and subsequently removed by
-	 *                                self::prepare_meta_where().
-	 *
-	 * @param string $key The sanitized value for the key.
-	 *
-	 * @return string The correct meta table ID column.
-	 */
-	public function meta_query_meta_table_id_filter( $key ) {
-
-		if ( "{$this->meta_type}_id" === $key ) {
-			$key = $this->meta_object_id_column;
-		}
-
-		return $key;
 	}
 
 	//
@@ -766,8 +727,10 @@ class WordPoints_DB_Query {
 
 		if ( 'meta_value' === $order_by ) {
 
+			global $wpdb;
+
 			$meta_table_name = wordpoints_escape_mysql_identifier(
-				$this->meta_table_name
+				$wpdb->{"{$this->meta_type}meta"}
 			);
 
 			if ( isset( $this->args['meta_type'] ) ) {
@@ -828,7 +791,7 @@ class WordPoints_DB_Query {
 	 */
 	protected function prepare_meta_where() {
 
-		if ( empty( $this->meta_table_name ) ) {
+		if ( empty( $this->meta_type ) ) {
 			return;
 		}
 
@@ -850,16 +813,12 @@ class WordPoints_DB_Query {
 		$this->meta_query = new WP_Meta_Query();
 		$this->meta_query->parse_query_vars( $meta_args );
 
-		add_filter( 'sanitize_key', array( $this, 'meta_query_meta_table_id_filter' ) );
-
 		$meta_query = $this->meta_query->get_sql(
 			$this->meta_type
 			, $this->table_name
 			, 'id'
 			, $this
 		);
-
-		remove_filter( 'sanitize_key', array( $this, 'meta_query_meta_table_id_filter' ) );
 
 		if ( ! empty( $meta_query['where'] ) ) {
 			$this->wheres[] = ltrim( $meta_query['where'], ' AND' );
