@@ -52,7 +52,7 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 					meta_key VARCHAR(255) NOT NULL,
 					meta_value LONGTEXT,
 					PRIMARY KEY  (meta_id),
-					KEY hit_id (hit_id),
+					KEY hit_id (wordpoints_hook_hit_id),
 					KEY meta_key (meta_key(191))',
 			),
 		),
