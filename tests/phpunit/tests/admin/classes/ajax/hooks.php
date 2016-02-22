@@ -271,7 +271,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$response = $this->assertJSONSuccessResponse(
 			'wordpoints_admin_update_hook_reaction'
@@ -306,7 +306,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -338,7 +338,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -371,7 +371,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -403,7 +403,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -436,7 +436,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID + 1;
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -468,7 +468,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
 		$_POST['id']      = $reaction->ID;
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -501,7 +501,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = 'invalid';
 		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
@@ -534,7 +534,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$_POST['id']      = $reaction->ID;
 		$_POST['reactor'] = $reaction->get_reactor_slug();
 		$_POST['event']   = 'invalid';
-		$_POST['target']  = array( 'current:test_entity');
+		$_POST['target']  = array( 'current:test_entity' );
 
 		$response = $this->assertJSONErrorResponse(
 			'wordpoints_admin_update_hook_reaction'

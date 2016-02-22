@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Tests saving a points reaction.
+ *
+ * @package WordPoints\Codeception
+ * @since 1.0.0
+ */
+
 $I = new AcceptanceTester( $scenario );
 $I->wantTo( 'Save a points reaction' );
 $I->amLoggedInAsAdmin();

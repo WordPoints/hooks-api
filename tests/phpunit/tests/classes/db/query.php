@@ -68,7 +68,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_construct_defaults() {
+	public function test_construct_defaults() {
 
 		$query = new WordPoints_DB_Query();
 
@@ -81,7 +81,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_construct_with_args() {
+	public function test_construct_with_args() {
 
 		$query = new WordPoints_DB_Query( array( 'start' => 10, 'custom' => 'a' ) );
 
@@ -95,7 +95,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_get_nonexistent_arg() {
+	public function test_get_nonexistent_arg() {
 
 		$query = new WordPoints_DB_Query();
 
@@ -107,7 +107,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_set_args() {
+	public function test_set_args() {
 
 		$query = new WordPoints_DB_Query( array( 'start' => 10, 'custom' => 'a' ) );
 
@@ -368,7 +368,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 			'SELECT COUNT' => array(
 				array( 'SELECT COUNT' ),
 				"SELECT COUNT(*)\nFROM `%swordpoints_db_query_test`\n%A",
-			)
+			),
 		);
 	}
 
@@ -433,7 +433,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_fields_query_arg() {
+	public function test_fields_query_arg() {
 
 		$this->insert_rows( 2 );
 
@@ -459,7 +459,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_fields_query_arg_array() {
+	public function test_fields_query_arg_array() {
 
 		$this->insert_rows( 2 );
 
@@ -491,7 +491,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @expectedIncorrectUsage WordPoints_DB_Query::prepare_select
 	 */
-	function test_fields_query_arg_invalid() {
+	public function test_fields_query_arg_invalid() {
 
 		$this->insert_rows( 2 );
 
@@ -513,7 +513,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @expectedIncorrectUsage WordPoints_DB_Query::prepare_select
 	 */
-	function test_fields_query_arg_array_invalid() {
+	public function test_fields_query_arg_array_invalid() {
 
 		$this->insert_rows( 2 );
 
@@ -543,7 +543,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_limit_query_arg() {
+	public function test_limit_query_arg() {
 
 		$this->insert_rows( 2 );
 
@@ -559,7 +559,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @expectedIncorrectUsage WordPoints_DB_Query::prepare_limit
 	 */
-	function test_limit_query_arg_invalid() {
+	public function test_limit_query_arg_invalid() {
 
 		$this->insert_rows( 2 );
 
@@ -575,7 +575,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_limit_query_arg_negative() {
+	public function test_limit_query_arg_negative() {
 
 		$this->insert_rows( 2 );
 
@@ -591,7 +591,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_start_query_arg() {
+	public function test_start_query_arg() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );
@@ -619,7 +619,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @expectedIncorrectUsage WordPoints_DB_Query::prepare_limit
 	 */
-	function test_start_query_arg_invalid() {
+	public function test_start_query_arg_invalid() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );
@@ -642,7 +642,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_start_query_arg_negative() {
+	public function test_start_query_arg_negative() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );
@@ -665,7 +665,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_start_query_arg_limit_not_set() {
+	public function test_start_query_arg_limit_not_set() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );
@@ -687,7 +687,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_no_order_by_default() {
+	public function test_no_order_by_default() {
 
 		$query = new WordPoints_DB_Query();
 
@@ -699,7 +699,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_order_by_query_arg() {
+	public function test_order_by_query_arg() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 3 ) );
@@ -722,7 +722,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_order_by_query_arg_meta_value() {
+	public function test_order_by_query_arg_meta_value() {
 
 		$this->insert_rows( 1, array(), array( 'test' => 1 ) );
 		$this->insert_rows( 1, array(), array( 'test' => 3 ) );
@@ -759,7 +759,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_order_by_query_arg_meta_value_meta_type() {
+	public function test_order_by_query_arg_meta_value_meta_type() {
 
 		$this->insert_rows( 1, array(), array( 'test' => 1 ) );
 		$this->insert_rows( 1, array(), array( 'test' => 100 ) );
@@ -799,7 +799,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @expectedIncorrectUsage WordPoints_DB_Query::prepare_order_by
 	 */
-	function test_order_by_arg_invalid() {
+	public function test_order_by_arg_invalid() {
 
 		$query = new WordPoints_DB_Query( array( 'order_by' => 'invalid' ) );
 
@@ -811,7 +811,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_order_query_arg_ascending() {
+	public function test_order_query_arg_ascending() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 3 ) );
@@ -836,7 +836,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_order_query_arg_desc() {
+	public function test_order_query_arg_desc() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 3 ) );
@@ -863,7 +863,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @expectedIncorrectUsage WordPoints_DB_Query::prepare_order_by
 	 */
-	function test_order_query_arg_invalid() {
+	public function test_order_query_arg_invalid() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 3 ) );
@@ -894,7 +894,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param mixed $value   The value to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_query_arg( $value, $results ) {
+	public function test_column_query_arg( $value, $results ) {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 0 ) );
@@ -933,7 +933,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param mixed $value   The value to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_query_arg_values( $value, $results ) {
+	public function test_column_query_arg_values( $value, $results ) {
 
 		$this->insert_rows( 1, array( 'int_col' => 5 ) );
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
@@ -971,7 +971,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param mixed $value   The value to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_query_arg_unsigned( $value, $results ) {
+	public function test_column_query_arg_unsigned( $value, $results ) {
 
 		$this->insert_rows( 1, array( 'id' => 1 ) );
 		$this->insert_rows( 1, array( 'id' => 2 ) );
@@ -1007,7 +1007,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param int    $results    The number of expected results.
 	 * @param mixed  $value      The value to query for.
 	 */
-	function test_column_compare_query_arg_int( $comparator, $results, $value = null ) {
+	public function test_column_compare_query_arg_int( $comparator, $results, $value = null ) {
 
 		$this->insert_rows( 1, array( 'int_col' => 10 ) );
 		$this->insert_rows( 1, array( 'int_col' => 5 ) );
@@ -1057,7 +1057,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param int    $results    The number of expected results.
 	 * @param mixed  $value      The value to query for.
 	 */
-	function test_column_compare_query_arg_text( $comparator, $results, $value = null ) {
+	public function test_column_compare_query_arg_text( $comparator, $results, $value = null ) {
 
 		$this->insert_rows( 1, array( 'text_col' => 'Testing' ) );
 		$this->insert_rows( 1, array( 'text_col' => 'Test' ) );
@@ -1106,7 +1106,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param array $in      The values to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_in_query_arg( $in, $results ) {
+	public function test_column_in_query_arg( $in, $results ) {
 
 		$this->insert_rows( 1, array( 'int_col' => 5 ) );
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
@@ -1150,7 +1150,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param array $in      The values to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_in_query_arg_values( $in, $results ) {
+	public function test_column_in_query_arg_values( $in, $results ) {
 
 		$this->insert_rows( 1 );
 		$this->insert_rows( 1, array( 'int_col' => 3 ) );
@@ -1192,7 +1192,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param array $in      The values to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_in_query_arg_unsigned( $in, $results ) {
+	public function test_column_in_query_arg_unsigned( $in, $results ) {
 
 		$this->insert_rows( 1, array( 'id' => 1 ) );
 		$this->insert_rows( 1, array( 'id' => 2 ) );
@@ -1224,7 +1224,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_column_query_arg_takes_precedence_over_column_in() {
+	public function test_column_query_arg_takes_precedence_over_column_in() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );
@@ -1247,7 +1247,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param array $in      The values to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_not_in_query_arg( $in, $results ) {
+	public function test_column_not_in_query_arg( $in, $results ) {
 
 		$this->insert_rows( 1, array( 'int_col' => 5 ) );
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
@@ -1291,7 +1291,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param array $in      The values to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_not_in_query_arg_values( $in, $results ) {
+	public function test_column_not_in_query_arg_values( $in, $results ) {
 
 		$this->insert_rows( 1 );
 		$this->insert_rows( 1, array( 'int_col' => 3 ) );
@@ -1333,7 +1333,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 * @param array $in      The values to query for.
 	 * @param int   $results The number of expected results.
 	 */
-	function test_column_not_in_query_arg_unsigned( $in, $results ) {
+	public function test_column_not_in_query_arg_unsigned( $in, $results ) {
 
 		$this->insert_rows( 1, array( 'id' => 1 ) );
 		$this->insert_rows( 1, array( 'id' => 2 ) );
@@ -1365,7 +1365,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_column_query_arg_takes_precedence_over_column_not_in() {
+	public function test_column_query_arg_takes_precedence_over_column_not_in() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );
@@ -1383,7 +1383,7 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_column_in_query_arg_takes_precedence_over_column_not_in() {
+	public function test_column_in_query_arg_takes_precedence_over_column_not_in() {
 
 		$this->insert_rows( 1, array( 'int_col' => 1 ) );
 		$this->insert_rows( 1, array( 'int_col' => 2 ) );

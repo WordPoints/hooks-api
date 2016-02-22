@@ -21,7 +21,7 @@ class WordPoints_Hook_Hit_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_construct_defaults() {
+	public function test_construct_defaults() {
 
 		$query = new WordPoints_Hook_Hit_Query();
 
@@ -33,9 +33,9 @@ class WordPoints_Hook_Hit_Query_Test extends WordPoints_PHPUnit_TestCase {
 	 *
 	 * @since 1.0.0
 	 */
-	function test_construct_with_args() {
+	public function test_construct_with_args() {
 
-		$query = new WordPoints_Hook_Hit_Query( array( 'order_by' => 'id'  ) );
+		$query = new WordPoints_Hook_Hit_Query( array( 'order_by' => 'id' ) );
 
 		$this->assertEquals( 'id', $query->get_arg( 'order_by' ) );
 	}

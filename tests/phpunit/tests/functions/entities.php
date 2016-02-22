@@ -118,15 +118,11 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertTrue( $children->is_registered( 'comment\page', 'author' ) );
 
 		$this->assertTrue( $entities->is_registered( 'post\attachment' ) );
-//		$this->assertTrue( $children->is_registered( 'post-attachment', 'content' ) );
 		$this->assertTrue( $children->is_registered( 'post\attachment', 'author' ) );
 
 		$this->assertTrue( $entities->is_registered( 'comment\attachment' ) );
 		$this->assertTrue( $children->is_registered( 'comment\attachment', 'post\attachment' ) );
 		$this->assertTrue( $children->is_registered( 'comment\attachment', 'author' ) );
-
-//		$this->assertTrue( $entities->is_registered( 'post_type' ) );
-//		$this->assertTrue( $children->is_registered( 'post_type', 'name' ) );
 
 		$this->assertTrue( $entities->is_registered( 'user' ) );
 		$this->assertTrue( $children->is_registered( 'user', 'roles' ) );

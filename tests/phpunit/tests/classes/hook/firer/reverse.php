@@ -632,7 +632,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		);
 
 		$this->reaction = $this->factory->wordpoints->hook_reaction->create();
-		
+
 		$this->factory->wordpoints->hook_reactor->create(
 			array(
 				'slug'  => 'another',

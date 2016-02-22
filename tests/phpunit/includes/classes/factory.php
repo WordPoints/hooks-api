@@ -46,7 +46,7 @@ class WordPoints_PHPUnit_Factory extends WordPoints_Class_Registry_Persistent{
 	/**
 	 * @since 1.0.0
 	 */
-	function __get( $var ) {
+	public function __get( $var ) {
 
 		if ( $this->is_registered( $var ) ) {
 			return $this->$var = $this->get( $var );

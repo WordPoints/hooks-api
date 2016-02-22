@@ -95,8 +95,7 @@ class WordPoints_Admin_Ajax_Hooks {
 		WordPoints_Hook_Reactor $reactor
 	) {
 
-		return 'wordpoints_create_hook_reaction'
-		       . '|' . $reactor->get_slug()
+		return 'wordpoints_create_hook_reaction|' . $reactor->get_slug()
 		       . '|' . wordpoints_hooks()->get_current_mode()
 		       . '|' . wp_json_encode( $reactor->reactions->get_context_id() );
 	}

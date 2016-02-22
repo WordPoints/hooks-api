@@ -31,7 +31,6 @@ class WordPoints_Entity_Relationship_Dynamic_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-
 		if ( '{}' === substr( $related_slug, -2 ) ) {
 
 			$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship_Dynamic_Array(

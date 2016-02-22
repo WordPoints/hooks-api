@@ -269,7 +269,7 @@ class WordPoints_DB_Query {
 
 		global $wpdb;
 
-		$count = (int) $wpdb->get_var( $this->get_sql( 'SELECT COUNT' ) );
+		$count = (int) $wpdb->get_var( $this->get_sql( 'SELECT COUNT' ) ); // WPCS: unprepared SQL, cache OK
 
 		return $count;
 	}
@@ -476,9 +476,9 @@ class WordPoints_DB_Query {
 	 */
 	protected function validate_unsigned_column( $value ) {
 
-		 if ( false !== wordpoints_int( $value ) && $value >= 0 ) {
-			 return $value;
-		 }
+		if ( false !== wordpoints_int( $value ) && $value >= 0 ) {
+			return $value;
+		}
 
 		return false;
 	}
@@ -560,7 +560,7 @@ class WordPoints_DB_Query {
 
 		$column = wordpoints_escape_mysql_identifier( $column );
 
-		$this->wheres[] = $wpdb->prepare(
+		$this->wheres[] = $wpdb->prepare( // WPCS: unprepared SQL OK.
 			"{$column} {$compare} {$data['format']}"
 			, $value
 		);
@@ -589,10 +589,10 @@ class WordPoints_DB_Query {
 		$comparator = '=';
 
 		if (
-			isset( $this->args["{$column}__compare"] )
-			&& in_array( $this->args["{$column}__compare"], $comparisons, true )
+			isset( $this->args[ "{$column}__compare" ] )
+			&& in_array( $this->args[ "{$column}__compare" ], $comparisons, true )
 		) {
-			$comparator = $this->args["{$column}__compare"];
+			$comparator = $this->args[ "{$column}__compare" ];
 		}
 
 		return $comparator;
@@ -766,15 +766,15 @@ class WordPoints_DB_Query {
 	protected function prepare_date_where( $column ) {
 
 		if (
-			empty( $this->args["{$column}_query"] )
-			|| ! is_array( $this->args["{$column}_query"] )
+			empty( $this->args[ "{$column}_query" ] )
+			|| ! is_array( $this->args[ "{$column}_query" ] )
 		) {
 			return;
 		}
 
 		add_filter( 'date_query_valid_columns', array( $this, 'date_query_valid_columns_filter' ) );
 
-		$date_query = new WP_Date_Query( $this->args["{$column}_query"], $column );
+		$date_query = new WP_Date_Query( $this->args[ "{$column}_query" ], $column );
 		$date_query = $date_query->get_sql();
 
 		if ( ! empty( $date_query ) ) {

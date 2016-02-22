@@ -220,7 +220,7 @@ class WordPointsLoader extends Module {
 			"SHOW FULL TABLES WHERE TABLE_TYPE LIKE '%TABLE';"
 		);
 
-		foreach ( $tables as $table) {
+		foreach ( $tables as $table ) {
 			$wpdb->query( 'DROP TABLE `' . $table . '`' );
 		}
 

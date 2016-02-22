@@ -21,7 +21,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	/**
 	 * @since 1.0.0
 	 */
-	function __construct( $factory = null ) {
+	public function __construct( $factory = null ) {
 
 		parent::__construct( $factory );
 
@@ -34,7 +34,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	/**
 	 * @since 1.0.0
 	 */
-	function create_object( $args ) {
+	public function create_object( $args ) {
 
 		$reactors = wordpoints_hooks()->reactors;
 		$reaction_stores = wordpoints_hooks()->reaction_stores;
@@ -76,14 +76,14 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	/**
 	 * @since 1.0.0
 	 */
-	function update_object( $object, $fields ) {
+	public function update_object( $object, $fields ) {
 		return $object;
 	}
 
 	/**
 	 * @since 1.0.0
 	 */
-	function get_object_by_id( $object_id ) {
+	public function get_object_by_id( $object_id ) {
 		return wordpoints_hooks()->reactors->get( $object_id );
 	}
 }

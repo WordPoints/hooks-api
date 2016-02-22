@@ -225,7 +225,6 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 			call_user_func( array( $this, $assertion ), $target_id );
 
-
 			if ( $this->is_reversible ) {
 
 				$this->reverse_event( $base_entity_id, $index );
