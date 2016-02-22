@@ -112,15 +112,6 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	public function after_hit( WordPoints_Hook_Fire $fire ) {}
 
 	/**
-	 * Called after a reverse action is called.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Fire $fire The reverse fire object.
-	 */
-	public function after_reverse( WordPoints_Hook_Fire $fire ) {}
-
-	/**
 	 * Get the data the scripts need for the UI.
 	 *
 	 * @since 1.0.0

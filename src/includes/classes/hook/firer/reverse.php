@@ -50,13 +50,25 @@ class WordPoints_Hook_Firer_Reverse extends WordPoints_Hook_Firer {
 
 			$fire = new WordPoints_Hook_Fire( $this, $event_args, $reaction );
 
+			foreach ( $hooks->extensions->get_all() as $extension ) {
+
+				if ( ! $extension instanceof WordPoints_Hook_Extension_ReverseI ) {
+					continue;
+				}
+
+				if ( ! $extension->should_reverse( $fire ) ) {
+					continue 2;
+				}
+			}
+
 			$reverse_hit_ids[ $hit->id ] = $fire->hit();
 
 			$reactor->reverse_hit( $fire );
 
-			/** @var WordPoints_Hook_Extension $extension */
 			foreach ( $hooks->extensions->get_all() as $extension ) {
-				$extension->after_reverse( $fire );
+				if ( $extension instanceof WordPoints_Hook_Extension_ReverseI ) {
+					$extension->after_reverse( $fire );
+				}
 			}
 		}
 

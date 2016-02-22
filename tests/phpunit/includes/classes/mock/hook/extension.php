@@ -47,15 +47,6 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	public $hits = array();
 
 	/**
-	 * The args passed to after_reverse() each time it was called.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array[]
-	 */
-	public $after_reverse = array();
-
-	/**
 	 * The settings passed to the validator each time it was called.
 	 *
 	 * @since 1.0.0
@@ -124,13 +115,6 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	 */
 	public function after_hit( WordPoints_Hook_Fire $fire ) {
 		$this->hits[] = $fire;
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function after_reverse( WordPoints_Hook_Fire $fire ) {
-		$this->after_reverse[] = $fire;
 	}
 }
 

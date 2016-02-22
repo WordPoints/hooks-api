@@ -35,6 +35,24 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	protected $event_args;
 
 	/**
+	 * A hook extension.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_PHPUnit_Mock_Hook_Extension_Reversible
+	 */
+	protected $extension;
+
+	/**
+	 * Another hook extension.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_PHPUnit_Mock_Hook_Extension_Reversible
+	 */
+	protected $another_extension;
+
+	/**
 	 * A hook reactor.
 	 *
 	 * @since 1.0.0
@@ -84,13 +102,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should have each been called.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 2, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 2, $extension->after_reverse );
+		$this->assertCount( 2, $this->extension->after_reverse );
+		$this->assertCount( 2, $this->another_extension->after_reverse );
 
 		// The reactors should have been hit.
 		$this->assertCount( 1, $this->reactor->reverse_hits );
@@ -130,13 +143,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should not have been called.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 0, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 0, $extension->after_reverse );
+		$this->assertCount( 0, $this->extension->after_reverse );
+		$this->assertCount( 0, $this->another_extension->after_reverse );
 
 		// The reactors should not have been hit.
 		$reactor = $this->hooks->reactors->get( 'test_reactor' );
@@ -165,13 +173,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should have each been called only once.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 1, $extension->after_reverse );
+		$this->assertCount( 1, $this->extension->after_reverse );
+		$this->assertCount( 1, $this->another_extension->after_reverse );
 
 		// The first reactor should not have been hit.
 		$this->assertReactionNotReverseHit();
@@ -197,13 +200,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should have each been called only once.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 1, $extension->after_reverse );
+		$this->assertCount( 1, $this->extension->after_reverse );
+		$this->assertCount( 1, $this->another_extension->after_reverse );
 
 		// The first reactor should not have been hit.
 		$this->assertReactionNotReverseHit();
@@ -229,13 +227,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should have each been called only once.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 1, $extension->after_reverse );
+		$this->assertCount( 1, $this->extension->after_reverse );
+		$this->assertCount( 1, $this->another_extension->after_reverse );
 
 		// The first reactor should not have been hit.
 		$this->assertReactionNotReverseHit();
@@ -255,15 +248,7 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		$this->hooks = wordpoints_hooks();
 
-		$this->hooks->extensions->register(
-			'test_extension'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
-		);
-
-		$this->hooks->extensions->register(
-			'another'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
-		);
+		$this->create_extensions();
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
@@ -327,13 +312,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should have each been called only once.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 1, $extension->after_reverse );
+		$this->assertCount( 1, $this->extension->after_reverse );
+		$this->assertCount( 1, $this->another_extension->after_reverse );
 
 		// The first reactor should not have been hit.
 		$this->assertHitsLogged(
@@ -377,13 +357,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should have each been called only once.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 1, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 1, $extension->after_reverse );
+		$this->assertCount( 1, $this->extension->after_reverse );
+		$this->assertCount( 1, $this->another_extension->after_reverse );
 
 		// The first reactor should not have been hit.
 		$this->assertReactionNotReverseHit();
@@ -407,13 +382,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'another_event', $this->event_args );
 
 		// The extensions should not have been called.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 0, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 0, $extension->after_reverse );
+		$this->assertCount( 0, $this->extension->after_reverse );
+		$this->assertCount( 0, $this->another_extension->after_reverse );
 
 		// The reactors should not have been hit.
 		$this->assertCount( 0, $this->reactor->reverse_hits );
@@ -518,13 +488,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$firer->do_event( 'test_event', $this->event_args );
 
 		// The extensions should not have been called.
-		$extension = $this->hooks->extensions->get( 'test_extension' );
-
-		$this->assertCount( 0, $extension->after_reverse );
-
-		$extension = $this->hooks->extensions->get( 'another' );
-
-		$this->assertCount( 0, $extension->after_reverse );
+		$this->assertCount( 0, $this->extension->after_reverse );
+		$this->assertCount( 0, $this->another_extension->after_reverse );
 
 		// The reactors should not have been hit.
 		$this->assertCount( 0, $reactor->reverse_hits );
@@ -569,6 +534,60 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 			, 0
 		);
 	}
+
+	/**
+	 * Test an extension aborting the reverse.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_extension_abort() {
+
+		$this->fire_event();
+
+		// Have the first extension abort the fire.
+		$this->extension->should_reverse = false;
+
+		$firer = new WordPoints_Hook_Firer_Reverse( 'reverse' );
+
+		$firer->do_event( 'test_event', $this->event_args );
+
+		// The extensions should not have been called.
+		$this->assertCount( 0, $this->extension->after_reverse );
+		$this->assertCount( 0, $this->another_extension->after_reverse );
+
+		// Only the first extension should have had the hit check performed.
+		$this->assertCount( 2, $this->extension->reverse_checks );
+		$this->assertCount( 0, $this->another_extension->reverse_checks );
+
+		// The reactors should not have been hit.
+		$this->assertReactionNotReverseHit();
+
+		$this->assertCount( 0, $this->another_reactor->reverse_hits );
+
+		// No hits should have been logged.
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'reverse',
+				'reaction_id' => $this->another_reaction->ID,
+			)
+			, 0
+		);
+
+		// The original hit should have had its reversed_by meta key set to 0.
+		$this->assertHitsLogged(
+			array(
+				'firer' => 'fire',
+				'reaction_id' => $this->another_reaction->ID,
+				'meta_query' => array(
+					array( 'key' => 'reversed_by', 'value' => 0 ),
+				),
+			)
+		);
+	}
+
+	//
+	// Helpers.
+	//
 
 	/**
 	 * Fire the event for the reactors.
@@ -617,15 +636,8 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->mock_apps();
 
 		$this->hooks = wordpoints_hooks();
-		$this->hooks->extensions->register(
-			'test_extension'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
-		);
 
-		$this->hooks->extensions->register(
-			'another'
-			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
-		);
+		$this->create_extensions();
 
 		$this->factory->wordpoints->hook_reactor->create(
 			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reactor_Reversible' )
@@ -643,6 +655,32 @@ class WordPoints_Hook_Firer_Reverse_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->another_reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'reactor' => 'another' )
 		);
+	}
+
+	/**
+	 * Create the hook extensions for the tests.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function create_extensions() {
+
+		$this->hooks->extensions->register(
+			'test_extension'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reversible'
+		);
+
+		$this->hooks->extensions->register(
+			'another'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension_Reversible'
+		);
+
+		$this->hooks->extensions->register(
+			'non_reversible'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		$this->extension         = $this->hooks->extensions->get( 'test_extension' );
+		$this->another_extension = $this->hooks->extensions->get( 'another' );
 	}
 
 	/**
