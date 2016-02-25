@@ -35,10 +35,10 @@ data = hooks.view.data = window.WordPointsHooksAdminData || {};
 
 // Load the controllers.
 hooks.controller.Fields     = require( './controllers/fields.js' );
-hooks.controller.Extensions = require( './controllers/extensions.js' );
 hooks.controller.Extension  = require( './controllers/extension.js' );
-hooks.controller.Reactors   = require( './controllers/reactors.js' );
+hooks.controller.Extensions = require( './controllers/extensions.js' );
 hooks.controller.Reactor    = require( './controllers/reactor.js' );
+hooks.controller.Reactors   = require( './controllers/reactors.js' );
 hooks.controller.Args       = require( './controllers/args.js' );
 
 // Start them up here so that we can begin using them.
