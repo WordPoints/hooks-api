@@ -89,8 +89,8 @@ Reactions = Base.extend({
 			defaults.event = event;
 			defaults.nonce = this.$events
 				.find(
-				'option[value="' + event.replace( /[^a-z0-9-_]/gi, '' ) + '"]'
-			)
+					'option[value="' + event.replace( /[^a-z0-9-_]/gi, '' ) + '"]'
+				)
 				.data( 'nonce' );
 
 		} else {
@@ -113,7 +113,14 @@ Reactions = Base.extend({
 
 		this.$addReaction.prop( 'disabled', true );
 
-		this.model.add( [ new Reaction( data ) ] );
+		var reaction = new Reaction( data );
+
+		this.model.add( [ reaction ] );
+
+		// Re-enable the submit button when a new reaction is saved.
+		this.listenToOnce( reaction, 'sync', function () {
+			this.$addReaction.prop( 'disabled', false );
+		});
 	},
 
 	// When a new reaction is removed, re-enable the add reaction button.
