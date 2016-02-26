@@ -23,7 +23,7 @@ Points = Reactor.extend({
 		this.listenTo( reaction.model, 'validate', this.validate );
 	},
 
-	render: function ( reaction ) {
+	render: function ( $el, currentFirerSlug, reaction ) {
 
 		var fields = '';
 

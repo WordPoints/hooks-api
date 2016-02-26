@@ -69,6 +69,7 @@ class WordPoints_Hook_Reactor_Points
 
 		$data = parent::get_ui_script_data();
 
+		$data['firers'][] = 'reverse';
 		$data['target_label'] = __( 'Award To', 'wordpoints' );
 		$data['periods_label'] = __( 'Award each user no more than once per:', 'wordpoints' );
 

@@ -142,9 +142,10 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	public function get_ui_script_data() {
 
 		return array(
-			'slug'         => $this->get_slug(),
-			'fields'       => $this->get_settings_fields(),
-			'arg_types'    => $this->get_arg_types(),
+			'slug'      => $this->get_slug(),
+			'fields'    => $this->get_settings_fields(),
+			'arg_types' => $this->get_arg_types(),
+			'firers'    => array( 'fire' ),
 		);
 	}
 

@@ -35,10 +35,14 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_validate_settings() {
 
+		$this->mock_apps();
+
 		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
 
+		$firer_slug = $this->factory->wordpoints->hook_firer->create();
+
 		$settings = array(
-			'test_extension' => array( 'key' => 'value' ),
+			'test_extension' => array( $firer_slug => array( 'key' => 'value' ) ),
 			'other_settings' => 'here',
 		);
 
@@ -58,14 +62,14 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals( $settings, $validated );
 
 		$this->assertEquals(
-			$settings['test_extension']
+			$settings['test_extension'][ $firer_slug ]
 			, $extension->validations[0]['settings']
 		);
 
 		$this->assertEquals( $event_args, $extension->validations[0]['event_args'] );
 		$this->assertEquals( $validator, $extension->validations[0]['validator'] );
 		$this->assertEquals(
-			array( 'test_extension' )
+			array( 'test_extension', $firer_slug )
 			, $extension->validations[0]['field_stack']
 		);
 
@@ -79,11 +83,11 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_validate_settings_not_set() {
 
+		$this->mock_apps();
+
 		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
 
-		$settings = array(
-			'other_settings' => 'here',
-		);
+		$settings = array( 'other_settings' => 'here' );
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
@@ -104,6 +108,91 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
+	 * Test validating the extension's settings when they aren't an array.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_validate_settings_not_array() {
+
+		$this->mock_apps();
+
+		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
+
+		$settings = array(
+			'test_extension' => 'invalid',
+			'other_settings' => 'here',
+		);
+
+		$validator = new WordPoints_Hook_Reaction_Validator(
+			array()
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
+		);
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$validated = $extension->validate_settings(
+			$settings
+			, $validator
+			, $event_args
+		);
+
+		$this->assertEquals( $settings, $validated );
+
+		$this->assertEmpty( $extension->validations );
+
+		$errors = $validator->get_errors();
+
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( array( 'test_extension' ), $errors[0]['field'] );
+
+		$this->assertEquals( array(), $validator->get_field_stack() );
+	}
+
+	/**
+	 * Test validating the extension's settings when a slug firer is invalid.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_validate_settings_unregistered_firer() {
+
+		$this->mock_apps();
+
+		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
+
+		$settings = array(
+			'test_extension' => array( 'unregistered' => array( 'key' => 'value' ) ),
+			'other_settings' => 'here',
+		);
+
+		$validator = new WordPoints_Hook_Reaction_Validator(
+			array()
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
+		);
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$validated = $extension->validate_settings(
+			$settings
+			, $validator
+			, $event_args
+		);
+
+		$this->assertEquals( $settings, $validated );
+
+		$this->assertEmpty( $extension->validations );
+
+		$errors = $validator->get_errors();
+
+		$this->assertCount( 1, $errors );
+		$this->assertEquals(
+			array( 'test_extension', 'unregistered' )
+			, $errors[0]['field']
+		);
+
+		$this->assertEquals( array(), $validator->get_field_stack() );
+	}
+
+	/**
 	 * Test updating the extension's settings.
 	 *
 	 * @since 1.0.0
@@ -114,8 +203,10 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
 
+		$firer_slug = $this->factory->wordpoints->hook_firer->create();
+
 		$settings = array(
-			'test_extension' => array( 'key' => 'value' ),
+			'test_extension' => array( $firer_slug => array( 'key' => 'value' ) ),
 			'other_settings' => 'here',
 		);
 
@@ -143,12 +234,16 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
 
-		$settings = array(
-			'other_settings' => 'here',
-		);
+		$settings = array( 'other_settings' => 'here' );
+
+		$firer_slug = $this->factory->wordpoints->hook_firer->create();
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create(
-			array( 'test_extension' => array( 'key' => 'value' ) )
+			array(
+				'test_extension' => array(
+					$firer_slug => array( 'key' => 'value' )
+				),
+			)
 		);
 
 		$extension->update_settings( $reaction, $settings );

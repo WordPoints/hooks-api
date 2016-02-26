@@ -754,7 +754,7 @@ Fields = Backbone.Model.extend({
 		this.listenTo( reaction, 'render:settings', this.renderReaction );
 	},
 
-	renderReaction: function ( reaction ) {
+	renderReaction: function ( $el, currentFirerSlug, reaction ) {
 
 		var fieldsHTML = '';
 
@@ -768,7 +768,7 @@ Fields = Backbone.Model.extend({
 
 		}, this );
 
-		reaction.$settings.html( fieldsHTML );
+		$el.html( fieldsHTML );
 	},
 
 	validateReaction: function ( reaction, attributes ) {
@@ -830,6 +830,11 @@ var Extension = wp.wordpoints.hooks.controller.Extension,
 	Reactor;
 
 Reactor = Extension.extend({
+
+	defaults: {
+		'arg_types': [],
+		'firers': []
+	},
 
 	/**
 	 * @since 1.0.0
@@ -1423,8 +1428,10 @@ Reaction = Base.extend({
 
 	renderFields: function () {
 
-		this.trigger( 'render:settings', this );
-		this.trigger( 'render:fields', this );
+		var currentFirerSlug = this.getCurrentFirerSlug();
+
+		this.trigger( 'render:settings', this.$settings, currentFirerSlug, this );
+		this.trigger( 'render:fields', this.$fields, currentFirerSlug, this );
 
 		this.renderedFields = true;
 	},
@@ -1491,6 +1498,12 @@ Reaction = Base.extend({
 
 	setReactor: function () {
 		this.Reactor = Reactors.get( this.model.get( 'reactor' ) );
+	},
+
+	// Get the current firer that settings are being displayed for.
+	// Right now we just default this to the main firer for the reactor.
+	getCurrentFirerSlug: function () {
+		return this.Reactor.get( 'firers' )[0];
 	},
 
 	// Toggle the visibility of the form.

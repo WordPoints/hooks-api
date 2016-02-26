@@ -29,25 +29,53 @@ Conditions = Extension.extend({
 
 		this.listenTo( reaction, 'validate', this.validateReactionConditions );
 
-		reaction.model.conditions = new ConditionGroups(
-			this.mapConditions( reaction.model.get( 'conditions' ) )
-		);
+		reaction.conditions = {};
+		reaction.model.conditions = {};
 
-		reaction.conditions = new ConditionsGroupsView( {
-			collection: reaction.model.conditions,
-			reaction: reaction
-		});
+		var conditions = reaction.model.get( 'conditions' );
 
-		this.listenTo( reaction, 'render:fields', function () {
-			reaction.$fields.append( reaction.conditions.render().$el );
+		if ( ! conditions ) {
+			conditions = {};
+		}
+
+		_.each( reaction.Reactor.get( 'firers' ), function ( firerSlug ) {
+
+			var conditionGroups = conditions[ firerSlug ];
+
+			if ( ! conditionGroups ) {
+				conditionGroups = [];
+			}
+
+			reaction.model.conditions[ firerSlug ] = new ConditionGroups(
+				this.mapConditions( conditionGroups )
+			);
+
+			reaction.conditions[ firerSlug ] = new ConditionsGroupsView( {
+				collection: reaction.model.conditions[ firerSlug ],
+				reaction: reaction,
+				hierarchy: [ firerSlug ]
+			});
+
+		}, this );
+
+		this.listenTo( reaction, 'render:fields', function ( $el, currentFirerSlug ) {
+
+			var conditions = reaction.conditions[ currentFirerSlug ];
+
+			if ( ! conditions ) {
+				return;
+			}
+
+			$el.append( conditions.render().$el );
 		});
 	},
 
-	mapConditions: function ( conditions, hierarchy ) {
+	mapConditions: function ( conditions, hierarchy, preHierarchy ) {
 
 		var conditionGroups = [];
 
 		hierarchy = hierarchy || [];
+		preHierarchy = preHierarchy || [];
 
 		_.each( conditions, function ( arg, slug ) {
 
@@ -56,6 +84,7 @@ Conditions = Extension.extend({
 				conditionGroups.push( {
 					id: this.getIdFromHierarchy( hierarchy ),
 					hierarchy: _.clone( hierarchy ),
+					preHierarchy: preHierarchy,
 					_conditions: arg
 				} );
 

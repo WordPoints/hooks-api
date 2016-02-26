@@ -162,13 +162,16 @@ class WordPoints_Hook_Condition_Entity_Array_Contains
 
 		$args->set_validator( $this->validator );
 
+		$firer_slugs = wordpoints_hooks()->firers->get_all_slugs();
+		$firer_slug  = array_shift( $firer_slugs );
+
 		$conditions = $this->conditions_extension->validate_settings(
-			array( 'conditions' => $this->settings['conditions'] )
+			array( 'conditions' => array( $firer_slug => $this->settings['conditions'] ) )
 			, $this->validator
 			, $args
 		);
 
-		$this->settings['conditions'] = $conditions['conditions'];
+		$this->settings['conditions'] = $conditions['conditions'][ $firer_slug ];
 	}
 
 	/**

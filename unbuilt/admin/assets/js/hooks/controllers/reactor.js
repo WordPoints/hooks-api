@@ -14,6 +14,11 @@ var Extension = wp.wordpoints.hooks.controller.Extension,
 
 Reactor = Extension.extend({
 
+	defaults: {
+		'arg_types': [],
+		'firers': []
+	},
+
 	/**
 	 * @since 1.0.0
 	 */

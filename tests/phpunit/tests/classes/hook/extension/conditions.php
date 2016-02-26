@@ -43,6 +43,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
+		$this->factory->wordpoints->hook_firer->create(
+			array( 'slug' => 'test_firer' )
+		);
+
 		$extension = new WordPoints_Hook_Extension_Conditions();
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
@@ -81,21 +85,23 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$settings = array(
 			'conditions' => array(
-				'user' => array(
-					'roles' => array(
-						'user_role{}' => array(
-							'_conditions' => array(
-								array(
-									'type' => 'contains',
-									'settings' => array(
-										'min' => 1,
-										'conditions' => array(
-											'user_role' => array(
-												'_conditions' => array(
-													array(
-														'type' => 'equals',
-														'settings' => array(
-															'value' => 'administrator',
+				'fire' => array(
+					'user' => array(
+						'roles' => array(
+							'user_role{}' => array(
+								'_conditions' => array(
+									array(
+										'type' => 'contains',
+										'settings' => array(
+											'min' => 1,
+											'conditions' => array(
+												'user_role' => array(
+													'_conditions' => array(
+														array(
+															'type' => 'equals',
+															'settings' => array(
+																'value' => 'administrator',
+															),
 														),
 													),
 												),
@@ -155,6 +161,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'data_type' => 'text' )
 		);
 
+		$this->factory->wordpoints->hook_firer->create(
+			array( 'slug' => 'test_firer' )
+		);
+
 		$extension = new WordPoints_Hook_Extension_Conditions();
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
@@ -178,10 +188,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 
-		if ( is_array( $settings['conditions'] ) ) {
+		if ( is_array( $settings['conditions']['test_firer'] ) ) {
 			$this->assertEquals( $settings, $result );
 		} else {
-			$this->assertSame( array(), $result['conditions'] );
+			$this->assertSame( array(), $result['conditions']['test_firer'] );
 		}
 	}
 
@@ -222,6 +232,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->factory->wordpoints->hook_condition->create(
 			array( 'slug' => 'test', 'data_type' => 'text' )
+		);
+
+		$this->factory->wordpoints->hook_firer->create(
+			array( 'slug' => 'test_firer' )
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
@@ -277,6 +291,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->factory->wordpoints->hook_condition->create(
 			array( 'slug' => 'unmet', 'data_type' => 'entity' )
+		);
+
+		$this->factory->wordpoints->hook_firer->create(
+			array( 'slug' => 'test_firer' )
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );

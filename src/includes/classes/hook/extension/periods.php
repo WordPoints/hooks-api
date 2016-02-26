@@ -58,7 +58,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @return array The validated periods.
 	 */
-	protected function validate_periods( $periods ) {
+	protected function validate_firer_settings( $periods ) {
 
 		if ( ! is_array( $periods ) ) {
 
@@ -176,7 +176,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 */
 	public function should_hit( WordPoints_Hook_Fire $fire ) {
 
-		$periods = $fire->reaction->get_meta( 'periods' );
+		$periods = $this->get_settings_from_fire( $fire );
 
 		if ( empty( $periods ) ) {
 			return true;
@@ -371,7 +371,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 */
 	public function after_hit( WordPoints_Hook_Fire $fire ) {
 
-		$periods = $fire->reaction->get_meta( 'periods' );
+		$periods = $this->get_settings_from_fire( $fire );
 
 		if ( empty( $periods ) ) {
 			return;

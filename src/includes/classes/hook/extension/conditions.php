@@ -62,6 +62,13 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	}
 
 	/**
+	 * @since 1.0.0
+	 */
+	protected function validate_firer_settings( $settings ) {
+		return $this->validate_conditions( $settings );
+	}
+
+	/**
 	 * Validate the conditions.
 	 *
 	 * @since 1.0.0
@@ -108,7 +115,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 					continue;
 				}
 
-				$sub_args = $this->validate_conditions( $sub_args );
+				$sub_args = $this->validate_firer_settings( $sub_args );
 
 				$args[ $arg_slug ] = $sub_args;
 
@@ -195,7 +202,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 */
 	public function should_hit( WordPoints_Hook_Fire $fire ) {
 
-		$conditions = $fire->reaction->get_meta( 'conditions' );
+		$conditions = $this->get_settings_from_fire( $fire );
 
 		if ( $conditions && ! $this->conditions_are_met( $conditions, $fire->event_args ) ) {
 			return false;

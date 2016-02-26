@@ -23,6 +23,8 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 	 */
 	public function data_provider_valid_condition_settings() {
 
+		$firer_slug = 'test_firer';
+
 		$conditions = array(
 			'_conditions' => array(
 				array(
@@ -38,16 +40,18 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 		$both['test_entity']['_conditions'] = $conditions['_conditions'];
 
 		return array(
-			'none' => array( array() ),
-			'empty' => array( array( 'conditions' => array() ) ),
-			'entity' => array( array( 'conditions' => $entity ) ),
-			'child' => array( array( 'conditions' => $child ) ),
-			'both' => array( array( 'conditions' => $both ) ),
+			'none' => array( array( $firer_slug => array() ) ),
+			'empty' => array( array( 'conditions' => array( $firer_slug => array() ) ) ),
+			'entity' => array( array( 'conditions' => array( $firer_slug => $entity ) ) ),
+			'child' => array( array( 'conditions' => array( $firer_slug => $child ) ) ),
+			'both' => array( array( 'conditions' => array( $firer_slug => $both ) ) ),
 			'two_entities' => array(
 				array(
 					'conditions' => array(
-						'test_entity' => $conditions,
-						'another' => $conditions,
+						$firer_slug => array(
+							'test_entity' => $conditions,
+							'another' => $conditions,
+						),
 					),
 				),
 			),
@@ -63,6 +67,8 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 	 */
 	public function data_provider_invalid_condition_settings() {
 
+		$firer_slug = 'test_firer';
+
 		$conditions = array(
 			'_conditions' => array(
 				array(
@@ -74,16 +80,26 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 
 		$invalid_settings = array(
 			'not_array' => array(
-				array( 'conditions' => 'not_array' ),
-				array( 'conditions' ),
+				array( 'conditions' => array( $firer_slug => 'not_array' ) ),
+				array( 'conditions', $firer_slug ),
 			),
 			'invalid_entity' => array(
-				array( 'conditions' => array( 'invalid_entity' => $conditions ) ),
-				array( 'conditions' ),
+				array(
+					'conditions' => array(
+						$firer_slug => array( 'invalid_entity' => $conditions ),
+					),
+				),
+				array( 'conditions', $firer_slug ),
 			),
 			'incorrect_data_type' => array(
-				array( 'conditions' => array( 'test_entity' => array( 'child' => $conditions ) ) ),
-				array( 'conditions', 'test_entity', 'child', '_conditions', 0 ),
+				array(
+					'conditions' => array(
+						$firer_slug => array(
+							'test_entity' => array( 'child' => $conditions )
+						),
+					),
+				),
+				array( 'conditions', $firer_slug, 'test_entity', 'child', '_conditions', 0 ),
 			),
 		);
 
@@ -98,10 +114,16 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 
 			unset( $invalid_conditions['_conditions'][0][ $slug ] );
 
-			$field = array( 'conditions', 'test_entity', '_conditions', 0 );
+			$field = array( 'conditions', $firer_slug, 'test_entity', '_conditions', 0 );
 
 			$invalid_settings[ "no_{$slug}" ] = array(
-				array( 'conditions' => array( 'test_entity' => $invalid_conditions ) ),
+				array(
+					'conditions' => array(
+						$firer_slug => array(
+							'test_entity' => $invalid_conditions,
+						),
+					),
+				),
 				$field,
 			);
 
@@ -115,7 +137,13 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 				}
 
 				$invalid_settings[ "invalid_{$slug}" ] = array(
-					array( 'conditions' => array( 'test_entity' => $invalid_conditions ) ),
+					array(
+						'conditions' => array(
+							$firer_slug => array(
+								'test_entity' => $invalid_conditions,
+							),
+						),
+					),
 					$field,
 				);
 			}
@@ -133,6 +161,8 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 	 */
 	public function data_provider_unmet_conditions() {
 
+		$firer_slug = 'test_firer';
+
 		$conditions = array(
 			'_conditions' => array(
 				array(
@@ -144,12 +174,18 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 
 		$settings = array(
 			'unmet_condition' => array(
-				array( 'conditions' => array( 'test_entity' => $conditions ) ),
+				array(
+					'conditions' => array(
+						$firer_slug => array( 'test_entity' => $conditions ),
+					),
+				),
 			),
 			'unmet_child_condition' => array(
 				array(
 					'conditions' => array(
-						'test_entity' => array( 'child' => $conditions ),
+						$firer_slug => array(
+							'test_entity' => array( 'child' => $conditions ),
+						),
 					),
 				),
 			),

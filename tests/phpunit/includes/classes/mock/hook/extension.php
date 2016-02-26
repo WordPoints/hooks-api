@@ -83,7 +83,7 @@ class WordPoints_PHPUnit_Mock_Hook_Extension extends WordPoints_Hook_Extension {
 	 *
 	 * @return array The validated settings.
 	 */
-	protected function validate_test_extension( array $settings ) {
+	protected function validate_firer_settings( $settings ) {
 
 		$this->validations[] = array(
 			'settings' => $settings,
