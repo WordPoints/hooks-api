@@ -21,8 +21,11 @@ Conditions = Extension.extend({
 
 	initialize: function () {
 
-		this.controllers = new Backbone.Collection( [], { comparator: 'slug' } );
 		this.dataType = Backbone.Model.extend( { idAttribute: 'slug' } );
+		this.controllers = new Backbone.Collection(
+			[]
+			, { comparator: 'slug', model: this.dataType }
+		);
 	},
 
 	initReaction: function ( reaction ) {
