@@ -96,7 +96,6 @@ var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	ConditionGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
 	ArgsCollection = wp.wordpoints.hooks.model.Args,
 	Args = wp.wordpoints.hooks.Args,
-	Extensions = wp.wordpoints.hooks.Extensions,
 	EntityArrayContains;
 
 EntityArrayContains = Condition.extend({
@@ -107,8 +106,6 @@ EntityArrayContains = Condition.extend({
 
 	renderSettings: function ( condition, fieldNamePrefix ) {
 
-		var Conditions = Extensions.get( 'conditions' );
-
 		// Render the main fields.
 		var fields = this.constructor.__super__.renderSettings.apply(
 			this
@@ -118,25 +115,22 @@ EntityArrayContains = Condition.extend({
 		condition.$settings.append( fields );
 
 		// Render view for sub-conditions.
-		var preHierarchy = [ '_conditions', condition.model.id, 'settings', 'conditions' ];
-		var conditionGroups = new ConditionGroups(
-			Conditions.mapConditions(
-				condition.model.get( 'settings' ).conditions
-			)
-		);
-
-		var hierarchy = condition.model.getFullHierarchy(),
-			arg;
-
-		arg = Args.getEntity(
+		var arg = Args.getEntity(
 			condition.model.getArg().get( 'entity_slug' )
 		);
 
+		var conditionGroups = new ConditionGroups( null, {
+			args: new ArgsCollection( [ arg ] ),
+			hierarchy: condition.model.getFullHierarchy().concat(
+				[ '_conditions', condition.model.id, 'settings', 'conditions' ]
+			),
+			reaction: condition.reaction.model,
+			_conditions: condition.model.get( 'settings' ).conditions
+		} );
+
 		var view = new ConditionGroupsView( {
 			collection: conditionGroups,
-			reaction: condition.reaction,
-			args: new ArgsCollection( [ arg ] ),
-			hierarchy: hierarchy.concat( preHierarchy )
+			reaction: condition.reaction
 		});
 
 		condition.$settings.append( view.render().$el );
@@ -263,14 +257,15 @@ Conditions = Extension.extend({
 				conditionGroups = [];
 			}
 
-			reaction.model.conditions[ firerSlug ] = new ConditionGroups(
-				this.mapConditions( conditionGroups )
-			);
+			reaction.model.conditions[ firerSlug ] = new ConditionGroups( null, {
+				hierarchy: [ firerSlug ],
+				reaction: reaction.model,
+				_conditions: conditionGroups
+			} );
 
 			reaction.conditions[ firerSlug ] = new ConditionsGroupsView( {
 				collection: reaction.model.conditions[ firerSlug ],
-				reaction: reaction,
-				hierarchy: [ firerSlug ]
+				reaction: reaction
 			});
 
 		}, this );
@@ -285,45 +280,6 @@ Conditions = Extension.extend({
 
 			$el.append( conditions.render().$el );
 		});
-	},
-
-	mapConditions: function ( conditions, hierarchy, preHierarchy ) {
-
-		var conditionGroups = [];
-
-		hierarchy = hierarchy || [];
-		preHierarchy = preHierarchy || [];
-
-		_.each( conditions, function ( arg, slug ) {
-
-			if ( slug === '_conditions' ) {
-
-				conditionGroups.push( {
-					id: this.getIdFromHierarchy( hierarchy ),
-					hierarchy: _.clone( hierarchy ),
-					preHierarchy: preHierarchy,
-					_conditions: arg
-				} );
-
-			} else {
-
-				hierarchy.push( slug );
-
-				conditionGroups = conditionGroups.concat(
-					this.mapConditions( arg, hierarchy )
-				);
-
-				hierarchy.pop();
-			}
-
-		}, this );
-
-		return conditionGroups;
-	},
-
-	// TODO move to condition groups?
-	getIdFromHierarchy: function ( hierarchy ) {
-		return hierarchy.join( '.' );
 	},
 
 	getDataTypeFromArg: function ( arg ) {
@@ -425,14 +381,17 @@ var Conditions = wp.wordpoints.hooks.model.Conditions,
 	setDeep = wp.wordpoints.hooks.util.setDeep,
 	ConditionGroup;
 
+// This is a model although we originally thought it ought to be a collection,
+// because Backbone doesn't support sub-collections. This is the closest thing
+// to a sub-collection. See http://stackoverflow.com/q/10388199/1924128.
 ConditionGroup = Backbone.Model.extend({
 
 	defaults: function () {
 		return {
 			id: '',
 			hierarchy: [],
-			preHierarchy: [],
 			conditions: new Conditions(),
+			groups: null,
 			reaction: null
 		};
 	},
@@ -564,11 +523,75 @@ module.exports = ConditionGroup;
  * @augments Backbone.Collection
  */
 var ConditionGroup = wp.wordpoints.hooks.model.ConditionGroup,
+	Args = wp.wordpoints.hooks.Args,
 	ConditionGroups;
 
 ConditionGroups = Backbone.Collection.extend({
 
-	model: ConditionGroup
+	model: ConditionGroup,
+
+	hierarchy: [],
+
+	initialize: function ( models, options ) {
+
+		if ( options.args ) {
+			this.args = options.args;
+		}
+
+		if ( options.hierarchy ) {
+			this.hierarchy = options.hierarchy;
+		}
+
+		if ( options.reaction ) {
+			this.reaction = options.reaction;
+		}
+
+		if ( options._conditions ) {
+			this.mapConditions( options._conditions );
+		}
+	},
+
+	mapConditions: function ( conditions, hierarchy ) {
+
+		hierarchy = hierarchy || [];
+
+		_.each( conditions, function ( arg, slug ) {
+
+			if ( slug === '_conditions' ) {
+
+				this.add( {
+					id: this.getIdFromHierarchy( hierarchy ),
+					hierarchy: _.clone( hierarchy ),
+					groups: this,
+					_conditions: arg
+				} );
+
+			} else {
+
+				hierarchy.push( slug );
+
+				this.mapConditions( arg, hierarchy );
+
+				hierarchy.pop();
+			}
+
+		}, this );
+	},
+
+	getIdFromHierarchy: function ( hierarchy ) {
+		return hierarchy.join( '.' );
+	},
+
+	getArgs: function () {
+
+		var args = this.args;
+
+		if ( ! args ) {
+			args = Args.getEventArgs( this.reaction.get( 'event' ) );
+		}
+
+		return args;
+	}
 });
 
 module.exports = ConditionGroups;
@@ -692,8 +715,8 @@ Condition = Base.extend({
 
 	getFullHierarchy: function () {
 
-		return this.group.get( 'preHierarchy' ).concat(
-			this.group.get( 'hierarchy' )
+		return this.group.get( 'groups' ).hierarchy.concat(
+			this.getHierarchy()
 		);
 	},
 
@@ -870,7 +893,6 @@ ConditionGroup = Base.extend({
 	addOne: function ( condition ) {
 
 		condition.reaction = this.reaction.model;
-		condition.hierarchy = this.model.hierarchy;
 
 		var view = new Condition( {
 			el: $( '<div class="condition"></div>' ),
@@ -925,23 +947,13 @@ ConditionGroups = Base.extend({
 
 	template: template( 'hook-condition-groups' ),
 
-	hierarchy: [],
-
 	events: {
 		'click > .conditions-title .add-new':           'showArgSelector',
 		'click > .add-condition-form .confirm-add-new': 'maybeAddNew',
 		'click > .add-condition-form .cancel-add-new':  'cancelAddNew'
 	},
 
-	initialize: function ( options ) {
-
-		if ( options.args ) {
-			this.args = options.args;
-		}
-
-		if ( options.hierarchy ) {
-			this.hierarchy = options.hierarchy;
-		}
+	initialize: function () {
 
 		this.Conditions = Extensions.get( 'conditions' );
 
@@ -987,14 +999,9 @@ ConditionGroups = Base.extend({
 
 		if ( typeof this.ArgSelector === 'undefined' ) {
 
-			var args = this.args;
-
-			if ( ! args ) {
-				args = Args.getEventArgs( this.reaction.model.get( 'event' ) );
-			}
-
+			var args = this.collection.getArgs();
 			var Conditions = this.Conditions;
-			var isEntityArray = ( this.hierarchy.slice( -2 ).toString() === 'settings,conditions' );
+			var isEntityArray = ( this.collection.hierarchy.slice( -2 ).toString() === 'settings,conditions' );
 			var hasConditions = function ( arg ) {
 
 				var dataType = Conditions.getDataTypeFromArg( arg );
@@ -1119,14 +1126,14 @@ ConditionGroups = Base.extend({
 		}
 
 		var hierarchy = this.ArgSelector.getHierarchy(),
-			id = this.Conditions.getIdFromHierarchy( hierarchy ),
+			id = this.collection.getIdFromHierarchy( hierarchy ),
 			ConditionGroup = this.collection.get( id );
 
 		if ( ! ConditionGroup ) {
 			ConditionGroup = this.collection.add({
 				id: id,
 				hierarchy: hierarchy,
-				preHierarchy: this.hierarchy
+				groups: this.collection
 			});
 		}
 

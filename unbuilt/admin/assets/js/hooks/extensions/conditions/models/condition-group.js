@@ -9,14 +9,17 @@ var Conditions = wp.wordpoints.hooks.model.Conditions,
 	setDeep = wp.wordpoints.hooks.util.setDeep,
 	ConditionGroup;
 
+// This is a model although we originally thought it ought to be a collection,
+// because Backbone doesn't support sub-collections. This is the closest thing
+// to a sub-collection. See http://stackoverflow.com/q/10388199/1924128.
 ConditionGroup = Backbone.Model.extend({
 
 	defaults: function () {
 		return {
 			id: '',
 			hierarchy: [],
-			preHierarchy: [],
 			conditions: new Conditions(),
+			groups: null,
 			reaction: null
 		};
 	},

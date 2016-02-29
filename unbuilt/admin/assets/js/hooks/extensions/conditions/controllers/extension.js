@@ -49,14 +49,15 @@ Conditions = Extension.extend({
 				conditionGroups = [];
 			}
 
-			reaction.model.conditions[ firerSlug ] = new ConditionGroups(
-				this.mapConditions( conditionGroups )
-			);
+			reaction.model.conditions[ firerSlug ] = new ConditionGroups( null, {
+				hierarchy: [ firerSlug ],
+				reaction: reaction.model,
+				_conditions: conditionGroups
+			} );
 
 			reaction.conditions[ firerSlug ] = new ConditionsGroupsView( {
 				collection: reaction.model.conditions[ firerSlug ],
-				reaction: reaction,
-				hierarchy: [ firerSlug ]
+				reaction: reaction
 			});
 
 		}, this );
@@ -71,45 +72,6 @@ Conditions = Extension.extend({
 
 			$el.append( conditions.render().$el );
 		});
-	},
-
-	mapConditions: function ( conditions, hierarchy, preHierarchy ) {
-
-		var conditionGroups = [];
-
-		hierarchy = hierarchy || [];
-		preHierarchy = preHierarchy || [];
-
-		_.each( conditions, function ( arg, slug ) {
-
-			if ( slug === '_conditions' ) {
-
-				conditionGroups.push( {
-					id: this.getIdFromHierarchy( hierarchy ),
-					hierarchy: _.clone( hierarchy ),
-					preHierarchy: preHierarchy,
-					_conditions: arg
-				} );
-
-			} else {
-
-				hierarchy.push( slug );
-
-				conditionGroups = conditionGroups.concat(
-					this.mapConditions( arg, hierarchy )
-				);
-
-				hierarchy.pop();
-			}
-
-		}, this );
-
-		return conditionGroups;
-	},
-
-	// TODO move to condition groups?
-	getIdFromHierarchy: function ( hierarchy ) {
-		return hierarchy.join( '.' );
 	},
 
 	getDataTypeFromArg: function ( arg ) {

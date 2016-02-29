@@ -52,7 +52,6 @@ ConditionGroup = Base.extend({
 	addOne: function ( condition ) {
 
 		condition.reaction = this.reaction.model;
-		condition.hierarchy = this.model.hierarchy;
 
 		var view = new Condition( {
 			el: $( '<div class="condition"></div>' ),

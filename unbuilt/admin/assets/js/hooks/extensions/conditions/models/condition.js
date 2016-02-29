@@ -81,8 +81,8 @@ Condition = Base.extend({
 
 	getFullHierarchy: function () {
 
-		return this.group.get( 'preHierarchy' ).concat(
-			this.group.get( 'hierarchy' )
+		return this.group.get( 'groups' ).hierarchy.concat(
+			this.getHierarchy()
 		);
 	},
 

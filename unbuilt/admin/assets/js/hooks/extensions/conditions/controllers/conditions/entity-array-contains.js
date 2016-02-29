@@ -11,7 +11,6 @@ var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	ConditionGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
 	ArgsCollection = wp.wordpoints.hooks.model.Args,
 	Args = wp.wordpoints.hooks.Args,
-	Extensions = wp.wordpoints.hooks.Extensions,
 	EntityArrayContains;
 
 EntityArrayContains = Condition.extend({
@@ -22,8 +21,6 @@ EntityArrayContains = Condition.extend({
 
 	renderSettings: function ( condition, fieldNamePrefix ) {
 
-		var Conditions = Extensions.get( 'conditions' );
-
 		// Render the main fields.
 		var fields = this.constructor.__super__.renderSettings.apply(
 			this
@@ -33,25 +30,22 @@ EntityArrayContains = Condition.extend({
 		condition.$settings.append( fields );
 
 		// Render view for sub-conditions.
-		var preHierarchy = [ '_conditions', condition.model.id, 'settings', 'conditions' ];
-		var conditionGroups = new ConditionGroups(
-			Conditions.mapConditions(
-				condition.model.get( 'settings' ).conditions
-			)
-		);
-
-		var hierarchy = condition.model.getFullHierarchy(),
-			arg;
-
-		arg = Args.getEntity(
+		var arg = Args.getEntity(
 			condition.model.getArg().get( 'entity_slug' )
 		);
 
+		var conditionGroups = new ConditionGroups( null, {
+			args: new ArgsCollection( [ arg ] ),
+			hierarchy: condition.model.getFullHierarchy().concat(
+				[ '_conditions', condition.model.id, 'settings', 'conditions' ]
+			),
+			reaction: condition.reaction.model,
+			_conditions: condition.model.get( 'settings' ).conditions
+		} );
+
 		var view = new ConditionGroupsView( {
 			collection: conditionGroups,
-			reaction: condition.reaction,
-			args: new ArgsCollection( [ arg ] ),
-			hierarchy: hierarchy.concat( preHierarchy )
+			reaction: condition.reaction
 		});
 
 		condition.$settings.append( view.render().$el );

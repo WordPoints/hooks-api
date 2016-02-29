@@ -23,23 +23,13 @@ ConditionGroups = Base.extend({
 
 	template: template( 'hook-condition-groups' ),
 
-	hierarchy: [],
-
 	events: {
 		'click > .conditions-title .add-new':           'showArgSelector',
 		'click > .add-condition-form .confirm-add-new': 'maybeAddNew',
 		'click > .add-condition-form .cancel-add-new':  'cancelAddNew'
 	},
 
-	initialize: function ( options ) {
-
-		if ( options.args ) {
-			this.args = options.args;
-		}
-
-		if ( options.hierarchy ) {
-			this.hierarchy = options.hierarchy;
-		}
+	initialize: function () {
 
 		this.Conditions = Extensions.get( 'conditions' );
 
@@ -85,14 +75,9 @@ ConditionGroups = Base.extend({
 
 		if ( typeof this.ArgSelector === 'undefined' ) {
 
-			var args = this.args;
-
-			if ( ! args ) {
-				args = Args.getEventArgs( this.reaction.model.get( 'event' ) );
-			}
-
+			var args = this.collection.getArgs();
 			var Conditions = this.Conditions;
-			var isEntityArray = ( this.hierarchy.slice( -2 ).toString() === 'settings,conditions' );
+			var isEntityArray = ( this.collection.hierarchy.slice( -2 ).toString() === 'settings,conditions' );
 			var hasConditions = function ( arg ) {
 
 				var dataType = Conditions.getDataTypeFromArg( arg );
@@ -217,14 +202,14 @@ ConditionGroups = Base.extend({
 		}
 
 		var hierarchy = this.ArgSelector.getHierarchy(),
-			id = this.Conditions.getIdFromHierarchy( hierarchy ),
+			id = this.collection.getIdFromHierarchy( hierarchy ),
 			ConditionGroup = this.collection.get( id );
 
 		if ( ! ConditionGroup ) {
 			ConditionGroup = this.collection.add({
 				id: id,
 				hierarchy: hierarchy,
-				preHierarchy: this.hierarchy
+				groups: this.collection
 			});
 		}
 
