@@ -26,12 +26,8 @@ ConditionGroup = Backbone.Model.extend({
 
 	initialize: function ( attributes ) {
 
-		// Set up even proxying.
-		//_.each( [ 'add', 'reset', 'remove', 'update' ], function ( event ) {
-
-			this.listenTo( this.attributes.conditions, 'all', this.trigger );
-
-		//}, this );
+		// Set up event proxying.
+		this.listenTo( this.attributes.conditions, 'all', this.trigger );
 
 		// Add the conditions to the collection.
 		if ( attributes._conditions ) {
