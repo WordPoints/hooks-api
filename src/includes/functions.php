@@ -75,6 +75,7 @@ function wordpoints_hook_reaction_stores_init( $reaction_stores ) {
  */
 function wordpoints_hook_extension_init( $extensions ) {
 
+	$extensions->register( 'blocker', 'WordPoints_Hook_Extension_Blocker' );
 	$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
 	$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
 }

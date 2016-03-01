@@ -83,6 +83,7 @@ require_once( dirname( __FILE__ ) . 'hook/event/user/visit.php' );
 require_once( dirname( __FILE__ ) . 'hook/eventi.php' );
 require_once( dirname( __FILE__ ) . 'hook/events.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension.php' );
+require_once( dirname( __FILE__ ) . 'hook/extension/blocker.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/conditions.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/periods.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/reversei.php' );
