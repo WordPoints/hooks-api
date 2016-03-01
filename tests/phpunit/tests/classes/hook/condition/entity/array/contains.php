@@ -203,9 +203,12 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 		$conditions = parent::data_provider_invalid_condition_settings();
 
 		foreach ( $conditions as $key => $value ) {
+
+			unset( $value[1][1] );
+
 			$return[ "conditions_{$key}" ] = array(
 				array( 'conditions' => $value[0]['conditions']['test_firer'] ),
-				$value[1],
+				array_values( $value[1] ),
 			);
 		}
 

@@ -73,13 +73,19 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $args The args and their conditions.
+	 * @param array                      $conditions The args and their conditions.
+	 * @param WordPoints_Hook_Event_Args $event_args The event args object.
 	 *
 	 * @return array The validated settings.
 	 */
-	protected function validate_conditions( $args ) {
+	public function validate_conditions( $conditions, WordPoints_Hook_Event_Args $event_args = null ) {
 
-		if ( ! is_array( $args ) ) {
+		if ( $event_args ) {
+			$this->event_args = $event_args;
+			$this->validator = $event_args->get_validator();
+		}
+
+		if ( ! is_array( $conditions ) ) {
 
 			$this->validator->add_error(
 				__( 'Conditions do not match expected format.', 'wordpoints' )
@@ -88,7 +94,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 			return array();
 		}
 
-		foreach ( $args as $arg_slug => $sub_args ) {
+		foreach ( $conditions as $arg_slug => $sub_args ) {
 
 			if ( '_conditions' === $arg_slug ) {
 
@@ -117,15 +123,15 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 
 				$sub_args = $this->validate_firer_settings( $sub_args );
 
-				$args[ $arg_slug ] = $sub_args;
+				$conditions[ $arg_slug ] = $sub_args;
 
 				$this->event_args->ascend();
 			}
 
-			$args[ $arg_slug ] = $sub_args;
+			$conditions[ $arg_slug ] = $sub_args;
 		}
 
-		return $args;
+		return $conditions;
 	}
 
 	/**

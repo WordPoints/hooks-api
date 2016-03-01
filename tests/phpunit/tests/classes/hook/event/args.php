@@ -155,6 +155,39 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	}
 
 	/**
+	 * Test getting the validator.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_validator() {
+
+		$this->mock_apps();
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+
+		$validator = new WordPoints_Hook_Reaction_Validator(
+			array()
+			, $this->factory->wordpoints->hook_reactor->create_and_get()
+		);
+
+		$args->set_validator( $validator );
+
+		$this->assertSame( $validator, $args->get_validator() );
+	}
+
+	/**
+	 * Test getting the validator when there is none.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_validator_none() {
+
+		$args = new WordPoints_Hook_Event_Args( array() );
+
+		$this->assertNull( $args->get_validator() );
+	}
+
+	/**
 	 * Test descending.
 	 *
 	 * @since 1.0.0

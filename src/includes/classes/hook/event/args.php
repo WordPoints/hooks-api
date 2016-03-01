@@ -140,6 +140,17 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	}
 
 	/**
+	 * Get the validator object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Hook_Reaction_Validator|null The validator or null if none.
+	 */
+	public function get_validator() {
+		return $this->validator;
+	}
+
+	/**
 	 * Set the validator for the current reaction.
 	 *
 	 * @since 1.0.0
