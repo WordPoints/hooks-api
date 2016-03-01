@@ -241,7 +241,7 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$reaction = $this->factory->wordpoints->hook_reaction->create(
 			array(
 				'test_extension' => array(
-					$firer_slug => array( 'key' => 'value' )
+					$firer_slug => array( 'key' => 'value' ),
 				),
 			)
 		);

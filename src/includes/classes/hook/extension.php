@@ -126,7 +126,9 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	 *
 	 * @return mixed The validated settings.
 	 */
-	protected function validate_firer_settings( $settings ) {}
+	protected function validate_firer_settings( $settings ) {
+		return $settings;
+	}
 
 	/**
 	 * Get the extension settings from the fire object.
