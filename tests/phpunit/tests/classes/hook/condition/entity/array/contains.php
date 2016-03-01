@@ -103,7 +103,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		foreach ( $conditions as $key => $value ) {
 			$return[ "conditions_{$key}" ] = array(
-				array( 'conditions' => $value['conditions']['test_firer'] ),
+				array( 'conditions' => $value[0]['conditions']['test_firer'] ),
 			);
 		}
 
@@ -385,7 +385,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 			$return[ "conditions_{$key}" ] = array(
 				array( 'conditions' => $value[0]['conditions']['test_firer'] ),
-				$value[1],
 			);
 
 			$return[ "conditions_{$key}" ][0]['min'] = 1;
