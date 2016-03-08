@@ -86,11 +86,6 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 
 		foreach ( $settings[ $this->slug ] as $firer => $firer_settings ) {
 
-			if ( ! wordpoints_hooks()->firers->is_registered( $firer ) ) {
-				$this->validator->add_error( __( 'Unknown hook firer.', 'wordpoints' ), $firer );
-				continue;
-			}
-
 			$this->validator->push_field( $firer );
 
 			$settings[ $this->slug ][ $firer ] = $this->validate_firer_settings(

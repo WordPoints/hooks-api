@@ -313,21 +313,6 @@ function wordpoints_hook_events_init( $events ) {
 }
 
 /**
- * Register hook events when the firer registry is initialized.
- *
- * @since 1.0.0
- *
- * @WordPress\action wordpoints_init_app_registry-hooks-firers
- *
- * @param WordPoints_Class_Registry_Persistent $firers The firer registry.
- */
-function wordpoints_hook_firers_init( $firers ) {
-
-	$firers->register( 'fire', 'WordPoints_Hook_Firer' );
-	$firers->register( 'reverse', 'WordPoints_Hook_Firer_Reverse' );
-}
-
-/**
  * Register sub-apps when the Entities app is initialized.
  *
  * @since 1.0.0

@@ -75,8 +75,6 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->factory->wordpoints->hook_reaction->create();
 
-		$hooks->firers->register( 'fire', 'WordPoints_Hook_Firer' );
-
 		do_action( __CLASS__, 1, 2, 3 );
 
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
@@ -102,8 +100,6 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		);
 
 		$this->factory->wordpoints->hook_reaction->create();
-
-		$hooks->firers->register( 'fire', 'WordPoints_Hook_Firer' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 

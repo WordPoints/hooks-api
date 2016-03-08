@@ -119,7 +119,6 @@ class WordPoints_Hook_Router {
 
 			$this->events  = $hooks->events;
 			$this->actions = $hooks->actions;
-			$this->firers  = $hooks->firers;
 		}
 
 		foreach ( $this->action_index[ $name ]['actions'] as $slug => $data ) {

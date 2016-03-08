@@ -45,7 +45,6 @@
 		"$events->register": [ 1, 2 ],
 		"$extensions->register": [ 1, 2 ],
 		"$fire->reaction->get_meta": true,
-		"$firers->register": [ 1, 2 ],
 		"$reaction_stores->register": [ 1, 2, 3 ],
 		"$reaction->get_meta": true,
 		"$reaction->update_meta": [ 1 ],

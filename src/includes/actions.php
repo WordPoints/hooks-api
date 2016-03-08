@@ -15,7 +15,6 @@ add_action( 'wordpoints_init_app_registry-entities-contexts', 'wordpoints_entity
 
 add_action( 'wordpoints_init_app_registry-apps-data_types', 'wordpoints_data_types_init' );
 
-add_action( 'wordpoints_init_app_registry-hooks-firers', 'wordpoints_hook_firers_init' );
 add_action( 'wordpoints_init_app_registry-hooks-events', 'wordpoints_hook_events_init' );
 add_action( 'wordpoints_init_app_registry-hooks-actions', 'wordpoints_hook_actions_init' );
 add_action( 'wordpoints_init_app_registry-hooks-reactors', 'wordpoints_hook_reactors_init' );
