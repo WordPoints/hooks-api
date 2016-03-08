@@ -29,10 +29,6 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->mock_apps();
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$extension = new WordPoints_Hook_Extension_Blocker();
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
@@ -58,10 +54,10 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 	public function data_provider_valid_settings() {
 		return array(
 			'empty' => array( array() ),
-			'one' => array( array( 'test_firer' => '1' ) ),
-			'zero' => array( array( 'test_firer' => '0' ) ),
-			'true' => array( array( 'test_firer' => true ) ),
-			'false' => array( array( 'test_firer' => false ) ),
+			'one' => array( array( 'test_fire' => '1' ) ),
+			'zero' => array( array( 'test_fire' => '0' ) ),
+			'true' => array( array( 'test_fire' => true ) ),
+			'false' => array( array( 'test_fire' => false ) ),
 		);
 	}
 
@@ -80,20 +76,12 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 
 		$extension = new WordPoints_Hook_Extension_Blocker();
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$reaction->add_meta( 'blocker', $settings );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
-		$fire = new WordPoints_Hook_Fire(
-			new WordPoints_Hook_Firer( 'test_firer' )
-			, $event_args
-			, $reaction
-		);
+		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
 		$this->assertTrue( $extension->should_hit( $fire ) );
 
@@ -110,7 +98,7 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 	public function data_provider_valid_settings_should_hit() {
 		return array(
 			'empty' => array( array() ),
-			'false' => array( array( 'test_firer' => false ) ),
+			'false' => array( array( 'test_fire' => false ) ),
 		);
 	}
 
@@ -129,20 +117,12 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 
 		$extension = new WordPoints_Hook_Extension_Blocker();
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$reaction->add_meta( 'blocker', $settings );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
-		$fire = new WordPoints_Hook_Fire(
-			new WordPoints_Hook_Firer( 'test_firer' )
-			, $event_args
-			, $reaction
-		);
+		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
 		$this->assertFalse( $extension->should_hit( $fire ) );
 
@@ -158,7 +138,7 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 	 */
 	public function data_provider_valid_settings_should_not_hit() {
 		return array(
-			'true' => array( array( 'test_firer' => true ) ),
+			'true' => array( array( 'test_fire' => true ) ),
 		);
 	}
 }

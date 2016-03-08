@@ -16,7 +16,7 @@ Reactor = Extension.extend({
 
 	defaults: {
 		'arg_types': [],
-		'firers': []
+		'action_types': []
 	},
 
 	/**

@@ -43,10 +43,6 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$extension = new WordPoints_Hook_Extension_Conditions();
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
@@ -161,10 +157,6 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'data_type' => 'text' )
 		);
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$extension = new WordPoints_Hook_Extension_Conditions();
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
@@ -188,10 +180,10 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 		$this->assertEmpty( $validator->get_field_stack() );
 		$this->assertNull( $event_args->get_current() );
 
-		if ( is_array( $settings['conditions']['test_firer'] ) ) {
+		if ( is_array( $settings['conditions']['test_fire'] ) ) {
 			$this->assertEquals( $settings, $result );
 		} else {
-			$this->assertSame( array(), $result['conditions']['test_firer'] );
+			$this->assertSame( array(), $result['conditions']['test_fire'] );
 		}
 	}
 
@@ -234,10 +226,6 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 		$this->assertIsReaction( $reaction );
 
@@ -251,11 +239,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$fire = new WordPoints_Hook_Fire(
-			new WordPoints_Hook_Firer( 'test_firer' )
-			, $event_args
-			, $reaction
-		);
+		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
 		$this->assertTrue( $extension->should_hit( $fire ) );
 
@@ -293,10 +277,6 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			array( 'slug' => 'unmet', 'data_type' => 'entity' )
 		);
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 		$this->assertIsReaction( $reaction );
 
@@ -306,11 +286,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$fire = new WordPoints_Hook_Fire(
-			new WordPoints_Hook_Firer( 'test_firer' )
-			, $event_args
-			, $reaction
-		);
+		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
 		$this->assertFalse( $extension->should_hit( $fire ) );
 

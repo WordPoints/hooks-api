@@ -41,30 +41,30 @@ Conditions = Extension.extend({
 			conditions = {};
 		}
 
-		_.each( reaction.Reactor.get( 'firers' ), function ( firerSlug ) {
+		_.each( reaction.Reactor.get( 'action_types' ), function ( actionType ) {
 
-			var conditionGroups = conditions[ firerSlug ];
+			var conditionGroups = conditions[ actionType ];
 
 			if ( ! conditionGroups ) {
 				conditionGroups = [];
 			}
 
-			reaction.model.conditions[ firerSlug ] = new ConditionGroups( null, {
-				hierarchy: [ firerSlug ],
+			reaction.model.conditions[ actionType ] = new ConditionGroups( null, {
+				hierarchy: [ actionType ],
 				reaction: reaction.model,
 				_conditions: conditionGroups
 			} );
 
-			reaction.conditions[ firerSlug ] = new ConditionsGroupsView( {
-				collection: reaction.model.conditions[ firerSlug ],
+			reaction.conditions[ actionType ] = new ConditionsGroupsView( {
+				collection: reaction.model.conditions[ actionType ],
 				reaction: reaction
 			});
 
 		}, this );
 
-		this.listenTo( reaction, 'render:fields', function ( $el, currentFirerSlug ) {
+		this.listenTo( reaction, 'render:fields', function ( $el, currentActionType ) {
 
-			var conditions = reaction.conditions[ currentFirerSlug ];
+			var conditions = reaction.conditions[ currentActionType ];
 
 			if ( ! conditions ) {
 				return;

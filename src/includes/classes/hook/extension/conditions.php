@@ -64,7 +64,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	protected function validate_firer_settings( $settings ) {
+	protected function validate_action_type_settings( $settings ) {
 		return $this->validate_conditions( $settings );
 	}
 
@@ -121,7 +121,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 					continue;
 				}
 
-				$sub_args = $this->validate_firer_settings( $sub_args );
+				$sub_args = $this->validate_action_type_settings( $sub_args );
 
 				$conditions[ $arg_slug ] = $sub_args;
 

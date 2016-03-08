@@ -31,15 +31,6 @@
 class WordPoints_Hook_Router {
 
 	/**
-	 * The hook firers registry object.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var WordPoints_Class_Registry_Persistent
-	 */
-	protected $firers;
-
-	/**
 	 * The actions registry object.
 	 *
 	 * @since 1.0.0

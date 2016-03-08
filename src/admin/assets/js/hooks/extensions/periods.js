@@ -40,11 +40,11 @@ Periods = Extension.extend({
 			return;
 		}
 
-		this.listenTo( reaction, 'render:fields', function ( $el, currentFirerSlug ) {
+		this.listenTo( reaction, 'render:fields', function ( $el, currentActionType ) {
 
 			var $periods = $( '<div></div>' ).html( this.template() );
 
-			var name = [ 'periods', currentFirerSlug, 0, 'length' ];
+			var name = [ 'periods', currentActionType, 0, 'length' ];
 
 			var label = reaction.Reactor.get( 'periods_label' );
 

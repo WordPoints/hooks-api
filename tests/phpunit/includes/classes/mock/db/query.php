@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Mock hook firer class for the PHPUnit tests.
+ * Mock database query class for the PHPUnit tests.
  *
  * @package wordpoints-hooks-api
  * @since 1.0.0
  */
 
 /**
- * Mock hook firer for the PHPUnit tests.
+ * Mock database query for the PHPUnit tests.
  *
  * @since 1.0.0
  */

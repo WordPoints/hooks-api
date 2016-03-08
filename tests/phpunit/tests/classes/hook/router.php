@@ -780,7 +780,9 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->factory->wordpoints->hook_reactor->create();
 
 		$this->factory->wordpoints->hook_reaction->create(
-			array( 'test_extension' => array( 'fail' => true ) )
+			array(
+				'test_extension' => array( 'test_fire' => array( 'fail' => true ) ),
+			)
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
@@ -946,7 +948,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$args = new WordPoints_Hook_Event_Args( array() );
 
 		$router = new WordPoints_PHPUnit_Mock_Hook_Router;
-		$router->fire_event( 'test_firer', 'test_event', $args );
+		$router->fire_event( 'test_fire', 'test_event', $args );
 	}
 }
 

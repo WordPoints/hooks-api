@@ -266,12 +266,12 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 
 		$this->mock_apps();
 
-		$firer_slug = $this->factory->wordpoints->hook_firer->create();
+		$action_type = 'test_fire';
 
 		$settings   = array(
 			'event' => 'test_event',
 			'target' => array( 'test_entity' ),
-			'test_extension' => array( $firer_slug => array( 'key' => 'value' ) ),
+			'test_extension' => array( $action_type => array( 'key' => 'value' ) ),
 		);
 
 		$hooks = wordpoints_hooks();
@@ -305,10 +305,10 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 
 		$this->assertEquals(
 			array(
-				'settings' => $settings['test_extension'][ $firer_slug ],
+				'settings' => $settings['test_extension'][ $action_type ],
 				'validator' => $validator,
 				'event_args' => $event_args,
-				'field_stack' => array( 'test_extension', $firer_slug ),
+				'field_stack' => array( 'test_extension', $action_type ),
 			)
 			, $extension->validations[0]
 		);
@@ -337,12 +337,12 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 
 		$this->mock_apps();
 
-		$firer_slug = $this->factory->wordpoints->hook_firer->create();
+		$action_type = 'test_fire';
 
 		$settings = array(
 			'event' => 'test_event',
 			'target' => array( 'test_entity' ),
-			'test_extension' => array( $firer_slug => array( 'fail' => 'Testing.' ) ),
+			'test_extension' => array( $action_type => array( 'fail' => 'Testing.' ) ),
 		);
 
 		$hooks = wordpoints_hooks();
@@ -366,7 +366,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 
 		// Any modifications made by the extension should be preserved.
 		// (The extension returns an empty array for its settings on failure.)
-		$settings['test_extension'] = array( $firer_slug => array() );
+		$settings['test_extension'] = array( $action_type => array() );
 
 		$this->assertEquals( $settings, $result );
 
@@ -381,7 +381,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 				'settings' => array( 'fail' => 'Testing.' ),
 				'validator' => $validator,
 				'event_args' => $event_args,
-				'field_stack' => array( 'test_extension', $firer_slug ),
+				'field_stack' => array( 'test_extension', $action_type ),
 			)
 			, $extension->validations[0]
 		);
@@ -397,7 +397,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 		$errors = $validator->get_errors();
 		$this->assertCount( 1, $errors );
 		$this->assertEquals(
-			array( 'test_extension', $firer_slug, 'fail' )
+			array( 'test_extension', $action_type, 'fail' )
 			, $errors[0]['field']
 		);
 

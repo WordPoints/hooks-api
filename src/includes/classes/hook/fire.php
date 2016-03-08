@@ -15,13 +15,13 @@
 class WordPoints_Hook_Fire {
 
 	/**
-	 * The firer that is firing the hook.
+	 * The type of action being fired.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_FirerI
+	 * @var string
 	 */
-	public $firer;
+	public $action_type;
 
 	/**
 	 * The args for the event that is being fired.
@@ -71,7 +71,6 @@ class WordPoints_Hook_Fire {
 	) {
 
 		$this->action_type = $action_type;
-		$this->firer      = new WordPoints_Hook_Firer( $action_type );
 		$this->event_args = $event_args;
 		$this->reaction   = $reaction;
 		$this->hit_logger = new WordPoints_Hook_Hit_Logger( $this );

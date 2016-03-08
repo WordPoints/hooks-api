@@ -225,7 +225,7 @@ Fields = Backbone.Model.extend({
 		this.listenTo( reaction, 'render:settings', this.renderReaction );
 	},
 
-	renderReaction: function ( $el, currentFirerSlug, reaction ) {
+	renderReaction: function ( $el, currentActionType, reaction ) {
 
 		var fieldsHTML = '';
 

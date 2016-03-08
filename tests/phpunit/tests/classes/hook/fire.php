@@ -27,11 +27,11 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
-		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$action_type = 'test_fire';
 
-		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $action_type, $event_args, $reaction );
 
-		$this->assertEquals( $firer, $fire->firer );
+		$this->assertEquals( $action_type, $fire->action_type );
 		$this->assertEquals( $event_args, $fire->event_args );
 		$this->assertEquals( $reaction, $fire->reaction );
 
@@ -49,9 +49,9 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
-		$firer = new WordPoints_Hook_Firer( 'test_firer' );
+		$action_type = 'test_fire';
 
-		$fire = new WordPoints_Hook_Fire( $firer, $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $action_type, $event_args, $reaction );
 
 		$hit_id = $fire->hit();
 

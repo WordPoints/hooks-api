@@ -53,10 +53,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -103,7 +99,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		foreach ( $conditions as $key => $value ) {
 			$return[ "conditions_{$key}" ] = array(
-				array( 'conditions' => $value[0]['conditions']['test_firer'] ),
+				array( 'conditions' => $value[0]['conditions']['test_fire'] ),
 			);
 		}
 
@@ -146,10 +142,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		$this->factory->wordpoints->hook_condition->create(
 			array( 'data_type' => 'text' )
-		);
-
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
 		);
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
@@ -207,7 +199,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			unset( $value[1][1] );
 
 			$return[ "conditions_{$key}" ] = array(
-				array( 'conditions' => $value[0]['conditions']['test_firer'] ),
+				array( 'conditions' => $value[0]['conditions']['test_fire'] ),
 				array_values( $value[1] ),
 			);
 		}
@@ -255,10 +247,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		$this->factory->wordpoints->hook_condition->create(
 			array( 'slug' => 'test', 'data_type' => 'text' )
-		);
-
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
 		);
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
@@ -340,10 +328,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$this->factory->wordpoints->hook_firer->create(
-			array( 'slug' => 'test_firer' )
-		);
-
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -387,7 +371,7 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 		foreach ( $conditions as $key => $value ) {
 
 			$return[ "conditions_{$key}" ] = array(
-				array( 'conditions' => $value[0]['conditions']['test_firer'] ),
+				array( 'conditions' => $value[0]['conditions']['test_fire'] ),
 			);
 
 			$return[ "conditions_{$key}" ][0]['min'] = 1;

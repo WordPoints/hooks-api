@@ -37,7 +37,7 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 					KEY period_signature (hit_id,signature(8))',
 				'wordpoints_hook_hits' => '
 					id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-					firer VARCHAR(255) NOT NULL,
+					action_type VARCHAR(255) NOT NULL,
 					primary_arg_guid TEXT NOT NULL,
 					event VARCHAR(255) NOT NULL,
 					reactor VARCHAR(255) NOT NULL,

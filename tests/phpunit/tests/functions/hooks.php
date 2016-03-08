@@ -367,25 +367,6 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 			);
 		}
 	}
-
-	/**
-	 * Test the firer registration function.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @covers ::wordpoints_hook_firers_init
-	 */
-	public function test_firers() {
-
-		$this->mock_apps();
-
-		$firers = new WordPoints_Class_Registry_Persistent();
-
-		wordpoints_hook_firers_init( $firers );
-
-		$this->assertTrue( $firers->is_registered( 'fire' ) );
-		$this->assertTrue( $firers->is_registered( 'reverse' ) );
-	}
 }
 
 // EOF

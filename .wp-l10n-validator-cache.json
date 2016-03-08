@@ -430,21 +430,6 @@
             "hash": "6806da507db4b4ba812facbdfab9b105",
             "errors": false
         },
-        "\/includes\/classes\/hook\/firer\/reverse.php": {
-            "size": 2573,
-            "hash": "6a445fff96e315167e6e0713d5e35a41",
-            "errors": false
-        },
-        "\/includes\/classes\/hook\/firer.php": {
-            "size": 1485,
-            "hash": "5a88feb7af1204494a00d4339cda5d43",
-            "errors": false
-        },
-        "\/includes\/classes\/hook\/fireri.php": {
-            "size": 595,
-            "hash": "e959a7e7a5c3bd835135a7fbcd4b3d36",
-            "errors": false
-        },
         "\/includes\/classes\/hook\/hit\/logger.php": {
             "size": 1962,
             "hash": "d8712e50cc7a459a877a833f90da7877",

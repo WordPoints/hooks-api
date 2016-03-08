@@ -12,9 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Reactor_Points
-	extends WordPoints_Hook_Reactor
-	implements WordPoints_Hook_Reactor_ReverseI {
+class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 
 	/**
 	 * @since 1.0.0
@@ -74,7 +72,6 @@ class WordPoints_Hook_Reactor_Points
 
 		$data = parent::get_ui_script_data();
 
-		$data['firers'][] = 'reverse';
 		$data['target_label'] = __( 'Award To', 'wordpoints' );
 		$data['periods_label'] = __( 'Award each user no more than once per:', 'wordpoints' );
 

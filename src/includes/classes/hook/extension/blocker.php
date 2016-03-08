@@ -10,7 +10,7 @@
 /**
  * Blocks a fire from hitting.
  *
- * Useful when you want to block fires of a specific firer for a reaction.
+ * Useful when you want to block fires of a specific action type for a reaction.
  *
  * @since 1.0.0
  */
@@ -24,7 +24,7 @@ class WordPoints_Hook_Extension_Blocker extends WordPoints_Hook_Extension {
 	/**
 	 * @since 1.0.0
 	 */
-	public function validate_firer_settings( $settings ) {
+	public function validate_action_type_settings( $settings ) {
 		return (bool) $settings;
 	}
 

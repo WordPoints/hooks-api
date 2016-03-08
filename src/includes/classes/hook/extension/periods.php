@@ -58,7 +58,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	 *
 	 * @return array The validated periods.
 	 */
-	protected function validate_firer_settings( $periods ) {
+	protected function validate_action_type_settings( $periods ) {
 
 		if ( ! is_array( $periods ) ) {
 

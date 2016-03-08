@@ -115,7 +115,7 @@ class WordPoints_Hook_Hit_Query_Test extends WordPoints_PHPUnit_TestCase {
 
 		$values = array_merge(
 			array(
-				'firer'  => 'fire',
+				'action_type' => 'fire',
 				'primary_arg_guid' => wp_json_encode(
 					array( 'test_entity' => 1, 'site' => 1, 'network' => 1 )
 				),
@@ -154,7 +154,7 @@ class WordPoints_Hook_Hit_Query_Test extends WordPoints_PHPUnit_TestCase {
 
 		$this->assertInternalType( 'object', $row );
 		$this->assertObjectHasAttribute( 'id', $row );
-		$this->assertObjectHasAttribute( 'firer', $row );
+		$this->assertObjectHasAttribute( 'action_type', $row );
 		$this->assertObjectHasAttribute( 'primary_arg_guid', $row );
 		$this->assertObjectHasAttribute( 'event', $row );
 		$this->assertObjectHasAttribute( 'reactor', $row );

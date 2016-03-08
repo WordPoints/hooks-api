@@ -463,17 +463,6 @@
             }
         }
     },
-    "\/includes\/classes\/hook\/firer\/reverse.php": {
-        "fire": {
-            "97": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
-        }
-    },
     "\/includes\/classes\/hook\/hit\/logger.php": {
         "row": {
             "94": {

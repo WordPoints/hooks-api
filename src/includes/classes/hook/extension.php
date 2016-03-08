@@ -84,12 +84,12 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 
 		$this->validator->push_field( $this->slug );
 
-		foreach ( $settings[ $this->slug ] as $firer => $firer_settings ) {
+		foreach ( $settings[ $this->slug ] as $action_type => $action_type_settings ) {
 
-			$this->validator->push_field( $firer );
+			$this->validator->push_field( $action_type );
 
-			$settings[ $this->slug ][ $firer ] = $this->validate_firer_settings(
-				$firer_settings
+			$settings[ $this->slug ][ $action_type ] = $this->validate_action_type_settings(
+				$action_type_settings
 			);
 
 			$this->validator->pop_field();
@@ -113,24 +113,24 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	}
 
 	/**
-	 * Validate the settings for this extension for a particular firer.
+	 * Validate the settings for this extension for a particular action type.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed $settings The settings for a particular firer.
+	 * @param mixed $settings The settings for a particular action type.
 	 *
 	 * @return mixed The validated settings.
 	 */
-	protected function validate_firer_settings( $settings ) {
+	protected function validate_action_type_settings( $settings ) {
 		return $settings;
 	}
 
 	/**
 	 * Get the extension settings from the fire object.
 	 *
-	 * By default the settings are stored per firer, so we offer this helper method
-	 * to get the settings that should be used based on the firer from the fire
-	 * object.
+	 * By default the settings are stored per action type, so we offer this helper
+	 * method to get the settings that should be used based on the action type from
+	 * the fire object.
 	 *
 	 * @since 1.0.0
 	 *
@@ -140,15 +140,14 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	 */
 	protected function get_settings_from_fire( WordPoints_Hook_Fire $fire ) {
 
-		$firer_slug = $fire->firer->get_slug();
-		$settings   = $fire->reaction->get_meta( $this->slug );
+		$settings = $fire->reaction->get_meta( $this->slug );
 
 		if ( ! is_array( $settings ) ) {
 			return $settings;
 		}
 
-		if ( isset( $settings[ $firer_slug ] ) ) {
-			return $settings[ $firer_slug ];
+		if ( isset( $settings[ $fire->action_type ] ) ) {
+			return $settings[ $fire->action_type ];
 		} else {
 			return false;
 		}

@@ -75,10 +75,10 @@ Reaction = Base.extend({
 
 	renderFields: function () {
 
-		var currentFirerSlug = this.getCurrentFirerSlug();
+		var currentActionType = this.getCurrentActionType();
 
-		this.trigger( 'render:settings', this.$settings, currentFirerSlug, this );
-		this.trigger( 'render:fields', this.$fields, currentFirerSlug, this );
+		this.trigger( 'render:settings', this.$settings, currentActionType, this );
+		this.trigger( 'render:fields', this.$fields, currentActionType, this );
 
 		this.renderedFields = true;
 	},
@@ -147,10 +147,10 @@ Reaction = Base.extend({
 		this.Reactor = Reactors.get( this.model.get( 'reactor' ) );
 	},
 
-	// Get the current firer that settings are being displayed for.
-	// Right now we just default this to the main firer for the reactor.
-	getCurrentFirerSlug: function () {
-		return this.Reactor.get( 'firers' )[0];
+	// Get the current action type that settings are being displayed for.
+	// Right now we just default this to the main action type for the reactor.
+	getCurrentActionType: function () {
+		return this.Reactor.get( 'action_types' )[0];
 	},
 
 	// Toggle the visibility of the form.

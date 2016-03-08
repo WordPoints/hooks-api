@@ -19,7 +19,7 @@ class WordPoints_Hook_Hit_Query extends WordPoints_DB_Query {
 	 */
 	protected $columns = array(
 		'id' => array( 'format' => '%d', 'unsigned' => true ),
-		'firer' => array( 'format' => '%s' ),
+		'action_type' => array( 'format' => '%s' ),
 		'primary_arg_guid' => array( 'format' => '%s' ),
 		'event' => array( 'format' => '%s' ),
 		'reactor' => array( 'format' => '%s' ),
@@ -60,10 +60,10 @@ class WordPoints_Hook_Hit_Query extends WordPoints_DB_Query {
 	 *        @type string       $id__compare                  The comparison operator to use with the above value.
 	 *        @type int[]        $id__in                       A list of IDs to query for.
 	 *        @type int[]        $id__not_in                   A list of IDs to exclude.
-	 *        @type string       $firer                        The slug of the firer to query for.
-	 *        @type string       $firer__compare               The comparison operator to use with the above value.
-	 *        @type string[]     $firer__in                    A list of firers to query for.
-	 *        @type string[]     $firer__not_in                A list of firers to exclude.
+	 *        @type string       $action_type                  The slug of the action type to query for.
+	 *        @type string       $action_type__compare         The comparison operator to use with the above value.
+	 *        @type string[]     $action_type__in              A list of action types to query for.
+	 *        @type string[]     $action_type__not_in          A list of action types to exclude.
 	 *        @type string       $primary_arg_guid             The JSON encoded primary arg GUID to query for.
 	 *        @type string       $primary_arg_guid__compare    The comparison operator to use with the above value.
 	 *        @type string[]     $primary_arg_guid__in         A list of primary arg GUIDs to query for.
