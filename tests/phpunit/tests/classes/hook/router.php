@@ -565,6 +565,70 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
+	 * Test firing an event when one reactor doesn't listen for this action type.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_fire_event_different_action_type() {
+
+		$this->mock_apps();
+
+		$hooks = wordpoints_hooks();
+
+		$hooks->extensions->register(
+			'test_extension'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		$hooks->extensions->register(
+			'another'
+			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
+		);
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$reactor->action_types = array( 'other' );
+
+		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 2 );
+
+		$this->factory->wordpoints->hook_reactor->create(
+			array( 'slug' => 'another' )
+		);
+
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reactor' => 'another' )
+		);
+
+		$this->fire_event();
+
+		// The extensions should have each been checked.
+		$extension = $hooks->extensions->get( 'test_extension' );
+
+		$this->assertCount( 1, $extension->hit_checks );
+		$this->assertCount( 1, $extension->hits );
+
+		$extension = $hooks->extensions->get( 'another' );
+
+		$this->assertCount( 1, $extension->hit_checks );
+		$this->assertCount( 1, $extension->hits );
+
+		// The first reactor should not have been hit.
+		$this->assertCount( 0, $reactor->hits );
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ), 0 );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ), 0 );
+
+		// The other reactor should.
+		$reactor = $hooks->reactors->get( 'another' );
+
+		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged(
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+		);
+	}
+
+	/**
 	 * Test firing an event when no reactors are registered.
 	 *
 	 * @since 1.0.0
