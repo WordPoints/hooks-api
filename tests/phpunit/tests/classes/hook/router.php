@@ -215,7 +215,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_route_action_invalid_action() {
 
 		$this->mock_apps();
-		
+
 		$hooks = wordpoints_hooks();
 
 		$hooks->sub_apps->register( 'router', 'WordPoints_PHPUnit_Mock_Hook_Router' );
@@ -272,7 +272,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_route_action_no_event_args() {
 
 		$this->mock_apps();
-		
+
 		$hooks = wordpoints_hooks();
 
 		$hooks->sub_apps->register( 'router', 'WordPoints_PHPUnit_Mock_Hook_Router' );
