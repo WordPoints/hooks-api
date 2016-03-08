@@ -153,11 +153,70 @@ class WordPoints_Hook_Router {
 
 					$event_args = new WordPoints_Hook_Event_Args( $event_args );
 
-					$firer = $this->firers->get( $type );
+					$this->fire_event( $type, $event_slug, $event_args );
+				}
+			}
+		}
+	}
 
-					if ( $firer instanceof WordPoints_Hook_FirerI ) {
-						$firer->do_event( $event_slug, $event_args );
+	/**
+	 * Fire an event at each of the reactions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string                     $action_type The type of action triggering
+	 *                                                this fire of this event.
+	 * @param string                     $event_slug  The slug of the event.
+	 * @param WordPoints_Hook_Event_Args $event_args  The event args.
+	 */
+	public function fire_event(
+		$action_type,
+		$event_slug,
+		WordPoints_Hook_Event_Args $event_args
+	) {
+
+		$hooks = wordpoints_hooks();
+
+		/** @var WordPoints_Hook_Reactor $reactor */
+		foreach ( $hooks->reactors->get_all() as $reactor ) {
+
+			if ( ! in_array( $action_type, $reactor->get_action_types(), true ) ) {
+				continue;
+			}
+
+			foreach ( $reactor->get_all_reactions_to_event( $event_slug ) as $reaction ) {
+
+				$validator = new WordPoints_Hook_Reaction_Validator(
+					$reaction
+					, $reactor
+					, true
+				);
+
+				$validator->validate();
+
+				if ( $validator->had_errors() ) {
+					continue;
+				}
+
+				unset( $validator );
+
+				$fire = new WordPoints_Hook_Fire( $action_type, $event_args, $reaction );
+
+				/** @var WordPoints_Hook_Extension[] $extensions */
+				$extensions = $hooks->extensions->get_all();
+
+				foreach ( $extensions as $extension ) {
+					if ( ! $extension->should_hit( $fire ) ) {
+						continue 2;
 					}
+				}
+
+				$fire->hit();
+
+				$reactor->hit( $fire );
+
+				foreach ( $extensions as $extension ) {
+					$extension->after_hit( $fire );
 				}
 			}
 		}

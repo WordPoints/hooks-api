@@ -42,6 +42,15 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $arg_types;
 
 	/**
+	 * The slugs of the action types that this reaction listens for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string|string[]
+	 */
+	protected $action_types = array( 'fire' );
+
+	/**
 	 * The settings fields used by this reactor.
 	 *
 	 * @since 1.0.0
@@ -122,6 +131,17 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	}
 
 	/**
+	 * Get a list of the slugs of the action types that this reactor listens for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[] The slugs of the action types this reactor listens for.
+	 */
+	public function get_action_types() {
+		return (array) $this->action_types;
+	}
+
+	/**
 	 * Get the settings fields used by the reactor.
 	 *
 	 * @since 1.0.0
@@ -145,7 +165,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 			'slug'      => $this->get_slug(),
 			'fields'    => $this->get_settings_fields(),
 			'arg_types' => $this->get_arg_types(),
-			'firers'    => array( 'fire' ),
+			'firers'    => $this->get_action_types(), // TODO change key
 		);
 	}
 

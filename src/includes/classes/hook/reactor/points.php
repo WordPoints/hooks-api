@@ -29,6 +29,11 @@ class WordPoints_Hook_Reactor_Points
 	/**
 	 * @since 1.0.0
 	 */
+	protected $action_types = array( 'fire', 'reverse' );
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $settings_fields = array(
 		'description' => array(
 			'type'     => 'text',

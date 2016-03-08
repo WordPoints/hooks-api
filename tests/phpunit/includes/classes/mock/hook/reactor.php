@@ -27,6 +27,11 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
+	public $action_types = array( 'fire', 'test_firer' );
+
+	/**
+	 * @since 1.0.0
+	 */
 	public $settings_fields;
 
 	/**

@@ -60,17 +60,18 @@ class WordPoints_Hook_Fire {
 	public $hit_id = false;
 
 	/**
-	 * @param WordPoints_Hook_Firer      $firer      The firer.
-	 * @param WordPoints_Hook_Event_Args $event_args The event args.
-	 * @param WordPoints_Hook_ReactionI  $reaction   The reaction.
+	 * @param string                     $action_type The type of action.
+	 * @param WordPoints_Hook_Event_Args $event_args  The event args.
+	 * @param WordPoints_Hook_ReactionI  $reaction    The reaction.
 	 */
 	public function __construct(
-		WordPoints_Hook_Firer $firer,
+		$action_type,
 		WordPoints_Hook_Event_Args $event_args,
 		WordPoints_Hook_ReactionI $reaction
 	) {
 
-		$this->firer      = $firer;
+		$this->action_type = $action_type;
+		$this->firer      = new WordPoints_Hook_Firer( $action_type );
 		$this->event_args = $event_args;
 		$this->reaction   = $reaction;
 		$this->hit_logger = new WordPoints_Hook_Hit_Logger( $this );
