@@ -127,6 +127,11 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 */
 	public function hit( WordPoints_Hook_Fire $fire ) {
 
+		if ( 'reverse' === $fire->action_type ) {
+			$this->reverse_hit( $fire );
+			return;
+		}
+
 		$reaction = $fire->reaction;
 
 		$target = $fire->event_args->get_from_hierarchy(
