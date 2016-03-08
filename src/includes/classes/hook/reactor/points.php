@@ -27,7 +27,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $action_types = array( 'fire', 'reverse' );
+	protected $action_types = array( 'fire', 'toggle_on', 'toggle_off' );
 
 	/**
 	 * @since 1.0.0
@@ -127,7 +127,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 */
 	public function hit( WordPoints_Hook_Fire $fire ) {
 
-		if ( 'reverse' === $fire->action_type ) {
+		if ( 'toggle_off' === $fire->action_type ) {
 			$this->reverse_hit( $fire );
 			return;
 		}

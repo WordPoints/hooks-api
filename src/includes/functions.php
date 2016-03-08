@@ -256,8 +256,8 @@ function wordpoints_hook_events_init( $events ) {
 		, 'WordPoints_Hook_Event_User_Register'
 		, array(
 			'actions' => array(
-				'fire' => 'user_register',
-				'reverse' => 'user_delete',
+				'toggle_on'  => 'user_register',
+				'toggle_off' => 'user_delete',
 			),
 			'args' => array(
 				'user' => 'WordPoints_Hook_Arg',
@@ -457,8 +457,8 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, 'WordPoints_Hook_Event_Media_Upload'
 			, array(
 				'actions' => array(
-					'fire'    => 'add_attachment',
-					'reverse' => 'post_delete',
+					'toggle_on'  => 'add_attachment',
+					'toggle_off' => 'post_delete',
 				),
 				'args'    => array(
 					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
@@ -475,8 +475,8 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, 'WordPoints_Hook_Event_Post_Publish'
 			, array(
 				'actions' => array(
-					'fire'    => 'post_publish',
-					'reverse' => array( 'post_depublish', 'post_delete' ),
+					'toggle_on'  => 'post_publish',
+					'toggle_off' => array( 'post_depublish', 'post_delete' ),
 				),
 				'args'    => array(
 					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
@@ -494,8 +494,8 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, 'WordPoints_Hook_Event_Comment_Leave'
 			, array(
 				'actions' => array(
-					'fire' => array( 'comment_approve', 'comment_new' ),
-					'reverse' => 'comment_deapprove',
+					'toggle_on'  => array( 'comment_approve', 'comment_new' ),
+					'toggle_off' => 'comment_deapprove',
 				),
 				'args' => array(
 					"comment\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',

@@ -48,7 +48,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 *
 	 * @var string|string[]
 	 */
-	protected $action_types = array( 'fire' );
+	protected $action_types;
 
 	/**
 	 * The settings fields used by this reactor.
