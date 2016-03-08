@@ -78,6 +78,7 @@
 		"WordPoints_Hook_Reaction_Store_Options::$context": true,
 		"WordPoints_Hook_Reaction_Store_Options::$reaction_class": true,
 		"WordPoints_Hook_Reactor::$slug": true,
+		"WordPoints_Hook_Reactor::$action_types": true,
 		"WordPoints_Hook_Reactor::$arg_types": true,
 		"WordPoints_Hook_Reactor::$network_reactions_class": true,
 		"WordPoints_Hook_Reactor::$standard_reactions_class": true,
