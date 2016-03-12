@@ -87,34 +87,33 @@ final class WordPoints_Hook_Reaction_Validator {
 	protected $hooks;
 
 	/**
-	 * The reactor object the reaction being validated is for.
+	 * The slug of the reactor the reaction is for.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_Reactor
+	 * @var string
 	 */
-	protected $reactor;
+	protected $reactor_slug;
 
 	/**
 	 * @since 1.0.0
 	 *
 	 * @param WordPoints_Hook_ReactionI|array $settings  The settings or reaction to
 	 *                                                   validate.
-	 * @param WordPoints_Hook_Reactor         $reactor   The reactor object.
 	 * @param bool                            $fail_fast Whether to fail as soon as
 	 *                                                   the first error is found.
 	 */
-	public function __construct( $settings, WordPoints_Hook_Reactor $reactor, $fail_fast = false ) {
+	public function __construct( $settings, $fail_fast = false ) {
 
-		$this->reactor = $reactor;
 		$this->fail_fast = $fail_fast;
 		$this->hooks = wordpoints_hooks();
 
 		if ( $settings instanceof WordPoints_Hook_ReactionI ) {
 
-			$this->reaction   = $settings;
-			$this->settings   = $this->reaction->get_all_meta();
-			$this->event_slug = $this->reaction->get_event_slug();
+			$this->reaction     = $settings;
+			$this->settings     = $this->reaction->get_all_meta();
+			$this->event_slug   = $this->reaction->get_event_slug();
+			$this->reactor_slug = $this->reaction->get_reactor_slug();
 
 		} else {
 
@@ -123,8 +122,11 @@ final class WordPoints_Hook_Reaction_Validator {
 			if ( isset( $this->settings['event'] ) ) {
 				$this->event_slug = $this->settings['event'];
 			}
-		}
 
+			if ( isset( $this->settings['reactor'] ) ) {
+				$this->reactor_slug = $this->settings['reactor'];
+			}
+		}
 	}
 
 	/**
@@ -150,6 +152,12 @@ final class WordPoints_Hook_Reaction_Validator {
 				$this->add_error( __( 'Event is invalid.', 'wordpoints' ), 'event' );
 			}
 
+			if ( ! isset( $this->reactor_slug ) ) {
+				$this->add_error( __( 'Reactor is missing.', 'wordpoints' ), 'reactor' );
+			} elseif ( ! $this->hooks->reactors->is_registered( $this->reactor_slug ) ) {
+				$this->add_error( __( 'Reactor is invalid.', 'wordpoints' ), 'reactor' );
+			}
+
 			// From here on out we can collect errors as they come (unless we are
 			// supposed to fail fast).
 			$this->fail_fast = $fail_fast;
@@ -161,7 +169,9 @@ final class WordPoints_Hook_Reaction_Validator {
 			$this->event_args = new WordPoints_Hook_Event_Args( $event_args );
 			$this->event_args->set_validator( $this );
 
-			$this->settings = $this->reactor->validate_settings( $this->settings, $this, $this->event_args );
+			$reactor = $this->hooks->reactors->get( $this->reactor_slug );
+
+			$this->settings = $reactor->validate_settings( $this->settings, $this, $this->event_args );
 
 			/** @var WordPoints_Hook_Extension $extension */
 			foreach ( $this->hooks->extensions->get_all() as $extension ) {
@@ -333,7 +343,7 @@ final class WordPoints_Hook_Reaction_Validator {
 	 * @return string The reactor slug.
 	 */
 	public function get_reactor_slug() {
-		return $this->reactor->get_slug();
+		return $this->reactor_slug;
 	}
 
 	/**

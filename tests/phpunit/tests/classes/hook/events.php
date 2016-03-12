@@ -67,6 +67,8 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_Hooks $hooks */
 		$hooks = $this->mock_apps()->hooks;
 
+		$hooks->sub_apps->register( 'router', 'WordPoints_PHPUnit_Mock_Hook_Router' );
+
 		$this->factory->wordpoints->hook_event->create();
 
 		$this->factory->wordpoints->hook_action->create(
@@ -77,10 +79,10 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $hooks->reactors->get( 'test_reactor' );
+		/** @var WordPoints_PHPUnit_Mock_Hook_Router $router */
+		$router = $hooks->router;
 
-		$this->assertCount( 1, $reactor->hits );
+		$this->assertCount( 1, $router->fires );
 	}
 
 	/**
@@ -93,6 +95,8 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_Hooks $hooks */
 		$hooks = $this->mock_apps()->hooks;
 
+		$hooks->sub_apps->register( 'router', 'WordPoints_PHPUnit_Mock_Hook_Router' );
+
 		$this->factory->wordpoints->hook_event->create();
 
 		$this->factory->wordpoints->hook_action->create(
@@ -103,19 +107,19 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $hooks->reactors->get( 'test_reactor' );
+		/** @var WordPoints_PHPUnit_Mock_Hook_Router $router */
+		$router = $hooks->router;
 
-		$this->assertCount( 1, $reactor->hits );
+		$this->assertCount( 1, $router->fires );
 
 		$hooks->events->deregister( 'test_event' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $hooks->reactors->get( 'test_reactor' );
+		/** @var WordPoints_PHPUnit_Mock_Hook_Router $router */
+		$router = $hooks->router;
 
-		$this->assertCount( 1, $reactor->hits );
+		$this->assertCount( 1, $router->fires );
 	}
 
 	/**

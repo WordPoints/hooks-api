@@ -52,7 +52,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	public function test_validate_settings( array $settings ) {
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -111,7 +111,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	public function test_validate_settings_invalid( array $settings, $invalid ) {
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -195,13 +195,11 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 			'log_text'    => 'Testing.',
 		);
 
-		$create = $settings;
-		$create['reactor'] = 'points';
-		$create['event'] = 'user_register';
-
-		$reaction = $reactor->reactions->create_reaction( $create );
+		$reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 
 		$this->assertIsReaction( $reaction );
+
+		$reactor->update_settings( $reaction, $settings );
 
 		$this->assertEquals( $settings['target'], $reaction->get_meta( 'target' ) );
 		$this->assertEquals( $settings['points'], $reaction->get_meta( 'points' ) );
@@ -222,6 +220,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	public function test_hit( array $settings ) {
 
 		$settings['event'] = 'user_register';
+		$settings['reactor'] = 'points';
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -241,7 +240,10 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
-		$reaction = $reactor->reactions->create_reaction( $settings );
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction( $settings );
+
 		$this->assertIsReaction( $reaction );
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
@@ -283,6 +285,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	public function test_reverse_hits( array $settings ) {
 
 		$settings['event'] = 'user_register';
+		$settings['reactor'] = 'points';
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -302,7 +305,10 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
-		$reaction = $reactor->reactions->create_reaction( $settings );
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction( $settings );
+
 		$this->assertIsReaction( $reaction );
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
@@ -349,6 +355,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 		);
 
 		$settings['event'] = 'user_register';
+		$settings['reactor'] = 'points';
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -368,7 +375,10 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
-		$reaction = $reactor->reactions->create_reaction( $settings );
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction( $settings );
+
 		$this->assertIsReaction( $reaction );
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
@@ -416,6 +426,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 		);
 
 		$settings['event'] = 'user_register';
+		$settings['reactor'] = 'points';
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -435,7 +446,10 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
-		$reaction = $reactor->reactions->create_reaction( $settings );
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction( $settings );
+
 		$this->assertIsReaction( $reaction );
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );

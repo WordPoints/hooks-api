@@ -167,7 +167,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$args->set_validator( $validator );
@@ -211,7 +210,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$args->set_validator( $validator );
@@ -308,7 +306,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$args->set_validator( $validator );
 
@@ -343,7 +340,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$args->set_validator( $validator );
 
@@ -392,7 +388,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$args->set_validator( $validator );
 
@@ -422,7 +417,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$args->set_validator( $validator );
 
@@ -467,7 +461,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$args->set_validator( $validator );
 
@@ -522,7 +515,6 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 		$validator->push_field( 'field' );
 		$args->set_validator( $validator );

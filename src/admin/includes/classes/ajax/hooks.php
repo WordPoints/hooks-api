@@ -22,22 +22,22 @@ class WordPoints_Admin_Ajax_Hooks {
 	//
 
 	/**
-	 * The reactor that the reactions are being saved for.
+	 * The reaction store that the reactions are being saved for.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_Reactor
+	 * @var WordPoints_Hook_Reaction_StoreI
 	 */
-	protected $reactor;
+	protected $reaction_store;
 
 	/**
-	 * The slug of the reactor that the reactions are being saved for.
+	 * The slug of the reaction store that the reactions are being saved for.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
-	protected $reactor_slug;
+	protected $reaction_store_slug;
 
 	//
 	// Public Static Functions.
@@ -59,7 +59,7 @@ class WordPoints_Admin_Ajax_Hooks {
 			, array(
 				'id' => $reaction->ID,
 				'event' => $reaction->get_event_slug(),
-				'reactor' => $reaction->get_reactor_slug(),
+				'reaction_store' => $reaction->get_store_slug(),
 				'nonce' => self::get_update_nonce( $reaction ),
 				'delete_nonce' => self::get_delete_nonce( $reaction ),
 			)
@@ -71,14 +71,17 @@ class WordPoints_Admin_Ajax_Hooks {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_Reactor $reactor The reactor the nonce will be used to
-	 *                                         create new reactions for.
+	 * @param WordPoints_Hook_Reaction_StoreI $reaction_store The reactor the nonce
+	 *                                                        will be used to create
+	 *                                                        new reactions for.
 	 *
 	 * @return string A nonce for creating a new reaction to this reactor.
 	 */
-	public static function get_create_nonce( WordPoints_Hook_Reactor $reactor ) {
+	public static function get_create_nonce(
+		WordPoints_Hook_Reaction_StoreI $reaction_store
+	) {
 
-		return wp_create_nonce( self::get_create_nonce_action( $reactor ) );
+		return wp_create_nonce( self::get_create_nonce_action( $reaction_store ) );
 	}
 
 	/**
@@ -86,18 +89,19 @@ class WordPoints_Admin_Ajax_Hooks {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_Reactor $reactor The reactor the nonce will be used to
-	 *                                         create new reactions for.
+	 * @param WordPoints_Hook_Reaction_StoreI $reaction_store The reactor the nonce
+	 *                                                        will be used to create
+	 *                                                        new reactions for.
 	 *
 	 * @return string The nonce action for creating a new reaction to this reactor.
 	 */
 	public static function get_create_nonce_action(
-		WordPoints_Hook_Reactor $reactor
+		WordPoints_Hook_Reaction_StoreI $reaction_store
 	) {
 
-		return 'wordpoints_create_hook_reaction|' . $reactor->get_slug()
+		return 'wordpoints_create_hook_reaction|' . $reaction_store->get_slug()
 		       . '|' . wordpoints_hooks()->get_current_mode()
-		       . '|' . wp_json_encode( $reactor->reactions->get_context_id() );
+		       . '|' . wp_json_encode( $reaction_store->get_context_id() );
 	}
 
 	/**
@@ -206,11 +210,11 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$this->verify_user_can();
 
-		$reactor = $this->get_reactor();
+		$reaction_store = $this->get_reaction_store();
 
-		$this->verify_request( $this->get_create_nonce_action( $reactor ) );
+		$this->verify_request( $this->get_create_nonce_action( $reaction_store ) );
 
-		$reaction = $reactor->reactions->create_reaction( $this->get_data() );
+		$reaction = $reaction_store->create_reaction( $this->get_data() );
 
 		$this->send_json_result( $reaction, 'create' );
 	}
@@ -224,12 +228,12 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$this->verify_user_can();
 
-		$reactor  = $this->get_reactor();
+		$reaction_store = $this->get_reaction_store();
 		$reaction = $this->get_reaction();
 
 		$this->verify_request( $this->get_update_nonce_action( $reaction ) );
 
-		$reaction = $reactor->reactions->update_reaction(
+		$reaction = $reaction_store->update_reaction(
 			$reaction->ID
 			, $this->get_data()
 		);
@@ -246,12 +250,12 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$this->verify_user_can();
 
-		$reactor  = $this->get_reactor();
+		$reaction_store = $this->get_reaction_store();
 		$reaction = $this->get_reaction();
 
 		$this->verify_request( $this->get_delete_nonce_action( $reaction ) );
 
-		$result = $reactor->reactions->delete_reaction( $reaction->ID );
+		$result = $reaction_store->delete_reaction( $reaction->ID );
 
 		if ( ! $result ) {
 			wp_send_json_error( array( 'message' => __( 'There was an error deleting the reaction. Please try again.', 'wordpoints' ) ) );
@@ -326,26 +330,26 @@ class WordPoints_Admin_Ajax_Hooks {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WordPoints_Hook_Reactor The object of the reactor.
+	 * @return WordPoints_Hook_Reaction_StoreI The object of the reaction store.
 	 */
-	protected function get_reactor() {
+	protected function get_reaction_store() {
 
-		if ( ! isset( $_POST['reactor'] ) ) { // WPCS: CSRF OK.
-			$this->unexpected_error( 'reactor' );
+		if ( ! isset( $_POST['reaction_store'] ) ) { // WPCS: CSRF OK.
+			$this->unexpected_error( 'reaction_store' );
 		}
 
-		$reactor_slug = sanitize_key( $_POST['reactor'] ); // WPCS: CSRF OK.
+		$reactor_slug = sanitize_key( $_POST['reaction_store'] ); // WPCS: CSRF OK.
 
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
+		$reaction_store = wordpoints_hooks()->get_reaction_store( $reactor_slug );
 
-		if ( ! $reactor instanceof WordPoints_Hook_Reactor ) {
-			$this->unexpected_error( 'reactor_invalid' );
+		if ( ! $reaction_store instanceof WordPoints_Hook_Reaction_StoreI ) {
+			$this->unexpected_error( 'reaction_store_invalid' );
 		}
 
-		$this->reactor_slug = $reactor_slug;
-		$this->reactor = $reactor;
+		$this->reaction_store_slug = $reactor_slug;
+		$this->reaction_store = $reaction_store;
 
-		return $reactor;
+		return $reaction_store;
 	}
 
 	/**
@@ -361,7 +365,7 @@ class WordPoints_Admin_Ajax_Hooks {
 			$this->unexpected_error( 'id' );
 		}
 
-		$reaction = $this->reactor->reactions->get_reaction(
+		$reaction = $this->reaction_store->get_reaction(
 			wordpoints_int( $_POST['id'] ) // WPCS: CSRF OK.
 		);
 
@@ -383,7 +387,7 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$data = wp_unslash( $_POST ); // WPCS: CSRF OK.
 
-		unset( $data['id'], $data['action'], $data['nonce'], $data['reactor'] );
+		unset( $data['id'], $data['action'], $data['nonce'], $data['reaction_store'] );
 
 		return $data;
 	}

@@ -200,8 +200,11 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		}
 
 		$settings['target'] = $target;
+		$settings['reactor'] = $reactor_slug;
 
-		$reaction = $reactor->reactions->create_reaction( $settings );
+		$reaction = $this->hooks
+			->get_reaction_store( $reactor_slug )
+			->create_reaction( $settings );
 
 		$this->assertIsReaction( $reaction );
 

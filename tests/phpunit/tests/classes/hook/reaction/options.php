@@ -35,6 +35,15 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	protected $reaction;
 
 	/**
+	 * The reaction store for use in the tests.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_Store_Options
+	 */
+	protected $reaction_store;
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function setUp() {
@@ -52,6 +61,10 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 		);
 
 		$this->reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->reaction_store = wordpoints_hooks()->get_reaction_store(
+			$this->reaction->get_store_slug()
+		);
 	}
 
 	/**
@@ -77,7 +90,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->assertEquals(
 			array( $this->reaction )
-			, $this->reactor->reactions->get_reactions_to_event( 'another_event' )
+			, $this->reaction_store->get_reactions_to_event( 'another_event' )
 		);
 	}
 
@@ -216,8 +229,12 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->assertTrue( $reaction_2->add_meta( 'key', 'another' ) );
 
+		$reaction_store = wordpoints_hooks()->get_reaction_store(
+			$reaction_2->get_store_slug()
+		);
+
 		$this->assertTrue(
-			$this->reactor->reactions->delete_reaction( $reaction_2->ID )
+			$reaction_store->delete_reaction( $reaction_2->ID )
 		);
 
 		restore_current_blog();
@@ -258,7 +275,11 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$this->assertEquals( 2, $reaction->ID );
 
-		$reaction = $reactor->reactions->get_reaction( 1 );
+		$reaction_store = wordpoints_hooks()->get_reaction_store(
+			$reaction->get_store_slug()
+		);
+
+		$reaction = $reaction_store->get_reaction( 1 );
 
 		$this->assertEquals( 'value', $reaction->get_meta( 'key' ) );
 

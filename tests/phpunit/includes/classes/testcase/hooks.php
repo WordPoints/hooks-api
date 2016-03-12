@@ -241,7 +241,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hooks extends WordPoints_PHPUnit_Test
 				'primary_arg_guid' => '',
 				'event' => 'test_event',
 				'reactor' => 'test_reactor',
-				'reaction_store' => 'standard',
+				'reaction_store' => 'test_reaction_store',
 				'reaction_context_id' => array( 'site' => 1, 'network' => 1 ),
 				'reaction_id' => 1,
 			)

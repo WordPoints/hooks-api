@@ -29,7 +29,7 @@ class WordPoints_Hook_Condition_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_validate_settings( $value, $arg ) {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 
 		$condition = new WordPoints_PHPUnit_Mock_Hook_Condition();
 
@@ -79,7 +79,7 @@ class WordPoints_Hook_Condition_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_validate_settings_invalid( $settings, $arg ) {
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 
 		$condition = new WordPoints_PHPUnit_Mock_Hook_Condition();
 

@@ -48,7 +48,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -91,7 +90,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -125,7 +123,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$validator = new WordPoints_Hook_Reaction_Validator(
 			array()
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
 		);
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );

@@ -308,12 +308,11 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 		$event_slug = $meta_box['args']['slug'];
 
-		/** @var WordPoints_Hook_Reactor $points_reactor */
-		$points_reactor = $this->hooks->reactors->get( 'points' );
-
 		$data = array();
 
-		foreach ( $points_reactor->reactions->get_reactions_to_event( $event_slug ) as $id => $reaction ) {
+		$reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
+
+		foreach ( $reaction_store->get_reactions_to_event( $event_slug ) as $id => $reaction ) {
 			if ( $reaction->get_meta( 'points_type' ) === $this->current_points_type ) {
 				$data[] = WordPoints_Admin_Ajax_Hooks::prepare_hook_reaction(
 					$reaction
@@ -352,7 +351,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			<div class="wordpoints-hook-reaction-group"
 				data-wordpoints-hooks-hook-event="<?php echo esc_attr( $event_slug ); ?>"
 				data-wordpoints-hooks-points-type="<?php echo esc_attr( $this->current_points_type ); ?>"
-				data-wordpoints-hooks-create-nonce="<?php echo esc_attr( WordPoints_Admin_Ajax_Hooks::get_create_nonce( $points_reactor ) ); ?>"
+				data-wordpoints-hooks-create-nonce="<?php echo esc_attr( WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reaction_store ) ); ?>"
 				data-wordpoints-hooks-reactor="points">
 			</div>
 

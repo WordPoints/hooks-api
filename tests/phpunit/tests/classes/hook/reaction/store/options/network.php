@@ -27,13 +27,8 @@ class WordPoints_Hook_Reaction_Store_Options_Network_Test extends WordPoints_PHP
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
-			array(
-				'stores' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Store_Options_Network',
-				),
-			)
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options_Network' )
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
@@ -49,12 +44,12 @@ class WordPoints_Hook_Reaction_Store_Options_Network_Test extends WordPoints_PHP
 
 		$this->assertEquals( 2, $reaction->ID );
 
-		$this->assertTrue( $reactor->reactions->delete_reaction( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->delete_reaction( $reaction->ID ) );
 
 		restore_current_blog();
 
 		// The reaction on this site should still exist.
-		$this->assertTrue( $reactor->reactions->reaction_exists( 1 ) );
+		$this->assertTrue( $reaction_store->reaction_exists( 1 ) );
 	}
 }
 

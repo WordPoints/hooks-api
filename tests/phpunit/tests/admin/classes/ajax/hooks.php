@@ -17,6 +17,71 @@
 class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax {
 
 	/**
+	 * Specs for a request to create a hook reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string[]
+	 */
+	protected $create_request_spec = array(
+		'am_administrator',
+		'posts_valid_create_nonce',
+		'posts_valid_reaction_store',
+		'posts_valid_event',
+		'posts_valid_reactor',
+		'posts_valid_target',
+	);
+
+	/**
+	 * Specs for a request to update a hook reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string[]
+	 */
+	protected $update_request_spec = array(
+		'am_administrator',
+		'posts_valid_update_nonce',
+		'posts_valid_id',
+		'posts_valid_reaction_store',
+		'posts_valid_event',
+		'posts_valid_reactor',
+		'posts_valid_target',
+	);
+
+	/**
+	 * Specs for a request to delete a hook reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string[]
+	 */
+	protected $delete_request_spec = array(
+		'am_administrator',
+		'posts_valid_delete_nonce',
+		'posts_valid_id',
+		'posts_valid_reaction_store',
+	);
+
+	/**
+	 * Hook reaction store to use in the test.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Reaction_StoreI
+	 */
+	protected $reaction_store;
+
+	/**
+	 * Hook reaction to use in the test.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_ReactionI
+	 */
+	protected $reaction;
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function setUp() {
@@ -44,6 +109,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 			array(
 				'id' => $reaction->ID,
 				'event' => $reaction->get_event_slug(),
+				'reaction_store' => $reaction->get_store_slug(),
 				'reactor' => $reaction->get_reactor_slug(),
 				'nonce' => wp_create_nonce(
 					"wordpoints_update_hook_reaction|{$reaction_guid}"
@@ -65,18 +131,11 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 	 */
 	public function test_create_hook_reaction() {
 
-		$this->_setRole( 'administrator' );
-
 		$this->mock_apps();
 
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$this->reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get();
 
-		$reactor_slug = $reactor->get_slug();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reactor );
-		$_POST['reactor'] = $reactor_slug;
-		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
+		$this->generate_request( $this->create_request_spec );
 
 		$response = $this->assertJSONSuccessResponse(
 			'wordpoints_admin_create_hook_reaction'
@@ -96,7 +155,13 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$this->assertObjectHasAttribute( 'target', $response->data );
 		$this->assertEquals( $_POST['target'], $response->data->target );
 
-		$reaction = $reactor->reactions->get_reaction( $response->data->id );
+		$this->assertObjectHasAttribute( 'reaction_store', $response->data );
+		$this->assertEquals(
+			$_POST['reaction_store']
+			, $response->data->reaction_store
+		);
+
+		$reaction = $this->reaction_store->get_reaction( $response->data->id );
 		$reaction_guid = wp_json_encode( $reaction->get_guid() );
 
 		$this->assertObjectHasAttribute( 'nonce', $response->data );
@@ -117,100 +182,34 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 	}
 
 	/**
-	 * Test creating a hook reaction requires the correct capabilities.
+	 * Test creating a hook reaction requires valid requests.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_invalid_create_requests
+	 *
+	 * @param array $request_spec The specs for an invalid request.
 	 */
-	public function test_create_hook_reaction_not_admin() {
+	public function test_create_hook_reaction_invalid_request( $request_spec ) {
 
 		$this->mock_apps();
 
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$this->reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get();
 
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reactor );
-		$_POST['reactor'] = $reactor->get_slug();
-		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
+		$this->generate_request( $request_spec );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_create_hook_reaction' );
 	}
 
 	/**
-	 * Test creating a hook reaction requires a valid nonce.
+	 * Provides specs for invalid reaction create requests.
 	 *
 	 * @since 1.0.0
-	 */
-	public function test_create_hook_reaction_no_nonce() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$_POST['reactor'] = $this->factory->wordpoints->hook_reactor->create();
-		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_create_hook_reaction' );
-	}
-
-	/**
-	 * Test creating a hook reaction requires a valid nonce.
 	 *
-	 * @since 1.0.0
+	 * @return array[] A list of invalid create request specs.
 	 */
-	public function test_create_hook_reaction_invalid_nonce() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$_POST['nonce']   = 'invalid';
-		$_POST['reactor'] = $this->factory->wordpoints->hook_reactor->create();
-		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_create_hook_reaction' );
-	}
-
-	/**
-	 * Test creating a hook reaction requires a valid reactor slug.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_create_hook_reaction_no_reactor_slug() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce(
-			$this->factory->wordpoints->hook_reactor->create_and_get()
-		);
-		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_create_hook_reaction' );
-	}
-
-	/**
-	 * Test creating a hook reaction requires a valid reactor slug.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_create_hook_reaction_invalid_reactor_slug() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce(
-			$this->factory->wordpoints->hook_reactor->create_and_get()
-		);
-		$_POST['reactor'] = 'invalid';
-		$_POST['event']   = $this->factory->wordpoints->hook_event->create();
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_create_hook_reaction' );
+	public function data_provider_invalid_create_requests() {
+		return $this->generate_invalid_request_specs( $this->create_request_spec );
 	}
 
 	/**
@@ -220,16 +219,14 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 	 */
 	public function test_create_hook_reaction_invalid_reaction_settings() {
 
-		$this->_setRole( 'administrator' );
-
 		$this->mock_apps();
 
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$this->reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get();
 
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reactor );
-		$_POST['reactor'] = $reactor->get_slug();
-		$_POST['event']   = 'invalid';
-		$_POST['target']  = array( $this->factory->wordpoints->entity->create() );
+		$request = $this->create_request_spec;
+		$request[3] = 'posts_invalid_event';
+
+		$this->generate_request( $request );
 
 		$response = $this->assertJSONErrorResponse(
 			'wordpoints_admin_create_hook_reaction'
@@ -255,23 +252,24 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 	 */
 	public function test_update_hook_reaction() {
 
-		$this->_setRole( 'administrator' );
-
 		$this->mock_apps();
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$this->reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
+			$this->reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
+		$this->reaction->update_meta( 'target', array( 'current:test_entity' ) );
+
+		$this->assertEquals(
+			array( 'current:test_entity' )
+			, $this->reaction->get_meta( 'target' )
+		);
+
+		$this->generate_request( $this->update_request_spec );
 
 		$response = $this->assertJSONSuccessResponse(
 			'wordpoints_admin_update_hook_reaction'
@@ -280,235 +278,59 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		$this->assertObjectNotHasAttribute( 'data', $response );
 
 		$this->assertEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
+			array( 'test_entity' )
+			, $this->reaction->get_meta( 'target' )
 		);
 	}
 
 	/**
-	 * Test updating a hook reaction requires the correct capabilities.
+	 * Test updating a hook reaction requires valid requests.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_invalid_update_requests
+	 *
+	 * @param array $request_spec The specs for an invalid request.
 	 */
-	public function test_update_hook_reaction_not_admin() {
+	public function test_update_hook_reaction_invalid_request( $request_spec ) {
 
 		$this->mock_apps();
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$this->reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 
 		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
+			$this->reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
+		$this->reaction->update_meta( 'target', array( 'current:test_entity' ) );
+
+		$this->assertEquals(
+			array( 'current:test_entity' )
+			, $this->reaction->get_meta( 'target' )
+		);
+
+		$this->generate_request( $request_spec );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
 
-		$this->assertNotEquals(
+		// The value shouldn't have been updated.
+		$this->assertEquals(
 			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
+			, $this->reaction->get_meta( 'target' )
 		);
 	}
 
 	/**
-	 * Test updating a hook reaction requires a valid nonce.
+	 * Provides specs for invalid reaction update requests.
 	 *
 	 * @since 1.0.0
-	 */
-	public function test_update_hook_reaction_no_nonce() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
-			, 'current:test_entity'
-			, 'WordPoints_Hook_Arg'
-		);
-
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
-
-		$this->assertNotEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
-		);
-	}
-
-	/**
-	 * Test updating a hook reaction requires a valid nonce.
 	 *
-	 * @since 1.0.0
+	 * @return array[] A list of invalid update request specs.
 	 */
-	public function test_update_hook_reaction_invalid_nonce() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
-			, 'current:test_entity'
-			, 'WordPoints_Hook_Arg'
-		);
-
-		$_POST['nonce']   = 'invalid';
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
-
-		$this->assertNotEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
-		);
-	}
-
-	/**
-	 * Test updating a hook reaction requires a valid reaction ID.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_update_hook_reaction_no_reaction_id() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
-			, 'current:test_entity'
-			, 'WordPoints_Hook_Arg'
-		);
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
-
-		$this->assertNotEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
-		);
-	}
-
-	/**
-	 * Test updating a hook reaction requires a valid reaction ID.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_update_hook_reaction_invalid_reaction_id() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
-			, 'current:test_entity'
-			, 'WordPoints_Hook_Arg'
-		);
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['id']      = $reaction->ID + 1;
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
-
-		$this->assertNotEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
-		);
-	}
-
-	/**
-	 * Test updating a hook reaction requires a valid reactor slug.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_update_hook_reaction_no_reactor_slug() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
-			, 'current:test_entity'
-			, 'WordPoints_Hook_Arg'
-		);
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
-
-		$this->assertNotEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
-		);
-	}
-
-	/**
-	 * Test updating a hook reaction requires a valid reactor slug.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_update_hook_reaction_invalid_reactor_slug() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
-			, 'current:test_entity'
-			, 'WordPoints_Hook_Arg'
-		);
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = 'invalid';
-		$_POST['event']   = $reaction->get_event_slug();
-		$_POST['target']  = array( 'current:test_entity' );
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_update_hook_reaction' );
-
-		$this->assertNotEquals(
-			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
-		);
+	public function data_provider_invalid_update_requests() {
+		return $this->generate_invalid_request_specs( $this->update_request_spec );
 	}
 
 	/**
@@ -518,23 +340,27 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 	 */
 	public function test_update_hook_reaction_invalid_reaction_settings() {
 
-		$this->_setRole( 'administrator' );
-
 		$this->mock_apps();
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$this->reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 
 		wordpoints_hooks()->events->args->register(
-			$reaction->get_event_slug()
+			$this->reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
 		);
 
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_update_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reaction->get_reactor_slug();
-		$_POST['event']   = 'invalid';
-		$_POST['target']  = array( 'current:test_entity' );
+		$this->reaction->update_meta( 'target', array( 'current:test_entity' ) );
+
+		$this->assertEquals(
+			array( 'current:test_entity' )
+			, $this->reaction->get_meta( 'target' )
+		);
+
+		$request = $this->update_request_spec;
+		$request[4] = 'posts_invalid_event';
+
+		$this->generate_request( $request );
 
 		$response = $this->assertJSONErrorResponse(
 			'wordpoints_admin_update_hook_reaction'
@@ -552,9 +378,9 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 			, $response->data->errors
 		);
 
-		$this->assertNotEquals(
+		$this->assertEquals(
 			array( 'current:test_entity' )
-			, $reaction->get_meta( 'target' )
+			, $this->reaction->get_meta( 'target' )
 		);
 	}
 
@@ -565,208 +391,131 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 	 */
 	public function test_delete_hook_reaction() {
 
-		$this->_setRole( 'administrator' );
-
 		$this->mock_apps();
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$this->reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+		$this->generate_request( $this->delete_request_spec );
 
 		$this->assertJSONSuccessResponse( 'wordpoints_admin_delete_hook_reaction' );
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
+		$reaction_store = wordpoints_hooks()->get_reaction_store(
+			$this->reaction->get_store_slug()
+		);
 
-		$this->assertFalse( $reactor->reactions->reaction_exists( $reaction->ID ) );
+		$this->assertFalse(
+			$reaction_store->reaction_exists( $this->reaction->ID )
+		);
 	}
 
 	/**
-	 * Test deleting a hook reaction requires the correct capabilities.
+	 * Test deleting a hook reaction requires valid requests.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @dataProvider data_provider_invalid_delete_requests
+	 *
+	 * @param array $request_spec The specs for an invalid request.
 	 */
-	public function test_delete_hook_reaction_not_admin() {
+	public function test_delete_hook_reaction_invalid_request( $request_spec ) {
 
 		$this->mock_apps();
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$this->reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 
-		$reactor_slug = $reaction->get_reactor_slug();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+		$this->generate_request( $request_spec );
 
 		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
+		$reaction_store = wordpoints_hooks()->get_reaction_store(
+			$this->reaction->get_store_slug()
+		);
 
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
+		$this->assertTrue(
+			$reaction_store->reaction_exists( $this->reaction->ID )
+		);
 	}
 
 	/**
-	 * Test deleting a hook reaction requires a valid nonce.
+	 * Provides specs for invalid reaction delete requests.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @return array[] A list of invalid delete request specs.
 	 */
-	public function test_delete_hook_reaction_no_nonce() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$reactor_slug = $reaction->get_reactor_slug();
-
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
-
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
+	public function data_provider_invalid_delete_requests() {
+		return $this->generate_invalid_request_specs( $this->delete_request_spec );
 	}
 
 	/**
-	 * Test deleting a hook reaction requires a valid nonce.
-	 *
 	 * @since 1.0.0
 	 */
-	public function test_delete_hook_reaction_invalid_nonce() {
+	public function fulfill_posts_requirement( $requirement_parts ) {
 
-		$this->_setRole( 'administrator' );
+		if ( isset( $requirement_parts[3] ) && 'nonce' === $requirement_parts[3] ) {
 
-		$this->mock_apps();
+			if ( 'invalid' === $requirement_parts[1] ) {
+				$_POST['nonce'] = 'invalid';
+				return;
+			}
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+			switch( $requirement_parts[2] ) {
 
-		$reactor_slug = $reaction->get_reactor_slug();
+				case 'create':
+					$_POST['nonce'] = WordPoints_Admin_Ajax_Hooks::get_create_nonce(
+						$this->reaction_store
+					);
+				break;
 
-		$_POST['nonce']   = 'invalid';
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = $reactor_slug;
+				case 'update':
+					$_POST['nonce'] = WordPoints_Admin_Ajax_Hooks::get_update_nonce(
+						$this->reaction
+					);
+				break;
 
-		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
+				case 'delete':
+					$_POST['nonce'] = WordPoints_Admin_Ajax_Hooks::get_delete_nonce(
+						$this->reaction
+					);
+				break;
+			}
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
+		} else {
 
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
+			parent::fulfill_posts_requirement( $requirement_parts );
+		}
 	}
 
 	/**
-	 * Test deleting a hook reaction requires a valid reaction ID.
-	 *
 	 * @since 1.0.0
 	 */
-	public function test_delete_hook_reaction_no_reaction_id() {
+	public function get_valid_posts_value( $query_arg ) {
 
-		$this->_setRole( 'administrator' );
+		switch ( $query_arg ) {
 
-		$this->mock_apps();
+			case 'event':
+				return ( $this->reaction )
+					? $this->reaction->get_event_slug()
+					: $this->factory->wordpoints->hook_event->create();
 
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
+			case 'target':
+				return array( $this->factory->wordpoints->entity->create() );
 
-		$reactor_slug = $reaction->get_reactor_slug();
+			case 'reactor':
+				return ( $this->reaction )
+					? $this->reaction->get_reactor_slug()
+					: $this->factory->wordpoints->hook_reactor->create();
 
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
-		$_POST['reactor'] = $reactor_slug;
+			case 'reaction_store':
+				return ( $this->reaction )
+					? $this->reaction->get_store_slug()
+					: $this->reaction_store->get_slug();
 
-		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
+			case 'id':
+				return $this->reaction->ID;
+		}
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
-
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
-	}
-
-	/**
-	 * Test deleting a hook reaction requires a valid reaction ID.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_delete_hook_reaction_invalid_reaction_id() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$reactor_slug = $reaction->get_reactor_slug();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
-		$_POST['id']      = $reaction->ID + 1;
-		$_POST['reactor'] = $reactor_slug;
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
-
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
-	}
-
-	/**
-	 * Test deleting a hook reaction requires a valid reactor slug.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_delete_hook_reaction_no_reactor_slug() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$reactor_slug = $reaction->get_reactor_slug();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
-
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
-	}
-
-	/**
-	 * Test deleting a hook reaction requires a valid reactor slug.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_delete_hook_reaction_invalid_reactor_slug() {
-
-		$this->_setRole( 'administrator' );
-
-		$this->mock_apps();
-
-		$reaction = $this->factory->wordpoints->hook_reaction->create();
-
-		$reactor_slug = $reaction->get_reactor_slug();
-
-		$_POST['nonce']   = WordPoints_Admin_Ajax_Hooks::get_delete_nonce( $reaction );
-		$_POST['id']      = $reaction->ID;
-		$_POST['reactor'] = 'invalid';
-
-		$this->assertJSONErrorResponse( 'wordpoints_admin_delete_hook_reaction' );
-
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $reactor_slug );
-
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
+		return parent::get_valid_posts_value( $query_arg );
 	}
 }
 

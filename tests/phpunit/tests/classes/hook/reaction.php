@@ -23,16 +23,11 @@ class WordPoints_Hook_Reaction_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_construct() {
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' );
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $reactor
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$reaction = new WordPoints_PHPUnit_Mock_Hook_Reaction( 1, $store );
 
 		$this->assertEquals( 1, $reaction->ID );
-		$this->assertEquals( 'test_reactor', $reaction->get_reactor_slug() );
 		$this->assertEquals( 'test_store', $reaction->get_store_slug() );
 		$this->assertSame(
 			array( 'site' => 1, 'network' => 1 )
@@ -42,7 +37,6 @@ class WordPoints_Hook_Reaction_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertSame(
 			array(
 				'id' => 1,
-				'reactor' => 'test_reactor',
 				'store' => 'test_store',
 				'context_id' => array( 'site' => 1, 'network' => 1 ),
 			)

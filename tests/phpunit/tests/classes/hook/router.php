@@ -753,7 +753,9 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 1, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $other_reaction->ID ) );
+		$this->assertHitsLogged(
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+		);
 	}
 
 	/**
@@ -819,7 +821,9 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 1, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $other_reaction->ID ) );
+		$this->assertHitsLogged(
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+		);
 	}
 
 	/**

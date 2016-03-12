@@ -23,14 +23,9 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_construct() {
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' );
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $reactor
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$this->assertEquals( 'test_store', $store->get_slug() );
-		$this->assertEquals( 'test_reactor', $store->get_reactor_slug() );
 	}
 
 	/**
@@ -40,11 +35,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_get_context_id() {
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' );
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $reactor
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$this->assertEquals(
 			array( 'network' => 1, 'site' => 1 )
@@ -59,10 +50,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_get_reaction_nonexistent() {
 
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, new WordPoints_PHPUnit_Mock_Hook_Reactor( 'test_reactor' )
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$this->assertFalse( $store->get_reaction( 1 ) );
 	}
@@ -76,13 +64,11 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$settings = array(
 			'event' => 'test_event',
+			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
 			'target' => array( 'test_entity' ),
 		);
 
@@ -97,6 +83,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 		$this->assertEquals( $result, $reaction );
 
 		$this->assertEquals( $settings['event'], $reaction->get_event_slug() );
+		$this->assertEquals( $settings['reactor'], $reaction->get_reactor_slug() );
 		$this->assertEquals( $settings['target'], $reaction->get_meta( 'target' ) );
 	}
 
@@ -111,13 +98,11 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->factory->wordpoints->hook_reactor->create();
 
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		// Event is missing.
 		$settings = array(
+			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
 			'target' => array( 'test_entity' ),
 		);
 
@@ -140,13 +125,11 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $reactor
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$settings = array(
 			'event' => 'test_event',
+			'reactor' => $reactor->get_slug(),
 			'target' => array( 'test_entity' ),
 		);
 
@@ -176,13 +159,11 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
 
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$settings = array(
 			'event' => 'test_event',
+			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
 			'target' => array( 'test_entity' ),
 		);
 
@@ -208,13 +189,11 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->mock_apps();
 
-		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store(
-			'test_store'
-			, $this->factory->wordpoints->hook_reactor->create_and_get()
-		);
+		$store = new WordPoints_PHPUnit_Mock_Hook_Reaction_Store( 'test_store' );
 
 		$settings = array(
 			'event' => 'test_event',
+			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
 			'target' => array( 'test_entity' ),
 		);
 
@@ -250,6 +229,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings = array(
 			'event' => 'test_event_2',
+			'reactor' => $reaction->get_reactor_slug(),
 			'target' => array( 'alias:test_entity' ),
 		);
 
@@ -271,6 +251,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 		$this->assertEquals( $result, $reaction );
 
 		$this->assertEquals( $settings['event'], $reaction->get_event_slug() );
+		$this->assertEquals( $settings['reactor'], $reaction->get_reactor_slug() );
 		$this->assertEquals( $settings['target'], $reaction->get_meta( 'target' ) );
 	}
 
@@ -292,6 +273,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings = array(
 			'event' => 'test_event_2',
+			'reactor' => $reaction->get_reactor_slug(),
 			'target' => array( 'alias:test_entity' ),
 		);
 
@@ -325,6 +307,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		// Event is missing.
 		$settings = array(
+			'reactor' => $reaction->get_reactor_slug(),
 			'target' => array( 'alias:test_entity' ),
 		);
 
@@ -364,6 +347,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings = array(
 			'event' => 'test_event_2',
+			'reactor' => $reaction->get_reactor_slug(),
 			'target' => array( 'alias:test_entity' ),
 		);
 
@@ -407,6 +391,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings = array(
 			'event' => 'test_event_2',
+			'reactor' => $reaction->get_reactor_slug(),
 			'target' => array( 'alias:test_entity' ),
 		);
 
@@ -446,6 +431,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings = array(
 			'event' => 'test_event_2',
+			'reactor' => $reaction->get_reactor_slug(),
 			'target' => array( 'alias:test_entity' ),
 		);
 

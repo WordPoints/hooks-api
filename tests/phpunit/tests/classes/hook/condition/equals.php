@@ -31,7 +31,7 @@ class WordPoints_Hook_Condition_Equals_Test extends WordPoints_PHPUnit_TestCase_
 		$entity->set_the_value( $value );
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );
@@ -86,7 +86,7 @@ class WordPoints_Hook_Condition_Equals_Test extends WordPoints_PHPUnit_TestCase_
 		$entity->set_the_value( $value );
 
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );

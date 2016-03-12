@@ -97,6 +97,64 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 
 		$this->assertEquals( 'network', $hooks->get_current_mode() );
 	}
+
+	/**
+	 * Test getting a reaction store.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_reaction_store() {
+
+		$this->mock_apps();
+
+		$hooks = wordpoints_hooks();
+
+		$slug = $this->factory->wordpoints->hook_reaction_store->create();
+
+		$reaction_store = $hooks->get_reaction_store( $slug );
+
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Hook_Reaction_Store'
+			, $reaction_store
+		);
+
+		$this->assertEquals( $slug, $reaction_store->get_slug() );
+	}
+
+	/**
+	 * Test getting an unregistered reaction store.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_reaction_store_unregistered() {
+
+		$this->assertFalse(
+			wordpoints_hooks()->get_reaction_store( 'unregistered' )
+		);
+	}
+
+	/**
+	 * Test getting a reaction store when out of context.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_reaction_store_out_of_context() {
+
+		$this->mock_apps();
+
+		$slug = $this->factory->wordpoints->hook_reaction_store->create(
+			array(
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
+			)
+		);
+
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
+		);
+
+		$this->assertFalse( wordpoints_hooks()->get_reaction_store( $slug ) );
+	}
 }
 
 // EOF

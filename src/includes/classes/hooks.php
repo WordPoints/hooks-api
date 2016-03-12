@@ -97,6 +97,34 @@ class WordPoints_Hooks extends WordPoints_App {
 	public function set_current_mode( $mode ) {
 		$this->current_mode = $mode;
 	}
+
+	/**
+	 * Get a reaction storage object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the reaction store to get.
+	 *
+	 * @return WordPoints_Hook_Reaction_StoreI|false The reaction storage object.
+	 */
+	public function get_reaction_store( $slug ) {
+
+		$reaction_store = $this->reaction_stores->get(
+			$this->get_current_mode()
+			, $slug
+		);
+
+		if ( ! $reaction_store instanceof WordPoints_Hook_Reaction_StoreI ) {
+			return false;
+		}
+
+		// Allowing access to stores out-of-context would lead to strange behavior.
+		if ( false === $reaction_store->get_context_id() ) {
+			return false;
+		}
+
+		return $reaction_store;
+	}
 }
 
 // EOF

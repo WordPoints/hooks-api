@@ -341,7 +341,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 					INNER JOIN `{$wpdb->wordpoints_hook_hits}` AS `hit`
 						ON `hit`.`id` = period.`hit_id`
 					WHERE `period`.`signature` = %s
-						AND `hit`.`reactor` = %s
 						AND `hit`.`reaction_store` = %s
 						AND `hit`.`reaction_context_id` = %s
 						AND `hit`.`reaction_id` = %d
@@ -349,7 +348,6 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 					LIMIT 1
 				"
 				, $signature
-				, $reaction_guid['reactor']
 				, $reaction_guid['store']
 				, wp_json_encode( $reaction_guid['context_id'] )
 				, $reaction_guid['id']

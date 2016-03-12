@@ -26,9 +26,10 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 		parent::__construct( $factory );
 
 		$this->default_generation_definitions = array(
-			'event'       => 'test_event',
-			'reactor'     => 'test_reactor',
-			'description' => new WP_UnitTest_Generator_Sequence(
+			'event'          => 'test_event',
+			'reactor'        => 'test_reactor',
+			'reaction_store' => 'test_reaction_store',
+			'description'    => new WP_UnitTest_Generator_Sequence(
 				'Hook reaction description %s'
 			),
 		);
@@ -61,29 +62,17 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 			$args['target'] = array( 'test_entity' );
 		}
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = $reactors->get( $args['reactor'] );
+		$reactions = $hooks->get_reaction_store( $args['reaction_store'] );
 
-		if ( isset( $args['reaction_store'] ) ) {
-
-			$reaction_stores = $hooks->reaction_stores;
-
-			if ( ! $reaction_stores->is_registered( $args['reactor'], $args['reaction_store'] ) ) {
-				$reaction_stores->register(
-					'test_reactor'
-					, 'test_store'
-					, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store'
-				);
-			}
-
-			$reactions = $reactor->get_reaction_store( $args['reaction_store'] );
-
-		} else {
-
-			$reactions = $reactor->reactions;
+		if ( ! $reactions ) {
+			$this->factory->hook_reaction_store->create(
+				array( 'slug' => $args['reaction_store'] )
+			);
 		}
 
-		unset( $args['reactor'], $args['reaction_store'] );
+		$reactions = $hooks->get_reaction_store( $args['reaction_store'] );
+
+		unset( $args['reaction_store'] );
 
 		$reaction = $reactions->create_reaction( $args );
 
@@ -114,12 +103,10 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 
 		$hooks = wordpoints_hooks();
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = $hooks->reactors->get( $object->get_reactor_slug() );
-
 		$fields = array_merge( $object->get_all_meta(), $fields );
 
-		$reaction = $reactor->reactions->update_reaction( $object->ID, $fields );
+		$reactions = $hooks->get_reaction_store( $object->get_store_slug() );
+		$reaction  = $reactions->update_reaction( $object->ID, $fields );
 
 		if ( ! $reaction ) {
 			return $reaction;

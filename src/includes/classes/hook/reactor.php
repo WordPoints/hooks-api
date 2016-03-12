@@ -15,11 +15,6 @@
  * "hit" a "target". For example, it might award points to a particular user.
  *
  * @since 1.0.0
- *
- * @property-read WordPoints_Hook_Reaction_StoreI|null $reactions
- *                Object for accessing hook reactions for this reactor based on the
- *                current network mode. If a reactor doesn't support network
- *                reactions and network mode is on, this property is not available.
  */
 abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 
@@ -42,7 +37,7 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $arg_types;
 
 	/**
-	 * The slugs of the action types that this reaction listens for.
+	 * The slugs of the action types that this reactor listens for.
 	 *
 	 * @since 1.0.0
 	 *
@@ -58,55 +53,6 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 * @var array
 	 */
 	protected $settings_fields;
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function __get( $var ) {
-
-		if ( 'reactions' !== $var ) {
-			return null;
-		}
-
-		$reaction_store = $this->get_reaction_store(
-			wordpoints_hooks()->get_current_mode()
-		);
-
-		if ( ! $reaction_store ) {
-			return null;
-		}
-
-		return $reaction_store;
-	}
-
-	/**
-	 * Get a reaction storage object.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $slug The slug of the reaction store to get.
-	 *
-	 * @return WordPoints_Hook_Reaction_StoreI|false The reaction storage object.
-	 */
-	public function get_reaction_store( $slug ) {
-
-		$reaction_store = wordpoints_hooks()->reaction_stores->get(
-			$this->slug
-			, $slug
-			, array( $this )
-		);
-
-		if ( ! $reaction_store instanceof WordPoints_Hook_Reaction_StoreI ) {
-			return false;
-		}
-
-		// Allowing access to stores out-of-context would lead to strange behavior.
-		if ( false === $reaction_store->get_context_id() ) {
-			return false;
-		}
-
-		return $reaction_store;
-	}
 
 	/**
 	 * Get the slug of this reactor.
@@ -185,83 +131,6 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	public function get_context() {
 
 		return is_wordpoints_network_active() ? 'network' : 'site';
-	}
-
-	/**
-	 * Get all reactions to a particular event for this reactor.
-	 *
-	 * On multisite it will return all reactions for the current site, both standard
-	 * ones and any network-wide ones (if this reactor offers a network storage
-	 * class). Or, if network mode is on, it will return only the network-wide ones.
-	 *
-	 * Speaking more generally, it will return the reactions from all reaction stores
-	 * that are available in the current context.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $event_slug The event slug.
-	 *
-	 * @return WordPoints_Hook_ReactionI[] All of the reaction objects.
-	 */
-	public function get_all_reactions_to_event( $event_slug ) {
-
-		$reactions = array();
-
-		$slugs = wordpoints_hooks()->reaction_stores->get_children_slugs(
-			$this->slug
-		);
-
-		foreach ( $slugs as $slug ) {
-
-			$store = $this->get_reaction_store( $slug );
-
-			if ( ! $store ) {
-				continue;
-			}
-
-			$reactions = array_merge(
-				$reactions
-				, $store->get_reactions_to_event( $event_slug )
-			);
-		}
-
-		return $reactions;
-	}
-
-	/**
-	 * Get all reactions for this reactor.
-	 *
-	 * On multisite it will return all reactions for the current site, both standard
-	 * ones and any network-wide ones (if this reactor offers a network storage
-	 * class). Or, if network mode is on, it will return only the network-wide ones.
-	 *
-	 * Speaking more generally, it will return the reactions from all reaction stores
-	 * that are available in the current context.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return WordPoints_Hook_ReactionI[] All of the reaction objects.
-	 */
-	public function get_all_reactions() {
-
-		$reactions = array();
-
-		$slugs = wordpoints_hooks()->reaction_stores->get_children_slugs(
-			$this->slug
-		);
-
-		foreach ( $slugs as $slug ) {
-
-			$store = $this->get_reaction_store( $slug );
-
-			if ( ! $store ) {
-				continue;
-			}
-
-			$reactions = array_merge( $reactions, $store->get_reactions() );
-		}
-
-		return $reactions;
 	}
 
 	/**

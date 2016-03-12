@@ -50,15 +50,15 @@ function wordpoints_hook_reactors_init( $reactors ) {
 function wordpoints_hook_reaction_stores_init( $reaction_stores ) {
 
 	$reaction_stores->register(
-		'points'
-		, 'standard'
+		'standard'
+		, 'points'
 		, 'WordPoints_Hook_Reaction_Store_Options'
 	);
 
 	if ( is_wordpoints_network_active() ) {
 		$reaction_stores->register(
-			'points'
-			, 'network'
+			'network'
+			, 'points'
 			, 'WordPoints_Hook_Reaction_Store_Options_Network'
 		);
 	}

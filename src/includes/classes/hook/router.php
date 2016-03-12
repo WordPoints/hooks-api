@@ -167,48 +167,77 @@ class WordPoints_Hook_Router {
 
 		$hooks = wordpoints_hooks();
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		foreach ( $hooks->reactors->get_all() as $reactor ) {
+		foreach ( $hooks->reaction_stores->get_all() as $reaction_stores ) {
+			foreach ( $reaction_stores as $reaction_store ) {
 
-			if ( ! in_array( $action_type, $reactor->get_action_types(), true ) ) {
-				continue;
-			}
-
-			foreach ( $reactor->get_all_reactions_to_event( $event_slug ) as $reaction ) {
-
-				$validator = new WordPoints_Hook_Reaction_Validator(
-					$reaction
-					, $reactor
-					, true
-				);
-
-				$validator->validate();
-
-				if ( $validator->had_errors() ) {
+				if ( ! $reaction_store instanceof WordPoints_Hook_Reaction_StoreI ) {
 					continue;
 				}
 
-				unset( $validator );
-
-				$fire = new WordPoints_Hook_Fire( $action_type, $event_args, $reaction );
-
-				/** @var WordPoints_Hook_Extension[] $extensions */
-				$extensions = $hooks->extensions->get_all();
-
-				foreach ( $extensions as $extension ) {
-					if ( ! $extension->should_hit( $fire ) ) {
-						continue 2;
-					}
+				// Allowing access to stores out-of-context would lead to strange behavior.
+				if ( false === $reaction_store->get_context_id() ) {
+					continue;
 				}
 
-				$fire->hit();
+				foreach ( $reaction_store->get_reactions_to_event( $event_slug ) as $reaction ) {
 
-				$reactor->hit( $fire );
+					$fire = new WordPoints_Hook_Fire(
+						$action_type
+						, $event_args
+						, $reaction
+					);
 
-				foreach ( $extensions as $extension ) {
-					$extension->after_hit( $fire );
+					$this->fire_reaction( $fire );
 				}
 			}
+		}
+	}
+
+	/**
+	 * Fire for a particular reaction.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_Fire $fire The hook fire object.
+	 */
+	protected function fire_reaction( $fire ) {
+
+		$hooks = wordpoints_hooks();
+
+		/** @var WordPoints_Hook_Reactor $reactor */
+		$reactor = $hooks->reactors->get( $fire->reaction->get_reactor_slug() );
+
+		if ( ! in_array( $fire->action_type,
+			$reactor->get_action_types(),
+			true )
+		) {
+			return;
+		}
+
+		$validator = new WordPoints_Hook_Reaction_Validator( $fire->reaction, true );
+		$validator->validate();
+
+		if ( $validator->had_errors() ) {
+			return;
+		}
+
+		unset( $validator );
+
+		/** @var WordPoints_Hook_Extension[] $extensions */
+		$extensions = $hooks->extensions->get_all();
+
+		foreach ( $extensions as $extension ) {
+			if ( ! $extension->should_hit( $fire ) ) {
+				return;
+			}
+		}
+
+		$fire->hit();
+
+		$reactor->hit( $fire );
+
+		foreach ( $extensions as $extension ) {
+			$extension->after_hit( $fire );
 		}
 	}
 

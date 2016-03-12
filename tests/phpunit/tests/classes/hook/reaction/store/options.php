@@ -40,14 +40,13 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->reaction_exists( $reaction->ID ) );
 	}
 
 	/**
@@ -74,14 +73,13 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactions = $reactor->reactions->get_reactions();
+		$reactions = $reaction_store->get_reactions();
 
 		$this->assertEquals( array( $reaction ), $reactions );
 	}
@@ -113,10 +111,9 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$this->factory->wordpoints->hook_reaction->create(
 			array( 'event' => 'another' )
@@ -124,7 +121,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$reactions = $reactor->reactions->get_reactions_to_event( 'test_event' );
+		$reactions = $reaction_store->get_reactions_to_event( 'test_event' );
 
 		$this->assertEquals( array( $reaction ), $reactions );
 	}
@@ -138,16 +135,15 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$this->factory->wordpoints->hook_reaction->create(
 			array( 'event' => 'another' )
 		);
 
-		$reactions = $reactor->reactions->get_reactions_to_event( 'test_event' );
+		$reactions = $reaction_store->get_reactions_to_event( 'test_event' );
 
 		$this->assertSame( array(), $reactions );
 	}
@@ -176,16 +172,16 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals(
 			$reaction->get_event_slug()
-			, $reactor->reactions->get_reaction_event_from_index( $reaction->ID )
+			, $reaction_store->get_reaction_event_from_index( $reaction->ID )
 		);
 	}
 
@@ -215,20 +211,20 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertTrue(
-			$reactor->reactions->update_reaction_event_in_index( 1, 'another_event' )
+			$reaction_store->update_reaction_event_in_index( 1, 'another_event' )
 		);
 
 		$this->assertEquals(
 			'another_event'
-			, $reactor->reactions->get_reaction_event_from_index( $reaction->ID )
+			, $reaction_store->get_reaction_event_from_index( $reaction->ID )
 		);
 	}
 
@@ -256,24 +252,24 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertTrue( $reactor->reactions->delete_reaction( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->delete_reaction( $reaction->ID ) );
 
-		$this->assertFalse( $reactor->reactions->reaction_exists( $reaction->ID ) );
-		$this->assertSame( array(), $reactor->reactions->get_reactions() );
+		$this->assertFalse( $reaction_store->reaction_exists( $reaction->ID ) );
+		$this->assertSame( array(), $reaction_store->get_reactions() );
 		$this->assertSame(
 			array()
-			, $reactor->reactions->get_reactions_to_event( 'test_event' )
+			, $reaction_store->get_reactions_to_event( 'test_event' )
 		);
 
 		$this->assertFalse(
-			$reactor->reactions->get_reaction_event_from_index( $reaction->ID )
+			$reaction_store->get_reaction_event_from_index( $reaction->ID )
 		);
 	}
 
@@ -286,25 +282,25 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 1, $reaction->ID );
 
-		$this->assertTrue( $reactor->reactions->reaction_exists( $reaction->ID ) );
-		$this->assertEquals( array( $reaction ), $reactor->reactions->get_reactions() );
+		$this->assertTrue( $reaction_store->reaction_exists( $reaction->ID ) );
+		$this->assertEquals( array( $reaction ), $reaction_store->get_reactions() );
 		$this->assertEquals(
 			array( $reaction )
-			, $reactor->reactions->get_reactions_to_event( 'test_event' )
+			, $reaction_store->get_reactions_to_event( 'test_event' )
 		);
 
 		$this->assertEquals(
 			'test_event'
-			, $reactor->reactions->get_reaction_event_from_index( $reaction->ID )
+			, $reaction_store->get_reaction_event_from_index( $reaction->ID )
 		);
 	}
 
@@ -317,10 +313,10 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 3 );
 
@@ -328,14 +324,14 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 		$this->assertEquals( 2, $reactions[1]->ID );
 		$this->assertEquals( 3, $reactions[2]->ID );
 
-		$this->assertTrue( $reactor->reactions->delete_reaction( 1 ) );
+		$this->assertTrue( $reaction_store->delete_reaction( 1 ) );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
 		$this->assertEquals( 4, $reaction->ID );
 
 		// When the newest reaction is deleted, the ID is reused.
-		$this->assertTrue( $reactor->reactions->delete_reaction( 4 ) );
+		$this->assertTrue( $reaction_store->delete_reaction( 4 ) );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
@@ -353,10 +349,9 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->mock_apps();
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
-
-		$reactor->standard_reactions_class = 'WordPoints_Hook_Reaction_Store_Options';
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
@@ -371,12 +366,12 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->assertEquals( 1, $reaction->ID );
 
-		$this->assertTrue( $reactor->reactions->delete_reaction( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->delete_reaction( $reaction->ID ) );
 
 		restore_current_blog();
 
 		// The reaction on this site should still exist.
-		$this->assertTrue( $reactor->reactions->reaction_exists( 1 ) );
+		$this->assertTrue( $reaction_store->reaction_exists( 1 ) );
 	}
 }
 

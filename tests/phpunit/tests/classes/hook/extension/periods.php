@@ -36,8 +36,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$extension = new WordPoints_Hook_Extension_Periods();
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -180,8 +179,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$extension = new WordPoints_Hook_Extension_Periods();
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$event_args->add_entity(
@@ -698,6 +696,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		// Create another reaction for another reactor.
 		$settings['reactor'] = 'another_reactor';
+		$settings['reaction_store'] = 'another_store';
 		$other_reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
 		$this->assertIsReaction( $other_reaction );
@@ -795,15 +794,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			'target'  => array( 'test_entity' ),
 		);
 
+		$this->factory->wordpoints->hook_reaction_store->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted' )
+		);
+
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
 
 		$this->assertIsReaction( $reaction );
-
-		wordpoints_hooks()->reaction_stores->register(
-			$reaction->get_reactor_slug()
-			, $reaction->get_store_slug()
-			, 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted'
-		);
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 

@@ -116,8 +116,8 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		wordpoints_hook_reaction_stores_init( $reaction_stores );
 
-		$this->assertTrue( $reaction_stores->is_registered( 'points', 'standard' ) );
-		$this->assertFalse( $reaction_stores->is_registered( 'points', 'network' ) );
+		$this->assertTrue( $reaction_stores->is_registered( 'standard', 'points' ) );
+		$this->assertFalse( $reaction_stores->is_registered( 'network', 'points' ) );
 	}
 
 	/**

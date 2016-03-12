@@ -31,7 +31,7 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 
 		$extension = new WordPoints_Hook_Extension_Blocker();
 		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
-		$validator = new WordPoints_Hook_Reaction_Validator( array(), $reactor );
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );
 

@@ -22,10 +22,9 @@ interface WordPoints_Hook_Reaction_StoreI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                  $slug    The slug of this store.
-	 * @param WordPoints_Hook_Reactor $reactor The reactor the reactions belong to.
+	 * @param string $slug The slug of this store.
 	 */
-	public function __construct( $slug, WordPoints_Hook_Reactor $reactor );
+	public function __construct( $slug );
 
 	/**
 	 * Get the slug of this reaction store.
@@ -38,15 +37,6 @@ interface WordPoints_Hook_Reaction_StoreI {
 	 * @return string The slug of this store.
 	 */
 	public function get_slug();
-
-	/**
-	 * Get the slug of the reactor this object stores reactions for.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The reactor slug.
-	 */
-	public function get_reactor_slug();
 
 	/**
 	 * Get the ID of the current context in which reactions are being stored.

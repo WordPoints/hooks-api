@@ -286,9 +286,9 @@ class WordPoints_Hook_Reaction_Store_Options extends WordPoints_Hook_Reaction_St
 	 */
 	public function get_settings_option_name( $id ) {
 
-		$reactor_slug = $this->reactor->get_slug();
+		$current_mode = wordpoints_hooks()->get_current_mode();
 
-		return "wordpoints_hook_reaction-{$this->slug}-{$reactor_slug}-{$id}";
+		return "wordpoints_hook_reaction-{$this->slug}-{$current_mode}-{$id}";
 	}
 
 	/**
@@ -300,9 +300,9 @@ class WordPoints_Hook_Reaction_Store_Options extends WordPoints_Hook_Reaction_St
 	 */
 	protected function get_reaction_index_option_name() {
 
-		$reactor_slug = $this->reactor->get_slug();
+		$current_mode = wordpoints_hooks()->get_current_mode();
 
-		return "wordpoints_hook_reaction_index-{$this->slug}-{$reactor_slug}";
+		return "wordpoints_hook_reaction_index-{$this->slug}-{$current_mode}";
 	}
 }
 
