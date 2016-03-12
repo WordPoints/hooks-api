@@ -50,8 +50,6 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		parent::setUp();
 
-		$this->mock_apps();
-
 		$this->reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
 			array(
 				'stores' => array(

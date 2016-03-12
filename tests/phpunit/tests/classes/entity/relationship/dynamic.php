@@ -29,8 +29,6 @@ class WordPoints_Entity_Relationship_Dynamic_Test extends WordPoints_PHPUnit_Tes
 	 */
 	public function test_get_value( $related_slug, $relationship_slug, $primary_slug ) {
 
-		$this->mock_apps();
-
 		if ( '{}' === substr( $related_slug, -2 ) ) {
 
 			$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship_Dynamic_Array(
@@ -48,10 +46,9 @@ class WordPoints_Entity_Relationship_Dynamic_Test extends WordPoints_PHPUnit_Tes
 			$entity_slug = $related_slug;
 		}
 
-		$entities = wordpoints_entities();
-		$entities->register( $entity_slug, 'WordPoints_PHPUnit_Mock_Entity' );
-
-		$entity = $entities->get( $entity_slug );
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => $entity_slug )
+		);
 
 		$this->assertEquals( $relationship_slug, $relationship->get_slug() );
 		$this->assertEquals( $related_slug, $relationship->get_related_entity_slug() );
@@ -86,8 +83,6 @@ class WordPoints_Entity_Relationship_Dynamic_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_get_title_unknown_entity() {
-
-		$this->mock_apps();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship_Dynamic(
 			'relationship'

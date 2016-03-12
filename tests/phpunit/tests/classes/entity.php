@@ -322,18 +322,13 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_child() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
-		$entities->children->register(
-			'test'
+		wordpoints_entities()->children->register(
+			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
-
-		/** @var WordPoints_PHPUnit_Mock_Entity $entity */
-		$entity = $entities->get( 'test' );
 
 		$child = $entity->get_child( 'child' );
 
@@ -348,13 +343,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_child_unregistered() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
-
-		/** @var WordPoints_PHPUnit_Mock_Entity $entity */
-		$entity = $entities->get( 'test' );
+		$entity = $this->factory->wordpoints->entity->create_and_get();
 
 		$child = $entity->get_child( 'child' );
 
@@ -368,20 +357,16 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_child_with_value() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
-		$entities->children->register(
-			'test'
+		wordpoints_entities()->children->register(
+			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
 		$value = array( 'id' => 1 );
 
-		/** @var WordPoints_PHPUnit_Mock_Entity $entity */
-		$entity = $entities->get( 'test' );
 		$entity->set_the_value( $value );
 
 		$child = $entity->get_child( 'child' );
@@ -398,20 +383,16 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_child_with_value_not_child() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
-		$entities->children->register(
-			'test'
+		wordpoints_entities()->children->register(
+			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity'
 		);
 
 		$value = array( 'id' => 1 );
 
-		/** @var WordPoints_PHPUnit_Mock_Entity $entity */
-		$entity = $entities->get( 'test' );
 		$entity->set_the_value( $value );
 
 		$child = $entity->get_child( 'child' );

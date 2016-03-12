@@ -40,6 +40,10 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 	 */
 	public function create_object( $args ) {
 
+		if ( ! isset( WordPoints_PHPUnit_TestCase::$backup_app ) ) {
+			WordPoints_PHPUnit_TestCase::mock_apps();
+		}
+
 		$hooks    = wordpoints_hooks();
 		$reactors = $hooks->reactors;
 

@@ -23,8 +23,6 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_construct() {
 
-		$this->mock_apps();
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$action_type = 'test_fire';
@@ -44,8 +42,6 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 * @since 1.0.0
 	 */
 	public function test_hit() {
-
-		$this->mock_apps();
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$event_args = new WordPoints_Hook_Event_Args( array() );

@@ -96,8 +96,6 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_arg_value() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$action = new WordPoints_Hook_Action(
@@ -115,8 +113,6 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 * @since 1.0.0
 	 */
 	public function test_get_entity_id_different_index() {
-
-		$this->mock_apps();
 
 		$this->factory->wordpoints->entity->create();
 
@@ -136,8 +132,6 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_arg_value_not_found() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$action = new WordPoints_Hook_Action(
@@ -154,8 +148,6 @@ class WordPoints_Hook_Action_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 * @since 1.0.0
 	 */
 	public function test_get_arg_value_not_there() {
-
-		$this->mock_apps();
 
 		$this->factory->wordpoints->entity->create();
 

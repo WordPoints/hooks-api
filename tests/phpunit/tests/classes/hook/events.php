@@ -129,9 +129,6 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_register_registers_args() {
 
-		/** @var WordPoints_Hooks $hooks */
-		$hooks = $this->mock_apps()->hooks;
-
 		$this->factory->wordpoints->hook_event->create(
 			array(
 				'args' => array(
@@ -139,6 +136,8 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 				),
 			)
 		);
+
+		$hooks = wordpoints_hooks();
 
 		$this->assertTrue(
 			$hooks->events->args->is_registered( 'test_event', 'test_arg' )
@@ -157,9 +156,6 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_deregister_deregisters_arg() {
 
-		/** @var WordPoints_Hooks $hooks */
-		$hooks = $this->mock_apps()->hooks;
-
 		$this->factory->wordpoints->hook_event->create(
 			array(
 				'args' => array(
@@ -167,6 +163,8 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 				),
 			)
 		);
+
+		$hooks = wordpoints_hooks();
 
 		$this->assertTrue(
 			$hooks->events->args->is_registered( 'test_event', 'test_arg' )

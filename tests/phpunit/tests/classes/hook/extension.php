@@ -152,8 +152,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_update_settings() {
 
-		$this->mock_apps();
-
 		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
 
 		$settings = array(
@@ -180,8 +178,6 @@ class WordPoints_Hook_Extension_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 * @since 1.0.0
 	 */
 	public function test_update_settings_not_set() {
-
-		$this->mock_apps();
 
 		$extension = new WordPoints_PHPUnit_Mock_Hook_Extension();
 

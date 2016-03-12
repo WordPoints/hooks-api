@@ -49,8 +49,6 @@ class WordPoints_Hook_Arg_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_value() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$entity_id = 13;
@@ -78,8 +76,6 @@ class WordPoints_Hook_Arg_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 * @since 1.0.0
 	 */
 	public function test_get_value_alias() {
-
-		$this->mock_apps();
 
 		$this->factory->wordpoints->entity->create();
 
@@ -129,8 +125,6 @@ class WordPoints_Hook_Arg_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 * @since 1.0.0
 	 */
 	public function test_get_value_no_action() {
-
-		$this->mock_apps();
 
 		$this->factory->wordpoints->entity->create();
 

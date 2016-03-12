@@ -16,6 +16,7 @@
  * @property-read WordPoints_PHPUnit_Factory_For_Hook_Action $hook_action
  * @property-read WordPoints_PHPUnit_Factory_For_Hook_Condition $hook_condition
  * @property-read WordPoints_PHPUnit_Factory_For_Hook_Event $hook_event
+ * @property-read WordPoints_PHPUnit_Factory_For_Hook_Extension $hook_extension
  * @property-read WordPoints_PHPUnit_Factory_For_Hook_Reaction $hook_reaction
  * @property-read WordPoints_PHPUnit_Factory_For_Hook_Reaction_Store $hook_reaction_store
  * @property-read WordPoints_PHPUnit_Factory_For_Hook_Reactor $hook_reactor

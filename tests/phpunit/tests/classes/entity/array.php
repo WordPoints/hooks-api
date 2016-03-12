@@ -47,8 +47,6 @@ class WordPoints_Entity_Array_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_set_the_value() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$array = new WordPoints_Entity_Array( 'test_entity' );
@@ -90,8 +88,6 @@ class WordPoints_Entity_Array_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_set_the_value_twice() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$array = new WordPoints_Entity_Array( 'test_entity' );
@@ -132,14 +128,11 @@ class WordPoints_Entity_Array_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_set_the_value_not_valid() {
 
-		$this->mock_apps();
-
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity_Unsettable'
+		$slug = $this->factory->wordpoints->entity->create(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Entity_Unsettable' )
 		);
 
-		$array = new WordPoints_Entity_Array( 'test_entity' );
+		$array = new WordPoints_Entity_Array( $slug );
 
 		$this->assertTrue( $array->set_the_value( array( 1, 2 ) ) );
 
@@ -156,18 +149,9 @@ class WordPoints_Entity_Array_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_get_title() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		$entities = wordpoints_entities();
-
-		$entities->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
-		);
-
-		$array = new WordPoints_Entity_Array( 'test_entity' );
-
-		$entity = $entities->get( 'test_entity' );
+		$array = new WordPoints_Entity_Array( $entity->get_slug() );
 
 		$this->assertStringMatchesFormat(
 			'%S' . $entity->get_title() . '%S'

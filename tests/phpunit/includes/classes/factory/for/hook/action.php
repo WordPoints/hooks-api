@@ -38,6 +38,10 @@ class WordPoints_PHPUnit_Factory_For_Hook_Action extends WP_UnitTest_Factory_For
 	 */
 	public function create_object( $args ) {
 
+		if ( ! isset( WordPoints_PHPUnit_TestCase::$backup_app ) ) {
+			WordPoints_PHPUnit_TestCase::mock_apps();
+		}
+
 		$slug = $args['slug'];
 		$class = $args['class'];
 

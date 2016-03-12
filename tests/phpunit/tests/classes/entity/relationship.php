@@ -147,8 +147,6 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_get_child() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
@@ -167,8 +165,6 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_get_child_not_related() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
@@ -183,8 +179,6 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 * @since 1.0.0
 	 */
 	public function test_get_child_array() {
-
-		$this->mock_apps();
 
 		$this->factory->wordpoints->entity->create();
 
@@ -204,8 +198,6 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_get_child_value_set() {
 
-		$this->mock_apps();
-
 		$this->factory->wordpoints->entity->create();
 
 		$relationship = new WordPoints_PHPUnit_Mock_Entity_Relationship( 'test' );
@@ -223,8 +215,6 @@ class WordPoints_Entity_Relationship_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 * @since 1.0.0
 	 */
 	public function test_get_child_array_value_set() {
-
-		$this->mock_apps();
 
 		$this->factory->wordpoints->entity->create();
 

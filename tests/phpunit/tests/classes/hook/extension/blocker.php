@@ -27,10 +27,7 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 	 */
 	public function test_validate_settings( array $settings ) {
 
-		$this->mock_apps();
-
 		$extension = new WordPoints_Hook_Extension_Blocker();
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );
@@ -72,16 +69,14 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 	 */
 	public function test_should_hit( array $settings ) {
 
-		$this->mock_apps();
-
-		$extension = new WordPoints_Hook_Extension_Blocker();
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$reaction->add_meta( 'blocker', $settings );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+
+		$extension = new WordPoints_Hook_Extension_Blocker();
 
 		$this->assertTrue( $extension->should_hit( $fire ) );
 
@@ -113,16 +108,14 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 	 */
 	public function test_should_not_hit( array $settings ) {
 
-		$this->mock_apps();
-
-		$extension = new WordPoints_Hook_Extension_Blocker();
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$reaction->add_meta( 'blocker', $settings );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+
+		$extension = new WordPoints_Hook_Extension_Blocker();
 
 		$this->assertFalse( $extension->should_hit( $fire ) );
 

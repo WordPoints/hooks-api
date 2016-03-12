@@ -24,8 +24,6 @@ class WordPoints_Hooks_Get_Event_Primary_Arg_GUID_JSON_Function_Test
 	 */
 	public function test_returns_json_guid() {
 
-		$this->mock_apps();
-
 		$entity_slug = $this->factory->wordpoints->entity->create();
 
 		$arg = new WordPoints_Hook_Arg( $entity_slug );
@@ -44,8 +42,6 @@ class WordPoints_Hooks_Get_Event_Primary_Arg_GUID_JSON_Function_Test
 	 * @since 1.0.0
 	 */
 	public function test_no_primary_arg() {
-
-		$this->mock_apps();
 
 		$entity_slug = $this->factory->wordpoints->entity->create();
 
@@ -66,8 +62,6 @@ class WordPoints_Hooks_Get_Event_Primary_Arg_GUID_JSON_Function_Test
 	 * @since 1.0.0
 	 */
 	public function test_entity_guid_not_set() {
-
-		$this->mock_apps();
 
 		$entity_slug = $this->factory->wordpoints->entity->create();
 

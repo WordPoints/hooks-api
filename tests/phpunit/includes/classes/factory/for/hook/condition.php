@@ -37,6 +37,10 @@ class WordPoints_PHPUnit_Factory_For_Hook_Condition extends WP_UnitTest_Factory_
 	 */
 	public function create_object( $args ) {
 
+		if ( ! isset( WordPoints_PHPUnit_TestCase::$backup_app ) ) {
+			WordPoints_PHPUnit_TestCase::mock_apps();
+		}
+
 		if ( 'unmet' === $args['slug'] ) {
 			$args['class'] = 'WordPoints_PHPUnit_Mock_Hook_Condition_Unmet';
 		}

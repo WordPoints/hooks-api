@@ -166,8 +166,6 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	 */
 	public function test_user_can_view() {
 
-		$this->mock_apps();
-
 		$user_id = $this->factory->user->create();
 
 		$entity_slug = $this->factory->wordpoints->entity->create();

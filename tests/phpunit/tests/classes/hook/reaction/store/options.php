@@ -38,8 +38,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 */
 	public function test_reaction_exists() {
 
-		$this->mock_apps();
-
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
 		);
@@ -70,8 +68,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_get_reactions() {
-
-		$this->mock_apps();
 
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
@@ -109,8 +105,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 */
 	public function test_get_reactions_to_event() {
 
-		$this->mock_apps();
-
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
 		);
@@ -132,8 +126,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_get_reactions_to_event_none() {
-
-		$this->mock_apps();
 
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
@@ -169,8 +161,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_get_reaction_event_from_index() {
-
-		$this->mock_apps();
 
 		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
@@ -208,8 +198,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_update_reaction_event_in_index() {
-
-		$this->mock_apps();
 
 		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
@@ -250,8 +238,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 */
 	public function test_delete_reaction() {
 
-		$this->mock_apps();
-
 		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
@@ -279,8 +265,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_create_reaction() {
-
-		$this->mock_apps();
 
 		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
@@ -310,8 +294,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @since 1.0.0
 	 */
 	public function test_create_reaction_increments_id() {
-
-		$this->mock_apps();
 
 		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
@@ -346,8 +328,6 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 	 * @requires WordPress multisite
 	 */
 	public function test_options() {
-
-		$this->mock_apps();
 
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )

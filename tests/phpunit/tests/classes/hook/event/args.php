@@ -23,10 +23,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 
@@ -45,10 +42,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable_stateful_args() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
@@ -76,10 +70,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable_primary_and_stateful() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
@@ -104,10 +95,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_is_repeatable_no_args() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+		$this->factory->wordpoints->entity->create();
 
 		$args = new WordPoints_Hook_Event_Args( array() );
 
@@ -123,10 +111,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_get_entities() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'test' );
 		$arg_2 = new WordPoints_PHPUnit_Mock_Hook_Arg( 'another:test' );
@@ -161,13 +146,9 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_get_validator() {
 
-		$this->mock_apps();
-
 		$args = new WordPoints_Hook_Event_Args( array() );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 
 		$args->set_validator( $validator );
 
@@ -193,24 +174,21 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_descend() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'test' )
+		);
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
-
 		$args = new WordPoints_Hook_Event_Args( array() );
 		$args->add_entity( $entity );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 
 		$args->set_validator( $validator );
 
@@ -258,17 +236,16 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_descend_no_validator() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'test' )
+		);
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
-
-		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
 
 		$args = new WordPoints_Hook_Event_Args( array() );
 		$args->add_entity( $entity );
@@ -304,9 +281,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$args = new WordPoints_Hook_Event_Args( array() );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$args->set_validator( $validator );
 
 		$this->assertFalse( $args->descend( 'test' ) );
@@ -323,24 +298,21 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_descend_not_parent() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'test' )
+		);
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
-
 		$args = new WordPoints_Hook_Event_Args( array() );
 		$args->add_entity( $entity );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$args->set_validator( $validator );
 
 		$this->assertNull( $args->get_current() );
@@ -386,9 +358,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$args = new WordPoints_Hook_Event_Args( array() );
 		$args->add_entity( $entity );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$args->set_validator( $validator );
 
 		$this->assertTrue( $args->descend( 'test' ) );
@@ -415,9 +385,7 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$args = new WordPoints_Hook_Event_Args( array() );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$args->set_validator( $validator );
 
 		$validator->push_field( 'test' );
@@ -438,10 +406,11 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_get_from_hierarchy() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'test' )
+		);
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test'
@@ -455,13 +424,9 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
-
 		$args = new WordPoints_Hook_Event_Args( array() );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$args->set_validator( $validator );
 
 		$args->add_entity( $entity );
@@ -497,25 +462,21 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_get_from_hierarchy_invalid() {
 
-		$this->mock_apps();
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'test' )
+		);
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
-
 		$entities->children->register(
 			'test'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		$entity = new WordPoints_PHPUnit_Mock_Entity( 'test' );
-
 		$args = new WordPoints_Hook_Event_Args( array() );
 		$args->add_entity( $entity );
 
-		$validator = new WordPoints_Hook_Reaction_Validator(
-			array()
-		);
+		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$validator->push_field( 'field' );
 		$args->set_validator( $validator );
 

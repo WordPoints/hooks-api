@@ -79,8 +79,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 */
 	public function test_validate() {
 
-		$this->mock_apps();
-
 		$settings = array(
 			'event' => $this->factory->wordpoints->hook_event->create(),
 			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
@@ -121,8 +119,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 */
 	public function test_validate_no_event() {
 
-		$this->mock_apps();
-
 		$settings = array(
 			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
 			'target' => array( 'test_entity' ),
@@ -159,8 +155,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 */
 	public function test_validate_unregistered_event() {
 
-		$this->mock_apps();
-
 		$settings = array(
 			'event' => 'test_event',
 			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
@@ -195,8 +189,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 * @since 1.0.0
 	 */
 	public function test_validate_no_reactor() {
-
-		$this->mock_apps();
 
 		$settings = array(
 			'event' => $this->factory->wordpoints->hook_event->create(),
@@ -234,8 +226,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 */
 	public function test_validate_unregistered_reactor() {
 
-		$this->mock_apps();
-
 		$settings = array(
 			'event' => $this->factory->wordpoints->hook_event->create(),
 			'reactor' => 'test_reactor',
@@ -272,8 +262,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 * @since 1.0.0
 	 */
 	public function test_validate_invalid_target() {
-
-		$this->mock_apps();
 
 		$settings = array(
 			'reactor' => $this->factory->wordpoints->hook_reactor->create(),
@@ -317,8 +305,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 * @since 1.0.0
 	 */
 	public function test_validate_extension_checked() {
-
-		$this->mock_apps();
 
 		$action_type = 'test_fire';
 
@@ -383,8 +369,6 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 	 * @since 1.0.0
 	 */
 	public function test_validate_extension_failed() {
-
-		$this->mock_apps();
 
 		$action_type = 'test_fire';
 

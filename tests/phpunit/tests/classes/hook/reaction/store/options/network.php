@@ -25,8 +25,6 @@ class WordPoints_Hook_Reaction_Store_Options_Network_Test extends WordPoints_PHP
 	 */
 	public function test_network_options() {
 
-		$this->mock_apps();
-
 		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
 			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options_Network' )
 		);

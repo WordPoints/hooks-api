@@ -52,7 +52,7 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 	 *
 	 * @var WordPoints_App
 	 */
-	protected $backup_app;
+	public static $backup_app;
 
 	/**
 	 * @since 1.0.0
@@ -81,9 +81,9 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 
 		parent::tearDown();
 
-		if ( isset( $this->backup_app ) ) {
-			WordPoints_App::$main = $this->backup_app;
-			$this->backup_app = null;
+		if ( isset( self::$backup_app ) ) {
+			WordPoints_App::$main = self::$backup_app;
+			self::$backup_app = null;
 		}
 
 		unset( $GLOBALS['current_screen'] );
@@ -104,9 +104,9 @@ abstract class WordPoints_PHPUnit_TestCase extends WordPoints_UnitTestCase {
 	 *
 	 * @return WordPoints_App The mock app.
 	 */
-	public function mock_apps() {
+	public static function mock_apps() {
 
-		$this->backup_app = WordPoints_App::$main;
+		self::$backup_app = WordPoints_App::$main;
 
 		return WordPoints_App::$main = new WordPoints_PHPUnit_Mock_App_Silent(
 			'apps'

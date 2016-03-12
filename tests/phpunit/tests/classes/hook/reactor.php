@@ -292,8 +292,6 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_update_settings() {
 
-		$this->mock_apps();
-
 		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 

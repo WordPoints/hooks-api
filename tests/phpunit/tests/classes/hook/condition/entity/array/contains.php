@@ -28,11 +28,9 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 	 */
 	public function test_validate_settings( $settings ) {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create();
 
 		$entities = wordpoints_entities();
-
-		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test_entity'
@@ -53,7 +51,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );
@@ -119,11 +116,9 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 	 */
 	public function test_validate_settings_invalid( $settings, $invalid, $expect_false = false ) {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create();
 
 		$entities = wordpoints_entities();
-
-		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test_entity'
@@ -144,7 +139,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			array( 'data_type' => 'text' )
 		);
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );
@@ -218,11 +212,9 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 	 */
 	public function test_is_met( $settings ) {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create();
 
 		$entities = wordpoints_entities();
-
-		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test_entity'
@@ -249,7 +241,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );
@@ -289,11 +280,9 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 	 */
 	public function test_is_met_not( $settings ) {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create();
 
 		$entities = wordpoints_entities();
-
-		$entities->register( 'test_entity', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test_entity'
@@ -328,7 +317,6 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 			array( 'slug' => 'test', 'data_type' => 'text' )
 		);
 
-		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
 		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->set_validator( $validator );

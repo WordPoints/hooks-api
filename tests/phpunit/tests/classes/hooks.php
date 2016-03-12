@@ -105,13 +105,9 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 	 */
 	public function test_get_reaction_store() {
 
-		$this->mock_apps();
-
-		$hooks = wordpoints_hooks();
-
 		$slug = $this->factory->wordpoints->hook_reaction_store->create();
 
-		$reaction_store = $hooks->get_reaction_store( $slug );
+		$reaction_store = wordpoints_hooks()->get_reaction_store( $slug );
 
 		$this->assertInstanceOf(
 			'WordPoints_PHPUnit_Mock_Hook_Reaction_Store'
@@ -139,8 +135,6 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase {
 	 * @since 1.0.0
 	 */
 	public function test_get_reaction_store_out_of_context() {
-
-		$this->mock_apps();
 
 		$slug = $this->factory->wordpoints->hook_reaction_store->create(
 			array(

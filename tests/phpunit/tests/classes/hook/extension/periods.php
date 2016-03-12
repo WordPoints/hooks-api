@@ -267,8 +267,8 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$extensions = wordpoints_hooks()->extensions;
-		$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Periods' );
-		$extension = $extensions->get( 'conditions' );
+		$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
+		$extension = $extensions->get( 'periods' );
 
 		wordpoints_entities()->children->register(
 			'test_entity'

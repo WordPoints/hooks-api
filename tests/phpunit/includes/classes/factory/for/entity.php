@@ -36,6 +36,10 @@ class WordPoints_PHPUnit_Factory_For_Entity extends WP_UnitTest_Factory_For_Thin
 	 */
 	public function create_object( $args ) {
 
+		if ( ! isset( WordPoints_PHPUnit_TestCase::$backup_app ) ) {
+			WordPoints_PHPUnit_TestCase::mock_apps();
+		}
+
 		$entities = wordpoints_entities();
 
 		if ( $args === $this->default_generation_definitions ) {

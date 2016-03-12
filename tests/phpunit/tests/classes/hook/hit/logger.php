@@ -23,8 +23,6 @@ class WordPoints_Hook_Hit_Logger_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	public function test_log_hit() {
 
-		$this->mock_apps();
-
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$action_type = 'test_fire';

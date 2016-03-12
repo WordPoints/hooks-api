@@ -131,10 +131,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_remove_entity_resets_current() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
@@ -173,10 +172,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_remove_entity_no_reset_not_current() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
@@ -219,10 +217,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_descend() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
@@ -277,10 +274,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_descend_not_parent() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 		$entities->children->register(
 			'test'
 			, 'child'
@@ -357,10 +353,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_get_from_hierarchy() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test'
@@ -403,10 +398,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_get_from_hierarchy_invalid() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test'
@@ -443,10 +437,9 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_get_from_hierarchy_empty() {
 
-		$this->mock_apps();
+		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
 		$entities = wordpoints_entities();
-		$entities->register( 'test', 'WordPoints_PHPUnit_Mock_Entity' );
 
 		$entities->children->register(
 			'test'

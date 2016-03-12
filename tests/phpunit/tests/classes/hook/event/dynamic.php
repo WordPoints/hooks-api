@@ -23,12 +23,9 @@ class WordPoints_Hook_Event_Dynamic_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	 */
 	public function test_get_entity_title() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'generic', 'WordPoints_PHPUnit_Mock_Entity' );
-
-		$entity = $entities->get( 'generic' );
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'generic' )
+		);
 
 		$event = new WordPoints_PHPUnit_Mock_Hook_Event_Dynamic( 'test_event' );
 
@@ -42,12 +39,9 @@ class WordPoints_Hook_Event_Dynamic_Test extends WordPoints_PHPUnit_TestCase_Hoo
 	 */
 	public function test_get_entity_title_dynamic() {
 
-		$this->mock_apps();
-
-		$entities = wordpoints_entities();
-		$entities->register( 'generic\dynamic', 'WordPoints_PHPUnit_Mock_Entity' );
-
-		$entity = $entities->get( 'generic\dynamic' );
+		$entity = $this->factory->wordpoints->entity->create_and_get(
+			array( 'slug' => 'generic\dynamic' )
+		);
 
 		$event = new WordPoints_PHPUnit_Mock_Hook_Event_Dynamic( 'event\dynamic' );
 

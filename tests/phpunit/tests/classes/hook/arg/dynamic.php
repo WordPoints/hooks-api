@@ -29,11 +29,8 @@ class WordPoints_Hook_Arg_Dynamic_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_get_value( $entity_slug, $arg_slug, $arg_index ) {
 
-		$this->mock_apps();
-
-		wordpoints_entities()->register(
-			$entity_slug
-			, 'WordPoints_PHPUnit_Mock_Entity'
+		$this->factory->wordpoints->entity->create(
+			array( 'slug' => $entity_slug )
 		);
 
 		$entity_id = 13;
@@ -104,14 +101,9 @@ class WordPoints_Hook_Arg_Dynamic_Test extends WordPoints_PHPUnit_TestCase_Hooks
 	 */
 	public function test_get_value_no_action() {
 
-		$this->mock_apps();
-
-		wordpoints_entities()->register(
-			'test_entity'
-			, 'WordPoints_PHPUnit_Mock_Entity'
+		$arg = new WordPoints_Hook_Arg_Dynamic(
+			$this->factory->wordpoints->entity->create()
 		);
-
-		$arg = new WordPoints_Hook_Arg_Dynamic( 'test_entity' );
 
 		$this->assertNull( $arg->get_value() );
 
