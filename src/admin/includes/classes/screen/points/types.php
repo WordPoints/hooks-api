@@ -352,6 +352,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 				data-wordpoints-hooks-hook-event="<?php echo esc_attr( $event_slug ); ?>"
 				data-wordpoints-hooks-points-type="<?php echo esc_attr( $this->current_points_type ); ?>"
 				data-wordpoints-hooks-create-nonce="<?php echo esc_attr( WordPoints_Admin_Ajax_Hooks::get_create_nonce( $reaction_store ) ); ?>"
+				data-wordpoints-hooks-reaction-store="points"
 				data-wordpoints-hooks-reactor="points">
 			</div>
 

@@ -100,6 +100,7 @@ Reactions = Base.extend({
 		}
 
 		defaults.reactor = this.$reactionGroup.data( 'wordpoints-hooks-reactor' );
+		defaults.reaction_store = this.$reactionGroup.data( 'wordpoints-hooks-reaction-store' );
 
 		this.trigger( 'hook-reaction-defaults', defaults, this );
 
