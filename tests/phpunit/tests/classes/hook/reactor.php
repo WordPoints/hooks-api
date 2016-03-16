@@ -107,6 +107,28 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
+	 * Test getting the data for the scripts used in the UI.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_ui_script_data() {
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+
+		$reactor->settings_fields = array( 'field' => array() );
+		$reactor->arg_types = 'test_arg_type';
+
+		$this->assertEquals(
+			array(
+				'slug'      => 'test_reactor',
+				'fields'    => $reactor->settings_fields,
+				'arg_types' => array( 'test_arg_type' ),
+			)
+			, $reactor->get_ui_script_data()
+		);
+	}
+
+	/**
 	 * Test validating the settings.
 	 *
 	 * @since 1.0.0
@@ -311,6 +333,71 @@ class WordPoints_Hook_Reactor_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			$settings['target']
 			, $reaction->get_meta( 'target' )
 		);
+	}
+
+	/**
+	 * Test processing a hit.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit() {
+
+		$fire = new WordPoints_Hook_Fire(
+			'test_fire'
+			, new WordPoints_Hook_Event_Args( array() )
+			, $this->factory->wordpoints->hook_reaction->create()
+		);
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$reactor->hit( 'test', $fire );
+
+		$this->assertCount( 1, $reactor->hits );
+	}
+
+	/**
+	 * Test processing a hit.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_array_of_types() {
+
+		$fire = new WordPoints_Hook_Fire(
+			'test_fire'
+			, new WordPoints_Hook_Event_Args( array() )
+			, $this->factory->wordpoints->hook_reaction->create()
+		);
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$reactor->hit_types = array( 'test', 'another' );
+
+		$reactor->hit( 'test', $fire );
+
+		$this->assertCount( 1, $reactor->hits );
+	}
+
+	/**
+	 * Test processing a hit of an unknown type.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_hit_unknown_type() {
+
+		$fire = new WordPoints_Hook_Fire(
+			'test_fire'
+			, new WordPoints_Hook_Event_Args( array() )
+			, $this->factory->wordpoints->hook_reaction->create()
+		);
+
+		$action = new WordPoints_Mock_Filter();
+		add_action( 'wordpoints_hook_reactor_hit-test_reactor', array( $action, 'action' ), 10, 6 );
+
+		$reactor = new WordPoints_PHPUnit_Mock_Hook_Reactor();
+		$reactor->hit( 'unknown', $fire );
+
+		$this->assertCount( 0, $reactor->hits );
+
+		$this->assertEquals( 1, $action->call_count );
+		$this->assertEquals( array( 'unknown', $fire ), $action->calls[0] );
 	}
 }
 

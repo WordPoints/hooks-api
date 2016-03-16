@@ -62,11 +62,26 @@ class WordPoints_Hook_Router {
 	/**
 	 * The events, indexed by action slug and action type.
 	 *
+	 * The events are the indexes in the arrays for each action type, the values in
+	 * the arrays are unused.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @var array
+	 * @var array[]
 	 */
 	protected $event_index = array();
+
+	/**
+	 * The reactor hit types, indexed by reactor and action type.
+	 *
+	 * Tells us what type of hit to tell a reactor to perform when it is hit by a
+	 * fire of a particular type of action.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string[][]
+	 */
+	protected $reactor_index = array();
 
 	/**
 	 * @since 1.0.0
@@ -204,15 +219,13 @@ class WordPoints_Hook_Router {
 
 		$hooks = wordpoints_hooks();
 
-		/** @var WordPoints_Hook_Reactor $reactor */
-		$reactor = $hooks->reactors->get( $fire->reaction->get_reactor_slug() );
+		$reactor_slug = $fire->reaction->get_reactor_slug();
 
-		if ( ! in_array( $fire->action_type,
-			$reactor->get_action_types(),
-			true )
-		) {
+		if ( ! isset( $this->reactor_index[ $reactor_slug ][ $fire->action_type ] ) ) {
 			return;
 		}
+
+		$hit_type = $this->reactor_index[ $reactor_slug ][ $fire->action_type ];
 
 		$validator = new WordPoints_Hook_Reaction_Validator( $fire->reaction, true );
 		$validator->validate();
@@ -234,7 +247,10 @@ class WordPoints_Hook_Router {
 
 		$fire->hit();
 
-		$reactor->hit( $fire );
+		/** @var WordPoints_Hook_Reactor $reactor */
+		$reactor = $hooks->reactors->get( $reactor_slug );
+
+		$reactor->hit( $hit_type, $fire );
 
 		foreach ( $extensions as $extension ) {
 			$extension->after_hit( $fire );
@@ -366,6 +382,64 @@ class WordPoints_Hook_Router {
 	 */
 	public function remove_event_from_action( $event_slug, $action_slug, $action_type = 'fire' ) {
 		unset( $this->event_index[ $action_slug ][ $action_type ][ $event_slug ] );
+	}
+
+	/**
+	 * Hook an action type to a reactor.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $action_type  The slug of the action type.
+	 * @param string $reactor_slug The slug of the reactor.
+	 * @param string $hit_type     The type of hit the reactor should perform when
+	 *                             hit by this type of event.
+	 */
+	public function add_action_type_to_reactor( $action_type, $reactor_slug, $hit_type ) {
+		$this->reactor_index[ $reactor_slug ][ $action_type ] = $hit_type;
+	}
+
+	/**
+	 * Unhook an action type from a reactor.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $action_type  The slug of the action type.
+	 * @param string $reactor_slug The slug of the reactor.
+	 */
+	public function remove_action_type_from_reactor( $action_type, $reactor_slug ) {
+		unset( $this->reactor_index[ $reactor_slug ][ $action_type ] );
+	}
+
+	/**
+	 * Get the event index.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array[] The event index.
+	 */
+	public function get_event_index() {
+
+		if ( empty( $this->reactor_index ) ) {
+			wordpoints_hooks()->events;
+		}
+
+		return $this->event_index;
+	}
+
+	/**
+	 * Get the reactor index.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[][]
+	 */
+	public function get_reactor_index() {
+
+		if ( empty( $this->reactor_index ) ) {
+			wordpoints_hooks()->reactors;
+		}
+
+		return $this->reactor_index;
 	}
 }
 

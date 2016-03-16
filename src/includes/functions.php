@@ -36,6 +36,12 @@ function wordpoints_init_hooks() {
 function wordpoints_hook_reactors_init( $reactors ) {
 
 	$reactors->register( 'points', 'WordPoints_Hook_Reactor_Points' );
+
+	$router = wordpoints_hooks()->router;
+
+	$router->add_action_type_to_reactor( 'fire', 'points', 'award' );
+	$router->add_action_type_to_reactor( 'toggle_on', 'points', 'award' );
+	$router->add_action_type_to_reactor( 'toggle_off', 'points', 'reverse' );
 }
 
 /**

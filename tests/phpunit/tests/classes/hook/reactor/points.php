@@ -37,7 +37,26 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertArrayHasKey( 'description', $settings_fields );
 		$this->assertArrayHasKey( 'label', $settings_fields['description'] );
+	}
 
+	/**
+	 * Test getting the data for the scripts used in the UI.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_ui_script_data() {
+
+		$reactor = new WordPoints_Hook_Reactor_Points();
+
+		$data = $reactor->get_ui_script_data();
+
+		$this->assertInternalType( 'array', $data );
+
+		$this->assertArrayHasKey( 'target_label', $data );
+		$this->assertInternalType( 'string', $data['target_label'] );
+
+		$this->assertArrayHasKey( 'periods_label', $data );
+		$this->assertInternalType( 'string', $data['periods_label'] );
 	}
 
 	/**
@@ -248,7 +267,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
-		$reactor->hit( $fire );
+		$reactor->hit( 'award', $fire );
 
 		$this->assertEquals(
 			100 + $settings['points']
@@ -313,7 +332,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
-		$reactor->hit( $fire );
+		$reactor->hit( 'award', $fire );
 
 		$this->assertEquals(
 			100 + $settings['points']
@@ -326,7 +345,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 1, $query->count() );
 
-		$reactor->reverse_hit( $fire );
+		$reactor->hit( 'reverse', $fire );
 
 		$this->assertEquals( 0, $query->count() );
 
@@ -383,7 +402,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
-		$reactor->hit( $fire );
+		$reactor->hit( 'award', $fire );
 
 		$this->assertEquals(
 			100 + $settings['points']
@@ -400,7 +419,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		wordpoints_update_points_log_meta( $log_id, 'auto_reversed', true );
 
-		$reactor->reverse_hit( $fire );
+		$reactor->hit( 'reverse', $fire );
 
 		$this->assertEquals( 1, $query->count() );
 
@@ -454,7 +473,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
 
-		$reactor->hit( $fire );
+		$reactor->hit( 'award', $fire );
 
 		$this->assertEquals(
 			100 + $settings['points']
@@ -470,7 +489,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 		// A different user ID for the user arg.
 		$entity->set_the_value( $this->factory->user->create() );
 
-		$reactor->reverse_hit( $fire );
+		$reactor->hit( 'reverse', $fire );
 
 		$this->assertEquals( 1, $query->count() );
 
