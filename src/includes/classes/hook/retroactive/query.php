@@ -197,7 +197,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 	protected $results;
 
 	public function __construct( WordPoints_Hook_ReactionI $reaction ) {
-		var_dump( __METHOD__ );
+
 		$this->reaction = $reaction;
 		$this->arg_hierarchy = new WordPoints_Hierarchy( 'sub_args' );
 		$this->hooks = wordpoints_hooks();
@@ -214,7 +214,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 	}
 
 	public function get_results() {
-		var_dump( __METHOD__ );
+
 		if ( ! isset( $this->results ) ) {
 
 			$this->execute();
@@ -228,7 +228,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 	}
 
 	protected function execute() {
-		var_dump( __METHOD__ );
+
 		try {
 
 			$this->prepare_query();
@@ -242,7 +242,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 	}
 
 	protected function prepare_query() {
-		var_dump( __METHOD__ );
+
 		$event_slug = $this->reaction->get_event_slug();
 
 		$event = $this->hooks->events->get( $event_slug );
@@ -277,14 +277,13 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 	}
 
 	protected function perform_query() {
-//		var_dump( __METHOD__,$this->arg_hierarchy->get() );exit;
 
 		$this->queries = new WordPoints_Hierarchy( 'sub_queries' );
 		$this->consolidate_queries( array( $this->arg_hierarchy->get() ) );
 		unset( $this->query );
 
 		$this->queries->reset();
-//var_dump( $this->queries );exit;
+
 		// Find the tip of a query.
 		$this->results = $this->execute_queries( $this->queries->get() );
 
@@ -294,21 +293,20 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 	}
 
 	protected function consolidate_queries( $arg_hierarchy, $storage_type = null ) {
-		var_dump( __METHOD__, wp_list_pluck( $arg_hierarchy, 'slug' ) );
+
 		foreach ( $arg_hierarchy as $data ) {
 			$this->consolidate_query( $data );
 		}
 	}
 
 	protected function consolidate_query( $data ) {
-var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->get_field( 'slug' ) );
+
 		if ( $data['storage_info']['type'] !== $this->queries->get_field( 'slug' ) ) {
 
 			$parent_id = null;
 			if ( isset( $this->query ) ) {
 				$parent_id = $this->query->get_id();
 			}
-			var_dump( $parent_id );
 
 			$this->query = new WordPoints_Hierarchy( 'sub_args' );
 
@@ -328,7 +326,6 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 		$this->query->push( $data['slug'], $data );
 
 		if ( isset( $sub_args ) ) {
-			var_dump( '$sub_args',$data['slug'], wp_list_pluck($sub_args, 'slug') );
 			$this->consolidate_queries( $sub_args, $data['storage_info']['type'] );
 		}
 
@@ -341,8 +338,7 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 	}
 
 	protected function execute_queries( $queries ) {
-		var_dump( __METHOD__ );
-//var_dump($queries);exit;
+
 		/** @var WordPoints_HierarchyI $query */
 		$query = $queries['query'];
 
@@ -362,7 +358,7 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 				/** @var WordPoints_HierarchyI $child_query */
 				$child_query = $query_data['query'];
 				$query->go_to( $query_data['parent_id'] );
-//				var_dump( $query, $child_query );exit;
+
 				$condition = array(
 //					'field' => $child_query->get_field( 'slug' ),
 					'compare' => 'in',
@@ -378,11 +374,10 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 
 		$query->reset();
 		$storage_type = $query->get_field( 'storage_info', 'type' );
-//var_dump( $query );exit;
+
 		$executor = $this->hooks->retroactive_query_executors->get( $storage_type );
 
 		if ( ! $executor ) {
-			var_dump( $query );
 			$this->validator->add_error(
 				sprintf( 'unknown storage type "%s".', $storage_type )
 			);
@@ -392,7 +387,7 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 	}
 
 	protected function filter_results() {
-		var_dump( __METHOD__ );
+
 		$reactor = $this->hooks->reactors->get( $this->reaction->get_reactor_slug() );
 
 		if ( $reactor instanceof WordPoints_Hook_Retroactive_Query_FilterI ) {
@@ -407,7 +402,7 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 	}
 
 	protected function group_results() {
-		var_dump( __METHOD__ );
+
 		$grouped_results = array();
 
 		foreach ( $this->results as $result ) {
@@ -418,16 +413,13 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 	}
 
 	public function add_condition( array $condition ) {
-		var_dump( __METHOD__ );
 
 		$this->arg_hierarchy->push_to( 'conditions', $condition );
 	}
 
 	public function select_value( $data = array() ) {
-		var_dump( __METHOD__ );
 
 		$this->arg_hierarchy->set_field( 'select', $data );
-//	var_dump( $this->arg_hierarchy);exit;
 	}
 
 	public function set_target( $target_arg ) {
@@ -462,7 +454,6 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 	}
 
 	public function arg_hierarchy_push( $slug ) {
-		var_dump( __METHOD__, $slug );
 
 		$current_slug = $this->arg_hierarchy->get_field( 'slug' );
 
@@ -508,12 +499,10 @@ var_dump($data['slug']);var_dump($data['storage_info']['type'], $this->queries->
 	}
 
 	public function arg_hierarchy_pop() {
-		var_dump( __METHOD__ );
 		$this->arg_hierarchy->pop();
 	}
 
 	public function reset() {
-		var_dump( __METHOD__ );
 		$this->arg_hierarchy->reset();
 	}
 }
@@ -553,7 +542,7 @@ class WordPoints_Hook_Retroactive_Query_Executor_Array
 	protected $results;
 
 	public function execute( $query ) {
-//var_dump( __METHOD__, $query );//exit;
+
 		foreach ( $query as $arg_data ) {
 
 			$meta = $arg_data['storage_info']['meta'];
@@ -561,10 +550,9 @@ class WordPoints_Hook_Retroactive_Query_Executor_Array
 			if ( isset( $meta['getter'] ) ) {
 				$this->array = $meta['getter']();
 			}
-//var_dump($this->array);
-//var_dump( $arg_data );exit;
+
 			if ( isset( $arg_data['conditions'] ) ) {
-//var_dump( $arg_data );
+
 				foreach ( $arg_data['conditions'] as $condition ) {
 
 					if ( ! isset( $condition['field'] ) ) {
@@ -593,7 +581,7 @@ class WordPoints_Hook_Retroactive_Query_Executor_Array
 						default:
 							return new WP_Error( 'invalid condition type' );
 					}
-//var_dump( $filter_args );exit;
+
 					$this->array = wp_list_filter( $this->array, $filter_args );
 				}
 			}
@@ -638,7 +626,6 @@ class WordPoints_Hook_Retroactive_Query_Executor_MySQL
 		// This will let us loop over things easier.
 		// We'll also need to be marking the non-usable parts of the query.
 		// We'll need to test that as well.
-		var_dump( __METHOD__, $query );//exit;
 
 		global $wpdb;
 
@@ -651,20 +638,20 @@ class WordPoints_Hook_Retroactive_Query_Executor_MySQL
 		if ( is_wp_error( $sql ) ) {
 			return $sql;
 		}
-var_dump( $sql );
+
 		return $wpdb->get_results( $sql );
 	}
 
 	protected function build_query( $args ) {
-var_dump( __METHOD__, isset($this->grandparent_data['slug'])?$this->grandparent_data['slug']:null,  isset($this->parent_data['slug'])?$this->parent_data['slug']:null);
+
 		foreach ( $args as $arg_data ) {
-var_dump( $arg_data['slug'] );
+
 			$this->arg_data = $arg_data;
 
 			if ( isset( $arg_data['storage_info']['meta']['table_name'] ) ) {
 				$this->build_table_schema( $arg_data['storage_info']['meta'] );
 			}
-//var_dump(  $arg_data['conditions']  );
+
 			if ( isset( $arg_data['conditions'] ) ) {
 				$this->build_conditions( $arg_data['conditions'] );
 			}
@@ -674,7 +661,7 @@ var_dump( $arg_data['slug'] );
 			}
 
 			if ( isset( $arg_data['sub_args'] ) ) {
-var_dump( array_keys( $arg_data['sub_args']));
+
 				$this->grandparent_data = $this->parent_data;
 				$this->parent_data = $arg_data;
 
@@ -686,7 +673,6 @@ var_dump( array_keys( $arg_data['sub_args']));
 			if ( isset( $this->entered_join ) ) {
 				$this->builder->exit_join();
 				$this->entered_join = null;
-				var_dump( '******** exit join *****' );
 			}
 		}
 	}
@@ -703,7 +689,6 @@ var_dump( array_keys( $arg_data['sub_args']));
 				$join_field = $db['join_field'];
 				$primary_field = $this->parent_data['storage_info']['meta']['id_field'];
 			} else {
-				var_dump( $this->parent_data['arg'],$this->arg_data['arg'], $this->builder);
 				throw new WordPoints_Query_Builder_Exception( 'Houston, we have a problem.' );
 			}
 
@@ -711,8 +696,6 @@ var_dump( array_keys( $arg_data['sub_args']));
 				$this->builder->enter_join( $primary_field );
 				$primary_field = $primary_field['on']['join_field'];
 			}
-
-var_dump( __METHOD__, $db, $primary_field, $this->parent_data['arg'],$this->arg_data['arg'] );
 
 			$join = array(
 				'table_name' => $db['table_name'],
@@ -729,7 +712,6 @@ var_dump( __METHOD__, $db, $primary_field, $this->parent_data['arg'],$this->arg_
 			$this->builder->enter_join( $join );
 
 			$this->entered_join = true;
-			var_dump( '******** enter join *****' );
 
 		} else {
 			$this->builder->set_table( $db['table_name'] );
@@ -743,7 +725,6 @@ var_dump( __METHOD__, $db, $primary_field, $this->parent_data['arg'],$this->arg_
 		$join_conditions = array();
 
 		foreach ( $conditions as $condition ) {
-			var_dump( __METHOD__, $condition);
 
 			// THis needs to be the identifier field for the type of arg that this
 			// field represents.
@@ -766,7 +747,7 @@ var_dump( __METHOD__, $db, $primary_field, $this->parent_data['arg'],$this->arg_
 					var_dump($this->arg_data['arg']);exit;
 				}
 			}
-var_dump(  $condition);
+
 			$this->builder->where( $condition );
 		}
 
@@ -776,7 +757,7 @@ var_dump(  $condition);
 		foreach ( $join_conditions as $condition ) {
 
 			$i++;
-var_dump( $condition );
+
 			$this->builder->enter_join( $condition['field'] );
 
 			$condition['field'] = $condition['field']['on']['primary_field'];
