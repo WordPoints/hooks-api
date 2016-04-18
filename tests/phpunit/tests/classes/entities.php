@@ -123,11 +123,19 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					);
 
 					$child->set_the_value_from_entity( $entity );
-
-					$this->assertEquals(
-						$entity->get_the_attr_value( $child_data['value'] )
-						, $child->get_the_value()
-					);
+					
+					if ( $child instanceof WordPoints_Entity_Attr_FieldI ) {
+						
+						$this->assertEquals(
+							$entity->get_the_attr_value( $child_data['field'] )
+							, $child->get_the_value()
+						);
+						
+						$this->assertEquals(
+							$child_data['field']
+							, $child->get_field()
+						);
+					}
 
 				} elseif ( $child instanceof WordPoints_Entity_Relationship ) {
 
@@ -240,7 +248,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 						'content' => array(
 							'class'     => 'WordPoints_Entity_Post_Content',
 							'data_type' => 'text',
-							'value'     => 'post_content',
+							'field'     => 'post_content',
 						),
 						'type' => array(
 							'class'   => 'WordPoints_Entity_Post_Type_Relationship',
@@ -315,7 +323,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 						'name' => array(
 							'class'     => 'WordPoints_Entity_User_Role_Name',
 							'data_type' => 'slug',
-							'value'     => 'name',
+							'field'     => 'name',
 						),
 					),
 				),

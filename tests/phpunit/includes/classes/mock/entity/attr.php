@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_PHPUnit_Mock_Entity_Attr extends WordPoints_Entity_Attr {
+class WordPoints_PHPUnit_Mock_Entity_Attr extends WordPoints_Entity_Attr_Field {
 
 	/**
 	 * @since 1.0.0

@@ -26,6 +26,8 @@ require_once( dirname( __FILE__ ) . 'db/query.php' );
 require_once( dirname( __FILE__ ) . 'entity.php' );
 require_once( dirname( __FILE__ ) . 'entity/array.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr.php' );
+require_once( dirname( __FILE__ ) . 'entity/attr/field.php' );
+require_once( dirname( __FILE__ ) . 'entity/attr/fieldi.php' );
 require_once( dirname( __FILE__ ) . 'entity/childi.php' );
 require_once( dirname( __FILE__ ) . 'entity/comment.php' );
 require_once( dirname( __FILE__ ) . 'entity/comment/author.php' );

@@ -22,18 +22,6 @@ abstract class WordPoints_Entity_Attr
 	implements WordPoints_Entity_ChildI {
 
 	/**
-	 * The field that this attribute is stored in on the entity.
-	 *
-	 * You must either define this property in your child class or else override the
-	 * get_field() method.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	protected $field;
-
-	/**
 	 * The data type of the values of this attribute.
 	 *
 	 * @since 1.0.0
@@ -43,15 +31,15 @@ abstract class WordPoints_Entity_Attr
 	protected $data_type;
 
 	/**
-	 * Get the field that this attribute's value is stored in.
+	 * Get the value of this attribute from an entity.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string The field this attribute's value is stored in.
+	 * @param WordPoints_Entity $entity The entity.
+	 *
+	 * @return mixed The attribute value.
 	 */
-	protected function get_field() {
-		return $this->field;
-	}
+	abstract protected function get_attr_value_from_entity( WordPoints_Entity $entity );
 
 	/**
 	 * Get the data type of this attribute's values.
@@ -80,7 +68,7 @@ abstract class WordPoints_Entity_Attr
 	 */
 	public function set_the_value_from_entity( WordPoints_Entity $entity ) {
 
-		$this->the_value = $entity->get_the_attr_value( $this->get_field() );
+		$this->the_value = $this->get_attr_value_from_entity( $entity );
 
 		return true;
 	}

@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_User_Role_Name extends WordPoints_Entity_Attr {
+class WordPoints_Entity_User_Role_Name extends WordPoints_Entity_Attr_Field {
 
 	/**
 	 * @since 1.0.0

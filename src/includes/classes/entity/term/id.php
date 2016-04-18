@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Term_Id extends WordPoints_Entity_Attr {
+class WordPoints_Entity_Term_Id extends WordPoints_Entity_Attr_Field {
 
 	/**
 	 * @since 1.0.0
