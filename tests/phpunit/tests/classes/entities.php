@@ -286,7 +286,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 						)
 					),
 					'children'       => array(
-						'name' => array(
+						'author' => array(
 							'class'   => 'WordPoints_Entity_Comment_Author',
 							'primary' => 'comment',
 							'related' => 'user',
