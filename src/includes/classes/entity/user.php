@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_User extends WordPoints_Entity {
+class WordPoints_Entity_User
+	extends WordPoints_Entity
+	implements WordPoints_Entity_Stored_DBI {
 
 	/**
 	 * @since 1.0.0
@@ -39,6 +41,13 @@ class WordPoints_Entity_User extends WordPoints_Entity {
 	 */
 	public function get_title() {
 		return __( 'User', 'wordpoints' );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_table_name() {
+		return $GLOBALS['wpdb']->users;
 	}
 }
 

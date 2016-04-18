@@ -50,6 +50,8 @@ require_once( dirname( __FILE__ ) . 'entity/relationship.php' );
 require_once( dirname( __FILE__ ) . 'entity/relationship/dynamic.php' );
 require_once( dirname( __FILE__ ) . 'entity/restricted/visibilityi.php' );
 require_once( dirname( __FILE__ ) . 'entity/site.php' );
+require_once( dirname( __FILE__ ) . 'entity/stored/arrayi.php' );
+require_once( dirname( __FILE__ ) . 'entity/stored/dbi.php' );
 require_once( dirname( __FILE__ ) . 'entity/term.php' );
 require_once( dirname( __FILE__ ) . 'entity/term/id.php' );
 require_once( dirname( __FILE__ ) . 'entity/user.php' );

@@ -14,7 +14,7 @@
  */
 class WordPoints_Entity_User_Role
 	extends WordPoints_Entity
-	implements WordPoints_Entity_EnumerableI {
+	implements WordPoints_Entity_EnumerableI, WordPoints_Entity_Stored_ArrayI {
 
 	/**
 	 * @since 1.0.0
@@ -57,6 +57,13 @@ class WordPoints_Entity_User_Role
 	 * @since 1.0.0
 	 */
 	public function get_enumerated_values() {
+		return $this->get_storage_array();
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_storage_array() {
 
 		global $wp_roles;
 

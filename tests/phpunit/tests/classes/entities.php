@@ -163,6 +163,12 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			$this->assertInternalType( 'array', $entity->get_enumerated_values() );
 		}
 
+		if ( $entity instanceof WordPoints_Entity_Stored_DBI ) {
+			$this->assertEquals( $data['table_name'], $entity->get_table_name() );
+		} elseif ( $entity instanceof WordPoints_Entity_Stored_ArrayI ) {
+			$this->assertInternalType( 'array', $entity->get_storage_array() );
+		}
+		
 		call_user_func( $data['delete_func'], $the_id );
 
 		if ( isset( $data['children'] ) ) {
@@ -203,6 +209,8 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function data_provider_entities() {
 
+		global $wpdb;
+		
 		$factory = $this->factory = new WP_UnitTest_Factory();
 		$factory->wordpoints = WordPoints_PHPUnit_Factory::$factory;
 
@@ -214,6 +222,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'id_field'       => 'ID',
 					'human_id_field' => 'display_name',
 					'context'        => '',
+					'table_name'     => $wpdb->users,
 					'the_context'    => array(),
 					'create_func'    => array( $factory->user, 'create_and_get' ),
 					'delete_func'    => array( $this, 'delete_user' ),
@@ -233,6 +242,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'slug'           => 'post',
 					'id_field'       => 'ID',
 					'human_id_field' => 'post_title',
+					'table_name'     => $wpdb->posts,
 					'create_func'    => array( $this, 'create_post' ),
 					'delete_func'    => array( $this, 'delete_post' ),
 					'cant_view'      => $factory->post->create(
@@ -265,6 +275,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'slug'           => 'post',
 					'id_field'       => 'comment_ID',
 					'human_id_field' => 'comment_content',
+					'table_name'     => $wpdb->comments,
 					'create_func'    => array( $this, 'create_comment' ),
 					'delete_func'    => array( $this, 'delete_comment' ),
 					'cant_view'      => $factory->comment->create(
@@ -338,6 +349,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'id_field'       => 'blog_id',
 					'human_id_field' => 'blogname',
 					'context'        => 'network',
+					'table_name'     => $wpdb->blogs,
 					'the_context'    => array( 'network' => 1 ),
 					'create_func'    => array( $this, 'create_site' ),
 					'delete_func'    => array( $this, 'delete_site' ),

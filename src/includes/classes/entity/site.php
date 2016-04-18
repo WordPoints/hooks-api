@@ -14,7 +14,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Site extends WordPoints_Entity {
+class WordPoints_Entity_Site
+	extends WordPoints_Entity
+	implements WordPoints_Entity_Stored_DBI {
 
 	/**
 	 * @since 1.0.0
@@ -41,6 +43,13 @@ class WordPoints_Entity_Site extends WordPoints_Entity {
 	 */
 	public function get_title() {
 		return __( 'Site', 'wordpoints' );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_table_name() {
+		return $GLOBALS['wpdb']->sites;
 	}
 }
 

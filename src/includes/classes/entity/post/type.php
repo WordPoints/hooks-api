@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Post_Type extends WordPoints_Entity {
+class WordPoints_Entity_Post_Type
+	extends WordPoints_Entity
+	implements WordPoints_Entity_Stored_ArrayI {
 
 	/**
 	 * @since 1.0.0
@@ -37,11 +39,9 @@ class WordPoints_Entity_Post_Type extends WordPoints_Entity {
 	}
 
 	/**
-	 * Get a list of all available Post Types.
-	 *
 	 * @since 1.0.0
 	 */
-	public static function get_post_types() {
+	public function get_storage_array() {
 		return get_post_types( array( 'public' => true ), 'labels' );
 	}
 }

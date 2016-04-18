@@ -14,7 +14,8 @@
  */
 class WordPoints_Entity_Comment
 	extends WordPoints_Entity
-	implements WordPoints_Entity_Restricted_VisibilityI {
+	implements WordPoints_Entity_Stored_DBI,
+		WordPoints_Entity_Restricted_VisibilityI {
 
 	/**
 	 * @since 1.0.0
@@ -64,6 +65,13 @@ class WordPoints_Entity_Comment
 		}
 
 		return false;
+	}
+	
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_table_name() {
+		return $GLOBALS['wpdb']->comments;
 	}
 }
 
