@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Comment_Author extends WordPoints_Entity_Relationship {
+class WordPoints_Entity_Comment_Author extends WordPoints_Entity_Relationship_Stored_Field {
 
 	/**
 	 * @since 1.0.0

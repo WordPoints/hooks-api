@@ -150,11 +150,43 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					);
 
 					$child->set_the_value_from_entity( $entity );
+					
+					if ( $child instanceof WordPoints_Entity_Relationship_Stored_FieldI ) {
 
-					$this->assertEquals(
-						$entity->get_the_attr_value( $child_data['value'] )
-						, $child->get_the_value()
-					);
+						$this->assertEquals(
+							$entity->get_the_attr_value( $child_data['field'] )
+							, $child->get_the_value()
+						);
+						
+						$this->assertEquals(
+							$child_data['field']
+							, $child->get_field()
+						);
+
+					} elseif ( $child instanceof WordPoints_Entity_Relationship_Stored_DB_TableI ) {
+						
+						$this->assertEquals( 
+							$child_data['table_name']
+							, $child->get_table_name()
+						);
+						
+						$this->assertEquals(
+							$child_data['primary_id_field']
+							, $child->get_primary_id_field()
+						);
+						
+						$this->assertEquals(
+							$child_data['related_id_field']
+							, $child->get_related_id_field()
+						);
+						
+						if ( $child instanceof WordPoints_Entity_Relationship_Stored_DB_Table_ConditionsI ) {
+							$this->assertEquals(
+								$child_data['conditions']
+								, $child->get_conditions()
+							);
+						}
+					}
 				}
 			}
 		}
@@ -228,10 +260,21 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'delete_func'    => array( $this, 'delete_user' ),
 					'children'       => array(
 						'roles' => array(
-							'class'   => 'WordPoints_Entity_User_Roles',
-							'primary' => 'user',
-							'related' => 'user_role{}',
-							'value'   => 'roles',
+							'class'            => 'WordPoints_Entity_User_Roles',
+							'primary'          => 'user',
+							'related'          => 'user_role{}',
+							'table_name'       => $wpdb->usermeta,
+							'primary_id_field' => 'user_id',
+							'related_id_field' => array(
+								'field' => 'meta_value',
+								'type'  => 'serialized_array',
+							),
+							'conditions'       => array(
+								array(
+									'field' => 'meta_key',
+									'value' => $wpdb->get_blog_prefix() . 'capabilities',
+								),
+							),
 						),
 					),
 				),
@@ -253,7 +296,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 							'class'   => 'WordPoints_Entity_Post_Author',
 							'primary' => 'post',
 							'related' => 'user',
-							'value'   => 'post_author',
+							'field'   => 'post_author',
 						),
 						'content' => array(
 							'class'     => 'WordPoints_Entity_Post_Content',
@@ -264,7 +307,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 							'class'   => 'WordPoints_Entity_Post_Type_Relationship',
 							'primary' => 'post',
 							'related' => 'post_type',
-							'value'   => 'post_type',
+							'field'   => 'post_type',
 						),
 					),
 				),
@@ -301,13 +344,13 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 							'class'   => 'WordPoints_Entity_Comment_Author',
 							'primary' => 'comment',
 							'related' => 'user',
-							'value'   => 'user_id',
+							'field'   => 'user_id',
 						),
 						'post' => array(
 							'class'   => 'WordPoints_Entity_Comment_Post',
 							'primary' => 'comment',
 							'related' => 'post',
-							'value'   => 'comment_post_ID',
+							'field'   => 'comment_post_ID',
 						),
 					),
 				),

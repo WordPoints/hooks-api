@@ -13,7 +13,7 @@
  * @since 1.0.0
  */
 class WordPoints_Entity_Post_Type_Relationship
-	extends WordPoints_Entity_Relationship {
+	extends WordPoints_Entity_Relationship_Stored_Field {
 
 	/**
 	 * @since 1.0.0

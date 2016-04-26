@@ -1,35 +1,29 @@
 <?php
 
 /**
- * Comment post entity relationship class.
+ * Field entity relationship class.
  *
  * @package wordpoints-hooks-api
- * @since 1.0.0
+ * @since   1.0.0
  */
 
 /**
- * Represents the relationship between a Comment and its Post.
- *
+ * Represents a relationship that is stored in a field of the primary entity.
+ * 
  * @since 1.0.0
  */
-class WordPoints_Entity_Comment_Post
-	extends WordPoints_Entity_Relationship_Dynamic
+abstract class WordPoints_Entity_Relationship_Stored_Field
+	extends WordPoints_Entity_Relationship
 	implements WordPoints_Entity_Relationship_Stored_FieldI {
 
 	/**
+	 * The field on the primary entity where the related entity IDs are stored.
+	 *
 	 * @since 1.0.0
+	 *
+	 * @var string
 	 */
-	protected $primary_entity_slug = 'comment';
-
-	/**
-	 * @since 1.0.0
-	 */
-	protected $related_entity_slug = 'post';
-
-	/**
-	 * @since 1.0.0
-	 */
-	protected $related_ids_field = 'comment_post_ID';
+	protected $related_ids_field;
 
 	/**
 	 * @since 1.0.0
@@ -37,7 +31,7 @@ class WordPoints_Entity_Comment_Post
 	protected function get_related_entity_ids( WordPoints_Entity $entity ) {
 		return $entity->get_the_attr_value( $this->related_ids_field );
 	}
-
+	
 	/**
 	 * @since 1.0.0
 	 */

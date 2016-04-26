@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship_Dynamic {
+class WordPoints_Entity_Post_Terms
+	extends WordPoints_Entity_Relationship_Dynamic
+	implements WordPoints_Entity_Relationship_Stored_DB_TableI {
 
 	/**
 	 * @since 1.0.0
@@ -48,6 +50,33 @@ class WordPoints_Entity_Post_Terms extends WordPoints_Entity_Relationship_Dynami
 		$taxonomies = get_object_taxonomies( get_post( $id ) );
 
 		return wp_get_object_terms( $id, $taxonomies, array( 'fields' => 'ids' ) );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_table_name() {
+		return $GLOBALS['wpdb']->term_relationships;
+	}
+	
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_primary_id_field() {
+		return 'object_id';
+	}
+	
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_related_id_field() {
+		return array(
+			'table_name' => $GLOBALS['wpdb']->term_taxonomy,
+			'on' => array(
+				'primary_field' => 'term_taxonomy_id',
+				'join_field' => 'term_taxonomy_id',
+			),
+		);
 	}
 }
 
