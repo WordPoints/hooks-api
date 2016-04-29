@@ -17,6 +17,11 @@ class WordPoints_PHPUnit_Mock_Entity_Attr extends WordPoints_Entity_Attr_Field {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_type = 'test';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $field = 'test_attr';
 
 	/**

@@ -14,9 +14,12 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Site
-	extends WordPoints_Entity
-	implements WordPoints_Entity_Stored_DBI {
+class WordPoints_Entity_Site extends WordPoints_Entity_Stored_DB_Table {
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $wpdb_table_name = 'blogs';
 
 	/**
 	 * @since 1.0.0
@@ -43,13 +46,6 @@ class WordPoints_Entity_Site
 	 */
 	public function get_title() {
 		return __( 'Site', 'wordpoints' );
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_table_name() {
-		return $GLOBALS['wpdb']->sites;
 	}
 }
 

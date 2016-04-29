@@ -17,6 +17,11 @@ class WordPoints_Entity_Comment_Author extends WordPoints_Entity_Relationship_St
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_type = 'db';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $primary_entity_slug = 'comment';
 
 	/**

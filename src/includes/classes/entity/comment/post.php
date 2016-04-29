@@ -14,7 +14,7 @@
  */
 class WordPoints_Entity_Comment_Post
 	extends WordPoints_Entity_Relationship_Dynamic
-	implements WordPoints_Entity_Relationship_Stored_FieldI {
+	implements WordPoints_Entityish_StoredI {
 
 	/**
 	 * @since 1.0.0
@@ -41,8 +41,14 @@ class WordPoints_Entity_Comment_Post
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_field() {
-		return $this->related_ids_field;
+	public function get_storage_info() {
+		return array(
+			'type' => 'db',
+			'info' => array(
+				'type' => 'field',
+				'field' => $this->related_ids_field,
+			),
+		);
 	}
 }
 

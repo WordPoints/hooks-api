@@ -12,9 +12,12 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Term
-	extends WordPoints_Entity
-	implements WordPoints_Entity_Stored_DBI {
+class WordPoints_Entity_Term extends WordPoints_Entity_Stored_DB_Table {
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $wpdb_table_name = 'terms';
 
 	/**
 	 * @since 1.0.0
@@ -45,13 +48,6 @@ class WordPoints_Entity_Term
 	 */
 	public function get_entity( $id ) {
 		return get_term( $id, 'taxonomy' );
-	}
-	
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_table_name() {
-		return $GLOBALS['wpdb']->terms;
 	}
 }
 

@@ -17,6 +17,11 @@ class WordPoints_Entity_User_Role_Name extends WordPoints_Entity_Attr_Field {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_type = 'array';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $field = 'name';
 
 	/**

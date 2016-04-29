@@ -17,6 +17,11 @@ class WordPoints_Entity_Term_Id extends WordPoints_Entity_Attr_Field {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_type = 'db';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $field = 'term_id';
 
 	/**

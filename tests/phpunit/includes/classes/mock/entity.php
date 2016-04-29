@@ -22,6 +22,11 @@ class WordPoints_PHPUnit_Mock_Entity extends WordPoints_Entity {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_info = array( 'type' => 'test', 'info' => array() );
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected function get_entity( $id ) {
 
 		if ( isset( $this->getter ) ) {
@@ -36,6 +41,13 @@ class WordPoints_PHPUnit_Mock_Entity extends WordPoints_Entity {
 	 */
 	public function get_title() {
 		return 'Mock Entity';
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_storage_info() {
+		return $this->storage_info;
 	}
 
 	/**

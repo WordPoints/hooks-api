@@ -18,6 +18,11 @@ class WordPoints_Entity_Post_Type_Relationship
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_type = 'db';
+
+	/**
+	 * @since 1.0.0
+	 */
 	protected $primary_entity_slug = 'post';
 
 	/**

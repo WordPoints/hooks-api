@@ -12,9 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Entity_Post_Type
-	extends WordPoints_Entity
-	implements WordPoints_Entity_Stored_ArrayI {
+class WordPoints_Entity_Post_Type extends WordPoints_Entity_Stored_Array {
 
 	/**
 	 * @since 1.0.0

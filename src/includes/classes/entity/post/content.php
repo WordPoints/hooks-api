@@ -17,6 +17,11 @@ class WordPoints_Entity_Post_Content extends WordPoints_Entity_Attr_Field {
 	/**
 	 * @since 1.0.0
 	 */
+	protected $storage_type = 'db';
+	
+	/**
+	 * @since 1.0.0
+	 */
 	protected $data_type = 'text';
 
 	/**

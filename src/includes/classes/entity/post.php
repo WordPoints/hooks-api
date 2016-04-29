@@ -13,9 +13,13 @@
  * @since 1.0.0
  */
 class WordPoints_Entity_Post
-	extends WordPoints_Entity
-	implements WordPoints_Entity_Stored_DBI, 
-		WordPoints_Entity_Restricted_VisibilityI {
+	extends WordPoints_Entity_Stored_DB_Table
+	implements WordPoints_Entity_Restricted_VisibilityI {
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $wpdb_table_name = 'posts';
 
 	/**
 	 * @since 1.0.0
@@ -51,13 +55,6 @@ class WordPoints_Entity_Post
 	 */
 	public function user_can_view( $user_id, $id ) {
 		return user_can( $user_id, 'read_post', $id );
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_table_name() {
-		return $GLOBALS['wpdb']->posts;
 	}
 }
 

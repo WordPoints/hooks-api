@@ -14,7 +14,7 @@
  */
 class WordPoints_Entity_User_Roles
 	extends WordPoints_Entity_Relationship
-	implements WordPoints_Entity_Relationship_Stored_DB_Table_ConditionsI {
+	implements WordPoints_Entityish_StoredI {
 
 	/**
 	 * @since 1.0.0
@@ -48,32 +48,23 @@ class WordPoints_Entity_User_Roles
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_table_name() {
-		return $GLOBALS['wpdb']->usermeta;
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_primary_id_field() {
-		return 'user_id';
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_related_id_field() {
-		return array( 'field' => 'meta_value', 'type' => 'serialized_array' );
-	}
-	
-	/**
-	 * @since 1.0.0
-	 */	
-	public function get_conditions() {
+	public function get_storage_info() {
 		return array(
-			array(
-				'field' => 'meta_key',
-				'value' => $GLOBALS['wpdb']->get_blog_prefix() . 'capabilities',
+			'type' => 'db',
+			'info' => array(
+				'type'             => 'table',
+				'table_name'       => $GLOBALS['wpdb']->usermeta,
+				'primary_id_field' => 'user_id',
+				'related_id_field' => array(
+					'type'  => 'serialized_array',
+					'field' => 'meta_value',
+				),
+				'conditions'       => array(
+					array(
+						'field' => 'meta_key',
+						'value' => $GLOBALS['wpdb']->get_blog_prefix() . 'capabilities',
+					),
+				),
 			),
 		);
 	}

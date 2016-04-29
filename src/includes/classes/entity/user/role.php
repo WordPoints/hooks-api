@@ -13,8 +13,8 @@
  * @since 1.0.0
  */
 class WordPoints_Entity_User_Role
-	extends WordPoints_Entity
-	implements WordPoints_Entity_EnumerableI, WordPoints_Entity_Stored_ArrayI {
+	extends WordPoints_Entity_Stored_Array
+	implements WordPoints_Entity_EnumerableI {
 
 	/**
 	 * @since 1.0.0

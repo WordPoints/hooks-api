@@ -14,7 +14,16 @@
  */
 abstract class WordPoints_Entity_Relationship_Stored_Field
 	extends WordPoints_Entity_Relationship
-	implements WordPoints_Entity_Relationship_Stored_FieldI {
+	implements WordPoints_Entityish_StoredI {
+
+	/**
+	 * The storage type for this relationship.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $storage_type;
 
 	/**
 	 * The field on the primary entity where the related entity IDs are stored.
@@ -35,8 +44,14 @@ abstract class WordPoints_Entity_Relationship_Stored_Field
 	/**
 	 * @since 1.0.0
 	 */
-	public function get_field() {
-		return $this->related_ids_field;
+	public function get_storage_info() {
+		return array(
+			'type' => $this->storage_type,
+			'info' => array(
+				'type' => 'field',
+				'field' => $this->related_ids_field,
+			),
+		);
 	}
 }
 

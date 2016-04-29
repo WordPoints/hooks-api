@@ -17,19 +17,6 @@
 class WordPoints_Entity_Attr_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
-	 * Test getting the field.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_get_field() {
-
-		$attr = new WordPoints_PHPUnit_Mock_Entity_Attr( 'test' );
-		$attr->set( 'field', 'testing' );
-
-		$this->assertEquals( 'testing', $attr->call( 'get_field' ) );
-	}
-
-	/**
 	 * Test getting the data type.
 	 *
 	 * @since 1.0.0
