@@ -459,7 +459,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 				return;
 			}
 
-			switch( $requirement_parts[2] ) {
+			switch ( $requirement_parts[2] ) {
 
 				case 'create':
 					$_POST['nonce'] = WordPoints_Admin_Ajax_Hooks::get_create_nonce(

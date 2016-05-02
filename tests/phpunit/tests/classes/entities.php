@@ -121,7 +121,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					$child_data['storage_info']
 					, $child->get_storage_info()
 				);
-				
+
 				if ( $child instanceof WordPoints_Entity_Attr ) {
 
 					$this->assertEquals(
@@ -130,7 +130,6 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					);
 
 					$child->set_the_value_from_entity( $entity );
-					
 
 				} elseif ( $child instanceof WordPoints_Entity_Relationship ) {
 
@@ -156,10 +155,10 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		if ( $entity instanceof WordPoints_Entity_Stored_Array ) {
 			$this->assertInternalType( 'array', $entity->get_storage_array() );
 		}
-		
+
 		$this->assertInstanceOf( 'WordPoints_Entityish_StoredI', $entity );
 		$this->assertEquals( $data['storage_info'], $entity->get_storage_info() );
-		
+
 		call_user_func( $data['delete_func'], $the_id );
 
 		if ( isset( $data['children'] ) ) {
@@ -201,7 +200,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function data_provider_entities() {
 
 		global $wpdb;
-		
+
 		$factory = $this->factory = new WP_UnitTest_Factory();
 		$factory->wordpoints = WordPoints_PHPUnit_Factory::$factory;
 
@@ -376,7 +375,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'human_id_field' => 'label',
 					'storage_info'   => array(
 						'type' => 'array',
-						'info' => array( 'type'  => 'method' ),
+						'info' => array( 'type' => 'method' ),
 					),
 					'create_func'    => array( $factory->wordpoints->post_type, 'create_and_get' ),
 					'delete_func'    => '_unregister_post_type',
@@ -390,7 +389,7 @@ class WordPoints_All_Entities_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 					'human_id_field' => '_display_name',
 					'storage_info'   => array(
 						'type' => 'array',
-						'info' => array( 'type'  => 'method' ),
+						'info' => array( 'type' => 'method' ),
 					),
 					'create_func'    => array( $this, 'create_role' ),
 					'delete_func'    => 'remove_role',

@@ -51,7 +51,7 @@ class WordPoints_Entity_Post_Terms
 
 		return wp_get_object_terms( $id, $taxonomies, array( 'fields' => 'ids' ) );
 	}
-	
+
 	/**
 	 * @since 1.0.0
 	 */

@@ -13,7 +13,7 @@
  * @since 1.0.0
  */
 class WordPoints_Entity_User extends WordPoints_Entity_Stored_DB_Table {
-	
+
 	/**
 	 * @since 1.0.0
 	 */

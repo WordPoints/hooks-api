@@ -9,7 +9,7 @@
 
 /**
  * Implemented by entities that are enumerable.
- * 
+ *
  * Indicates that only a finite number of entities of this type will exist, and
  * that it is therefore appropriate to display a list of the entities in a select
  * box in the UI.

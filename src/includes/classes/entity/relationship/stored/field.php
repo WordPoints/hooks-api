@@ -9,7 +9,7 @@
 
 /**
  * Represents a relationship that is stored in a field of the primary entity.
- * 
+ *
  * @since 1.0.0
  */
 abstract class WordPoints_Entity_Relationship_Stored_Field
@@ -40,7 +40,7 @@ abstract class WordPoints_Entity_Relationship_Stored_Field
 	protected function get_related_entity_ids( WordPoints_Entity $entity ) {
 		return $entity->get_the_attr_value( $this->related_ids_field );
 	}
-	
+
 	/**
 	 * @since 1.0.0
 	 */

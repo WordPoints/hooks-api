@@ -114,7 +114,7 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 
 			unset( $parts[0] );
 
-			switch( $type ) {
+			switch ( $type ) {
 
 				case 'am':
 					$this->fulfill_am_requirement( $parts );
@@ -157,7 +157,7 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 
 			$rest = implode( '_', $parts );
 
-			switch( $type ) {
+			switch ( $type ) {
 
 				case 'am':
 					$invalid_requests[ 'not_' . $rest ] = array( $request );
@@ -235,7 +235,9 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 	 *
 	 * @return mixed The valid data for this query arg.
 	 */
-	public function get_valid_posts_value( $query_arg ) {}
+	public function get_valid_posts_value( $query_arg ) {
+		return null;
+	}
 
 	/**
 	 * Fulfill the requirements for a non-standard request specification.

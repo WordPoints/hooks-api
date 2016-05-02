@@ -18,7 +18,7 @@ class WordPoints_Entity_Post_Author extends WordPoints_Entity_Relationship_Store
 	 * @since 1.0.0
 	 */
 	protected $storage_type = 'db';
-	
+
 	/**
 	 * @since 1.0.0
 	 */

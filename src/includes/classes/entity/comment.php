@@ -15,7 +15,7 @@
 class WordPoints_Entity_Comment
 	extends WordPoints_Entity_Stored_DB_Table
 	implements WordPoints_Entity_Restricted_VisibilityI {
-	
+
 	/**
 	 * @since 1.0.0
 	 */

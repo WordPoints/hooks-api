@@ -19,7 +19,7 @@ interface WordPoints_Entityish_StoredI {
 
 	/**
 	 * Get information about where this entity-like object is stored.
-	 * 
+	 *
 	 * @since 1.0.0
 	 *
 	 * @return array {

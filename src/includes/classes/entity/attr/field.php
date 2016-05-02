@@ -40,7 +40,7 @@ abstract class WordPoints_Entity_Attr_Field
 	protected function get_attr_value_from_entity( WordPoints_Entity $entity ) {
 		return $entity->get_the_attr_value( $this->field );
 	}
-	
+
 	/**
 	 * @since 1.0.0
 	 */
