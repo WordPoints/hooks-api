@@ -375,6 +375,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 		$query->reset();
 		$storage_type = $query->get_field( 'storage_info', 'type' );
 
+		// it is pretty stupid to wait until now to figure this out.
 		$executor = $this->hooks->retroactive_query_executors->get( $storage_type );
 
 		if ( ! $executor ) {
