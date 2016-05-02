@@ -20,7 +20,7 @@ wpcept-setup() {
  	fi
 
 	composer require --prefer-source codeception/codeception:2.1.4
-	composer require --prefer-source lucatume/wp-browser:master@dev
+	composer require --prefer-source lucatume/wp-browser:master@dev#c66c1b11a922c6eed3c0d690d7a2c7f4ccd5dd55
 
 	# We start the server up early so that it has time to prepare.
 	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" &
