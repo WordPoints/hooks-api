@@ -250,12 +250,8 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_network_options() {
 
-		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
-			array(
-				'stores' => array(
-					'standard' => 'WordPoints_Hook_Reaction_Store_Options_Network',
-				),
-			)
+		$this->factory->wordpoints->hook_reaction_store->create(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options_Network' )
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
