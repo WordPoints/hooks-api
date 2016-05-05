@@ -175,8 +175,6 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		self::$tested_targets[] = $target;
 		self::$_expected_targets = $this->expected_targets;
 
-		$reactor = $this->hooks->reactors->get( $reactor_slug );
-
 		switch ( $reactor_slug ) {
 
 			case 'points':
