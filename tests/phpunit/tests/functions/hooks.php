@@ -97,17 +97,6 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		wordpoints_hook_reactors_init( $reactors );
 
 		$this->assertTrue( $reactors->is_registered( 'points' ) );
-
-		$this->assertEquals(
-			array(
-				'points' => array(
-					'fire' => 'award',
-					'toggle_on' => 'award',
-					'toggle_off' => 'reverse',
-				),
-			)
-			, wordpoints_hooks()->router->get_reactor_index()
-		);
 	}
 
 	/**

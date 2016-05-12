@@ -49,10 +49,6 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 
 		$reactors->register( $slug, $class, $args );
 
-		$router = wordpoints_hooks()->router;
-		$router->add_action_type_to_reactor( 'fire', $slug, 'test' );
-		$router->add_action_type_to_reactor( 'test_fire', $slug, 'test' );
-
 		// Make sure that contexts are registered, as they are needed when checking
 		// whether a reaction store should be made available.
 		wordpoints_entity_contexts_init( wordpoints_entities()->contexts );

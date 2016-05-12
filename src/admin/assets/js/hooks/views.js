@@ -1364,7 +1364,6 @@ var Base = wp.wordpoints.hooks.view.Base,
 	Args = wp.wordpoints.hooks.Args,
 	$ = Backbone.$,
 	l10n = wp.wordpoints.hooks.view.l10n,
-	data = wp.wordpoints.hooks.view.data,
 	Reaction;
 
 // The DOM element for a reaction...
@@ -1502,25 +1501,9 @@ Reaction = Base.extend({
 	},
 
 	// Get the current action type that settings are being displayed for.
-	// Right now we just default this to the first action type we find that
-	// this reactor responds to with the current hit type.
+	// Right now we just default this to the main action type for the reactor.
 	getCurrentActionType: function () {
-
-		var eventActionTypes = data.action_types[ this.model.get( 'event' ) ];
-		var reactorActionTypes = this.Reactor.get( 'action_types' );
-		var currentHitType = this.getCurrentHitType();
-
-		for ( var i = 0; i < eventActionTypes.length; i++ ) {
-			if ( currentHitType === reactorActionTypes[ eventActionTypes[ i ] ] ) {
-				return eventActionTypes[ i ];
-			}
-		}
-	},
-
-	// Get the current hit type that settings are being displayed for.
-	// Right now we just default this to the main hit type for the reactor.
-	getCurrentHitType: function () {
-		return _.values( this.Reactor.get( 'hit_types' ) )[0];
+		return this.Reactor.get( 'action_types' )[0];
 	},
 
 	// Toggle the visibility of the form.

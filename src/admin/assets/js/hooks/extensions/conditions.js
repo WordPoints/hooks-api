@@ -249,7 +249,7 @@ Conditions = Extension.extend({
 			conditions = {};
 		}
 
-		_.each( _.keys( reaction.Reactor.get( 'action_types' ) ), function ( actionType ) {
+		_.each( reaction.Reactor.get( 'action_types' ), function ( actionType ) {
 
 			var conditionGroups = conditions[ actionType ];
 

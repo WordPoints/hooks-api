@@ -294,18 +294,6 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 	$hooks = wordpoints_hooks();
 
-	$event_index = $hooks->router->get_event_index();
-	$event_index = call_user_func_array( 'array_merge_recursive', $event_index );
-
-	$event_action_types = array();
-
-	foreach ( $event_index as $action_type => $events ) {
-		$event_action_types = array_merge_recursive(
-			$event_action_types
-			, array_fill_keys( array_keys( $events ), array( $action_type ) )
-		);
-	}
-
 	$extensions_data = array();
 
 	foreach ( $hooks->extensions->get_all() as $slug => $extension ) {
@@ -319,8 +307,6 @@ function wordpoints_hooks_ui_setup_script_data() {
 		}
 	}
 
-	$action_types = $hooks->router->get_reactor_index();
-
 	$reactor_data = array();
 
 	foreach ( $hooks->reactors->get_all() as $slug => $reactor ) {
@@ -328,8 +314,6 @@ function wordpoints_hooks_ui_setup_script_data() {
 		if ( $reactor instanceof WordPoints_Hook_Reactor ) {
 			$reactor_data[ $slug ] = $reactor->get_ui_script_data();
 		}
-
-		$reactor_data[ $slug ]['action_types'] = $action_types[ $slug ];
 
 		if ( wp_script_is( "wordpoints-hooks-reactor-{$slug}", 'registered' ) ) {
 			wp_enqueue_script( "wordpoints-hooks-reactor-{$slug}" );
@@ -419,7 +403,6 @@ function wordpoints_hooks_ui_setup_script_data() {
 		'extensions' => $extensions_data,
 		'entities'   => $entities_data,
 		'reactors'   => $reactor_data,
-		'action_types' => $event_action_types,
 	);
 
 	/**

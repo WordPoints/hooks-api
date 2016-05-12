@@ -27,7 +27,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $hit_types = array( 'award', 'reverse' );
+	protected $action_types = array( 'fire', 'toggle_on', 'toggle_off' );
 
 	/**
 	 * @since 1.0.0
@@ -123,13 +123,14 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	}
 
 	/**
-	 * Award points to the reaction target when a hit occurs.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Fire $fire The hook fire object.
 	 */
-	protected function award( WordPoints_Hook_Fire $fire ) {
+	public function hit( WordPoints_Hook_Fire $fire ) {
+
+		if ( 'toggle_off' === $fire->action_type ) {
+			$this->reverse_hit( $fire );
+			return;
+		}
 
 		$reaction = $fire->reaction;
 
@@ -158,13 +159,9 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	}
 
 	/**
-	 * Reverse a prior points transaction matching this fire's data.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Fire $fire The fire object.
 	 */
-	protected function reverse( WordPoints_Hook_Fire $fire ) {
+	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
 		$meta_queries = array(
 			array(

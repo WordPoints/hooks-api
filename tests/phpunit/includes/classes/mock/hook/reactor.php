@@ -27,7 +27,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	public $hit_types = 'test';
+	public $action_types = array( 'fire', 'test_fire' );
 
 	/**
 	 * @since 1.0.0
@@ -108,7 +108,7 @@ class WordPoints_PHPUnit_Mock_Hook_Reactor extends WordPoints_Hook_Reactor {
 	/**
 	 * @since 1.0.0
 	 */
-	protected function test( WordPoints_Hook_Fire $fire ) {
+	public function hit( WordPoints_Hook_Fire $fire ) {
 		$this->hits[] = $fire;
 	}
 }

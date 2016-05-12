@@ -37,13 +37,13 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	protected $arg_types;
 
 	/**
-	 * The names of methods implemented by the child that match hit type slugs.
+	 * The slugs of the action types that this reactor listens for.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @var string|string[]
 	 */
-	protected $hit_types;
+	protected $action_types;
 
 	/**
 	 * The settings fields used by this reactor.
@@ -77,6 +77,17 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	}
 
 	/**
+	 * Get a list of the slugs of the action types that this reactor listens for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string[] The slugs of the action types this reactor listens for.
+	 */
+	public function get_action_types() {
+		return (array) $this->action_types;
+	}
+
+	/**
 	 * Get the settings fields used by the reactor.
 	 *
 	 * @since 1.0.0
@@ -97,9 +108,10 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	public function get_ui_script_data() {
 
 		return array(
-			'slug'      => $this->get_slug(),
-			'fields'    => $this->get_settings_fields(),
-			'arg_types' => $this->get_arg_types(),
+			'slug'         => $this->get_slug(),
+			'fields'       => $this->get_settings_fields(),
+			'arg_types'    => $this->get_arg_types(),
+			'action_types' => $this->get_action_types(),
 		);
 	}
 
@@ -164,28 +176,9 @@ abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_SettingsI {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string               $hit_type The type of hit to perform.
-	 * @param WordPoints_Hook_Fire $fire     The hook fire object.
+	 * @param WordPoints_Hook_Fire $fire The hook fire object.
 	 */
-	public function hit( $hit_type, WordPoints_Hook_Fire $fire ) {
-
-		if ( in_array( $hit_type, (array) $this->hit_types ) ) {
-
-			call_user_func( array( $this, $hit_type ), $fire );
-
-		} else {
-
-			/**
-			 * Perform an action when the reactor is hit by an event.
-			 *
-			 * @since 1.0.0
-			 *
-			 * @param string               $hit_type The type of hit to perform.
-			 * @param WordPoints_Hook_Fire $fire     The hook fire object.
-			 */
-			do_action( "wordpoints_hook_reactor_hit-{$this->slug}", $hit_type, $fire );
-		}
-	}
+	abstract public function hit( WordPoints_Hook_Fire $fire );
 }
 
 // EOF
