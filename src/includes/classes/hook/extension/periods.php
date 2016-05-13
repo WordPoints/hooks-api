@@ -20,6 +20,17 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 	protected $slug = 'periods';
 
 	/**
+	 * The type of action that is being fired.
+	 * 
+	 * Set in fire() and after_fire().
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $action_type;
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function get_ui_script_data() {
@@ -183,6 +194,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 
 		$this->event_args = $fire->event_args;
+		$this->action_type = $fire->action_type;
 
 		foreach ( $periods as $period ) {
 			if ( ! $this->has_period_ended( $period, $fire->reaction ) ) {
@@ -320,7 +332,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 		$reaction_guid = $reaction->get_guid();
 
-		$cache_key = wp_json_encode( $reaction_guid ) . "-{$signature}";
+		$cache_key = wp_json_encode( $reaction_guid ) . "-{$signature}-{$this->action_type}";
 
 		// Before we run the query, we try to lookup the ID in the cache.
 		$period_id = wp_cache_get( $cache_key, 'wordpoints_hook_period_ids_by_reaction' );
@@ -344,6 +356,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 						AND `hit`.`reaction_store` = %s
 						AND `hit`.`reaction_context_id` = %s
 						AND `hit`.`reaction_id` = %d
+						AND `hit`.`action_type` = %s
 					ORDER BY `hit`.`date`
 					LIMIT 1
 				"
@@ -351,6 +364,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 				, $reaction_guid['store']
 				, wp_json_encode( $reaction_guid['context_id'] )
 				, $reaction_guid['id']
+				, $this->action_type
 			)
 		);
 
@@ -376,6 +390,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		}
 
 		$this->event_args = $fire->event_args;
+		$this->action_type = $fire->action_type;
 
 		foreach ( $periods as $settings ) {
 
@@ -446,7 +461,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 		$period_id = $wpdb->insert_id;
 
 		wp_cache_set(
-			wp_json_encode( $fire->reaction->get_guid() ) . "-{$signature}"
+			wp_json_encode( $fire->reaction->get_guid() ) . "-{$signature}-{$this->action_type}"
 			, $period_id
 			, 'wordpoints_hook_period_ids_by_reaction'
 		);

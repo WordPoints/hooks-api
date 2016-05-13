@@ -887,6 +887,60 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 	}
 
 	/**
+	 * Test that the periods are per-acton type.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_periods_per_action_type() {
+
+		$this->mock_apps();
+
+		wordpoints_hooks()->extensions->register(
+			'periods'
+			, 'WordPoints_Hook_Extension_Periods'
+		);
+
+		$settings = array(
+			'periods' => array(
+				'test_fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+				'fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ),
+			),
+			'target'  => array( 'test_entity' ),
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		$event_args = new WordPoints_Hook_Event_Args( array() );
+
+		$event_args->add_entity(
+			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
+		);
+
+		wordpoints_hooks()->events->args->register(
+			'test_event'
+			, 'another:test_entity'
+			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
+		);
+
+		$router = new WordPoints_PHPUnit_Mock_Hook_Router();
+		$router->fire_event( 'test_fire', 'test_event', $event_args );
+
+		$test_reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$router->fire_event( 'test_fire', 'test_event', $event_args );
+
+		$this->assertCount( 1, $test_reactor->hits );
+
+		$router->fire_event( 'fire', 'test_event', $event_args );
+
+		$this->assertCount( 2, $test_reactor->hits );
+	}
+
+	/**
 	 * Test that when the period length increases expired periods are considered.
 	 *
 	 * @since 1.0.0
