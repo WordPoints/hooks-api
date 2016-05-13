@@ -294,27 +294,6 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 	$hooks = wordpoints_hooks();
 
-	// We want a list of the action types for each event. We can start with this list
-	// but it is indexed by action slug and then action type and then event slug, so
-	// we ned to do some processing.
-	$event_index = $hooks->router->get_event_index();
-	
-	// We don't care about the action slugs, so first we get rid of that bottom level
-	// of the array.
-	$event_index = call_user_func_array( 'array_merge_recursive', $event_index );
-
-	$event_action_types = array();
-
-	// This leaves us the event indexed by action type. But we actually need to flip
-	// this, so that we have the action types indexed by event slug.
-	foreach ( $event_index as $action_type => $events ) {
-		foreach ( $events as $event => $unused ) {
-			$event_action_types[ $event ][ $action_type ] = true;
-		}
-	}
-	
-	unset( $event_index, $action_type, $events, $event, $unused );
-	
 	$extensions_data = array();
 
 	foreach ( $hooks->extensions->get_all() as $slug => $extension ) {
@@ -328,6 +307,8 @@ function wordpoints_hooks_ui_setup_script_data() {
 		}
 	}
 
+	unset( $extension, $slug );
+
 	$reactor_data = array();
 
 	foreach ( $hooks->reactors->get_all() as $slug => $reactor ) {
@@ -340,6 +321,48 @@ function wordpoints_hooks_ui_setup_script_data() {
 			wp_enqueue_script( "wordpoints-hooks-reactor-{$slug}" );
 		}
 	}
+
+	unset( $reactor, $slug );
+
+	$event_action_types = wordpoints_hooks_ui_get_script_data_event_action_types();
+	$entities_data = wordpoints_hooks_ui_get_script_data_entities();
+
+	$data = array(
+		'fields'     => (object) array(),
+		'reactions'  => (object) array(),
+		'events'     => (object) array(),
+		'extensions' => $extensions_data,
+		'entities'   => $entities_data,
+		'reactors'   => $reactor_data,
+		'event_action_types' => $event_action_types,
+	);
+
+	/**
+	 * Filter the hooks data used to provide the UI.
+	 *
+	 * This is currently exported as JSON to the Backbone.js powered UI. But
+	 * that could change in the future. The important thing is that the data is
+	 * bing exported and will be used by something somehow.
+	 *
+	 * @param array $data The data.
+	 */
+	$data = apply_filters( 'wordpoints_hooks_ui_data', $data );
+
+	wp_localize_script(
+		'wordpoints-hooks-models'
+		, 'WordPointsHooksAdminData'
+		, $data
+	);
+}
+
+/**
+ * Get the entities data for use in the hooks UI.
+ *
+ * @since 1.0.0
+ *
+ * @return array The entities data for use in the hooks UI.
+ */
+function wordpoints_hooks_ui_get_script_data_entities() {
 
 	$entities = wordpoints_entities();
 
@@ -363,8 +386,8 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 			if ( $child instanceof WordPoints_Entity_Attr ) {
 
-				$child_data[ $child_slug ]['_type'] = 'attr';
-				$child_data[ $child_slug ]['data_type']  = $child->get_data_type();
+				$child_data[ $child_slug ]['_type']     = 'attr';
+				$child_data[ $child_slug ]['data_type'] = $child->get_data_type();
 
 			} elseif ( $child instanceof WordPoints_Entity_Relationship ) {
 
@@ -381,7 +404,11 @@ function wordpoints_hooks_ui_setup_script_data() {
 			 * @param array                $data  The data for the entity child.
 			 * @param WordPoints_Entityish $child The child's object.
 			 */
-			$child_data[ $child_slug ] = apply_filters( 'wordpoints_hooks_ui_data_entity_child', $child_data[ $child_slug ], $child );
+			$child_data[ $child_slug ] = apply_filters(
+				'wordpoints_hooks_ui_data_entity_child'
+				, $child_data[ $child_slug ]
+				, $child
+			);
 		}
 
 		$entities_data[ $slug ] = array(
@@ -414,35 +441,45 @@ function wordpoints_hooks_ui_setup_script_data() {
 		 * @param array             $data   The data for the entity.
 		 * @param WordPoints_Entity $entity The entity object.
 		 */
-		$entities_data[ $slug ] = apply_filters( 'wordpoints_hooks_ui_data_entity', $entities_data[ $slug ], $entity );
+		$entities_data[ $slug ] = apply_filters(
+			'wordpoints_hooks_ui_data_entity'
+			, $entities_data[ $slug ]
+			, $entity
+		);
 	}
 
-	$data = array(
-		'fields'     => (object) array(),
-		'reactions'  => (object) array(),
-		'events'     => (object) array(),
-		'extensions' => $extensions_data,
-		'entities'   => $entities_data,
-		'reactors'   => $reactor_data,
-		'event_action_types' => $event_action_types,
-	);
+	return $entities_data;
+}
 
-	/**
-	 * Filter the hooks data used to provide the UI.
-	 *
-	 * This is currently exported as JSON to the Backbone.js powered UI. But
-	 * that could change in the future. The important thing is that the data is
-	 * bing exported and will be used by something somehow.
-	 *
-	 * @param array $data The data.
-	 */
-	$data = apply_filters( 'wordpoints_hooks_ui_data', $data );
+/**
+ * Get a list of action types for each event for the hooks UI script data.
+ *
+ * @since 1.0.0
+ *
+ * @return array The event action types.
+ */
+function wordpoints_hooks_ui_get_script_data_event_action_types() {
 
-	wp_localize_script(
-		'wordpoints-hooks-models'
-		, 'WordPointsHooksAdminData'
-		, $data
-	);
+	// We want a list of the action types for each event. We can start with this list
+	// but it is indexed by action slug and then action type and then event slug, so
+	// we ned to do some processing.
+	$event_index = wordpoints_hooks()->router->get_event_index();
+
+	// We don't care about the action slugs, so first we get rid of that bottom level
+	// of the array.
+	$event_index = call_user_func_array( 'array_merge_recursive', $event_index );
+
+	$event_action_types = array();
+
+	// This leaves us the event indexed by action type. But we actually need to flip
+	// this, so that we have the action types indexed by event slug.
+	foreach ( $event_index as $action_type => $events ) {
+		foreach ( $events as $event => $unused ) {
+			$event_action_types[ $event ][ $action_type ] = true;
+		}
+	}
+
+	return $event_action_types;
 }
 
 /**
