@@ -367,6 +367,22 @@ class WordPoints_Hook_Router {
 	public function remove_event_from_action( $event_slug, $action_slug, $action_type = 'fire' ) {
 		unset( $this->event_index[ $action_slug ][ $action_type ][ $event_slug ] );
 	}
+
+	/**
+	 * Get the event index.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array[] The event index.
+	 */
+	public function get_event_index() {
+
+		if ( empty( $this->event_index ) ) {
+			wordpoints_hooks()->events;
+		}
+
+		return $this->event_index;
+	}
 }
 
 // EOF

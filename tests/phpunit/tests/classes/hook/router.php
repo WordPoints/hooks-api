@@ -856,6 +856,114 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
+	 * Test adding an event to an action.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_add_event_to_action() {
+
+		$router = new WordPoints_Hook_Router();
+		$router->add_event_to_action( 'test_event', 'test_action' );
+
+		$this->assertEquals(
+			array(
+				'test_action' => array( 'fire' => array( 'test_event' => true ) ),
+			)
+			, $router->get_event_index()
+		);
+	}
+
+	/**
+	 * Test adding an event to an action when specifying an action type.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_add_event_to_action_action_type() {
+
+		$router = new WordPoints_Hook_Router();
+		$router->add_event_to_action( 'test_event', 'test_action', 'test_type' );
+
+		$this->assertEquals(
+			array(
+				'test_action' => array(
+					'test_type' => array( 'test_event' => true ),
+				),
+			)
+			, $router->get_event_index()
+		);
+	}
+
+	/**
+	 * Test removing an event from an action.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_remove_event_from_action() {
+
+		$router = new WordPoints_Hook_Router();
+		$router->add_event_to_action( 'test_event', 'test_action' );
+		$router->add_event_to_action( 'another_event', 'test_action' );
+
+		$router->remove_event_from_action( 'test_event', 'test_action' );
+
+		$this->assertEquals(
+			array(
+				'test_action' => array( 'fire' => array( 'another_event' => true ) ),
+			)
+			, $router->get_event_index()
+		);
+	}
+
+	/**
+	 * Test removing an event from an action when specifying an action type.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_remove_event_from_action_action_type() {
+
+		$router = new WordPoints_Hook_Router();
+		$router->add_event_to_action( 'test_event', 'test_action', 'test_type' );
+		$router->add_event_to_action( 'another_event', 'test_action', 'test_type' );
+
+		$router->remove_event_from_action( 'test_event', 'test_action', 'test_type' );
+
+		$this->assertEquals(
+			array(
+				'test_action' => array(
+					'test_type' => array( 'another_event' => true ),
+				),
+			)
+			, $router->get_event_index()
+		);
+	}
+
+	/**
+	 * Test removing an event from an action when none are registered.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_remove_event_from_action_none() {
+
+		$router = new WordPoints_Hook_Router();
+
+		$router->remove_event_from_action( 'test_event', 'test_action' );
+
+		$this->assertSame( array(), $router->get_event_index() );
+	}
+
+	/**
+	 * Test getting the event index when no events have been added yet.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_event_index_none() {
+
+		$router = new WordPoints_Hook_Router();
+
+		$this->assertSame( array(), $router->get_event_index() );
+	}
+
+	/**
 	 * Fire an event.
 	 *
 	 * @since 1.0.0

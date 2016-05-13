@@ -294,6 +294,27 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 	$hooks = wordpoints_hooks();
 
+	// We want a list of the action types for each event. We can start with this list
+	// but it is indexed by action slug and then action type and then event slug, so
+	// we ned to do some processing.
+	$event_index = $hooks->router->get_event_index();
+	
+	// We don't care about the action slugs, so first we get rid of that bottom level
+	// of the array.
+	$event_index = call_user_func_array( 'array_merge_recursive', $event_index );
+
+	$event_action_types = array();
+
+	// This leaves us the event indexed by action type. But we actually need to flip
+	// this, so that we have the action types indexed by event slug.
+	foreach ( $event_index as $action_type => $events ) {
+		foreach ( $events as $event => $unused ) {
+			$event_action_types[ $event ][ $action_type ] = true;
+		}
+	}
+	
+	unset( $event_index, $action_type, $events, $event, $unused );
+	
 	$extensions_data = array();
 
 	foreach ( $hooks->extensions->get_all() as $slug => $extension ) {
@@ -403,6 +424,7 @@ function wordpoints_hooks_ui_setup_script_data() {
 		'extensions' => $extensions_data,
 		'entities'   => $entities_data,
 		'reactors'   => $reactor_data,
+		'event_action_types' => $event_action_types,
 	);
 
 	/**
