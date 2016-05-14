@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Mock hook router class for the PHPUnit tests.
+ * Mock hooks app class for the PHPUnit tests.
  *
  * @package wordpoints-hooks-api
  * @since 1.0.0
  */
 
 /**
- * Mock hook router for the PHPUnit tests.
+ * Mock hooks app class for the PHPUnit tests.
  *
  * @since 1.0.0
  */
-class WordPoints_PHPUnit_Mock_Hook_Router extends WordPoints_Hook_Router {
+class WordPoints_PHPUnit_Mock_Hooks extends WordPoints_Hooks {
 
 	/**
 	 * A list of event fires.
@@ -26,7 +26,7 @@ class WordPoints_PHPUnit_Mock_Hook_Router extends WordPoints_Hook_Router {
 	/**
 	 * @since 1.0.0
 	 */
-	public function fire_event(
+	public function fire(
 		$action_type,
 		$event_slug,
 		WordPoints_Hook_Event_Args $event_args
@@ -38,7 +38,7 @@ class WordPoints_PHPUnit_Mock_Hook_Router extends WordPoints_Hook_Router {
 			'event_slug'  => $event_slug,
 		);
 
-		parent::fire_event( $action_type, $event_slug, $event_args );
+		parent::fire( $action_type, $event_slug, $event_args );
 	}
 }
 

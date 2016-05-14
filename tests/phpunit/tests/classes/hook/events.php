@@ -64,10 +64,9 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_register_registers_event_with_router() {
 
-		/** @var WordPoints_Hooks $hooks */
-		$hooks = $this->mock_apps()->hooks;
+		$apps = $this->mock_apps();
 
-		$hooks->sub_apps->register( 'router', 'WordPoints_PHPUnit_Mock_Hook_Router' );
+		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$this->factory->wordpoints->hook_event->create();
 
@@ -79,10 +78,10 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Router $router */
-		$router = $hooks->router;
+		/** @var WordPoints_PHPUnit_Mock_Hooks $hooks */
+		$hooks = wordpoints_hooks();
 
-		$this->assertCount( 1, $router->fires );
+		$this->assertCount( 1, $hooks->fires );
 	}
 
 	/**
@@ -92,10 +91,9 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_deregister_deregisters_event_with_router() {
 
-		/** @var WordPoints_Hooks $hooks */
-		$hooks = $this->mock_apps()->hooks;
+		$apps = $this->mock_apps();
 
-		$hooks->sub_apps->register( 'router', 'WordPoints_PHPUnit_Mock_Hook_Router' );
+		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$this->factory->wordpoints->hook_event->create();
 
@@ -107,19 +105,16 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Router $router */
-		$router = $hooks->router;
+		/** @var WordPoints_PHPUnit_Mock_Hooks $hooks */
+		$hooks = wordpoints_hooks();
 
-		$this->assertCount( 1, $router->fires );
+		$this->assertCount( 1, $hooks->fires );
 
 		$hooks->events->deregister( 'test_event' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		/** @var WordPoints_PHPUnit_Mock_Hook_Router $router */
-		$router = $hooks->router;
-
-		$this->assertCount( 1, $router->fires );
+		$this->assertCount( 1, $hooks->fires );
 	}
 
 	/**
