@@ -29,30 +29,18 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
-	 * Test registering an event requires the action and reverse_action args.
+	 * Test registering an event without the the extra args is OK.
 	 *
 	 * @since 1.0.0
 	 */
-	public function test_register_requires_actions() {
+	public function test_register_args_optional() {
 
 		$events = new WordPoints_Hook_Events( 'test' );
-
-		$this->assertFalse(
-			$events->register(
-				'test'
-				, 'WordPoints_PHPUnit_Mock_Hook_Event'
-			)
-		);
 
 		$this->assertTrue(
 			$events->register(
 				'test'
 				, 'WordPoints_PHPUnit_Mock_Hook_Event'
-				, array(
-					'actions' => array(
-						'fire' => 'test_action',
-					),
-				)
 			)
 		);
 	}

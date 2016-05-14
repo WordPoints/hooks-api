@@ -62,7 +62,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 	 * @param string $slug  The slug for this event.
 	 * @param string $class The name of the event class.
 	 * @param array  $args  {
-	 *        Other args.
+	 *        Other optional args.
 	 *
 	 *        @type array[] $actions The slugs of the actions that relate to this
 	 *                               event, indexed by action type. If only a single
@@ -77,20 +77,16 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 	 */
 	public function register( $slug, $class, array $args = array() ) {
 
-		// TODO shoudl this be required?
-		if ( ! isset( $args['actions'] ) ) {
-			return false;
-		}
-
 		parent::register( $slug, $class, $args );
 
-		foreach ( $args['actions'] as $type => $actions ) {
-			foreach ( (array) $actions as $action_slug ) {
-				$this->router->add_event_to_action( $slug, $action_slug, $type );
+		if ( isset( $args['actions'] ) ) {
+			foreach ( $args['actions'] as $type => $actions ) {
+				foreach ( (array) $actions as $action_slug ) {
+					$this->router->add_event_to_action( $slug, $action_slug, $type );
+				}
 			}
 		}
 
-		// TODO should this be required?
 		if ( isset( $args['args'] ) ) {
 			foreach ( $args['args'] as $arg_slug => $class ) {
 				$this->args->register( $slug, $arg_slug, $class );
