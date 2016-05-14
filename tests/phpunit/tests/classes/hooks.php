@@ -199,6 +199,73 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
 		);
 	}
+	
+	/**
+	 * Test firing an event.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_fire_event_reaction_store_out_of_context() {
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Extension $extension */
+		$extension = $this->factory->wordpoints->hook_extension->create_and_get();
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Extension $other_extension */
+		$other_extension = $this->factory->wordpoints->hook_extension->create_and_get(
+			array( 'slug' => 'another' )
+		);
+
+
+		$slug = $this->factory->wordpoints->hook_reaction_store->create(
+			array(
+				'slug' => 'contexted',
+				'class' => 'WordPoints_PHPUnit_Mock_Hook_Reaction_Store_Contexted',
+			)
+		);
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$reactions = $this->factory->wordpoints->hook_reaction->create_many(
+			2
+			, array( 'reaction_store' => $slug )
+		);
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $other_reactor */
+		$other_reactor = $this->factory->wordpoints->hook_reactor->create_and_get(
+			array( 'slug' => 'another' )
+		);
+
+		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
+			array( 'reactor' => 'another' )
+		);
+		
+		wordpoints_entities()->contexts->register(
+			'test_context'
+			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
+		);
+
+		$this->fire_event();
+
+		// The extensions should have each been checked.
+		$this->assertCount( 1, $extension->hit_checks );
+		$this->assertCount( 1, $extension->hits );
+
+		$this->assertCount( 1, $other_extension->hit_checks );
+		$this->assertCount( 1, $other_extension->hits );
+
+		// The first reactor should not have been hit.
+		$this->assertCount( 0, $reactor->hits );
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ), 0 );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ), 0 );
+
+		// The other reactor should.
+		$this->assertCount( 1, $other_reactor->hits );
+
+		$this->assertHitsLogged(
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+		);
+	}
 
 	/**
 	 * Test firing an event when one reactor doesn't listen for this action type.
