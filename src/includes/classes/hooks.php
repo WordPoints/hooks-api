@@ -125,7 +125,7 @@ class WordPoints_Hooks extends WordPoints_App {
 
 		return $reaction_store;
 	}
-	
+
 	/**
 	 * Fire an event at each of the reactions.
 	 *

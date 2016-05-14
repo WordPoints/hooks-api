@@ -184,7 +184,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_route_action_no_events() {
 
 		$apps = $this->mock_apps();
-		
+
 		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
@@ -209,7 +209,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_route_action_invalid_action() {
 
 		$apps = $this->mock_apps();
-		
+
 		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
@@ -222,7 +222,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertEquals( 'test_action', $slug );
 
 		$this->factory->wordpoints->hook_event->create();
-		
+
 		do_action( __CLASS__, 1, 2, 3 );
 
 		/** @var WordPoints_PHPUnit_Mock_Hooks $hooks */
@@ -239,7 +239,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_route_action_unregistered_event() {
 
 		$apps = $this->mock_apps();
-		
+
 		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
@@ -266,7 +266,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_route_action_no_event_args() {
 
 		$apps = $this->mock_apps();
-		
+
 		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
@@ -296,7 +296,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	public function test_add_action_no_action() {
 
 		$apps = $this->mock_apps();
-		
+
 		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(

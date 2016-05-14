@@ -199,7 +199,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
 		);
 	}
-	
+
 	/**
 	 * Test firing an event.
 	 *
@@ -238,7 +238,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$other_reaction = $this->factory->wordpoints->hook_reaction->create(
 			array( 'reactor' => 'another' )
 		);
-		
+
 		wordpoints_entities()->contexts->register(
 			'test_context'
 			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'

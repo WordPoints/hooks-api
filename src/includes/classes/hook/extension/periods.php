@@ -21,7 +21,7 @@ class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
 
 	/**
 	 * The type of action that is being fired.
-	 * 
+	 *
 	 * Set in fire() and after_fire().
 	 *
 	 * @since 1.0.0

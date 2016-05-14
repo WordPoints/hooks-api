@@ -38,7 +38,7 @@ class WordPoints_Hook_Router {
 	 * @var WordPoints_Hooks
 	 */
 	protected $hooks;
-	
+
 	/**
 	 * The actions registry object.
 	 *
