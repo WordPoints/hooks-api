@@ -14,7 +14,171 @@
  *
  * @coversNothing
  */
-class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_Points_UnitTestCase {
+class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks {
+
+	public function test_post_publish_twice() {
+
+		$this->create_points_type();
+
+		$hooks = wordpoints_hooks();
+
+		$points_target = $hooks->get_reaction_store( 'points' );
+		$instance      = $points_target->create_reaction(
+			array(
+				'event'       => 'post_publish\post',
+				'reactor'     => 'points',
+				'points'      => 10,
+				'points_type' => 'points',
+				'target'      => array( 'post\post', 'author', 'user' ),
+				'description' => 'lkjlkj',
+				'log_text'    => 'lkjlkj',
+			)
+		);
+
+		$this->assertInstanceOf( 'WordPoints_Hook_ReactionI', $instance );
+
+		$user_id = $this->factory->user->create();
+
+		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
+
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type' => 'post',
+				'post_author' => $user_id,
+			)
+		);
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'draft' ) );
+
+		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'publish' ) );
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		$this->factory->post->create(
+			array(
+				'post_type' => 'post',
+				'post_author' => $user_id,
+			)
+		);
+
+		$this->assertEquals( 20, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_delete_post( $post_id, true );
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+	}
+
+	public function test_post_publish_twice_blocked_reversals() {
+
+		$this->create_points_type();
+
+		$hooks = wordpoints_hooks();
+
+		$points_target = $hooks->get_reaction_store( 'points' );
+		$instance      = $points_target->create_reaction(
+			array(
+				'event'       => 'post_publish\post',
+				'reactor'     => 'points',
+				'points'      => 10,
+				'points_type' => 'points',
+				'target'      => array( 'post\post', 'author', 'user' ),
+				'description' => 'lkjlkj',
+				'log_text'    => 'lkjlkj',
+				'blocker'     => array( 'toggle_off' => true ),
+				'repeat_blocker' => array( 'toggle_on' => true ),
+			)
+		);
+
+		$this->assertInstanceOf( 'WordPoints_Hook_ReactionI', $instance );
+
+		$user_id = $this->factory->user->create();
+
+		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
+
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type' => 'post',
+				'post_author' => $user_id,
+			)
+		);
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'draft' ) );
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'publish' ) );
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		$this->factory->post->create(
+			array(
+				'post_type' => 'post',
+				'post_author' => $user_id,
+			)
+		);
+
+		$this->assertEquals( 20, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_delete_post( $post_id, true );
+
+		$this->assertEquals( 20, wordpoints_get_points( $user_id, 'points' ) );
+	}
+	
+	public function test_comment_leave_twice() {
+
+		$this->create_points_type();
+
+		$hooks = wordpoints_hooks();
+
+		$points_target = $hooks->get_reaction_store( 'points' );
+		$instance      = $points_target->create_reaction(
+			array(
+				'event'       => 'comment_leave\post',
+				'reactor'     => 'points',
+				'points'      => 10,
+				'points_type' => 'points',
+				'target'      => array( 'comment\post', 'post\post', 'post\post', 'author', 'user' ),
+				'description' => 'lkjlkj',
+				'log_text'    => 'lkjlkj',
+			)
+		);
+
+		$this->assertIsReaction( $instance );
+
+		$user_id = $this->factory->user->create();
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type' => 'post',
+				'post_author' => $user_id,
+			)
+		);
+
+		$comment_id = $this->factory->comment->create(
+			array( 'comment_post_ID' => $post_id )
+		);
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_comment( array( 'comment_ID' => $comment_id, 'comment_status' => 0 ) );
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_comment( array( 'comment_ID' => $comment_id, 'comment_status' => 'approved' ) );
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		$this->factory->comment->create(
+			array( 'comment_post_ID' => $post_id )
+		);
+
+		$this->assertEquals( 20, wordpoints_get_points( $user_id, 'points' ) );
+	}
 
 	public function test_publish_revision() {
 

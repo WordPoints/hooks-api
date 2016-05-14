@@ -96,6 +96,42 @@ class WordPoints_Hook_Fire {
 
 		return $this->hit_id;
 	}
+
+	/**
+	 * Get a query for hits in the database matching the current fire.
+	 * 
+	 * If you don't need to query based on all of the args, you can use {@see 
+	 * WordPoints_Hook_Hit_Query::set_args()} to override them.
+	 * 
+	 * Example:
+	 * 
+	 * ```php
+	 * $query->set_args( array( 'reaction_id' => null ) );
+	 * ```
+	 *
+	 * @since 1.0.0
+	 *        
+	 * @return WordPoints_Hook_Hit_Query A query pre-populated with args matching the
+	 *                                   current fire.
+	 */
+	public function get_matching_hits_query() {
+		
+		return new WordPoints_Hook_Hit_Query(
+			array(
+				'action_type' => $this->action_type,
+				'primary_arg_guid' => wordpoints_hooks_get_event_primary_arg_guid_json(
+					$this->event_args
+				),
+				'event' => $this->reaction->get_event_slug(),
+				'reactor' => $this->reaction->get_reactor_slug(),
+				'reaction_store' => $this->reaction->get_store_slug(),
+				'reaction_context_id' => wp_json_encode(
+					$this->reaction->get_context_id()
+				),
+				'reaction_id' => $this->reaction->ID,
+			)
+		);
+	}
 }
 
 // EOF
