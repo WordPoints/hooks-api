@@ -27,9 +27,9 @@ class WordPoints_PHPUnit_Mock_Hooks extends WordPoints_Hooks {
 	 * @since 1.0.0
 	 */
 	public function fire(
-		$action_type,
 		$event_slug,
-		WordPoints_Hook_Event_Args $event_args
+		WordPoints_Hook_Event_Args $event_args,
+		$action_type
 	) {
 
 		$this->fires[] = array(
@@ -38,7 +38,7 @@ class WordPoints_PHPUnit_Mock_Hooks extends WordPoints_Hooks {
 			'event_slug'  => $event_slug,
 		);
 
-		parent::fire( $action_type, $event_slug, $event_args );
+		parent::fire( $event_slug, $event_args, $action_type );
 	}
 }
 

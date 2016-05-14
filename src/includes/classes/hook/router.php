@@ -153,7 +153,7 @@ class WordPoints_Hook_Router {
 
 					$event_args = new WordPoints_Hook_Event_Args( $event_args );
 
-					$this->hooks->fire( $type, $event_slug, $event_args );
+					$this->hooks->fire( $event_slug, $event_args, $type );
 				}
 			}
 		}

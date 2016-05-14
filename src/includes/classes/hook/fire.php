@@ -60,14 +60,14 @@ class WordPoints_Hook_Fire {
 	public $hit_id = false;
 
 	/**
-	 * @param string                     $action_type The type of action.
 	 * @param WordPoints_Hook_Event_Args $event_args  The event args.
 	 * @param WordPoints_Hook_ReactionI  $reaction    The reaction.
+	 * @param string                     $action_type The type of action.
 	 */
 	public function __construct(
-		$action_type,
 		WordPoints_Hook_Event_Args $event_args,
-		WordPoints_Hook_ReactionI $reaction
+		WordPoints_Hook_ReactionI $reaction,
+		$action_type
 	) {
 
 		$this->action_type = $action_type;

@@ -246,7 +246,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$reactor->hit( $fire );
 
@@ -311,7 +311,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$reactor->hit( $fire );
 
@@ -381,7 +381,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$reactor->hit( $fire );
 
@@ -452,7 +452,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$reactor->hit( $fire );
 

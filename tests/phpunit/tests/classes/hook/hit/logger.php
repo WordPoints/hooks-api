@@ -27,7 +27,7 @@ class WordPoints_Hook_Hit_Logger_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$action_type = 'test_fire';
 
-		$fire = new WordPoints_Hook_Fire( $action_type, $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, $action_type );
 
 		$hit_id = $fire->hit_logger->log_hit();
 

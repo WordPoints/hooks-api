@@ -291,7 +291,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$this->assertTrue( $extension->should_hit( $fire ) );
 
@@ -339,7 +339,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$fire->hit();
 
@@ -429,13 +429,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
 		$this->assertCount( 1, $hooks->reactors->get( 'test_reactor' )->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
@@ -500,7 +500,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another' )
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
@@ -510,7 +510,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 1 );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -576,19 +576,19 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
 		$reaction->update_meta( 'target', array( 'another:test_entity' ) );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -629,13 +629,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -643,7 +643,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertIsReaction( $reaction );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -684,13 +684,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -703,7 +703,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertEquals( $reaction->ID, $other_reaction->ID );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -748,13 +748,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -770,7 +770,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, $other_reaction->get_context_id()
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -815,20 +815,20 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
 		// Then perform the event with a different reaction context ID.
 		WordPoints_PHPUnit_Mock_Entity_Context::$current_id = 5;
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -869,19 +869,19 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
 		$entity->set_the_value( 6 );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -925,17 +925,17 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -974,13 +974,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -992,7 +992,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, array( 'test_fire' => array( array( 'length' => HOUR_IN_SECONDS ) ) )
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -1002,7 +1002,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, array( 'test_fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ) )
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -1041,7 +1041,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$test_reactor = $hooks->reactors->get( 'test_reactor' );
 
@@ -1049,7 +1049,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->fast_forward( $test_reactor->hits[0]->hit_id, MINUTE_IN_SECONDS + 3 );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -1059,7 +1059,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			, array( 'test_fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ) )
 		);
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertCount( 2, $test_reactor->hits );
 	}
@@ -1100,7 +1100,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$get_by_reaction_queries->count_callback = array( $this, 'is_get_period_by_reaction_query' );
 		add_filter( 'query', array( $get_by_reaction_queries, 'filter' ) );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
@@ -1109,14 +1109,14 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 1, $get_period_queries->call_count );
 		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 1, $get_period_queries->call_count );
 		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
@@ -1160,7 +1160,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$get_by_reaction_queries->count_callback = array( $this, 'is_get_period_by_reaction_query' );
 		add_filter( 'query', array( $get_by_reaction_queries, 'filter' ) );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
@@ -1171,21 +1171,21 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->flush_cache();
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 2, $get_by_reaction_queries->call_count );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 2, $get_by_reaction_queries->call_count );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$hooks->fire( 'test_fire', 'test_event', $event_args );
+		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 2, $get_by_reaction_queries->call_count );

@@ -583,7 +583,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$args = new WordPoints_Hook_Event_Args( array() );
 
-		wordpoints_hooks()->fire( 'test_fire', 'test_event', $args );
+		wordpoints_hooks()->fire( 'test_event', $args, 'test_fire' );
 	}
 }
 

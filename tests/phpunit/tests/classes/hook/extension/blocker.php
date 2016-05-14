@@ -74,7 +74,7 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$extension = new WordPoints_Hook_Extension_Blocker();
 
@@ -113,7 +113,7 @@ class WordPoints_Hook_Extension_Blocker_Test extends WordPoints_PHPUnit_TestCase
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
-		$fire = new WordPoints_Hook_Fire( 'test_fire', $event_args, $reaction );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
 		$extension = new WordPoints_Hook_Extension_Blocker();
 

@@ -131,15 +131,15 @@ class WordPoints_Hooks extends WordPoints_App {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                     $action_type The type of action triggering
-	 *                                                this fire of this event.
 	 * @param string                     $event_slug  The slug of the event.
 	 * @param WordPoints_Hook_Event_Args $event_args  The event args.
+	 * @param string                     $action_type The type of action triggering
+	 *                                                this fire of this event.
 	 */
 	public function fire(
-		$action_type,
 		$event_slug,
-		WordPoints_Hook_Event_Args $event_args
+		WordPoints_Hook_Event_Args $event_args,
+		$action_type
 	) {
 
 		foreach ( $this->reaction_stores->get_all() as $reaction_stores ) {
@@ -157,9 +157,9 @@ class WordPoints_Hooks extends WordPoints_App {
 				foreach ( $reaction_store->get_reactions_to_event( $event_slug ) as $reaction ) {
 
 					$fire = new WordPoints_Hook_Fire(
-						$action_type
-						, $event_args
+						$event_args
 						, $reaction
+						, $action_type
 					);
 
 					$this->fire_reaction( $fire );
