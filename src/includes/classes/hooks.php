@@ -213,7 +213,9 @@ class WordPoints_Hooks extends WordPoints_App {
 		$reactor->hit( $fire );
 
 		foreach ( $extensions as $extension ) {
-			$extension->after_hit( $fire );
+			if ( $extension instanceof WordPoints_Hook_Extension_Hit_ListenerI ) {
+				$extension->after_hit( $fire );
+			}
 		}
 	}
 }

@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Extension_Periods extends WordPoints_Hook_Extension {
+class WordPoints_Hook_Extension_Periods
+	extends WordPoints_Hook_Extension
+	implements WordPoints_Hook_Extension_Hit_ListenerI {
 
 	/**
 	 * @since 1.0.0
