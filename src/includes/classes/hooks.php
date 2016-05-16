@@ -198,6 +198,12 @@ class WordPoints_Hooks extends WordPoints_App {
 
 		foreach ( $extensions as $extension ) {
 			if ( ! $extension->should_hit( $fire ) ) {
+				foreach ( $extensions as $ext ) {
+					if ( $ext instanceof WordPoints_Hook_Extension_Miss_ListenerI ) {
+						$ext->after_miss( $fire );
+					}
+				}
+				
 				return;
 			}
 		}

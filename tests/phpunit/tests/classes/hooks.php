@@ -575,6 +575,62 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	}
 
 	/**
+	 * Test firing an event when one of the extensions is a miss listener.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_fire_event_with_miss_listener() {
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Extension_Miss_Listener $extension */
+		$extension = $this->factory->wordpoints->hook_extension->create_and_get(
+			array( 'class' => 'WordPoints_PHPUnit_Mock_Hook_Extension_Miss_Listener' )
+		);
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Extension $other_extension */
+		$other_extension = $this->factory->wordpoints->hook_extension->create_and_get(
+			array( 'slug' => 'another' )
+		);
+
+		/** @var WordPoints_PHPUnit_Mock_Hook_Reactor $reactor */
+		$reactor = $this->factory->wordpoints->hook_reactor->create_and_get();
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->fire_event();
+
+		// The extensions should have each been checked.
+		$this->assertCount( 1, $extension->hit_checks );
+		$this->assertCount( 1, $extension->hits );
+		$this->assertCount( 0, $extension->misses );
+
+		$this->assertCount( 1, $other_extension->hit_checks );
+		$this->assertCount( 1, $other_extension->hits );
+
+		// The reactor should have been hit.
+		$this->assertCount( 1, $reactor->hits );
+
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+
+		// Block one of the extensions from allowing a hit this time.
+		$other_extension->should_hit = false;
+
+		$this->fire_event();
+
+		// The extensions should not have hit again.
+		$this->assertCount( 2, $extension->hit_checks );
+		$this->assertCount( 1, $extension->hits );
+		$this->assertCount( 1, $extension->misses );
+
+		$this->assertCount( 2, $other_extension->hit_checks );
+		$this->assertCount( 1, $other_extension->hits );
+
+		// The reactor should not have been hit again.
+		$this->assertCount( 1, $reactor->hits );
+
+		// There should still be just one hit in the logs.
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+	}
+
+	/**
 	 * Fire an event.
 	 *
 	 * @since 1.0.0
