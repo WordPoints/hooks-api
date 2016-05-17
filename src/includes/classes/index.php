@@ -94,6 +94,7 @@ require_once( dirname( __FILE__ ) . 'hook/extension/hit/listeneri.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/miss/listeneri.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/periods.php' );
 require_once( dirname( __FILE__ ) . 'hook/extension/repeat/blocker.php' );
+require_once( dirname( __FILE__ ) . 'hook/extension/reversals.php' );
 require_once( dirname( __FILE__ ) . 'hook/fire.php' );
 require_once( dirname( __FILE__ ) . 'hook/hit/logger.php' );
 require_once( dirname( __FILE__ ) . 'hook/hit/query.php' );

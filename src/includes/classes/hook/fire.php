@@ -60,6 +60,19 @@ class WordPoints_Hook_Fire {
 	public $hit_id = false;
 
 	/**
+	 * Other data for this fire.
+	 * 
+	 * This is unused by default, but it may be used by extensions as needed. It is
+	 * highly recommended that extensions store their data in a sub-array under a key
+	 * matching the extension slug.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	public $data = array();
+
+	/**
 	 * @param WordPoints_Hook_Event_Args $event_args  The event args.
 	 * @param WordPoints_Hook_ReactionI  $reaction    The reaction.
 	 * @param string                     $action_type The type of action.

@@ -158,6 +158,7 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->assertTrue( $extensions->is_registered( 'blocker' ) );
 		$this->assertTrue( $extensions->is_registered( 'repeat_blocker' ) );
+		$this->assertTrue( $extensions->is_registered( 'reversals' ) );
 		$this->assertTrue( $extensions->is_registered( 'conditions' ) );
 		$this->assertTrue( $extensions->is_registered( 'periods' ) );
 	}
