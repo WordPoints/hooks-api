@@ -139,6 +139,20 @@ class WordPoints_DB_Query_Test extends WordPoints_PHPUnit_TestCase {
 	}
 
 	/**
+	 * Test that set_args() returns the query instance.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_set_args_returns_query() {
+
+		$query = new WordPoints_DB_Query( array( 'start' => 10, 'custom' => 'a' ) );
+
+		$return = $query->set_args( array( 'order' => 'ASC', 'custom' => 'b' ) );
+
+		$this->assertTrue( $return === $query );
+	}
+
+	/**
 	 * Test that count() returns the number of matching rows.
 	 *
 	 * @since 1.0.0

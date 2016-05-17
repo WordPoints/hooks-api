@@ -245,12 +245,16 @@ class WordPoints_DB_Query {
 	 * @since 1.0.0
 	 *
 	 * @param array $args A list of arguments to set and their values.
+	 *
+	 * @return WordPoints_DB_Query To allow for method chaining.
 	 */
 	public function set_args( array $args ) {
 
 		$this->args = array_merge( $this->args, $args );
 
 		$this->is_query_ready = false;
+		
+		return $this;
 	}
 
 	/**
