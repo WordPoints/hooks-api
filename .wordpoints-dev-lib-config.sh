@@ -42,7 +42,7 @@ wpcept-run() {
 
 	vendor/bin/wpcept run --debug
 
-	find "$WORDPOINTS_DEVELOP_DIR"/tests/codeception/_output/*
+	ls "$WORDPOINTS_DEVELOP_DIR"/tests/codeception/
 	 cat "$WORDPOINTS_DEVELOP_DIR/tests/codeception/_output/savePointsReactionCept.fail.html"
 }
 
