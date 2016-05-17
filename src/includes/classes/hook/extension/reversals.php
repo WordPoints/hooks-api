@@ -95,7 +95,7 @@ class WordPoints_Hook_Extension_Reversals
 		$ids = $query->get( 'col' );
 
 		if ( ! $ids ) {
-			return array();
+			$ids = array();
 		}
 
 		$fire->data[ $this->slug ]['hit_ids'] = $ids;
