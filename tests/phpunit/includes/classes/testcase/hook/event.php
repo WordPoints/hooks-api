@@ -161,6 +161,10 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		if ( $this->event instanceof WordPoints_Hook_Event_RetroactiveI ) {
 			$this->assertNotEmpty( $this->event->get_retroactive_description() );
 		}
+		
+		if ( $this->event instanceof WordPoints_Hook_Event_ReversingI ) {
+			$this->assertNotEmpty( $this->event->get_reversal_text() );
+		}
 	}
 
 	/**

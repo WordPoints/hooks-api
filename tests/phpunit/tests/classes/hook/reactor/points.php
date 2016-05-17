@@ -328,7 +328,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$reactor->reverse_hit( $fire );
 
-		$this->assertEquals( 0, $query->count() );
+		$this->assertEquals( 1, $query->count() );
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
@@ -336,7 +336,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 			array( 'log_type' => 'reverse-user_register' )
 		);
 
-		$this->assertEquals( 0, $query->count() );
+		$this->assertEquals( 1, $query->count() );
 	}
 
 	/**
@@ -417,6 +417,10 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 	 */
 	public function test_reverse_hits_different_entities() {
 
+		// We create this user before creating the reaction so that they won't be
+		// awarded any points.
+		$user_not_awarded_id = $this->factory->user->create();
+
 		$settings = array(
 			'target'      => array( 'user' ),
 			'points'      => 10,
@@ -467,12 +471,19 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 1, $query->count() );
 
+		$reverse_query = new WordPoints_Points_Logs_Query(
+			array( 'fields' => 'id', 'log_type' => 'reverse-user_register' )
+		);
+
+		$this->assertEquals( 0, $reverse_query->count() );
+
 		// A different user ID for the user arg.
-		$entity->set_the_value( $this->factory->user->create() );
+		$entity->set_the_value( $user_not_awarded_id );
 
 		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 1, $query->count() );
+		$this->assertEquals( 0, $reverse_query->count() );
 
 		$this->assertEquals(
 			100 + $settings['points']

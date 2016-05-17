@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Event_User_Register extends WordPoints_Hook_Event {
+class WordPoints_Hook_Event_User_Register
+	extends WordPoints_Hook_Event
+	implements WordPoints_Hook_Event_ReversingI {
 
 	/**
 	 * @since 1.0.0
@@ -26,6 +28,13 @@ class WordPoints_Hook_Event_User_Register extends WordPoints_Hook_Event {
 	 */
 	public function get_description() {
 		return __( 'Registering.', 'wordpoints' );
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_reversal_text() {
+		return __( 'User removed.', 'wordpoints' );
 	}
 }
 

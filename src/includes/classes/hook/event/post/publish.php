@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Event_Post_Publish extends WordPoints_Hook_Event_Dynamic {
+class WordPoints_Hook_Event_Post_Publish
+	extends WordPoints_Hook_Event_Dynamic
+	implements WordPoints_Hook_Event_ReversingI {
 
 	/**
 	 * @since 1.0.0
@@ -62,6 +64,30 @@ class WordPoints_Hook_Event_Post_Publish extends WordPoints_Hook_Event_Dynamic {
 				return sprintf(
 					// translators: singular name of the post type
 					__( 'When a %s is published.', 'wordpoints' )
+					, $this->get_entity_title()
+				);
+		}
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_reversal_text() {
+		
+		$parsed = wordpoints_parse_dynamic_slug( $this->slug );
+
+		switch ( $parsed['dynamic'] ) {
+
+			case 'post':
+				return __( 'Post removed.', 'wordpoints' );
+
+			case 'page':
+				return __( 'Page removed.', 'wordpoints' );
+
+			default:
+				return sprintf(
+					// translators: singular name of the post type
+					_x( '%s removed.', 'post type', 'wordpoints' )
 					, $this->get_entity_title()
 				);
 		}

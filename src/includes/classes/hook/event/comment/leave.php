@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Event_Comment_Leave extends WordPoints_Hook_Event_Dynamic {
+class WordPoints_Hook_Event_Comment_Leave
+	extends WordPoints_Hook_Event_Dynamic
+	implements WordPoints_Hook_Event_ReversingI {
 
 	/**
 	 * @since 1.0.0
@@ -71,6 +73,13 @@ class WordPoints_Hook_Event_Comment_Leave extends WordPoints_Hook_Event_Dynamic 
 					, $this->get_entity_title()
 				);
 		}
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function get_reversal_text() {
+		return __( 'Comment removed.', 'wordpoints' );
 	}
 }
 

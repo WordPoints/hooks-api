@@ -193,9 +193,24 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 			return;
 		}
 
-		global $wpdb;
+		$event = wordpoints_hooks()->events->get(
+			$fire->reaction->get_event_slug()
+		);
 
-		add_filter( 'wordpoints_points_log', '__return_false' );
+		if ( $event instanceof WordPoints_Hook_Event_ReversingI ) {
+
+			/* translators: 1: log text for transaction that is being reversed, 2: the reason that this is being reversed. */
+			$template = __( 'Reversed &#8220;%1$s&#8221; (%2$s)', 'wordpoints' );
+
+			$event_description = $event->get_reversal_text();
+
+		} else {
+
+			/* translators: 1: log text for transaction that is being reversed. */
+			$template = __( 'Reversed &#8220;%1$s&#8221;', 'wordpoints' );
+
+			$event_description = '';
+		}
 
 		foreach ( $logs as $log ) {
 
@@ -205,19 +220,9 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 				, $log->points_type
 				, "reverse-{$log->log_type}"
 				, array( 'original_log_id' => $log->id )
+				, sprintf( $template, $log->text, $event_description )
 			);
-
-			wordpoints_points_log_delete_all_metadata( $log->id );
-
-			// Now delete the log.
-			$wpdb->delete(
-				$wpdb->wordpoints_points_logs
-				, array( 'id' => $log->id )
-				, '%d'
-			); // WPCS: cache OK, cleaned by wordpoints_alter_points().
 		}
-
-		remove_filter( 'wordpoints_points_log', '__return_false' );
 	}
 }
 
