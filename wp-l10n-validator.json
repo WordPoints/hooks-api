@@ -104,11 +104,13 @@
 		"data-wordpoints-hooks-reactor"
 	],
 	"ignored-paths": [
+		"/includes/classes/entity/change.php",
 		"/includes/classes/hierarchy.php",
 		"/includes/classes/hook/retroactive/",
 		"/includes/classes/hook/settings.php",
 		"/includes/classes/query/",
 		"/includes/classes/specedi.php",
-		"/includes/classes/spec.php"
+		"/includes/classes/spec.php",
+		"/includes/classes/wpdb/wrapper.php"
 	]
 }

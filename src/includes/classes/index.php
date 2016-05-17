@@ -27,6 +27,7 @@ require_once( dirname( __FILE__ ) . 'entity.php' );
 require_once( dirname( __FILE__ ) . 'entity/array.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr.php' );
 require_once( dirname( __FILE__ ) . 'entity/attr/field.php' );
+require_once( dirname( __FILE__ ) . 'entity/change.php' );
 require_once( dirname( __FILE__ ) . 'entity/childi.php' );
 require_once( dirname( __FILE__ ) . 'entity/comment.php' );
 require_once( dirname( __FILE__ ) . 'entity/comment/author.php' );
@@ -121,6 +122,7 @@ require_once( dirname( __FILE__ ) . 'hooks.php' );
 require_once( dirname( __FILE__ ) . 'query/builder/db/mysql.php' );
 require_once( dirname( __FILE__ ) . 'spec.php' );
 require_once( dirname( __FILE__ ) . 'specedi.php' );
+require_once( dirname( __FILE__ ) . 'wpdb/wrapper.php' );
 // }
 
 // EOF
