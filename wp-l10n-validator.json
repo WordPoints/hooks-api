@@ -101,6 +101,7 @@
 		"WordPoints_Un_Installer_Base::$type": true
 	},
 	"ignored-atts": [
+		"data-wordpoints-hooks-reaction-store",
 		"data-wordpoints-hooks-reactor"
 	],
 	"ignored-paths": [
