@@ -36,6 +36,7 @@ function wordpoints_init_hooks() {
 function wordpoints_hook_reactors_init( $reactors ) {
 
 	$reactors->register( 'points', 'WordPoints_Hook_Reactor_Points' );
+	$reactors->register( 'points_legacy', 'WordPoints_Hook_Reactor_Points_Legacy' );
 }
 
 /**

@@ -163,14 +163,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
-		$meta_queries = array(
-			array(
-				// This is needed for back-compat with the way the points hooks
-				// reversed transactions, so we don't re-reverse them.
-				'key'     => 'auto_reversed',
-				'compare' => 'NOT EXISTS',
-			),
-		);
+		$meta_queries = array();
 
 		foreach ( $fire->event_args->get_entities() as $slug => $entity ) {
 
@@ -192,6 +185,19 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 		if ( ! $logs ) {
 			return;
 		}
+
+		$this->reverse_logs( $logs, $fire );
+	}
+
+	/**
+	 * Reverse some points logs.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param object[]             $logs The logs to reverse.
+	 * @param WordPoints_Hook_Fire $fire The fire object.
+	 */
+	protected function reverse_logs( $logs, WordPoints_Hook_Fire $fire ) {
 
 		$event = wordpoints_hooks()->events->get(
 			$fire->reaction->get_event_slug()

@@ -97,6 +97,7 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		wordpoints_hook_reactors_init( $reactors );
 
 		$this->assertTrue( $reactors->is_registered( 'points' ) );
+		$this->assertTrue( $reactors->is_registered( 'points_legacy' ) );
 	}
 
 	/**
