@@ -253,7 +253,7 @@ class WordPoints_DB_Query {
 		$this->args = array_merge( $this->args, $args );
 
 		$this->is_query_ready = false;
-		
+
 		return $this;
 	}
 

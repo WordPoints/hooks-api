@@ -9,7 +9,7 @@
 
 /**
  * Implemented by extensions that want to listen for misses.
- * 
+ *
  * @since 1.0.0
  */
 interface WordPoints_Hook_Extension_Miss_ListenerI {

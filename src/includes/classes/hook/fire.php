@@ -61,7 +61,7 @@ class WordPoints_Hook_Fire {
 
 	/**
 	 * Other data for this fire.
-	 * 
+	 *
 	 * This is unused by default, but it may be used by extensions as needed. It is
 	 * highly recommended that extensions store their data in a sub-array under a key
 	 * matching the extension slug.
@@ -112,23 +112,23 @@ class WordPoints_Hook_Fire {
 
 	/**
 	 * Get a query for hits in the database matching the current fire.
-	 * 
-	 * If you don't need to query based on all of the args, you can use {@see 
+	 *
+	 * If you don't need to query based on all of the args, you can use {@see
 	 * WordPoints_Hook_Hit_Query::set_args()} to override them.
-	 * 
+	 *
 	 * Example:
-	 * 
+	 *
 	 * ```php
 	 * $query->set_args( array( 'reaction_id' => null ) );
 	 * ```
 	 *
 	 * @since 1.0.0
-	 *        
+	 *
 	 * @return WordPoints_Hook_Hit_Query A query pre-populated with args matching the
 	 *                                   current fire.
 	 */
 	public function get_matching_hits_query() {
-		
+
 		return new WordPoints_Hook_Hit_Query(
 			array(
 				'action_type' => $this->action_type,

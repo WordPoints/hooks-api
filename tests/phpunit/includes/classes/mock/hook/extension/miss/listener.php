@@ -20,7 +20,7 @@ class WordPoints_PHPUnit_Mock_Hook_Extension_Miss_Listener
 	 * @since 1.0.0
 	 */
 	protected $slug = 'test_miss_listener_extension';
-	
+
 	/**
 	 * The args passed to after_miss() each time it was called.
 	 *
@@ -32,7 +32,7 @@ class WordPoints_PHPUnit_Mock_Hook_Extension_Miss_Listener
 
 	/**
 	 * @since 1.0.0
-	 */ 
+	 */
 	public function after_miss( WordPoints_Hook_Fire $fire ) {
 		$this->misses[] = $fire;
 	}

@@ -203,7 +203,7 @@ class WordPoints_Hooks extends WordPoints_App {
 						$ext->after_miss( $fire );
 					}
 				}
-				
+
 				return;
 			}
 		}

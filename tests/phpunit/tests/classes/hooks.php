@@ -215,7 +215,6 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'slug' => 'another' )
 		);
 
-
 		$slug = $this->factory->wordpoints->hook_reaction_store->create(
 			array(
 				'slug' => 'contexted',
