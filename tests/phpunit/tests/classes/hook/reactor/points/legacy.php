@@ -15,14 +15,48 @@
  * @covers WordPoints_Hook_Reactor_Points_Legacy
  */
 class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_TestCase_Hooks {
-	
+
+	/**
+	 * Test updating the settings.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_update_settings() {
+
+		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
+
+		$this->create_points_type();
+
+		$settings = array(
+			'target'          => array( 'user' ),
+			'points'          => 10,
+			'points_type'     => 'points',
+			'description'     => 'Testing.',
+			'log_text'        => 'Testing.',
+			'legacy_log_type' => 'test',
+		);
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
+
+		$this->assertIsReaction( $reaction );
+
+		$reactor->update_settings( $reaction, $settings );
+
+		$this->assertEquals( $settings['target'], $reaction->get_meta( 'target' ) );
+		$this->assertEquals( $settings['points'], $reaction->get_meta( 'points' ) );
+		$this->assertEquals( $settings['points_type'], $reaction->get_meta( 'points_type' ) );
+		$this->assertEquals( $settings['description'], $reaction->get_meta( 'description' ) );
+		$this->assertEquals( $settings['log_text'], $reaction->get_meta( 'log_text' ) );
+		$this->assertEquals( $settings['legacy_log_type'], $reaction->get_meta( 'legacy_log_type' ) );
+	}
+
 	/**
 	 * Test reversing an event.
 	 *
 	 * @since 1.0.0
 	 */
 	public function test_reverse_hits() {
-		
+
 		$settings = array(
 			'target'      => array( 'user' ),
 			'points'      => 10,
@@ -219,7 +253,7 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		$arg->value = $user_not_awarded_id;
 
 		$fire->event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
-		
+
 		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 1, $query->count() );
@@ -230,7 +264,7 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 			, wordpoints_get_points( $user_id, 'points' )
 		);
 	}
-	
+
 	/**
 	 * Test reversing an event only takes into account the primary entity.
 	 *
@@ -247,7 +281,7 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		);
 
 		$settings['event'] = 'user_register';
-		$settings['reactor'] = 'points';
+		$settings['reactor'] = 'points_legacy';
 
 		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
 
@@ -296,6 +330,89 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		// A different value for the stateful entity.
 		$stateful_entity->set_the_value( 2 );
 
+		$reactor->reverse_hit( $fire );
+
+		$this->assertEquals( 1, $query->count() );
+		$this->assertEquals( 1, $reverse_query->count() );
+
+		$this->assertEquals(
+			100
+			, wordpoints_get_points( $user_id, 'points' )
+		);
+	}
+
+	/**
+	 * Test reversing an event when the entity is namespaced.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reverse_hits_namespaced_entity() {
+
+		$user_id = $this->factory->user->create();
+		$post_id = $this->factory->post->create(
+			array( 'post_author' => $user_id, 'post_type' => 'page' )
+		);
+
+		$this->create_points_type();
+
+		wordpoints_set_points( $user_id, 100, 'points', 'test' );
+
+		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
+
+		$points = 10;
+
+		// Simulate a legacy points hook fire.
+		wordpoints_alter_points(
+			$user_id
+			, $points
+			, 'points'
+			, 'post_publish'
+			, array( 'post' => $post_id )
+		);
+
+		$this->assertEquals(
+			100 + $points
+			, wordpoints_get_points( $user_id, 'points' )
+		);
+
+		$query = new WordPoints_Points_Logs_Query(
+			array( 'fields' => 'id', 'log_type' => 'post_publish' )
+		);
+
+		$this->assertEquals( 1, $query->count() );
+
+		$reverse_query = new WordPoints_Points_Logs_Query(
+			array( 'fields' => 'id', 'log_type' => 'reverse-post_publish' )
+		);
+
+		$this->assertEquals( 0, $reverse_query->count() );
+
+		// Now reverse fire.
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'post\page' );
+		$arg->value = $post_id;
+
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction(
+				array(
+					'event'           => 'post_publish\page',
+					'reactor'         => 'points_legacy',
+					'target'          => array( 'post\page', 'author', 'user' ),
+					'points'          => $points,
+					'points_type'     => 'points',
+					'description'     => 'Testing.',
+					'log_text'        => 'Testing.',
+					'legacy_log_type' => 'post_publish',
+				)
+			);
+
+		$this->assertIsReaction( $reaction );
+
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
+
+		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
 		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 1, $query->count() );
