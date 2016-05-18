@@ -163,20 +163,21 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
-		$meta_queries = array();
-
-		foreach ( $fire->event_args->get_entities() as $slug => $entity ) {
-
-			$meta_queries[] = array(
-				'key'   => $slug,
-				'value' => $entity->get_the_id(),
-			);
+		$entity = $fire->event_args->get_primary_arg();
+		
+		if ( ! $entity ) {
+			return;
 		}
 
 		$query = new WordPoints_Points_Logs_Query(
 			array(
 				'log_type'   => $fire->reaction->get_event_slug(),
-				'meta_query' => $meta_queries,
+				'meta_query' => array(
+					array(
+						'key'   => $entity->get_slug(),
+						'value' => $entity->get_the_id(),
+					),
+				),
 			)
 		);
 

@@ -24,6 +24,12 @@ class WordPoints_Hook_Reactor_Points_Legacy extends WordPoints_Hook_Reactor_Poin
 	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
+		$entity = $fire->event_args->get_primary_arg();
+		
+		if ( ! $entity ) {
+			return;
+		}
+		
 		$meta_queries = array(
 			array(
 				// This is needed for back-compat with the way the points hooks
@@ -31,15 +37,11 @@ class WordPoints_Hook_Reactor_Points_Legacy extends WordPoints_Hook_Reactor_Poin
 				'key'     => 'auto_reversed',
 				'compare' => 'NOT EXISTS',
 			),
-		);
-
-		foreach ( $fire->event_args->get_entities() as $slug => $entity ) {
-
-			$meta_queries[] = array(
-				'key'   => $slug,
+			array(
+				'key'   => $entity->get_slug(),
 				'value' => $entity->get_the_id(),
-			);
-		}
+			)
+		);
 
 		$query = new WordPoints_Points_Logs_Query(
 			array(

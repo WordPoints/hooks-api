@@ -35,16 +35,13 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		$settings['reactor'] = 'points_legacy';
 
 		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
-		$event_args = new WordPoints_Hook_Event_Args( array() );
-
-		/** @var WordPoints_Entity_User $entity */
-		$entity = wordpoints_entities()->get( 'user' );
 
 		$user_id = $this->factory->user->create();
 
-		$entity->set_the_value( $user_id );
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
+		$arg->value = $user_id;
 
-		$event_args->add_entity( $entity );
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
 
 		$this->create_points_type();
 
@@ -105,16 +102,13 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		$settings['reactor'] = 'points_legacy';
 
 		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
-		$event_args = new WordPoints_Hook_Event_Args( array() );
-
-		/** @var WordPoints_Entity_User $entity */
-		$entity = wordpoints_entities()->get( 'user' );
 
 		$user_id = $this->factory->user->create();
 
-		$entity->set_the_value( $user_id );
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
+		$arg->value = $user_id;
 
-		$event_args->add_entity( $entity );
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
 
 		$this->create_points_type();
 
@@ -180,16 +174,13 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		$settings['reactor'] = 'points_legacy';
 
 		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
-		$event_args = new WordPoints_Hook_Event_Args( array() );
-
-		/** @var WordPoints_Entity_User $entity */
-		$entity = wordpoints_entities()->get( 'user' );
 
 		$user_id = $this->factory->user->create();
 
-		$entity->set_the_value( $user_id );
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
+		$arg->value = $user_id;
 
-		$event_args->add_entity( $entity );
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
 
 		$this->create_points_type();
 
@@ -225,8 +216,10 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 		$this->assertEquals( 0, $reverse_query->count() );
 
 		// A different user ID for the user arg.
-		$entity->set_the_value( $user_not_awarded_id );
+		$arg->value = $user_not_awarded_id;
 
+		$fire->event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+		
 		$reactor->reverse_hit( $fire );
 
 		$this->assertEquals( 1, $query->count() );
@@ -234,6 +227,82 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 
 		$this->assertEquals(
 			100 + $settings['points']
+			, wordpoints_get_points( $user_id, 'points' )
+		);
+	}
+	
+	/**
+	 * Test reversing an event only takes into account the primary entity.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reverse_hits_different_stateful_entities() {
+
+		$settings = array(
+			'target'      => array( 'user' ),
+			'points'      => 10,
+			'points_type' => 'points',
+			'description' => 'Testing.',
+			'log_text'    => 'Testing.',
+		);
+
+		$settings['event'] = 'user_register';
+		$settings['reactor'] = 'points';
+
+		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
+
+		$user_id = $this->factory->user->create();
+
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
+		$arg->value = $user_id;
+
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+		$stateful_entity  = new WordPoints_PHPUnit_Mock_Entity( 'test_entity' );
+		$event_args->add_entity( $stateful_entity );
+
+		$this->create_points_type();
+
+		wordpoints_set_points( $user_id, 100, 'points', 'test' );
+
+		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
+
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction( $settings );
+
+		$this->assertIsReaction( $reaction );
+
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
+
+		$reactor->hit( $fire );
+
+		$this->assertEquals(
+			100 + $settings['points']
+			, wordpoints_get_points( $user_id, 'points' )
+		);
+
+		$query = new WordPoints_Points_Logs_Query(
+			array( 'fields' => 'id', 'log_type' => 'user_register' )
+		);
+
+		$this->assertEquals( 1, $query->count() );
+
+		$reverse_query = new WordPoints_Points_Logs_Query(
+			array( 'fields' => 'id', 'log_type' => 'reverse-user_register' )
+		);
+
+		$this->assertEquals( 0, $reverse_query->count() );
+
+		// A different value for the stateful entity.
+		$stateful_entity->set_the_value( 2 );
+
+		$reactor->reverse_hit( $fire );
+
+		$this->assertEquals( 1, $query->count() );
+		$this->assertEquals( 1, $reverse_query->count() );
+
+		$this->assertEquals(
+			100
 			, wordpoints_get_points( $user_id, 'points' )
 		);
 	}
