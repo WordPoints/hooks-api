@@ -329,11 +329,20 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
 
-		$query = new WordPoints_Points_Logs_Query(
+		$reverse_query = new WordPoints_Points_Logs_Query(
 			array( 'log_type' => 'reverse-user_register' )
 		);
 
-		$this->assertEquals( 1, $query->count() );
+		$this->assertEquals( 1, $reverse_query->count() );
+
+		$this->assertEquals(
+			$reverse_query->get( 'row' )->id
+			, wordpoints_get_points_log_meta(
+				$query->get( 'row' )->id
+				, 'auto_reversed'
+				, true
+			)
+		);
 	}
 
 	/**

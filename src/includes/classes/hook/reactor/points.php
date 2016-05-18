@@ -221,7 +221,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 
 		foreach ( $logs as $log ) {
 
-			wordpoints_alter_points(
+			$log_id = wordpoints_alter_points(
 				$log->user_id
 				, -$log->points
 				, $log->points_type
@@ -229,6 +229,9 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 				, array( 'original_log_id' => $log->id )
 				, sprintf( $template, $log->text, $event_description )
 			);
+
+			// Mark the old log as reversed by this one.
+			wordpoints_update_points_log_meta( $log->id, 'auto_reversed', $log_id );
 		}
 	}
 }

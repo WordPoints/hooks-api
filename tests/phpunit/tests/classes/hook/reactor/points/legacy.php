@@ -423,6 +423,90 @@ class WordPoints_Hook_Reactor_Points_Legacy_Test extends WordPoints_PHPUnit_Test
 			, wordpoints_get_points( $user_id, 'points' )
 		);
 	}
+
+	/**
+	 * Test reversing an event marks it as such so it isn't reversed a second time.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reverse_hit_only_reverses_once() {
+
+		$points = 10;
+
+		$user_id = $this->factory->user->create();
+
+		$this->create_points_type();
+
+		wordpoints_set_points( $user_id, 100, 'points', 'test' );
+
+		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
+
+		$reaction = wordpoints_hooks()
+			->get_reaction_store( 'points' )
+			->create_reaction(
+				array(
+					'event'       => 'user_register',
+					'reactor'     => 'points_legacy',
+					'target'      => array( 'user' ),
+					'points'      => $points,
+					'points_type' => 'points',
+					'description' => 'Testing.',
+					'log_text'    => 'Testing.',
+				)
+			);
+
+		$this->assertIsReaction( $reaction );
+
+		// Simulate a legacy points hook fire.
+		wordpoints_alter_points(
+			$user_id
+			, $points
+			, 'points'
+			, 'user_register'
+			, array( 'user' => $user_id )
+		);
+
+		$query = new WordPoints_Points_Logs_Query(
+			array(
+				'log_type' => 'user_register',
+				'meta_key' => 'auto_reversed',
+				'meta_compare' => 'NOT EXISTS',
+			)
+		);
+
+		$this->assertEquals( 1, $query->count() );
+
+		// Reverse fire once.
+		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
+		$arg->value = $user_id;
+
+		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
+
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
+
+		$reactor = new WordPoints_Hook_Reactor_Points_Legacy();
+		$reactor->reverse_hit( $fire );
+
+		$this->assertEquals( 0, $query->count() );
+
+		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
+
+		$reverse_query = new WordPoints_Points_Logs_Query(
+			array( 'log_type' => 'reverse-user_register' )
+		);
+
+		$this->assertEquals( 1, $reverse_query->count() );
+
+		// Reverse fire a second time.
+		$reactor->reverse_hit( $fire );
+
+		$this->assertEquals( 0, $query->count() );
+
+		// A second reverse should not have occurred.
+		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
+
+		$this->assertEquals( 1, $reverse_query->count() );
+	}
 }
 
 // EOF
