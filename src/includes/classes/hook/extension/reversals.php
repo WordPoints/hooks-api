@@ -71,7 +71,7 @@ class WordPoints_Hook_Extension_Reversals
 	 *
 	 * @param WordPoints_Hook_Fire $fire The fire object.
 	 *
-	 * @return array The ids the hits to be reversed.
+	 * @return array The IDs the hits to be reversed.
 	 */
 	protected function get_hits_to_be_reversed( WordPoints_Hook_Fire $fire ) {
 
