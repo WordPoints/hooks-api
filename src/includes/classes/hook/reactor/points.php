@@ -142,7 +142,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 			return;
 		}
 
-		$meta = array();
+		$meta = array( 'hook_hit_id' => $fire->hit_id );
 
 		foreach ( $fire->event_args->get_entities() as $entity ) {
 			$meta[ $entity->get_slug() ] = $entity->get_the_id();
@@ -162,21 +162,19 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 * @since 1.0.0
 	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
-
-		$entity = $fire->event_args->get_primary_arg();
 		
-		if ( ! $entity ) {
+		if ( ! isset( $fire->data['reversals']['hit_ids'] ) ) {
 			return;
 		}
 
 		$query = new WordPoints_Points_Logs_Query(
 			array(
-				'log_type'   => $fire->reaction->get_event_slug(),
 				'meta_query' => array(
 					array(
-						'key'   => $entity->get_slug(),
-						'value' => $entity->get_the_id(),
-					),
+						'key'     => 'hook_hit_id',
+						'value'   => $fire->data['reversals']['hit_ids'],
+						'compare' => 'IN',
+					)
 				),
 			)
 		);
@@ -226,7 +224,10 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 				, -$log->points
 				, $log->points_type
 				, "reverse-{$log->log_type}"
-				, array( 'original_log_id' => $log->id )
+				, array(
+					'original_log_id' => $log->id,
+					'hook_hit_id'     => $fire->hit_id,
+				)
 				, sprintf( $template, $log->text, $event_description )
 			);
 

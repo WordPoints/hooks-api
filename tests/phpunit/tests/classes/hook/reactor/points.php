@@ -271,6 +271,11 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 			$user_id
 			, wordpoints_get_points_log_meta( $log->id, 'user', true )
 		);
+
+		$this->assertEquals(
+			$fire->hit_id,
+			wordpoints_get_points_log_meta( $log->id, 'hook_hit_id', true )
+		);
 	}
 
 	/**
@@ -286,14 +291,15 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings['event'] = 'user_register';
 		$settings['reactor'] = 'points';
+		$settings['reversals'] = array( 'toggle_off' => 'toggle_on' );
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
-		
+
 		$user_id = $this->factory->user->create();
-		
+
 		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
 		$arg->value = $user_id;
-		
+
 		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
 
 		$this->create_points_type();
@@ -308,7 +314,8 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'toggle_on' );
+		$fire->hit();
 
 		$reactor->hit( $fire );
 
@@ -323,7 +330,11 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 1, $query->count() );
 
-		$reactor->reverse_hit( $fire );
+		$reverse_fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'toggle_off' );
+		$reverse_fire->hit();
+		$reverse_fire->data['reversals']['hit_ids'] = array( $fire->hit_id );
+
+		$reactor->reverse_hit( $reverse_fire );
 
 		$this->assertEquals( 1, $query->count() );
 
@@ -335,93 +346,35 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertEquals( 1, $reverse_query->count() );
 
+		$reverse_log_id = $reverse_query->get( 'row' )->id;
+		$log_id         = $query->get( 'row' )->id;
+
 		$this->assertEquals(
-			$reverse_query->get( 'row' )->id
+			$reverse_log_id
+			, wordpoints_get_points_log_meta( $log_id, 'auto_reversed', true )
+		);
+
+		$this->assertEquals(
+			$fire->hit_id
+			, wordpoints_get_points_log_meta( $log_id, 'hook_hit_id', true )
+		);
+
+		$this->assertEquals(
+			$log_id
 			, wordpoints_get_points_log_meta(
-				$query->get( 'row' )->id
-				, 'auto_reversed'
+				$reverse_log_id
+				, 'original_log_id'
 				, true
 			)
 		);
-	}
-
-	/**
-	 * Test reversing an event only reverses the event for the specific entities.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_reverse_hits_different_entities() {
-
-		// We create this user before creating the reaction so that they won't be
-		// awarded any points.
-		$user_not_awarded_id = $this->factory->user->create();
-
-		$settings = array(
-			'target'      => array( 'user' ),
-			'points'      => 10,
-			'points_type' => 'points',
-			'description' => 'Testing.',
-			'log_text'    => 'Testing.',
-		);
-
-		$settings['event'] = 'user_register';
-		$settings['reactor'] = 'points';
-
-		$reactor = new WordPoints_Hook_Reactor_Points();
-
-		$user_id = $this->factory->user->create();
-
-		$arg = new WordPoints_PHPUnit_Mock_Hook_Arg( 'user' );
-		$arg->value = $user_id;
-
-		$event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
-
-		$this->create_points_type();
-
-		wordpoints_set_points( $user_id, 100, 'points', 'test' );
-
-		$this->assertEquals( 100, wordpoints_get_points( $user_id, 'points' ) );
-
-		$reaction = wordpoints_hooks()
-			->get_reaction_store( 'points' )
-			->create_reaction( $settings );
-
-		$this->assertIsReaction( $reaction );
-
-		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
-
-		$reactor->hit( $fire );
 
 		$this->assertEquals(
-			100 + $settings['points']
-			, wordpoints_get_points( $user_id, 'points' )
-		);
-
-		$query = new WordPoints_Points_Logs_Query(
-			array( 'fields' => 'id', 'log_type' => 'user_register' )
-		);
-
-		$this->assertEquals( 1, $query->count() );
-
-		$reverse_query = new WordPoints_Points_Logs_Query(
-			array( 'fields' => 'id', 'log_type' => 'reverse-user_register' )
-		);
-
-		$this->assertEquals( 0, $reverse_query->count() );
-
-		// A different user ID for the user arg.
-		$arg->value = $user_not_awarded_id;
-
-		$fire->event_args = new WordPoints_Hook_Event_Args( array( $arg ) );
-
-		$reactor->reverse_hit( $fire );
-
-		$this->assertEquals( 1, $query->count() );
-		$this->assertEquals( 0, $reverse_query->count() );
-
-		$this->assertEquals(
-			100 + $settings['points']
-			, wordpoints_get_points( $user_id, 'points' )
+			$reverse_fire->hit_id
+			, wordpoints_get_points_log_meta(
+				$reverse_log_id
+				, 'hook_hit_id'
+				, true
+			)
 		);
 	}
 
@@ -442,6 +395,7 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$settings['event'] = 'user_register';
 		$settings['reactor'] = 'points';
+		$settings['reversals'] = array( 'toggle_off' => 'toggle_on' );
 
 		$reactor = new WordPoints_Hook_Reactor_Points();
 
@@ -466,7 +420,8 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'toggle_on' );
+		$fire->hit();
 
 		$reactor->hit( $fire );
 
@@ -489,8 +444,12 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		// A different value for the stateful entity.
 		$stateful_entity->set_the_value( 2 );
-		
-		$reactor->reverse_hit( $fire );
+
+		$reverse_fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'toggle_off' );
+		$reverse_fire->hit();
+		$reverse_fire->data['reversals']['hit_ids'] = array( $fire->hit_id );
+
+		$reactor->reverse_hit( $reverse_fire );
 
 		$this->assertEquals( 1, $query->count() );
 		$this->assertEquals( 1, $reverse_query->count() );
@@ -499,6 +458,90 @@ class WordPoints_Hook_Reactor_Points_Test extends WordPoints_PHPUnit_TestCase_Ho
 			100
 			, wordpoints_get_points( $user_id, 'points' )
 		);
+	}
+
+	/**
+	 * Test that only the hits from the last fire are reversed.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reverse_hits_only_reverses_hits_from_last_fire() {
+
+		$this->create_points_type();
+
+		$hooks = wordpoints_hooks();
+
+		$points_target = $hooks->get_reaction_store( 'points' );
+		$instance      = $points_target->create_reaction(
+			array(
+				'event'       => 'post_publish\post',
+				'reactor'     => 'points',
+				'points'      => 10,
+				'points_type' => 'points',
+				'target'      => array( 'post\post', 'author', 'user' ),
+				'description' => 'Testing.',
+				'log_text'    => 'Testing.',
+				'reversals'   => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+
+		$this->assertInstanceOf( 'WordPoints_Hook_ReactionI', $instance );
+
+		$user_id = $this->factory->user->create();
+
+		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
+
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type' => 'post',
+				'post_author' => $user_id,
+			)
+		);
+
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		// Block the reactor from handling this reverse.
+		$instance->update_meta( 'blocker', array( 'toggle_off' => true ) );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'draft' ) );
+
+		// The points shouldn't have been removed.
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'publish' ) );
+
+		// Points should have been awarded again.
+		$this->assertEquals( 20, wordpoints_get_points( $user_id, 'points' ) );
+
+		// Stop blocking reverses.
+		$instance->delete_meta( 'blocker' );
+
+		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'draft' ) );
+
+		// Only the last hit should have been reversed.
+		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
+	}
+
+	/**
+	 * Test that we don't explode it we get a fire without the expected data.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_reverse_hit_no_reversals_hit_ids() {
+
+		$reactor = new WordPoints_Hook_Reactor_Points();
+
+		$fire = new WordPoints_Hook_Fire(
+			new WordPoints_Hook_Event_Args( array() )
+			, $this->factory->wordpoints->hook_reaction->create()
+			, 'toggle_off'
+		);
+
+		$reactor->reverse_hit( $fire );
+
+		$fire->data['reversals'] = array();
+
+		$reactor->reverse_hit( $fire );
 	}
 }
 

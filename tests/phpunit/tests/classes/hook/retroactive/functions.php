@@ -16,62 +16,6 @@
  */
 class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
-	public function test_post_publish_twice() {
-
-		$this->create_points_type();
-
-		$hooks = wordpoints_hooks();
-
-		$points_target = $hooks->get_reaction_store( 'points' );
-		$instance      = $points_target->create_reaction(
-			array(
-				'event'       => 'post_publish\post',
-				'reactor'     => 'points',
-				'points'      => 10,
-				'points_type' => 'points',
-				'target'      => array( 'post\post', 'author', 'user' ),
-				'description' => 'lkjlkj',
-				'log_text'    => 'lkjlkj',
-			)
-		);
-
-		$this->assertInstanceOf( 'WordPoints_Hook_ReactionI', $instance );
-
-		$user_id = $this->factory->user->create();
-
-		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
-
-		$post_id = $this->factory->post->create(
-			array(
-				'post_type' => 'post',
-				'post_author' => $user_id,
-			)
-		);
-
-		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
-
-		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'draft' ) );
-
-		$this->assertEquals( 0, wordpoints_get_points( $user_id, 'points' ) );
-
-		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'publish' ) );
-
-		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
-
-		$this->factory->post->create(
-			array(
-				'post_type' => 'post',
-				'post_author' => $user_id,
-			)
-		);
-
-		$this->assertEquals( 20, wordpoints_get_points( $user_id, 'points' ) );
-
-		wp_delete_post( $post_id, true );
-
-		$this->assertEquals( 10, wordpoints_get_points( $user_id, 'points' ) );
-	}
-
 	public function test_post_publish_twice_blocked_reversals() {
 
 		$this->create_points_type();

@@ -8,6 +8,7 @@
  */
 var Reactor = wp.wordpoints.hooks.controller.Reactor,
 	Fields = wp.wordpoints.hooks.Fields,
+	data = wp.wordpoints.hooks.view.data,
 	Points;
 
 Points = Reactor.extend({
@@ -49,7 +50,19 @@ Points = Reactor.extend({
 	},
 
 	filterReactionDefaults: function ( defaults, view ) {
-		defaults.points_type = view.$reactionGroup.data( 'wordpoints-hooks-points-type' );
+
+		defaults.points_type = view.$reactionGroup.data(
+			'wordpoints-hooks-points-type'
+		);
+
+		// Have toggle events behave like reversals.
+		if (
+			defaults.event
+			&& data.event_action_types[ defaults.event ]
+			&& data.event_action_types[ defaults.event ].toggle_on
+		) {
+			defaults.reversals = { toggle_off: 'toggle_on' };
+		}
 	}
 });
 
