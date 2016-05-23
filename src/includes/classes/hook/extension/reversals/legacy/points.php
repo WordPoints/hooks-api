@@ -89,7 +89,7 @@ class WordPoints_Hook_Extension_Reversals_Legacy_Points
 			array(
 				'key'   => $slug,
 				'value' => $entity->get_the_id(),
-			)
+			),
 		);
 
 		$log_type = $fire->reaction->get_meta( 'legacy_log_type' );

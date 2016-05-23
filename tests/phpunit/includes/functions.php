@@ -25,7 +25,7 @@ function wordpoints_hooks_api_phpunit_autoloader( $class_name ) {
 		'WordPoints_' === substr( $class_name, 0, 11 )
 		&& '_Test' === substr( $class_name, -5 )
 	) {
-		
+
 		$file_name = str_replace( '_', '/', strtolower( substr( $class_name, 11, -5 ) ) );
 		$file_name = dirname( __FILE__ ) . '/../tests/classes/' . $file_name . '.php';
 
@@ -35,7 +35,7 @@ function wordpoints_hooks_api_phpunit_autoloader( $class_name ) {
 
 		require( $file_name );
 	}
-	
+
 	// Autoloading for helpers (test cases, factories, mocks, etc.).
 	if ( 'WordPoints_PHPUnit_' !== substr( $class_name, 0, 19 ) ) {
 		return;

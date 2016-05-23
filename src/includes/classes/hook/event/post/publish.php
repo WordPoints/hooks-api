@@ -73,7 +73,7 @@ class WordPoints_Hook_Event_Post_Publish
 	 * @since 1.0.0
 	 */
 	public function get_reversal_text() {
-		
+
 		$parsed = wordpoints_parse_dynamic_slug( $this->slug );
 
 		switch ( $parsed['dynamic'] ) {

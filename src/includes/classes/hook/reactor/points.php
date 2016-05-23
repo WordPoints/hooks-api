@@ -176,7 +176,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 						'key'     => 'hook_hit_id',
 						'value'   => $hit_ids,
 						'compare' => 'IN',
-					)
+					),
 				),
 			)
 		);
