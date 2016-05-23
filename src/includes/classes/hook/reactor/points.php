@@ -162,8 +162,10 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 * @since 1.0.0
 	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
-		
-		if ( ! isset( $fire->data['reversals']['hit_ids'] ) ) {
+
+		$hit_ids = $this->get_hit_ids_to_be_reversed( $fire );
+
+		if ( empty( $hit_ids ) ) {
 			return;
 		}
 
@@ -172,7 +174,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 				'meta_query' => array(
 					array(
 						'key'     => 'hook_hit_id',
-						'value'   => $fire->data['reversals']['hit_ids'],
+						'value'   => $hit_ids,
 						'compare' => 'IN',
 					)
 				),
@@ -186,6 +188,25 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 		}
 
 		$this->reverse_logs( $logs, $fire );
+	}
+
+	/**
+	 * Get the IDs of the hits to be reversed for a fire.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WordPoints_Hook_Fire $fire The fire object.
+	 *
+	 * @return array The IDs of the hits to be reversed.
+	 */
+	protected function get_hit_ids_to_be_reversed( WordPoints_Hook_Fire $fire ) {
+
+		// We closely integrate with the reversals extension to get the hit IDs.
+		if ( ! isset( $fire->data['reversals']['hit_ids'] ) ) {
+			return array();
+		}
+
+		return $fire->data['reversals']['hit_ids'];
 	}
 
 	/**

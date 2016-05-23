@@ -17,6 +17,43 @@
 class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 	/**
+	 * The slug of the extension being tested.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $extension_slug = 'reversals';
+
+	/**
+	 * The extension class being tested.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $extension_class = 'WordPoints_Hook_Extension_Reversals';
+
+	/**
+	 * The extension object being tested.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Hook_Extension_Reversals
+	 */
+	protected $extension;
+
+	/**
+	 * @since 1.0.0
+	 */
+	public function setUp() {
+
+		parent::setUp();
+
+		$this->extension = new $this->extension_class();
+	}
+
+	/**
 	 * Test that an event should hit the target by default.
 	 *
 	 * @since 1.0.0
@@ -29,9 +66,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 
 		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_fire' );
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$this->assertTrue( $extension->should_hit( $fire ) );
+		$this->assertTrue( $this->extension->should_hit( $fire ) );
 	}
 
 	/**
@@ -42,7 +77,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 	public function test_should_hit() {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
-		$reaction->add_meta( 'reversals', array( 'test_reverse' => 'test_fire' ) );
+		$reaction->add_meta( $this->extension_slug, array( 'test_reverse' => 'test_fire' ) );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
@@ -51,9 +86,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 
 		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_reverse' );
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$this->assertTrue( $extension->should_hit( $fire ) );
+		$this->assertTrue( $this->extension->should_hit( $fire ) );
 	}
 
 	/**
@@ -64,15 +97,13 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 	public function test_should_hit_no_unreversed_hits() {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
-		$reaction->add_meta( 'reversals', array( 'test_reverse' => 'test_fire' ) );
+		$reaction->add_meta( $this->extension_slug, array( 'test_reverse' => 'test_fire' ) );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
 		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, 'test_reverse' );
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$this->assertFalse( $extension->should_hit( $fire ) );
+		$this->assertFalse( $this->extension->should_hit( $fire ) );
 	}
 
 	/**
@@ -97,9 +128,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 
 		$reverse_fire->hit();
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$extension->after_hit( $reverse_fire );
+		$this->extension->after_hit( $reverse_fire );
 
 		$this->assertEquals(
 			array()
@@ -120,7 +149,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 	public function test_after_hit() {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
-		$reaction->add_meta( 'reversals', array( 'test_reverse' => 'test_fire' ) );
+		$reaction->add_meta( $this->extension_slug, array( 'test_reverse' => 'test_fire' ) );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
@@ -135,9 +164,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 
 		$reverse_fire->hit();
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$extension->after_hit( $reverse_fire );
+		$this->extension->after_hit( $reverse_fire );
 
 		$this->assertEquals(
 			array( '1' )
@@ -170,9 +197,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 			, 'test_reverse'
 		);
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$extension->after_miss( $reverse_fire );
+		$this->extension->after_miss( $reverse_fire );
 
 		$this->assertEquals(
 			array()
@@ -188,7 +213,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 	public function test_after_miss() {
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
-		$reaction->add_meta( 'reversals', array( 'test_reverse' => 'test_fire' ) );
+		$reaction->add_meta( $this->extension_slug, array( 'test_reverse' => 'test_fire' ) );
 
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 
@@ -201,9 +226,7 @@ class WordPoints_Hook_Extension_Reversals_Test extends WordPoints_PHPUnit_TestCa
 			, 'test_reverse'
 		);
 
-		$extension = new WordPoints_Hook_Extension_Reversals();
-
-		$extension->after_miss( $reverse_fire );
+		$this->extension->after_miss( $reverse_fire );
 
 		$this->assertEquals(
 			array( '1' )

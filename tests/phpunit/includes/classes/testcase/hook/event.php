@@ -161,7 +161,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		if ( $this->event instanceof WordPoints_Hook_Event_RetroactiveI ) {
 			$this->assertNotEmpty( $this->event->get_retroactive_description() );
 		}
-		
+
 		if ( $this->event instanceof WordPoints_Hook_Event_ReversingI ) {
 			$this->assertNotEmpty( $this->event->get_reversal_text() );
 		}
@@ -182,6 +182,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		switch ( $reactor_slug ) {
 
 			case 'points':
+			case 'points_legacy':
 				$this->create_points_type();
 
 				$settings = array(
@@ -192,8 +193,15 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 					'points_type' => 'points',
 				);
 
+				if ( 'points_legacy' === $reactor_slug ) {
+					$settings['reversals_legacy_points'] = array( 'toggle_off' => 'toggle_on' );
+				} else {
+					$settings['reversals'] = array( 'toggle_off' => 'toggle_on' );
+				}
+
 				$assertion = 'assert_user_has_points';
 				$reverse_assertion = 'assert_user_has_no_points';
+				$reaction_store_slug = 'points';
 			break;
 
 			default:
@@ -205,7 +213,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 		$settings['reactor'] = $reactor_slug;
 
 		$reaction = $this->hooks
-			->get_reaction_store( $reactor_slug )
+			->get_reaction_store( $reaction_store_slug )
 			->create_reaction( $settings );
 
 		$this->assertIsReaction( $reaction );

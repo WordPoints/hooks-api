@@ -42,51 +42,29 @@ class WordPoints_Hook_Reactor_Points_Legacy extends WordPoints_Hook_Reactor_Poin
 	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
-		$entity = $fire->event_args->get_primary_arg();
+		if ( isset( $fire->data['reversals_legacy_points']['points_logs'] ) ) {
 
-		if ( ! $entity ) {
-			return;
+			$this->reverse_logs(
+				$fire->data['reversals_legacy_points']['points_logs']
+				, $fire
+			);
+
+		} else {
+			parent::reverse_hit( $fire );
+		}
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected function get_hit_ids_to_be_reversed( WordPoints_Hook_Fire $fire ) {
+
+		// We closely integrate with the legacy reversals extension to get the IDs.
+		if ( ! isset( $fire->data['reversals_legacy_points']['hit_ids'] ) ) {
+			return array();
 		}
 
-		$slug = $entity->get_slug();
-
-		if ( ( $pos = strpos( $slug, '\\' ) ) ) {
-			$slug = substr( $slug, 0, $pos );
-		}
-
-		$meta_queries = array(
-			array(
-				// This is needed for back-compat with the way the points hooks
-				// reversed transactions, so we don't re-reverse them.
-				'key'     => 'auto_reversed',
-				'compare' => 'NOT EXISTS',
-			),
-			array(
-				'key'   => $slug,
-				'value' => $entity->get_the_id(),
-			)
-		);
-
-		$log_type = $fire->reaction->get_meta( 'legacy_log_type' );
-
-		if ( ! $log_type ) {
-			$log_type = $fire->reaction->get_event_slug();
-		}
-
-		$query = new WordPoints_Points_Logs_Query(
-			array(
-				'log_type'   => $log_type,
-				'meta_query' => $meta_queries,
-			)
-		);
-
-		$logs = $query->get();
-
-		if ( ! $logs ) {
-			return;
-		}
-
-		$this->reverse_logs( $logs, $fire );
+		return $fire->data['reversals_legacy_points']['hit_ids'];
 	}
 }
 
