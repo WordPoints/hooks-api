@@ -40,6 +40,18 @@ class WordPoints_Hook_Reactor_Points_Legacy extends WordPoints_Hook_Reactor_Poin
 	/**
 	 * @since 1.0.0
 	 */
+	public function get_ui_script_data() {
+
+		$data = parent::get_ui_script_data();
+
+		$data['reversals_extension_slug'] = 'reversals_legacy_points';
+
+		return $data;
+	}
+
+	/**
+	 * @since 1.0.0
+	 */
 	public function reverse_hit( WordPoints_Hook_Fire $fire ) {
 
 		if ( isset( $fire->data['reversals_legacy_points']['points_logs'] ) ) {

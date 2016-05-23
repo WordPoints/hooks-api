@@ -15,10 +15,15 @@ Points = Reactor.extend({
 
 	defaults: {
 		slug: 'points',
-		fields: {}
+		fields: {},
+		reversals_extension_slug: 'reversals'
 	},
 
 	initReaction: function ( reaction ) {
+
+		if ( reaction.model.get( 'reactor' ) !== this.get( 'slug' ) ) {
+			return;
+		}
 
 		this.listenTo( reaction, 'render:settings', this.render );
 		this.listenTo( reaction.model, 'validate', this.validate );
@@ -51,6 +56,10 @@ Points = Reactor.extend({
 
 	filterReactionDefaults: function ( defaults, view ) {
 
+		if ( defaults.reactor !== this.get( 'slug' ) ) {
+			return;
+		}
+
 		defaults.points_type = view.$reactionGroup.data(
 			'wordpoints-hooks-points-type'
 		);
@@ -61,7 +70,9 @@ Points = Reactor.extend({
 			&& data.event_action_types[ defaults.event ]
 			&& data.event_action_types[ defaults.event ].toggle_on
 		) {
-			defaults.reversals = { toggle_off: 'toggle_on' };
+			defaults[ this.get( 'reversals_extension_slug' ) ] = {
+				toggle_off: 'toggle_on'
+			};
 		}
 	}
 });
@@ -70,11 +81,15 @@ module.exports = Points;
 
 },{}],2:[function(require,module,exports){
 var hooks = wp.wordpoints.hooks,
-	data = wp.wordpoints.hooks.view.data.reactors.points;
+	data = wp.wordpoints.hooks.view.data.reactors;
 
 hooks.on( 'init', function () {
 
-	hooks.Reactors.add( new hooks.reactor.Points( data ) );
+	hooks.Reactors.add( new hooks.reactor.Points( data.points ) );
+
+	if ( data.points_legacy ) {
+		hooks.Reactors.add( new hooks.reactor.Points( data.points_legacy ) );
+	}
 });
 
 hooks.reactor.Points = require( './points.js' );
