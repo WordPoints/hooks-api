@@ -42,8 +42,8 @@ wpcept-run() {
 
 	vendor/bin/wpcept run --debug
 
-	ls "$WORDPOINTS_DEVELOP_DIR"/tests/codeception/
-	 cat "$WORDPOINTS_DEVELOP_DIR/tests/codeception/_output/savePointsReactionCept.fail.html"
+	ls "$PROJECT_DIR"/../tests/codeception/
+	 cat "$PROJECT_DIR/../tests/codeception/tests/codeception/_output/savePointsReactionCept.fail.html"
 }
 
 fixed-codesniff-php-syntax() {
