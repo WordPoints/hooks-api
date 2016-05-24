@@ -70,12 +70,66 @@ module.exports = function( grunt ) {
 			after = '\' );\n',
 			includes,
 			contents,
+			interfaces = [],
+			entity_parents = [],
 			classes_dir = SOURCE_DIR + 'includes/classes/',
 			file = classes_dir + 'index.php',
 			class_files = grunt.file.expand(
 				{ cwd: classes_dir },
 				[ '**/*.php', '!index.php' ]
 			);
+
+		// Extract the interface files. To do that we need to loop backwards so that
+		// we can remove elements from the array as we go.
+		for ( var i = class_files.length - 1; i >= 0; i-- ) {
+
+			// Our interface file names are currently like interfacei.php.
+			if ( class_files[ i ].substr( -5 ) === 'i.php' ) {
+
+				interfaces.push( class_files[ i ] );
+				class_files.splice( i, 1 );
+
+			} else if ( class_files[ i ].substr( 0, 14 ) === 'entity/stored/' ) {
+
+				entity_parents.push( class_files[ i ] );
+				class_files.splice( i, 1 );
+				
+			} else if ( class_files[ i ].substr( 0, 19 ) === 'entity/relationship' ) {
+
+				entity_parents.push( class_files[ i ] );
+				class_files.splice( i, 1 );
+			}
+		}
+		
+		// Entity these entity classes need to come before other entity classes.
+		Array.prototype.splice.apply(
+			class_files
+			, [ class_files.indexOf( 'entity.php' ) + 1, 0 ]
+				.concat( entity_parents.reverse() )
+		);
+
+		// Entityish class needs to come before the entity classes.
+		class_files.splice(
+			class_files.indexOf( 'entity.php' )
+			, 0
+			, class_files.splice(
+				class_files.indexOf( 'entityish.php' )
+				, 1
+			)
+		);
+		
+		// This class needs to come before other event classes.
+		class_files.splice(
+			class_files.indexOf( 'hook/event.php' ) + 1
+			, 0
+			, class_files.splice(
+				class_files.indexOf( 'hook/event/dynamic.php' )
+				, 1
+			)
+		);
+
+		// We load interfaces first.
+		class_files = interfaces.concat( class_files );
 
 		// Implode all of the class files.
 		includes = before;
