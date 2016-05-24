@@ -136,8 +136,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/comment\/author.php": {
-            "size": 852,
-            "hash": "8e5a0886bcba485b3d955671dae525f5",
+            "size": 684,
+            "hash": "c9156e1c31e38314c94925e10c211634",
             "errors": false
         },
         "\/includes\/classes\/entity\/comment\/post.php": {
@@ -231,8 +231,8 @@
             "errors": false
         },
         "\/includes\/classes\/entity\/relationship.php": {
-            "size": 4434,
-            "hash": "f2641f4a5f55aa1fc2f79a82ec5b5d95",
+            "size": 3903,
+            "hash": "2596a0cc338913fba2cc42d9f49b358e",
             "errors": false
         },
         "\/includes\/classes\/entity\/restricted\/visibilityi.php": {
@@ -386,8 +386,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/comment\/leave.php": {
-            "size": 1569,
-            "hash": "fb7cf63669ef5384736d38b265a80944",
+            "size": 1734,
+            "hash": "07787332b84c1894a19a3c4eaf480a47",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/dynamic.php": {
@@ -396,18 +396,18 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/media\/upload.php": {
-            "size": 537,
-            "hash": "03a9ee511cf3fddbd269174de781b455",
+            "size": 705,
+            "hash": "c40ee220011ae8f977e8bb9f27f9cf67",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/post\/publish.php": {
-            "size": 1302,
-            "hash": "25e70a11c76339817359f8112e98e42b",
+            "size": 1823,
+            "hash": "a3f240726d47b3821d3619987576b228",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/user\/register.php": {
-            "size": 482,
-            "hash": "a81341cc9ff7e8ec33f78983bc1b6041",
+            "size": 644,
+            "hash": "aa8d40b58990b72ceb31fd7730b89373",
             "errors": false
         },
         "\/includes\/classes\/hook\/event\/user\/visit.php": {
@@ -462,7 +462,7 @@
         },
         "\/includes\/classes\/hook\/extension\/reversals.php": {
             "size": 2459,
-            "hash": "b9d5fb5375500c3714f1081920f66f1c",
+            "hash": "9dcbd76287f232992f5de149c8fb4c1e",
             "errors": false
         },
         "\/includes\/classes\/hook\/extension.php": {
@@ -476,8 +476,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/hit\/logger.php": {
-            "size": 1962,
-            "hash": "75eb8390e1effec41b1ab90a2b2f23f2",
+            "size": 1408,
+            "hash": "c2c71e61aa583748acc1647ef697565d",
             "errors": false
         },
         "\/includes\/classes\/hook\/hit\/query.php": {
@@ -526,8 +526,8 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor\/points.php": {
-            "size": 5018,
-            "hash": "7c00206123ff11cb2574e09e492e7108",
+            "size": 5971,
+            "hash": "02db227c6a20cb47af7deefb2fb1f233",
             "errors": false
         },
         "\/includes\/classes\/hook\/reactor.php": {
@@ -556,8 +556,8 @@
             "errors": false
         },
         "\/includes\/classes\/index.php": {
-            "size": 7401,
-            "hash": "9414cf4520ffb1ed7410b1827e50162b",
+            "size": 6028,
+            "hash": "bfc7821afcf32f12cf73f698409fa590",
             "errors": false
         },
         "\/includes\/constants.php": {
@@ -566,8 +566,23 @@
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 22979,
-            "hash": "bd4d598238d407d9c27203025bd6fd6c",
+            "size": 22543,
+            "hash": "48cb5a8b488f70d73a138a75ee1309c1",
+            "errors": false
+        },
+        "\/includes\/classes\/hook\/event\/reversingi.php": {
+            "size": 411,
+            "hash": "effe61aba600cac6a4965cf4c46e54bd",
+            "errors": false
+        },
+        "\/includes\/classes\/hook\/extension\/reversals\/legacy\/points.php": {
+            "size": 2392,
+            "hash": "258725d9be1df984e2c755563af59b87",
+            "errors": false
+        },
+        "\/includes\/classes\/hook\/reactor\/points\/legacy.php": {
+            "size": 1524,
+            "hash": "3ec4ddad7b1b46b86d23fe77b0895f09",
             "errors": false
         }
     },
