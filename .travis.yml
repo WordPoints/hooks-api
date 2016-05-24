@@ -55,6 +55,7 @@ before_script:
 
 script:
     - codesniff-php-syntax
+    - php -e src/includes/classes/index.php
     - codesniff-phpcs
     - codesniff-jshint
     - codesniff-l10n
