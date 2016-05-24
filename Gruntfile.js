@@ -66,7 +66,7 @@ module.exports = function( grunt ) {
 	// Register tasks.
 	grunt.registerTask( 'autoloader', 'Generate the autoloader backup file.', function() {
 
-		var before = 'require_once( dirname( __FILE__ ) . \'',
+		var before = 'require_once( dirname( __FILE__ ) . \'/',
 			after = '\' );\n',
 			includes,
 			contents,
