@@ -297,23 +297,6 @@ function wordpoints_hook_events_init( $events ) {
 	foreach ( $post_types as $slug ) {
 		wordpoints_register_post_type_hook_events( $slug );
 	}
-
-	if ( is_multisite() ) {
-
-		$event_slugs = array(
-			'user_visit',
-			'user_register',
-		);
-
-		foreach ( $event_slugs as $event_slug ) {
-			// TODO network hooks
-			$events->args->register(
-				$event_slug
-				, 'current:site'
-				, 'WordPoints_Hook_Arg_Current_Site'
-			);
-		}
-	}
 }
 
 /**
@@ -448,13 +431,9 @@ function wordpoints_register_post_type_entities( $slug ) {
  */
 function wordpoints_register_post_type_hook_events( $slug ) {
 
-	$event_slugs = array();
-
 	$events = wordpoints_hooks()->events;
 
 	if ( 'attachment' === $slug ) {
-
-		$event_slugs[] = 'media_upload';
 
 		$events->register(
 			'media_upload'
@@ -471,8 +450,6 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 		);
 
 	} else {
-
-		$event_slugs[] = "post_publish\\{$slug}";
 
 		$events->register(
 			"post_publish\\{$slug}"
@@ -491,8 +468,6 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 
 	if ( post_type_supports( $slug, 'comments' ) ) {
 
-		$event_slugs[] = "comment_leave\\{$slug}";
-
 		$events->register(
 			"comment_leave\\{$slug}"
 			, 'WordPoints_Hook_Event_Comment_Leave'
@@ -506,16 +481,6 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 				),
 			)
 		);
-	}
-
-	if ( is_multisite() ) {
-		foreach ( $event_slugs as $event_slug ) {
-			$events->args->register(
-				$event_slug
-				, 'current:site'
-				, 'WordPoints_Hook_Arg_Current_Site'
-			);
-		}
 	}
 
 	/**

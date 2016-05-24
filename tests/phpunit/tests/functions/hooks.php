@@ -329,11 +329,6 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->assertTrue( $events->is_registered( $event_slug ) );
 
-		$this->assertEquals(
-			is_multisite()
-			, $events->args->is_registered( $event_slug, 'current:site' )
-		);
-
 		foreach ( (array) $arg_slugs as $slug ) {
 
 			$this->assertTrue(
@@ -357,10 +352,6 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		$events = wordpoints_hooks()->events;
 
 		$this->assertFalse( $events->is_registered( $event_slug ) );
-
-		$this->assertFalse(
-			$events->args->is_registered( $event_slug, 'current:site' )
-		);
 
 		foreach ( (array) $arg_slugs as $slug ) {
 
