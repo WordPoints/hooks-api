@@ -66,9 +66,9 @@ module.exports = function( grunt ) {
 	// Register tasks.
 	grunt.registerTask( 'autoloader', 'Generate the autoloader backup file.', function() {
 
-		var before = 'require_once( dirname( __FILE__ ) . \'/',
+		var before = 'require_once( $dir . \'/',
 			after = '\' );\n',
-			includes,
+			includes = '$dir = dirname( __FILE__ );\n',
 			contents,
 			interfaces = [],
 			entity_parents = [],
@@ -132,7 +132,7 @@ module.exports = function( grunt ) {
 		class_files = interfaces.concat( class_files );
 
 		// Implode all of the class files.
-		includes = before;
+		includes += before;
 		includes += class_files.join( after + before );
 		includes += after;
 
