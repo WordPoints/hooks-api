@@ -603,7 +603,7 @@ class WordPoints_Hook_Retroactive_Query_Executor_Array
 	}
 }
 
-wordpoints_hooks()->retroactive_query_executors->register( 'array', 'WordPoints_Hook_Retroactive_Query_Executor_Array' );
+//wordpoints_hooks()->retroactive_query_executors->register( 'array', 'WordPoints_Hook_Retroactive_Query_Executor_Array' );
 
 class WordPoints_Hook_Retroactive_Query_Executor_MySQL
 	implements WordPoints_Hook_Retroactive_Query_ExecutorI {
@@ -785,7 +785,7 @@ class WordPoints_Hook_Retroactive_Query_Executor_MySQL
 }
 
 
-wordpoints_hooks()->retroactive_query_executors->register( 'db', 'WordPoints_Hook_Retroactive_Query_Executor_MySQL' );
+//wordpoints_hooks()->retroactive_query_executors->register( 'db', 'WordPoints_Hook_Retroactive_Query_Executor_MySQL' );
 
 
 // EOF

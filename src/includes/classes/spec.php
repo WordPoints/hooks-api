@@ -184,9 +184,12 @@ class WordPoints_Spec_Entity_Array_Contains extends WordPoints_Spec {
 	}
 
 	public function validate_settings(
-		$arg,
-		array $settings,
-		WordPoints_Hook_Reaction_Validator $validator
+		$settings,
+		$arg = null,
+		WordPoints_Hook_Reaction_Validator $validator = null
+//		$arg,
+//		array $settings,
+//		WordPoints_Hook_Reaction_Validator $validator
 	) {
 
 		if ( ! $this->arg_type_supported( $arg, $validator ) ) {

@@ -136,7 +136,7 @@ class WordPoints_Hook_Settings extends WordPoints_Class_Registry {
 function wordpoints_hook_settings_app( $hooks ) {
 	$hooks->sub_apps->register( 'settings', 'WordPoints_Hook_Settings' );
 }
-add_action( 'wordpoints_hooks_init', 'wordpoints_hook_settings_app' );
+//add_action( 'wordpoints_hooks_init', 'wordpoints_hook_settings_app' );
 
 /**
  *
@@ -152,6 +152,6 @@ function wordpoints_register_hook_settings( $settings ) {
 
 	$settings->register( 'description', 'WordPoints_Hook_Reaction_Setting_Description' );
 }
-add_action( 'wordpoints_hook_settings_init', 'wordpoints_register_hook_settings' );
+//add_action( 'wordpoints_hook_settings_init', 'wordpoints_register_hook_settings' );
 
 // EOF
