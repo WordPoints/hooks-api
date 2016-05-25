@@ -24,6 +24,7 @@ $I->see( 'Points Types' );
 $I->see( 'Points', '.nav-tab-active' );
 $I->see( 'Events' );
 $I->see( 'Settings' );
+$I->see( 'Slug: points' );
 $I->canSeeInFormFields(
 	'#settings form'
 	, array(
