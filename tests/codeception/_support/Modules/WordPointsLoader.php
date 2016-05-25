@@ -44,6 +44,10 @@ class WordPointsLoader extends Module {
 		// Disable update checks since we won't be updating anything.
 		$this->disable_update_checks();
 
+		// Disable fetching feeds for the dashboard widgets, as this is just a waste
+		// of time.
+		$this->disable_dashboard_feed_widgets();
+
 		// Now get a dump of the pristine database so that we can restore it later.
 		$this->create_db_dump( $this->get_db_dump_file_name() );
 	}
@@ -150,6 +154,22 @@ class WordPointsLoader extends Module {
 				, (object) array( 'last_checked' => time() + DAY_IN_SECONDS )
 			);
 		}
+	}
+
+	/**
+	 * Disables the feed fetching of the dashboard widgets.
+	 *
+	 * Fetching these feeds can slow down WordPress. We don't need to fetch them
+	 * during the tests, so we disable them.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function disable_dashboard_feed_widgets() {
+
+		set_transient(
+			'dash_' . md5( 'dashboard_primary_' . get_locale() )
+			, 'Disabled by WordPoints Loader Codeception module.'
+		);
 	}
 
 	/**
