@@ -237,6 +237,8 @@ class WordPointsLoader extends Module {
 
 		global $wpdb;
 
+		$wpdb->db_connect();
+
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS=0;' );
 
 		$tables = $wpdb->get_col(
