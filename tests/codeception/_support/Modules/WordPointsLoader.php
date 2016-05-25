@@ -149,10 +149,13 @@ class WordPointsLoader extends Module {
 
 		foreach ( array( 'update_core', 'update_plugins', 'update_themes' ) as $transient ) {
 
-			set_site_transient(
-				$transient
-				, (object) array( 'last_checked' => time() + DAY_IN_SECONDS )
-			);
+			$array = array( 'last_checked' => time() + DAY_IN_SECONDS );
+
+			if ( 'update_core' === $transient ) {
+				$array['version_checked'] = $GLOBALS['wp_version'];
+			}
+
+			set_site_transient( $transient, (object) $array );
 		}
 	}
 
