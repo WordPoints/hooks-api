@@ -36,7 +36,7 @@ $I->canSeeInFormFields(
 	, array(
 		'points-name' => 'Credits',
 		'points-prefix' => '$',
-		'points-suffix' => 'credits.',
+		'points-suffix' => 'credits',
 	)
 );
 
