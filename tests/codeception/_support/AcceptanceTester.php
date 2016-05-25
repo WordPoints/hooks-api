@@ -73,6 +73,31 @@ class AcceptanceTester extends \Codeception\Actor {
 			, $timeout
 		);
 	}
+
+	/**
+	 * Asserts that a success message is being displayed.
+	 *
+	 * @since 1.0.0
+	 */
+	public function seeSuccessMessage() {
+		$this->seeElement( '.notice.updated' );
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $settings
+	 */
+	public function haveCreatedAPointsType( array $settings = array() ) {
+
+		if ( ! isset( $settings['name'] ) ) {
+			$settings['name'] = 'Points';
+		}
+
+		wordpoints_add_points_type( $settings );
+	}
 }
 
 // EOF
