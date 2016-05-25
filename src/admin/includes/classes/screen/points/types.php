@@ -462,7 +462,6 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 						''
 						, 'wordpoints_points_type_update'
 						, __( 'Error: failed updating points type.', 'wordpoints' )
-						, 'updated'
 					);
 
 				} else {
