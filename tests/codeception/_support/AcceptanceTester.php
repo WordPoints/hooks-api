@@ -84,13 +84,13 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	/**
-	 *
+	 * Creates a points type in the database.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $settings
+	 * @param array $settings Settings for this points type.
 	 */
-	public function haveCreatedAPointsType( array $settings = array() ) {
+	public function hadCreatedAPointsType( array $settings = array() ) {
 
 		if ( ! isset( $settings['name'] ) ) {
 			$settings['name'] = 'Points';

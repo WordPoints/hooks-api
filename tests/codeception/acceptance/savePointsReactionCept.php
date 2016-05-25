@@ -9,7 +9,7 @@
 
 $I = new AcceptanceTester( $scenario );
 $I->wantTo( 'Save a points reaction' );
-$I->haveCreatedAPointsType();
+$I->hadCreatedAPointsType();
 $I->amLoggedInAsAdmin();
 $I->amOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
 $I->see( 'Points Types' );
