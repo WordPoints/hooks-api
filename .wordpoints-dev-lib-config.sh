@@ -46,13 +46,4 @@ wpcept-run() {
 	 cat "$PROJECT_DIR/../tests/codeception/_output/savePointsReactionCept.fail.html"
 }
 
-fixed-codesniff-php-syntax() {
-
-	if wpdl-codesniff-php-syntax | grep "^Parse error"; then
-		return 1;
-	fi;
-}
-
-alias codesniff-php-syntax='fixed-codesniff-php-syntax'
-
 # EOF
