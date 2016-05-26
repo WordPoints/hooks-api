@@ -56,7 +56,7 @@ Reaction = Base.extend({
 				options.data.action  = 'wordpoints_admin_delete_hook_reaction';
 				options.data.id      = model.get( 'id' );
 				options.data.nonce   = model.get( 'delete_nonce' );
-				options.data.reactor = model.get( 'reactor' );
+				options.data.reaction_store = model.get( 'reaction_store' );
 				break;
 		}
 
