@@ -121,6 +121,8 @@ class AcceptanceTester extends \Codeception\Actor {
 	 * @since 1.0.0
 	 *
 	 * @param array $settings Settings for the reaction.
+	 *
+	 * @return WordPoints_Hook_ReactionI The hook reaction.
 	 */
 	public function hadCreatedAPointsReaction( array $settings = array() ) {
 
@@ -142,8 +144,25 @@ class AcceptanceTester extends \Codeception\Actor {
 			);
 		}
 
-		wordpoints_hooks()->get_reaction_store( 'points' )->create_reaction(
+		return wordpoints_hooks()->get_reaction_store( 'points' )->create_reaction(
 			$settings
+		);
+	}
+
+	/**
+	 * Asserts that a points reaction is in the database.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $reaction_id The ID of the reaction.
+	 */
+	public function canSeePointsReactionInDB( $reaction_id ) {
+
+		\PHPUnit_Framework_Assert::assertInstanceOf(
+			'WordPoints_Hook_ReactionI'
+			, wordpoints_hooks()->get_reaction_store( 'points' )->get_reaction(
+				$reaction_id
+			)
 		);
 	}
 }
