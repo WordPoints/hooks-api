@@ -84,6 +84,22 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	/**
+	 * Assert that a dialog is displayed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $title The title of the dialog.
+	 */
+	public function seeJQueryDialog( $title = null ) {
+
+		$this->seeElement( '.ui-dialog' );
+
+		if ( $title ) {
+			$this->see( $title, '.ui-dialog-title' );
+		}
+	}
+
+	/**
 	 * Creates a points type in the database.
 	 *
 	 * @since 1.0.0
@@ -97,6 +113,38 @@ class AcceptanceTester extends \Codeception\Actor {
 		}
 
 		wordpoints_add_points_type( $settings );
+	}
+
+	/**
+	 * Creates a points reaction in the database.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $settings Settings for the reaction.
+	 */
+	public function hadCreatedAPointsReaction( array $settings = array() ) {
+
+		$defaults = array(
+			'event'       => 'user_register',
+			'reactor'     => 'points',
+			'points'      => 10,
+			'points_type' => 'points',
+			'target'      => array( 'user' ),
+			'description' => 'Test description.',
+			'log_text'    => 'Test log text.',
+		);
+
+		$settings = array_merge( $settings, $defaults );
+
+		if ( ! wordpoints_is_points_type( $settings['points_type'] ) ) {
+			$this->hadCreatedAPointsType(
+				array( 'name' => $settings['points_type'] )
+			);
+		}
+
+		wordpoints_hooks()->get_reaction_store( 'points' )->create_reaction(
+			$settings
+		);
 	}
 }
 

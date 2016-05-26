@@ -135,6 +135,10 @@ class WordPointsLoader extends Module {
 				"\nError activating WordPoints module: " . $result->get_error_message()
 			);
 		}
+		
+		// Initialize autoloading, since this is normally hooked to the modules
+		// loaded action, which has already been called.
+		\WordPoints_Class_Autoloader::init();
 	}
 
 	/**
