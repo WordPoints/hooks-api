@@ -50,6 +50,11 @@ class WordPointsLoader extends Module {
 
 		// Now get a dump of the pristine database so that we can restore it later.
 		$this->create_db_dump( $this->get_db_dump_file_name() );
+
+		// Flush the cache and suspend caching, since the DB can be modified during
+		// the tests.
+		$this->suspend_caching();
+		$this->flush_cache();
 	}
 
 	/**
@@ -135,7 +140,7 @@ class WordPointsLoader extends Module {
 				"\nError activating WordPoints module: " . $result->get_error_message()
 			);
 		}
-		
+
 		// Initialize autoloading, since this is normally hooked to the modules
 		// loaded action, which has already been called.
 		\WordPoints_Class_Autoloader::init();
@@ -286,6 +291,24 @@ class WordPointsLoader extends Module {
 				, "\nFailed to load database dump into database: {$result}"
 			);
 		}
+	}
+
+	/**
+	 * Suspend object caching in WordPress.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function suspend_caching() {
+		wp_suspend_cache_addition( true );
+	}
+
+	/**
+	 * Flush the WordPress object cache.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function flush_cache() {
+		wp_cache_flush();
 	}
 }
 
