@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Tests saving a points reaction.
+ * Tests creating a points reaction.
  *
  * @package WordPoints\Codeception
  * @since 1.0.0
  */
 
 $I = new AcceptanceTester( $scenario );
-$I->wantTo( 'Save a points reaction' );
+$I->wantTo( 'Create a points reaction' );
 $I->hadCreatedAPointsType();
 $I->amLoggedInAsAdmin();
 $I->amOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
