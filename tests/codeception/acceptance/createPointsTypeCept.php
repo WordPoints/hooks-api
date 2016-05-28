@@ -9,8 +9,7 @@
 
 $I = new AcceptanceTester( $scenario );
 $I->wantTo( 'Create a points type' );
-$I->amLoggedInAsAdmin();
-$I->amOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
+$I->amLoggedInAsAdminOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
 $I->see( 'Points Types' );
 $I->see( 'Add New', '.nav-tab-active' );
 $I->dontSee( 'Events' );

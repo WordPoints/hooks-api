@@ -19,20 +19,34 @@ class AcceptanceTester extends \Codeception\Actor {
 	/**
 	 * Logs the user in as the admin.
 	 *
-	 * A snapshot of the session is saved for later so that the same session can be
-	 * reused.
+	 * We'd like to save a snapshot of the session here so that we don't have to log
+	 * in each time. However, that currently isn't working for some reason.
+	 *
+	 * @link https://github.com/Codeception/Codeception/issues/2900
+	 * @link http://sqa.stackexchange.com/q/18244/18542
+	 *
+	 * @since 1.0.0
 	 */
 	public function amLoggedInAsAdmin() {
+		$this->loginAsAdmin();
+	}
 
-		$I = $this;
+	/**
+	 * Logs the user in as an admin and redirects them to the given page.
+	 *
+	 * This saves a step by taking you directly to the desired page after logging in,
+	 * instead of to the dashboard.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $page The page to redirect to after logging in.
+	 */
+	public function amLoggedInAsAdminOnPage( $page ) {
 
-		// If the snapshot already exists we just load it and don't need to log in.
-		if ( $I->loadSessionSnapshot( 'admin' ) ) {
-			return;
-		}
-
-		$I->loginAsAdmin();
-		$I->saveSessionSnapshot( 'admin' );
+		$this->amOnPage( add_query_arg( '/wp-login.php', 'redirect_to', $page ) );
+		$this->fillField( '#user_login', 'admin' );
+		$this->fillField( '#user_pass', 'password' );
+		$this->click( '#wp-submit' );
 	}
 
 	/**
