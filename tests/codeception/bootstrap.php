@@ -12,4 +12,7 @@ Codeception\Util\Autoload::addNamespace(
 	, __DIR__ . '/_support'
 );
 
+// Support lowercase "cept" suffixes for our test file names.
+WordPoints\Tests\Codeception\TestLoader::support_lowercase_formats();
+
 // EOF
