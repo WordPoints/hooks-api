@@ -193,6 +193,20 @@ class WordPointsLoader extends Module {
 	}
 
 	/**
+	 * Disable compression testing.
+	 *
+	 * When an admin visits the site for the first time this triggers an Ajax request
+	 * which is unnecessary for us and just slows things down.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/compression_test/
+	 *
+	 * @since 1.0.0
+	 */
+	protected function disable_compression_testing() {
+		update_option( 'can_compress_scripts', 1 );
+	}
+	
+	/**
 	 * Get the name of the database dump file.
 	 *
 	 * @since 1.0.0
@@ -317,20 +331,6 @@ class WordPointsLoader extends Module {
 	 */
 	protected function flush_cache() {
 		wp_cache_flush();
-	}
-
-	/**
-	 * Disable compression testing.
-	 *
-	 * When an admin visits the site for the first time this triggers an Ajax request
-	 * which is unnecessary for us and just slows things down.
-	 *
-	 * @link https://developer.wordpress.org/reference/functions/compression_test/
-	 *
-	 * @since 1.0.0
-	 */
-	protected function disable_compression_testing() {
-		update_option( 'can_compress_scripts', 1 );
 	}
 }
 
