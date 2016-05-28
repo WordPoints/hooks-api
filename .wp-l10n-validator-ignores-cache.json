@@ -37,7 +37,6 @@
             "340": false
         },
         "] =": {
-            "342": false,
             "343": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
@@ -47,10 +46,10 @@
             "343": false
         },
         "1": {
-            "566": false
+            "564": false
         },
         "2": {
-            "566": false
+            "564": false
         }
     },
     "\/admin\/includes\/classes\/screen.php": {

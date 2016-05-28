@@ -205,7 +205,7 @@ class WordPointsLoader extends Module {
 	protected function disable_compression_testing() {
 		update_option( 'can_compress_scripts', 1 );
 	}
-	
+
 	/**
 	 * Get the name of the database dump file.
 	 *

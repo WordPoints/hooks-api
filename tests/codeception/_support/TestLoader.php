@@ -21,14 +21,14 @@ class TestLoader extends \Codeception\Lib\TestLoader {
 	 *
 	 * This enables the use of lowercase filename suffixes "cept", "cest", and
 	 * "test".
-	 * 
+	 *
 	 * @since 1.0.0
 	 */
 	public static function support_lowercase_formats() {
 
 		$formats = parent::$formats;
-		
-		foreach( $formats as $format ) {
+
+		foreach ( $formats as $format ) {
 			parent::$formats[] = strtolower( $format );
 		}
 	}
