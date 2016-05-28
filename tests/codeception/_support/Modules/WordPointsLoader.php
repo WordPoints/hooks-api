@@ -41,14 +41,8 @@ class WordPointsLoader extends Module {
 		$this->load_wordpoints();
 		$this->load_wordpoints_module();
 
-		// Disable update checks since we won't be updating anything.
-		$this->disable_update_checks();
-
-		// Disable fetching feeds for the dashboard widgets, as this is just a waste
-		// of time.
-		$this->disable_dashboard_feed_widgets();
-
-		$this->disable_compression_testing();
+		// Disable time-consuming unnecessary features, like update checks.
+		$this->streamline_wordpress();
 
 		// Now get a dump of the pristine database so that we can restore it later.
 		$this->create_db_dump( $this->get_db_dump_file_name() );
@@ -146,6 +140,18 @@ class WordPointsLoader extends Module {
 		// Initialize autoloading, since this is normally hooked to the modules
 		// loaded action, which has already been called.
 		\WordPoints_Class_Autoloader::init();
+	}
+
+	/**
+	 * Disable time-consuming WordPress features that are unneeded during our tests.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function streamline_wordpress() {
+
+		$this->disable_update_checks();
+		$this->disable_dashboard_feed_widgets();
+		$this->disable_compression_testing();
 	}
 
 	/**
