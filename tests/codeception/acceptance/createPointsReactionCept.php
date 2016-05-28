@@ -24,6 +24,6 @@ $I->fillField( 'points', '10' );
 $I->click( 'Save', '#points-user_register' );
 $I->waitForJqueryAjax();
 $I->see( 'Your changes have been saved.', '#points-user_register .messages' );
-$I->cantSeeElement( '#points-user_register .add-reaction[disabled]' );
+$I->canSeeElement( '#points-user_register .add-reaction:not([disabled])' );
 
 // EOF
