@@ -255,6 +255,8 @@ Reaction = Base.extend({
 		var $dialog = $( '<div><p></p></div>' ),
 			view = this;
 
+		this.$( '.messages div' ).slideUp();
+
 		$dialog
 			.attr( 'title', l10n.confirmTitle )
 			.find( 'p' )

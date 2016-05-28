@@ -1608,6 +1608,8 @@ Reaction = Base.extend({
 		var $dialog = $( '<div><p></p></div>' ),
 			view = this;
 
+		this.$( '.messages div' ).slideUp();
+
 		$dialog
 			.attr( 'title', l10n.confirmTitle )
 			.find( 'p' )
@@ -1746,6 +1748,7 @@ Reaction = Base.extend({
 });
 
 module.exports = Reaction;
+
 },{}],14:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.Hooks
