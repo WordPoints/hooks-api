@@ -33,7 +33,7 @@ wpcept-run() {
 		return
 	fi
 
-	sed -i "s/http:\/\/wptests.local/$WP_CEPT_SERVER/" codeception.yml
+	sed -i "s/http:\/\/wptests.local/$WP_CEPT_SERVER/" codeception.dist.yml
 
 	phantomjs --webdriver=4444 --webdriver-loglevel=DEBUG &
 
@@ -43,7 +43,7 @@ wpcept-run() {
 	vendor/bin/wpcept run --debug
 
 	ls "$PROJECT_DIR"/../tests/codeception/_output/
-	 cat "$PROJECT_DIR/../tests/codeception/_output/savePointsReactionCept.fail.html"
+	 cat "$PROJECT_DIR/../tests/codeception/_output/pointsreactionupdate.cept.fail.html"
 }
 
 # EOF
