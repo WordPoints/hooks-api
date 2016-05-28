@@ -46,4 +46,15 @@ wpcept-run() {
 	 cat "$PROJECT_DIR/../tests/codeception/_output/pointsreactionupdate.cept.fail.html"
 }
 
+fixed-setup-composer() {
+
+	if [[ $DO_CODE_COVERAGE == 1 && $TRAVISCI_RUN == phpunit ]]; then
+		composer require --prefer-source satooshi/php-coveralls:0.7.0
+		mkdir -p build/logs
+		return;
+	fi
+}
+
+alias setup-composer='fixed-setup-composer'
+
 # EOF

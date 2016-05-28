@@ -74,7 +74,7 @@ script:
     - wpcept-run
 
 after_script:
-    - source $DEV_LIB_PATH/travis/after_script.sh
+    - if [[ $DO_CODE_COVERAGE == 1 ]]; then php vendor/bin/coveralls; fi
 
 #after_success:
 #    - if [[ $DO_CODE_COVERAGE == 1 ]]; then bash <(curl -s https://codecov.io/bash) -f $(find build/logs/ -name 'clover-*.xml'); fi
