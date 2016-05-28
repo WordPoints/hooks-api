@@ -48,6 +48,8 @@ class WordPointsLoader extends Module {
 		// of time.
 		$this->disable_dashboard_feed_widgets();
 
+		$this->disable_compression_testing();
+
 		// Now get a dump of the pristine database so that we can restore it later.
 		$this->create_db_dump( $this->get_db_dump_file_name() );
 
@@ -309,6 +311,20 @@ class WordPointsLoader extends Module {
 	 */
 	protected function flush_cache() {
 		wp_cache_flush();
+	}
+
+	/**
+	 * Disable compression testing.
+	 *
+	 * When an admin visits the site for the first time this triggers an Ajax request
+	 * which is unnecessary for us and just slows things down.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/compression_test/
+	 *
+	 * @since 1.0.0
+	 */
+	protected function disable_compression_testing() {
+		update_option( 'can_compress_scripts', 1 );
 	}
 }
 
