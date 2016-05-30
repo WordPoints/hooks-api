@@ -34,7 +34,7 @@ jQuery( document ).ready( function ( $ ) {
 							text: WordPointsPointsTypesL10n.deleteText,
 							'class': 'button-primary',
 							click: function() {
-								$( this ).dialog( 'close' );
+								$( this ).dialog( 'destroy' );
 								$currentDelete.click();
 								$currentDelete = false;
 							}
@@ -43,7 +43,7 @@ jQuery( document ).ready( function ( $ ) {
 							text: WordPointsPointsTypesL10n.cancelText,
 							'class': 'button-secondary',
 							click: function() {
-								$( this ).dialog( 'close' );
+								$( this ).dialog( 'destroy' );
 								$currentDelete = false;
 							}
 						}

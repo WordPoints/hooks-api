@@ -260,7 +260,7 @@ Reaction = Base.extend({
 		$dialog
 			.attr( 'title', l10n.confirmTitle )
 			.find( 'p' )
-			.text( l10n.confirmDelete )
+				.text( l10n.confirmDelete )
 			.end()
 			.dialog({
 				dialogClass: 'wp-dialog wordpoints-delete-hook-reaction-dialog',
@@ -273,7 +273,7 @@ Reaction = Base.extend({
 						text: l10n.deleteText,
 						'class': 'button-primary',
 						click: function() {
-							$( this ).dialog( 'close' );
+							$( this ).dialog( 'destroy' );
 							view.destroy();
 						}
 					},
@@ -281,7 +281,7 @@ Reaction = Base.extend({
 						text: l10n.cancelText,
 						'class': 'button-secondary',
 						click: function() {
-							$( this ).dialog( 'close' );
+							$( this ).dialog( 'destroy' );
 						}
 					}
 				]
