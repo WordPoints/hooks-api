@@ -130,6 +130,17 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	/**
+	 * Asserts taht a points type exists in the database.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the points type.
+	 */
+	public function canSeePointsTypeInDB( $slug ) {
+		\PHPUnit_Framework_Assert::assertTrue( wordpoints_is_points_type( $slug ) );
+	}
+	
+	/**
 	 * Creates a points reaction in the database.
 	 *
 	 * @since 1.0.0

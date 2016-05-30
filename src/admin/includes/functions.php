@@ -81,6 +81,13 @@ function wordpoints_hooks_admin_register_scripts() {
 	// JS
 
 	wp_register_script(
+		'wordpoints-admin-points-types'
+		, $assets_url . '/js/points-types.js'
+		, array( 'backbone', 'jquery-ui-dialog', 'wp-util' )
+		, WORDPOINTS_VERSION
+	);
+
+	wp_register_script(
 		'wordpoints-hooks-models'
 		, $assets_url . '/js/hooks/models.js'
 		, array( 'backbone', 'jquery-ui-dialog', 'wp-util' )
@@ -92,6 +99,18 @@ function wordpoints_hooks_admin_register_scripts() {
 		, $assets_url . '/js/hooks/views.js'
 		, array( 'wordpoints-hooks-models' )
 		, WORDPOINTS_VERSION
+	);
+
+	wp_localize_script(
+		'wordpoints-admin-points-types'
+		, 'WordPointsPointsTypesL10n'
+		, array(
+			'confirmDelete' => esc_html__( 'Are you sure that you want to delete this points type? This will delete all related logs and event hooks.', 'wordpoints' )
+			                   . ' ' . esc_html__( 'Once a points type has been deleted, you cannot bring it back.', 'wordpoints' ),
+			'confirmTitle'  => esc_html__( 'Are you sure?', 'wordpoints' ),
+			'deleteText'    => esc_html__( 'Delete', 'wordpoints' ),
+			'cancelText'    => esc_html__( 'Cancel', 'wordpoints' ),
+		)
 	);
 
 	wp_localize_script(
