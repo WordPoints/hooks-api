@@ -270,18 +270,18 @@ Reaction = Base.extend({
 				modal: true,
 				buttons: [
 					{
+						text: l10n.cancelText,
+						'class': 'button-secondary',
+						click: function() {
+							$( this ).dialog( 'destroy' );
+						}
+					},
+					{
 						text: l10n.deleteText,
 						'class': 'button-primary',
 						click: function() {
 							$( this ).dialog( 'destroy' );
 							view.destroy();
-						}
-					},
-					{
-						text: l10n.cancelText,
-						'class': 'button-secondary',
-						click: function() {
-							$( this ).dialog( 'destroy' );
 						}
 					}
 				]

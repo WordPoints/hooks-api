@@ -31,19 +31,19 @@ jQuery( document ).ready( function ( $ ) {
 					modal: true,
 					buttons: [
 						{
+							text: WordPointsPointsTypesL10n.cancelText,
+							'class': 'button-secondary',
+							click: function() {
+								$( this ).dialog( 'destroy' );
+								$currentDelete = false;
+							}
+						},
+						{
 							text: WordPointsPointsTypesL10n.deleteText,
 							'class': 'button-primary',
 							click: function() {
 								$( this ).dialog( 'destroy' );
 								$currentDelete.click();
-								$currentDelete = false;
-							}
-						},
-						{
-							text: WordPointsPointsTypesL10n.cancelText,
-							'class': 'button-secondary',
-							click: function() {
-								$( this ).dialog( 'destroy' );
 								$currentDelete = false;
 							}
 						}

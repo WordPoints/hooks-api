@@ -12,7 +12,6 @@
  * -- Form
  * -- Editing
  * -- Changed
- * - Dialog
  * - Conditions
  * -- Buttons
  * -- Title
@@ -152,9 +151,6 @@
 	 */
   /*
 	 * - Changed.
-	 */
-  /*
-	 * Dialog.
 	 */
   /*
 	 * Sections.
@@ -305,15 +301,6 @@
 .wordpoints-hook-reaction.changed .action-buttons .close,
 .wordpoints-hook-reaction.changed .view .close {
   display: none;
-}
-
-.wordpoints-hook-reaction .wordpoints-delete-hook-reaction-dialog .button-primary {
-  float: right;
-}
-
-.wordpoints-hook-reaction .wordpoints-delete-hook-reaction-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-  float: none;
-  width: 100%;
 }
 
 .wordpoints-hook-reaction .section-title {

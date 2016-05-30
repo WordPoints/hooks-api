@@ -12,7 +12,6 @@
  * -- Form
  * -- Editing
  * -- Changed
- * - Dialog
  * - Conditions
  * -- Buttons
  * -- Title
@@ -301,21 +300,6 @@ $lighter_border_color: #ddd;
 		.action-buttons .close,
 		.view .close {
 			display: none;
-		}
-	}
-
-	/*
-	 * Dialog.
-	 */
-
-	.wordpoints-delete-hook-reaction-dialog {
-		.button-primary {
-			float: right;
-		}
-
-		.ui-dialog-buttonpane .ui-dialog-buttonset {
-			float: none;
-			width: 100%;
 		}
 	}
 
