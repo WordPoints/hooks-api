@@ -43,7 +43,8 @@ wpcept-run() {
 	vendor/bin/wpcept run --debug
 
 	ls "$PROJECT_DIR"/../tests/codeception/_output/
-	 cat "$PROJECT_DIR/../tests/codeception/_output/pointsreactionupdate.cept.fail.html"
+	ls /tmp/wordpress/src/
+	cat "$PROJECT_DIR/../tests/codeception/_output/pointsreactionupdate.cept.fail.html"
 }
 
 fixed-setup-composer() {
