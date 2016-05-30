@@ -56,6 +56,53 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
 	}
+
+	/**
+	 * Test getting a matching hit logs query.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_get_matching_hit_logs_query() {
+
+		$action_type = 'test_fire';
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+		$event_args = new WordPoints_Hook_Event_Args(
+			array( new WordPoints_PHPUnit_Mock_Hook_Arg( 'test_entity' ) )
+		);
+
+		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, $action_type );
+
+		$query = $fire->get_matching_hits_query();
+		
+		$this->assertEquals( $action_type, $query->get_arg( 'action_type' ) );
+		
+		$this->assertEquals( 
+			wordpoints_hooks_get_event_primary_arg_guid_json( $event_args )
+			, $query->get_arg( 'primary_arg_guid' )
+		);
+		
+		$this->assertEquals(
+			$reaction->get_event_slug()
+			, $query->get_arg( 'event' )
+		);
+
+		$this->assertEquals(
+			$reaction->get_reactor_slug()
+			, $query->get_arg( 'reactor' )
+		);
+		
+		$this->assertEquals(
+			$reaction->get_store_slug()
+			, $query->get_arg( 'reaction_store' )
+		);
+
+		$this->assertEquals(
+			wp_json_encode( $reaction->get_context_id() )
+			, $query->get_arg( 'reaction_context_id' )
+		);
+		
+		$this->assertEquals( $reaction->ID, $query->get_arg( 'reaction_id' ) );
+	}
 }
 
 // EOF
