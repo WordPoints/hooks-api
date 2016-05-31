@@ -1,13 +1,13 @@
 {
     "\/admin\/includes\/classes\/screen\/points\/types.php": {
         "jQuery( document ).ready( function ( $ ) {\n\n\t\t\t\t$( '.if-js-closed' )\n\t\t\t\t\t.removeClass( 'if-js-closed' )\n\t\t\t\t\t.addClass( 'closed' );\n\n\t\t\t\tpostboxes.add_postbox_toggles(": {
-            "91": false
+            "92": false
         },
         ");\n\t\t\t} );": {
-            "101": false
+            "102": false
         },
         "points-": {
-            "259": {
+            "260": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -16,7 +16,7 @@
             }
         },
         "-save": {
-            "259": {
+            "260": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -25,7 +25,7 @@
             }
         },
         "points": {
-            "313": {
+            "314": {
                 "name": "(unknown)->get_reaction_store",
                 "type": "unknown",
                 "args_started": true,
@@ -34,22 +34,23 @@
             }
         },
         "WordPointsHooksAdminData.events[": {
-            "340": false
+            "341": false
         },
         "] =": {
-            "343": false
+            "343": false,
+            "344": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
-            "342": false
-        },
-        ";": {
             "343": false
         },
+        ";": {
+            "344": false
+        },
         "1": {
-            "564": false
+            "651": false
         },
         "2": {
-            "564": false
+            "651": false
         }
     },
     "\/admin\/includes\/classes\/screen.php": {
@@ -68,13 +69,13 @@
             }
         },
         "attr": {
-            "389": false
+            "408": false
         },
         "relationship": {
-            "394": false
+            "413": false
         },
         "entity": {
-            "419": {
+            "438": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,

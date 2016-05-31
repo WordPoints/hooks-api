@@ -68,8 +68,8 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 	 */
 	public function setUp() {
 
-		parent::setUp(); 
-		
+		parent::setUp();
+
 		$GLOBALS['current_screen'] = WP_Screen::get( 'test' );
 	}
 
@@ -81,7 +81,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 		parent::tearDown();
 
 		$GLOBALS['wp_settings_errors'] = array();
-		
+
 		unset( $GLOBALS['current_screen'] );
 	}
 
@@ -91,9 +91,9 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 	 * @since 1.0.0
 	 *
 	 * @dataProvider data_provider_valid_create_requests
-	 *  
+	 *
 	 * @param array $request_spec The specs for a valid request.
-     */
+	 */
 	public function test_create_points_type( $request_spec ) {
 
 		$this->generate_request( $request_spec );
@@ -102,13 +102,13 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 		$screen->save_points_type();
 
 		$this->assertSuccessSettingsError( 'wordpoints_points_type_create' );
-		
+
 		$this->assertTrue( wordpoints_is_points_type( 'points' ) );
-		
+
 		$points_type = wordpoints_get_points_type( 'points' );
-		
+
 		$this->assertEquals( 'Points', $points_type['name'] );
-		
+
 		if ( isset( $_POST['points-prefix'] ) ) {
 			$this->assertEquals( '$', $points_type['prefix'] );
 		}
@@ -116,7 +116,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 		if ( isset( $_POST['points-suffix'] ) ) {
 			$this->assertEquals( 'pts.', $points_type['suffix'] );
 		}
-		
+
 		// We display the points type and not the add new form again.
 		$this->assertEquals( 'points', $_GET['tab'] );
 	}
@@ -131,7 +131,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 	public function data_provider_valid_create_requests() {
 		return $this->generate_valid_request_specs( $this->create_request_spec );
 	}
-	
+
 	/**
 	 * Test creating a points type requires valid requests.
 	 *
@@ -147,7 +147,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 
 		$screen = new WordPoints_Admin_Screen_Points_Types();
 		$screen->save_points_type();
-		
+
 		$this->assertFalse( wordpoints_is_points_type( 'points' ) );
 	}
 
@@ -168,13 +168,13 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 	 * @since 1.0.0
 	 */
 	public function test_create_points_type_already_exists() {
-		
+
 		wordpoints_add_points_type( array( 'name' => 'Points' ) );
-		
+
 		$this->assertTrue( wordpoints_is_points_type( 'points' ) );
 
 		$this->generate_request( $this->create_request_spec );
-		
+
 		$screen = new WordPoints_Admin_Screen_Points_Types();
 		$screen->save_points_type();
 
@@ -252,7 +252,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 
 		wordpoints_add_points_type( array( 'name' => 'Points' ) );
 		wordpoints_update_points_type( 'points', $settings );
-		
+
 		$this->generate_request( $request_spec );
 
 		$screen = new WordPoints_Admin_Screen_Points_Types();
@@ -278,7 +278,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 	 * @since 1.0.0
 	 */
 	public function test_update_points_type_nonexistent() {
-		
+
 		$this->assertFalse( wordpoints_is_points_type( 'points' ) );
 
 		$this->generate_request( $this->update_request_spec );
@@ -320,7 +320,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 	 * @param array $request_spec The specs for an invalid request.
 	 */
 	public function test_delete_points_type_invalid_request( $request_spec ) {
-		
+
 		wordpoints_add_points_type( array( 'name' => 'Points' ) );
 
 		$this->generate_request( $request_spec );
@@ -394,11 +394,11 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 					);
 				break;
 			}
-			
+
 		} elseif ( array( 1 => 'invalid', 2 => 'points-name' ) === $requirement_parts ) {
-			
+
 			$_POST['points-name'] = '';
-		
+
 		} elseif ( array( 1 => 'invalid', 2 => 'points-slug' ) === $requirement_parts ) {
 
 			$_POST['points-slug'] = '';
@@ -430,7 +430,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 
 			case 'points-slug':
 				return 'points';
-			
+
 			case 'delete-points-type':
 				return 'Delete';
 		}
@@ -451,7 +451,7 @@ class WordPoints_Admin_Screen_Points_Types_Test extends WordPoints_PHPUnit_TestC
 		global $wp_settings_errors;
 
 		$this->assertCount( 1, (array) $wp_settings_errors );
-		
+
 		$this->assertEquals( $code, $wp_settings_errors[0]['code'] );
 		$this->assertEquals( $type, $wp_settings_errors[0]['type'] );
 	}

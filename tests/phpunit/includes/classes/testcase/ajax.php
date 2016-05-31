@@ -138,7 +138,7 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 	 * Create the specs for valid requests based on the specs for a valid request.
 	 *
 	 * Because some things can be optional.
-	 * 
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param string[] $specs The specs for a valid request.
@@ -150,11 +150,11 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 		$valid_requests = array( 'basic' => array( $specs ) );
 
 		foreach ( $specs as $index => $spec ) {
-			
+
 			if ( 'posts_optional_' === substr( $spec, 0, 15 ) ) {
 				$request = $specs;
 				unset( $request[ $index ] );
-				$valid_requests['no' . substr( $spec, 14 ) ] = array( $request );
+				$valid_requests[ 'no' . substr( $spec, 14 ) ] = array( $request );
 			}
 		}
 
@@ -193,16 +193,16 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 				case 'am':
 					$invalid_requests[ 'not_' . $rest ] = array( $request );
 				break;
-				
+
 				case 'can':
 					$invalid_requests[ 'cant_' . $rest ] = array( $request );
 				break;
 
 				case 'posts':
 					$next_part = '';
-					
+
 					switch ( $parts[1] ) {
-						
+
 						case 'valid':
 							$invalid_requests[ 'missing_' . $rest ] = array( $request );
 							$next_part = $parts[1];
@@ -253,16 +253,16 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 	 * @param string[] $requirement_parts The requirement parts.
 	 */
 	public function fulfill_can_requirement( $requirement_parts ) {
-		
+
 		$post = $_POST;
-		
+
 		/** @var WP_User $user */
 		$user = $this->factory->user->create_and_get();
 		$user->add_cap( implode( '_', $requirement_parts ) );
-		
+
 		wp_set_current_user( $user->ID );
-		
-		$_POST = array_merge($_POST, $post);
+
+		$_POST = array_merge( $_POST, $post );
 	}
 
 	/**
@@ -281,9 +281,9 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 		$type = $requirement_parts[1];
 
 		$parts = $requirement_parts;
-		
+
 		unset( $parts[1] );
-		
+
 		$rest = implode( '_', $parts );
 
 		switch ( $type ) {
@@ -299,7 +299,7 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 
 			default:
 				$parts = implode( '_', $requirement_parts );
-				
+
 				$_POST[ $parts ] = $this->get_valid_posts_value( $parts );
 		}
 	}

@@ -16,8 +16,8 @@
             "errors": false
         },
         "\/admin\/includes\/classes\/screen\/points\/types.php": {
-            "size": 14390,
-            "hash": "caee780b0ec2b82f09e3d2be166c147b",
+            "size": 15518,
+            "hash": "bf811cbdb2bbcb26a30d6df95eb84277",
             "errors": false
         },
         "\/admin\/includes\/classes\/screen.php": {
@@ -31,8 +31,8 @@
             "errors": false
         },
         "\/admin\/includes\/functions.php": {
-            "size": 14740,
-            "hash": "5fab190d4b1a58392406d95177fa23b7",
+            "size": 15494,
+            "hash": "59f71b1fe92f74710d5dd82bbeb0fbc6",
             "errors": false
         },
         "\/hooks-api.php": {

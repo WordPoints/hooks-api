@@ -73,14 +73,14 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$fire = new WordPoints_Hook_Fire( $event_args, $reaction, $action_type );
 
 		$query = $fire->get_matching_hits_query();
-		
+
 		$this->assertEquals( $action_type, $query->get_arg( 'action_type' ) );
-		
-		$this->assertEquals( 
+
+		$this->assertEquals(
 			wordpoints_hooks_get_event_primary_arg_guid_json( $event_args )
 			, $query->get_arg( 'primary_arg_guid' )
 		);
-		
+
 		$this->assertEquals(
 			$reaction->get_event_slug()
 			, $query->get_arg( 'event' )
@@ -90,7 +90,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			$reaction->get_reactor_slug()
 			, $query->get_arg( 'reactor' )
 		);
-		
+
 		$this->assertEquals(
 			$reaction->get_store_slug()
 			, $query->get_arg( 'reaction_store' )
@@ -100,7 +100,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			wp_json_encode( $reaction->get_context_id() )
 			, $query->get_arg( 'reaction_context_id' )
 		);
-		
+
 		$this->assertEquals( $reaction->ID, $query->get_arg( 'reaction_id' ) );
 	}
 }
