@@ -278,8 +278,23 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			return;
 		}
 
+		/** @var WordPoints_Hook_Reactor $reactor */
+		$reactor = $this->hooks->reactors->get( 'points' );
+		$reactor_action_types = array_fill_keys( $reactor->get_action_types(), true );
+
+		$event_action_types = wordpoints_hooks_ui_get_script_data_event_action_types();
+
 		/** @var WordPoints_Hook_EventI $event */
 		foreach ( $this->hooks->events->get_all() as $slug => $event ) {
+
+			if (
+				! array_intersect_key(
+					$event_action_types[ $slug ]
+					, $reactor_action_types
+				)
+			) {
+				continue;
+			}
 
 			add_meta_box(
 				"{$this->current_points_type}-{$slug}"
