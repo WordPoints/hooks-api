@@ -192,6 +192,17 @@ function wordpoints_hook_actions_init( $actions ) {
 	);
 
 	$actions->register(
+		'post_depublish_delete'
+		, 'WordPoints_Hook_Action_Post_Depublish_Delete'
+		, array(
+			'action' => 'delete_post',
+			'data'   => array(
+				'arg_index' => array( 'post' => 0 ),
+			),
+		)
+	);
+
+	$actions->register(
 		'add_attachment'
 		, 'WordPoints_Hook_Action'
 		, array(
@@ -457,7 +468,7 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, array(
 				'actions' => array(
 					'toggle_on'  => 'post_publish',
-					'toggle_off' => array( 'post_depublish', 'post_delete' ),
+					'toggle_off' => array( 'post_depublish', 'post_depublish_delete' ),
 				),
 				'args'    => array(
 					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',

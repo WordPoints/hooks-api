@@ -78,6 +78,7 @@ require_once( $dir . '/entity/user/roles.php' );
 require_once( $dir . '/hierarchy.php' );
 require_once( $dir . '/hook/action.php' );
 require_once( $dir . '/hook/action/comment/new.php' );
+require_once( $dir . '/hook/action/post/depublish/delete.php' );
 require_once( $dir . '/hook/action/post/publish.php' );
 require_once( $dir . '/hook/actions.php' );
 require_once( $dir . '/hook/arg.php' );
