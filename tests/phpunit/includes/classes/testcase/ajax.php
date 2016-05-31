@@ -120,6 +120,10 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 					$this->fulfill_am_requirement( $parts );
 				break;
 
+				case 'can':
+					$this->fulfill_can_requirement( $parts );
+				break;
+
 				case 'posts':
 					$this->fulfill_posts_requirement( $parts );
 				break;
@@ -131,13 +135,40 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 	}
 
 	/**
+	 * Create the specs for valid requests based on the specs for a valid request.
+	 *
+	 * Because some things can be optional.
+	 * 
+	 * @since 1.0.0
+	 *
+	 * @param string[] $specs The specs for a valid request.
+	 *
+	 * @return array[] The valid requests, ready to be returned by a data provider.
+	 */
+	public function generate_valid_request_specs( $specs ) {
+
+		$valid_requests = array( 'basic' => array( $specs ) );
+
+		foreach ( $specs as $index => $spec ) {
+			
+			if ( 'posts_optional_' === substr( $spec, 0, 15 ) ) {
+				$request = $specs;
+				unset( $request[ $index ] );
+				$valid_requests['no' . substr( $spec, 14 ) ] = array( $request );
+			}
+		}
+
+		return $valid_requests;
+	}
+
+	/**
 	 * Create the specs for invalid requests based on the specs for a valid request.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string[] $specs The specs for a valid request.
 	 *
-	 * @return array[] The invalid requests, ready to be returned a data provider.
+	 * @return array[] The invalid requests, ready to be returned by a data provider.
 	 */
 	public function generate_invalid_request_specs( $specs ) {
 
@@ -162,11 +193,28 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 				case 'am':
 					$invalid_requests[ 'not_' . $rest ] = array( $request );
 				break;
+				
+				case 'can':
+					$invalid_requests[ 'cant_' . $rest ] = array( $request );
+				break;
 
 				case 'posts':
-					$invalid_requests[ 'missing_' . $rest ] = array( $request );
+					$next_part = '';
+					
+					switch ( $parts[1] ) {
+						
+						case 'valid':
+							$invalid_requests[ 'missing_' . $rest ] = array( $request );
+							$next_part = $parts[1];
+						break;
 
-					if ( 'valid' === $parts[1] ) {
+						case 'optional':
+							$next_part = $parts[2];
+							$rest = substr( $rest, 0, 9 /* optional_ */ );
+						break;
+					}
+
+					if ( 'valid' === $next_part ) {
 						// The 'in' makes 'valid' become 'invalid'.
 						$request[ $index ] = 'posts_in' . $rest;
 
@@ -195,6 +243,29 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 	}
 
 	/**
+	 * Fulfill the requirements for an "can" request specification.
+	 *
+	 * A "can" request specification dictates that the current user must have a
+	 * certain capability.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] $requirement_parts The requirement parts.
+	 */
+	public function fulfill_can_requirement( $requirement_parts ) {
+		
+		$post = $_POST;
+		
+		/** @var WP_User $user */
+		$user = $this->factory->user->create_and_get();
+		$user->add_cap( implode( '_', $requirement_parts ) );
+		
+		wp_set_current_user( $user->ID );
+		
+		$_POST = array_merge($_POST, $post);
+	}
+
+	/**
 	 * Fulfill the requirements for a "posts" request specification.
 	 *
 	 * A "posts" request spec dictates that a certain value should be posted. The
@@ -209,9 +280,11 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 
 		$type = $requirement_parts[1];
 
-		unset( $requirement_parts[1] );
-
-		$rest = implode( '_', $requirement_parts );
+		$parts = $requirement_parts;
+		
+		unset( $parts[1] );
+		
+		$rest = implode( '_', $parts );
 
 		switch ( $type ) {
 
@@ -220,8 +293,14 @@ abstract class WordPoints_PHPUnit_TestCase_Ajax extends WordPoints_Ajax_UnitTest
 			break;
 
 			case 'valid':
+			case 'optional':
 				$_POST[ $rest ] = $this->get_valid_posts_value( $rest );
 			break;
+
+			default:
+				$parts = implode( '_', $requirement_parts );
+				
+				$_POST[ $parts ] = $this->get_valid_posts_value( $parts );
 		}
 	}
 

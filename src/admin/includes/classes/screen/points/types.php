@@ -415,20 +415,25 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			return;
 		}
 
-		if (
-			isset(
-				$_POST['save-points-type']
-				, $_POST['points-name']
-				, $_POST['points-prefix']
-				, $_POST['points-suffix']
-			)
-		) {
+		if ( isset( $_POST['save-points-type'], $_POST['points-name'] ) ) {
 
 			$settings = array();
 
-			$settings['name']   = trim( sanitize_text_field( wp_unslash( $_POST['points-name'] ) ) ); // WPCS: CSRF OK
-			$settings['prefix'] = ltrim( sanitize_text_field( wp_unslash( $_POST['points-prefix'] ) ) ); // WPCS: CSRF OK
-			$settings['suffix'] = rtrim( sanitize_text_field( wp_unslash( $_POST['points-suffix'] ) ) ); // WPCS: CSRF OK
+			$settings['name'] = trim(
+				sanitize_text_field( wp_unslash( $_POST['points-name'] ) ) // WPCS: CSRF OK
+			);
+			
+			if ( isset( $_POST['points-prefix'] ) ) {
+				$settings['prefix'] = ltrim(
+					sanitize_text_field( wp_unslash( $_POST['points-prefix'] ) ) // WPCS: CSRF OK
+				);
+			}
+			
+			if ( isset( $_POST['points-suffix'] ) ) {
+				$settings['suffix'] = rtrim(
+					sanitize_text_field( wp_unslash( $_POST['points-suffix'] ) ) // WPCS: CSRF OK
+				);
+			}
 
 			if (
 				isset( $_POST['points-slug'] )
@@ -436,6 +441,17 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			) {
 
 				// - We are updating an existing points type.
+				
+				if ( empty( $settings['name'] ) ) {
+				
+					add_settings_error(
+						'points-name'
+						, 'wordpoints_points_type_update'
+						, __( 'Error: points type name cannot be empty.', 'wordpoints' )
+					);
+
+					return;
+				}
 
 				$points_type = sanitize_key( $_POST['points-slug'] );
 
