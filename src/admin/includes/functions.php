@@ -127,6 +127,8 @@ function wordpoints_hooks_admin_register_scripts() {
 			'cancelText'      => __( 'Cancel', 'wordpoints' ),
 			'separator'       => __( ' » ', 'wordpoints' ),
 			'target_label'    => __( 'Target', 'wordpoints' ),
+			// translators: form field
+			'cannotBeChanged' => __( '(cannot be changed)', 'wordpoints' ),
 		)
 	);
 

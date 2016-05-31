@@ -131,6 +131,10 @@ Reaction = Base.extend({
 			label = l10n.target_label;
 		}
 
+		if ( ! this.model.isNew() ) {
+			label += ' ' + l10n.cannotBeChanged;
+		}
+
 		var field = Fields.create(
 			'target'
 			, value
@@ -142,6 +146,10 @@ Reaction = Base.extend({
 		);
 
 		this.$target.html( field );
+
+		if ( ! this.model.isNew() ) {
+			this.$target.find( 'select' ).prop( 'disabled', true );
+		}
 	},
 
 	setReactor: function () {
@@ -389,6 +397,8 @@ Reaction = Base.extend({
 		this.$( '.success' )
 			.text( l10n.changesSaved )
 			.slideDown();
+
+		this.$target.find( 'select' ).prop( 'disabled', true );
 
 		this.$el.removeClass( 'new changed' );
 	}
