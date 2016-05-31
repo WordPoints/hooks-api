@@ -415,117 +415,186 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			return;
 		}
 
-		if ( isset( $_POST['save-points-type'], $_POST['points-name'] ) ) {
+		if ( isset( $_POST['save-points-type'] ) ) {
+			
+			if ( isset( $_POST['points-slug'] ) ) {
+				$this->update_points_type();
+			} else {
+				$this->add_points_type();
+			}
 
-			$settings = array();
+		} elseif ( ! empty( $_POST['delete-points-type'] ) ) {
+			
+			$this->delete_points_type();
+		}
+	}
 
+	/**
+	 * Get the settings for a points type from the submitted form.
+	 *
+	 * @since 1.0.0
+	 *       
+	 * @return array The settings for a points type.
+	 */
+	protected function get_points_type_settings() {
+
+		$settings = array();
+
+		if ( isset( $_POST['points-name'] ) ) {
 			$settings['name'] = trim(
 				sanitize_text_field( wp_unslash( $_POST['points-name'] ) ) // WPCS: CSRF OK
 			);
-			
-			if ( isset( $_POST['points-prefix'] ) ) {
-				$settings['prefix'] = ltrim(
-					sanitize_text_field( wp_unslash( $_POST['points-prefix'] ) ) // WPCS: CSRF OK
-				);
-			}
-			
-			if ( isset( $_POST['points-suffix'] ) ) {
-				$settings['suffix'] = rtrim(
-					sanitize_text_field( wp_unslash( $_POST['points-suffix'] ) ) // WPCS: CSRF OK
-				);
-			}
+		}
 
-			if (
-				isset( $_POST['points-slug'] )
-				&& wordpoints_verify_nonce( 'update_points_type', 'wordpoints_update_points_type-%s', array( 'points-slug' ), 'post' )
-			) {
+		if ( isset( $_POST['points-prefix'] ) ) {
+			$settings['prefix'] = ltrim(
+				sanitize_text_field( wp_unslash( $_POST['points-prefix'] ) ) // WPCS: CSRF OK
+			);
+		}
 
-				// - We are updating an existing points type.
-				
-				if ( empty( $settings['name'] ) ) {
-				
-					add_settings_error(
-						'points-name'
-						, 'wordpoints_points_type_update'
-						, __( 'Error: points type name cannot be empty.', 'wordpoints' )
-					);
+		if ( isset( $_POST['points-suffix'] ) ) {
+			$settings['suffix'] = rtrim(
+				sanitize_text_field( wp_unslash( $_POST['points-suffix'] ) ) // WPCS: CSRF OK
+			);
+		}
 
-					return;
-				}
+		return $settings;
+	}
 
-				$points_type = sanitize_key( $_POST['points-slug'] );
-
-				$old_settings = wordpoints_get_points_type( $points_type );
-
-				if ( false === $old_settings ) {
-
-					add_settings_error(
-						''
-						, 'wordpoints_points_type_update'
-						, __( 'Error: failed updating points type.', 'wordpoints' )
-					);
-
-					return;
-				}
-
-				if ( is_array( $old_settings ) ) {
-					$settings = array_merge( $old_settings, $settings );
-				}
-
-				if ( ! wordpoints_update_points_type( $points_type, $settings ) ) {
-
-					add_settings_error(
-						''
-						, 'wordpoints_points_type_update'
-						, __( 'Error: failed updating points type.', 'wordpoints' )
-					);
-
-				} else {
-
-					add_settings_error(
-						''
-						, 'wordpoints_points_type_update'
-						, __( 'Points type updated.', 'wordpoints' )
-						, 'updated'
-					);
-				}
-
-			} elseif ( wordpoints_verify_nonce( 'add_new', 'wordpoints_add_new_points_type', null, 'post' ) ) {
-
-				// - We are creating a new points type.
-
-				$slug = wordpoints_add_points_type( $settings );
-
-				if ( ! $slug ) {
-
-					add_settings_error(
-						''
-						, 'wordpoints_points_type_create'
-						, __( 'Please choose a unique name for this points type.', 'wordpoints' )
-					);
-
-				} else {
-
-					$_GET['tab'] = $slug;
-
-					add_settings_error(
-						''
-						, 'wordpoints_points_type_create'
-						, __( 'Points type created.', 'wordpoints' )
-						, 'updated'
-					);
-				}
-			}
-
-		} elseif (
-			! empty( $_POST['delete-points-type'] )
-			&& isset( $_POST['points-slug'] )
-			&& wordpoints_verify_nonce( 'delete-points-type-nonce', 'wordpoints_delete_points_type-%s', array( 'points-slug' ), 'post' )
+	/**
+	 * Update an existing points type.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function update_points_type() {
+		
+		if (
+			! wordpoints_verify_nonce(
+				'update_points_type'
+				, 'wordpoints_update_points_type-%s'
+				, array( 'points-slug' )
+				, 'post'
+			)
 		) {
+			return;
+		}
 
-			// - We are deleting a points type.
+		$settings = $this->get_points_type_settings();
+		
+		if ( empty( $settings['name'] ) ) {
 
-			if ( wordpoints_delete_points_type( sanitize_key( $_POST['points-slug'] ) ) ) {
+			add_settings_error(
+				'points-name'
+				, 'wordpoints_points_type_update'
+				, __( 'Error: points type name cannot be empty.', 'wordpoints' )
+			);
+
+			return;
+		}
+
+		$points_type = sanitize_key( $_POST['points-slug'] );
+
+		$old_settings = wordpoints_get_points_type( $points_type );
+
+		if ( false === $old_settings ) {
+
+			add_settings_error(
+				''
+				, 'wordpoints_points_type_update'
+				, __( 'Error: failed updating points type.', 'wordpoints' )
+			);
+
+			return;
+		}
+
+		if ( is_array( $old_settings ) ) {
+			$settings = array_merge( $old_settings, $settings );
+		}
+
+		if ( ! wordpoints_update_points_type( $points_type, $settings ) ) {
+
+			add_settings_error(
+				''
+				, 'wordpoints_points_type_update'
+				, __( 'Error: failed updating points type.', 'wordpoints' )
+			);
+
+		} else {
+
+			add_settings_error(
+				''
+				, 'wordpoints_points_type_update'
+				, __( 'Points type updated.', 'wordpoints' )
+				, 'updated'
+			);
+		}
+	}
+
+	/**
+	 * Create a new points type.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function add_points_type() {
+
+		if ( 
+			! wordpoints_verify_nonce(
+				'add_new'
+				, 'wordpoints_add_new_points_type'
+				, null
+				, 'post'
+			)
+		) {
+			return;
+		}
+			
+		$settings = $this->get_points_type_settings();
+		
+		$slug = wordpoints_add_points_type( $settings );
+
+		if ( ! $slug ) {
+
+			add_settings_error(
+				''
+				, 'wordpoints_points_type_create'
+				, __( 'Please choose a unique name for this points type.', 'wordpoints' )
+			);
+
+		} else {
+
+			$_GET['tab'] = $slug;
+
+			add_settings_error(
+				''
+				, 'wordpoints_points_type_create'
+				, __( 'Points type created.', 'wordpoints' )
+				, 'updated'
+			);
+		}
+	}
+
+	/**
+	 * Delete a points type.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function delete_points_type() {
+		
+		if (
+			isset( $_POST['points-slug'] )
+		   && wordpoints_verify_nonce(
+				'delete-points-type-nonce'
+				, 'wordpoints_delete_points_type-%s'
+				, array( 'points-slug' )
+				, 'post'
+			)
+		) {
+			
+			if (
+				wordpoints_delete_points_type(
+					sanitize_key( $_POST['points-slug'] )
+				)
+			) {
 
 				add_settings_error(
 					''
