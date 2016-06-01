@@ -100,7 +100,12 @@ Fields = Backbone.Model.extend({
 	getFieldName: function ( field ) {
 
 		if ( _.isArray( field ) ) {
-			field = field.shift() + '[' + field.join( '][' ) + ']';
+
+			if ( 1 === field.length ) {
+				field = field.shift();
+			} else {
+				field = field.shift() + '[' + field.join( '][' ) + ']';
+			}
 		}
 
 		return field;

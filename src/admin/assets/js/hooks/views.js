@@ -622,7 +622,12 @@ Fields = Backbone.Model.extend({
 	getFieldName: function ( field ) {
 
 		if ( _.isArray( field ) ) {
-			field = field.shift() + '[' + field.join( '][' ) + ']';
+
+			if ( 1 === field.length ) {
+				field = field.shift();
+			} else {
+				field = field.shift() + '[' + field.join( '][' ) + ']';
+			}
 		}
 
 		return field;
@@ -1658,7 +1663,7 @@ Reaction = Base.extend({
 			// them next to their associated field.
 			_.each( response.errors, function ( error ) {
 
-				var $field, fieldName;
+				var $field, escapedFieldName;
 
 				// Sometimes some of the errors aren't for any particular field
 				// though, so we collect them in an array an display them all
@@ -1668,21 +1673,19 @@ Reaction = Base.extend({
 					return;
 				}
 
-				fieldName = Fields.getFieldName( error.field );
+				escapedFieldName = Fields.getFieldName( error.field )
+						.replace( /[^a-z0-9-_\[\]\{}\\]/gi, '' )
+						.replace( /\\/g, '\\\\' );
 
 				// When a field is specified, we try to locate it.
-				$field = this.$(
-					'[name="' + fieldName.replace( /[^a-z0-9-_\[\]\{}]/gi, '' ) + '"]'
-				);
+				$field = this.$( '[name="' + escapedFieldName + '"]' );
 
 				if ( 0 === $field.length ) {
 
 					// However, there are times when the error is for a field set
 					// and not a single field. In that case, we try to find the
 					// fields in that set.
-					$field = this.$(
-						'[name^="' + fieldName.replace( /[^a-z0-9-_\[\]\{}]/gi, '' ) + '"]'
-					);
+					$field = this.$( '[name^="' + escapedFieldName + '"]' );
 
 					// If that fails, we just add this to the general errors.
 					if ( 0 === $field.length ) {
@@ -1694,9 +1697,7 @@ Reaction = Base.extend({
 				}
 
 				$field.before(
-					$( '<div class="message err"></div>' )
-						.text( error.message )
-						//.show() // TODO we shouldn't need this
+					$( '<div class="message err"></div>' ).text( error.message )
 				);
 
 			}, this );
