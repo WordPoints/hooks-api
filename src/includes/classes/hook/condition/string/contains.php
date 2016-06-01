@@ -28,7 +28,7 @@ class WordPoints_Hook_Condition_String_Contains extends WordPoints_Hook_Conditio
 		return array(
 			'value' => array(
 				'type'     => 'text',
-				'label'    => __( 'Contains', 'wordpoints' ), // TODO
+				'label'    => __( 'Word or phrase (case sensitive)', 'wordpoints' ),
 				'required' => true,
 			),
 		);
