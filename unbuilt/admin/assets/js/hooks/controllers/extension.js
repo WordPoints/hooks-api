@@ -28,7 +28,7 @@ Extension = Backbone.Model.extend({
 
 		this.listenTo( hooks, 'reaction:view:init', this.initReaction );
 
-		this.data = extensions[ this.id ]; // TODO
+		this.data = extensions[ this.id ];
 
 		this.__child__.initialize.apply( this, arguments );
 	},

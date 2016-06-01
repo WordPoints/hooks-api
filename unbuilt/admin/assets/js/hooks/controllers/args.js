@@ -441,7 +441,6 @@ var Relationship = Parent.extend({
 var EntityArray = Arg.extend( {
 	type: 'array',
 
-	// TODO does _canonical need to be set too?
 	initialize: function () {
 		this.set( 'slug', this.get( 'entity_slug' ) + '{}' );
 	}
