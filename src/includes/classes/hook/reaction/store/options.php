@@ -188,12 +188,7 @@ class WordPoints_Hook_Reaction_Store_Options extends WordPoints_Hook_Reaction_St
 
 		$index = $this->get_reaction_index();
 
-		$id = 1;
-
-		// TODO this is fragile when the newest reaction gets deleted.
-		if ( ! empty( $index ) ) {
-			$id = 1 + max( array_keys( $index ) );
-		}
+		$id = $this->get_next_id( $index );
 
 		$settings = array( 'event' => $event_slug );
 
@@ -210,6 +205,41 @@ class WordPoints_Hook_Reaction_Store_Options extends WordPoints_Hook_Reaction_St
 
 		if ( ! $this->update_reaction_index( $index ) ) {
 			return false;
+		}
+
+		$this->update_option( $this->get_last_reaction_id_option_name(), $id );
+
+		return $id;
+	}
+
+	/**
+	 * Get the ID to use for the next reaction that we create.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array[] $index The reaction index.
+	 *
+	 * @return int The ID to use for the next reaction.
+	 */
+	protected function get_next_id( $index ) {
+
+		$id = 1;
+
+		$last_id = $this->get_option( $this->get_last_reaction_id_option_name() );
+
+		if ( wordpoints_posint( $last_id ) ) {
+			$id = $last_id + 1;
+		}
+
+		// Double-check this against the index. This should avoid some issues from
+		// race conditions.
+		if ( ! empty( $index ) ) {
+
+			$max = max( array_keys( $index ) );
+
+			if ( $max >= $id ) {
+				$id = $max + 1;
+			}
 		}
 
 		return $id;
@@ -303,6 +333,20 @@ class WordPoints_Hook_Reaction_Store_Options extends WordPoints_Hook_Reaction_St
 		$current_mode = wordpoints_hooks()->get_current_mode();
 
 		return "wordpoints_hook_reaction_index-{$this->slug}-{$current_mode}";
+	}
+
+	/**
+	 * Get the name of the option where the last reaction ID is stored.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The name of the option where the last reaction ID is stored.
+	 */
+	protected function get_last_reaction_id_option_name() {
+
+		$current_mode = wordpoints_hooks()->get_current_mode();
+
+		return "wordpoints_hook_reaction_last_id-{$this->slug}-{$current_mode}";
 	}
 }
 

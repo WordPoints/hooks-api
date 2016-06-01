@@ -312,12 +312,48 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->assertEquals( 4, $reaction->ID );
 
-		// When the newest reaction is deleted, the ID is reused.
+		// When the newest reaction is deleted, the ID shouldn't be reused.
 		$this->assertTrue( $reaction_store->delete_reaction( 4 ) );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
+		$this->assertEquals( 5, $reaction->ID );
+	}
+
+	/**
+	 * Test creating a reaction increments the IDs even when the index is off.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_create_reaction_increments_id_index() {
+
+		/** @var WordPoints_Hook_Reaction_Store_Options $reaction_store */
+		$reaction_store = $this->factory->wordpoints->hook_reaction_store->create_and_get(
+			array( 'class' => 'WordPoints_Hook_Reaction_Store_Options' )
+		);
+
+		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 3 );
+
+		$this->assertEquals( 1, $reactions[0]->ID );
+		$this->assertEquals( 2, $reactions[1]->ID );
+		$this->assertEquals( 3, $reactions[2]->ID );
+
+		$current_mode = wordpoints_hooks()->get_current_mode();
+		$option_name = "wordpoints_hook_reaction_last_id-{$this->slug}-{$current_mode}";
+
+		// When the index max is equal to the next ID as calculated from the option.
+		$reaction_store->update_option( $option_name, 2 );
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
 		$this->assertEquals( 4, $reaction->ID );
+
+		// When the index max is greater than the next ID as calculated from option.
+		$reaction_store->update_option( $option_name, 1 );
+
+		$reaction = $this->factory->wordpoints->hook_reaction->create();
+
+		$this->assertEquals( 5, $reaction->ID );
 	}
 
 	/**
