@@ -312,7 +312,7 @@ Reaction = Base.extend({
 		this.$( '.spinner-overlay' ).hide();
 
 		// Sometimes we get a list of errors.
-		if ( response.errors ) {
+		if ( ! _.isEmpty( response.errors ) ) {
 
 			// When that happens, we loop over them and try to display each of
 			// them next to their associated field.
@@ -357,19 +357,23 @@ Reaction = Base.extend({
 
 			}, this );
 
-			// If there were some general errors.
-			if ( errors ) {
+			var $errors = this.$( '.messages .err' );
 
-				var $errors = this.$( '.messages .err' );
+			$errors.html( '' );
 
-				$errors.html( '' );
-
-				_.each( errors, function ( error ) {
-					$errors.append( $( '<p></p>' ).text( error ) );
-				});
-
-				$errors.fadeIn();
+			// There may be some general errors that we need to display to the user.
+			// We also add an explanation that there are some fields that need to be
+			// corrected, if there were some per-field errors, to make sure that they
+			// see those errors as well (since they may not be in view).
+			if ( errors.length < response.errors.length ) {
+				errors.unshift( l10n.fieldsInvalid );
 			}
+
+			_.each( errors, function ( error ) {
+				$errors.append( $( '<p></p>' ).text( error ) );
+			});
+
+			$errors.fadeIn();
 
 		} else {
 
