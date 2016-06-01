@@ -269,7 +269,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 	/**
 	 * Add a meta-box for each hook event.
-	 * @todo allow events to be skipped with a filter.
+	 *
 	 * @since 1.0.0
 	 */
 	public function add_event_meta_boxes() {
@@ -284,8 +284,28 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 		$event_action_types = wordpoints_hooks_ui_get_script_data_event_action_types();
 
-		/** @var WordPoints_Hook_EventI $event */
-		foreach ( $this->hooks->events->get_all() as $slug => $event ) {
+		/** @var WordPoints_Hook_EventI[] $events */
+		$events = $this->hooks->events->get_all();
+
+		/**
+		 * Filter the events to show meta boxes for on the Points Types admin screen.
+		 *
+		 * Events which don't have any action types supported by this reactor will
+		 * automatically be removed subsequently.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param WordPoints_Hook_EventI[] $events      The event objects.
+		 * @param string                   $points_type Slug of the points type
+		 *                                              being displayed.
+		 */
+		$events = apply_filters(
+			'wordpoints_points_types_screen_events'
+			, $events
+			, $this->current_points_type
+		);
+
+		foreach ( $events as $slug => $event ) {
 
 			if (
 				! array_intersect_key(
