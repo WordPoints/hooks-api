@@ -174,7 +174,7 @@ class WordPoints_Hook_Extension_Periods
 			} elseif ( ! $this->event_args->get_from_hierarchy( $hierarchy ) ) {
 
 				$this->validator->add_error(
-					__( 'Invalid period.', 'wordpoints' ) // TODO better error message
+					__( 'Invalid arg hierarchy for period.', 'wordpoints' )
 				);
 			}
 
