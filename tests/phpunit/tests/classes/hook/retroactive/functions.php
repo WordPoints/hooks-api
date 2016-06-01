@@ -274,7 +274,7 @@ class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_PHPUnit_Test
 										array(
 											'type' => 'entity_array_contains',
 											'settings' => array(
-												'count' => array( 'min' => 1 ), // TODO this could be the default.
+												'count' => array( 'min' => 1 ),
 												'conditions' => array(
 													'user_role' => array(
 														'user_role_name' => array(
@@ -424,7 +424,7 @@ class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_PHPUnit_Test
 											array(
 												'type' => 'entity_array_contains',
 												'settings' => array(
-													'count' => array( 'min' => 1 ), // TODO this could be the default.
+													'count' => array( 'min' => 1 ),
 													'conditions' => array(
 														'user_role' => array(
 															'user_role_name' => array(
