@@ -221,8 +221,6 @@ abstract class WordPoints_Entity
 	/**
 	 * Get the human ID for an entity.
 	 *
-	 * TODO this is unused, may not be needed.
-	 *
 	 * @since 1.0.0
 	 *
 	 * @see self::get_entity_human_id()

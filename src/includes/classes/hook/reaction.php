@@ -69,7 +69,7 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	 * @since 1.0.0
 	 */
 	public function get_reactor_slug() {
-		return $this->get_meta( 'reactor' ); // TODO remove this method?
+		return $this->get_meta( 'reactor' );
 	}
 
 	/**
