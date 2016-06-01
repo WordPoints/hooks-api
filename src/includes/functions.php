@@ -357,7 +357,6 @@ function wordpoints_entities_init( $entities ) {
 	$children->register( 'user', 'roles', 'WordPoints_Entity_User_Roles' );
 
 	$entities->register( 'user_role', 'WordPoints_Entity_User_Role' );
-	$children->register( 'user_role', 'name', 'WordPoints_Entity_User_Role_Name' );
 
 	// Register entities for all of the public post types.
 	$post_types = get_post_types( array( 'public' => true ) );

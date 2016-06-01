@@ -27,13 +27,13 @@ class WordPoints_Entity_User_Role_Name extends WordPoints_Entity_Attr_Field {
 	/**
 	 * @since 1.0.0
 	 */
-	protected $data_type = 'slug'; // TODO
+	protected $data_type = 'slug';
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		return __( 'Name', 'wordpoints' );
+		return _x( 'Name', 'user role', 'wordpoints' );
 	}
 }
 
