@@ -33,7 +33,7 @@ class WordPoints_Entity_Term_Id extends WordPoints_Entity_Attr_Field {
 	 * @since 1.0.0
 	 */
 	public function get_title() {
-		// TODO: Implement get_title() method.
+		return _x( 'ID', 'taxonomy term', 'wordpoints' );
 	}
 }
 // EOF
