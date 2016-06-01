@@ -43,8 +43,6 @@ hooks.util.extend = function () {
 
 	var parent = this.prototype;
 
-	//child.prototype.__child__ = {};
-
 	var childMethods = child.prototype;
 
 	// If there are already descendants defined on the prototype, we need to add any

@@ -93,9 +93,7 @@ Args = Backbone.Model.extend({
 			return false;
 		}
 
-		//if ( parsed.isAlias ) {
-			entity = _.extend( {}, entity, { slug: slug, _canonical: parsed.slug } );
-		//}
+		entity = _.extend( {}, entity, { slug: slug, _canonical: parsed.slug } );
 
 		return entity;
 	},
@@ -112,11 +110,7 @@ Args = Backbone.Model.extend({
 			return false;
 		}
 
-		//if ( parsed.isArray ) {
-		//	entity = new Array({ entity_slug: parsed.slug });
-		//} else {
-			entity = new Entity( entity );
-		//}
+		entity = new Entity( entity );
 
 		return entity;
 	},

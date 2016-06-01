@@ -272,12 +272,6 @@ var DataType = Backbone.Model.extend({
 	}
 });
 
-//var NumberType = Backbone.Model.extend({
-//	defaults: {
-//		inputType: 'number'
-//	}
-//});
-
 var DataTypes = new Backbone.Collection();
 
 DataTypes.add( new DataType( { slug: 'text' } ) );
