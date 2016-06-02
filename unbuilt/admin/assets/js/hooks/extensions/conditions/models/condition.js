@@ -25,7 +25,9 @@ Condition = Base.extend({
 		}
 	},
 
-	validate: function ( attributes, errors ) {
+	validate: function ( attributes, options, errors ) {
+
+		errors = errors || [];
 
 		var conditionType = this.getType();
 
@@ -37,9 +39,11 @@ Condition = Base.extend({
 
 		Fields.validate(
 			fields
-			, attributes
+			, attributes.settings
 			, errors
 		);
+
+		return errors;
 	},
 
 	getType: function () {

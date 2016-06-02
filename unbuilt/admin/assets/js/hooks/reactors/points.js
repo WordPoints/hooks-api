@@ -25,7 +25,6 @@ Points = Reactor.extend({
 		}
 
 		this.listenTo( reaction, 'render:settings', this.render );
-		this.listenTo( reaction.model, 'validate', this.validate );
 	},
 
 	render: function ( $el, currentActionType, reaction ) {
@@ -44,7 +43,11 @@ Points = Reactor.extend({
 		reaction.$settings.append( fields );
 	},
 
-	validate: function ( attributes, errors ) {
+	validateReaction: function ( model, attributes, errors ) {
+
+		if ( attributes.reactor !== this.get( 'slug' ) ) {
+			return;
+		}
 
 		Fields.validate(
 			this.get( 'fields' )

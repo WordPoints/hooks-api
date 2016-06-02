@@ -202,6 +202,24 @@ _.extend( hooks, {
 	},
 
 	/**
+	 * hooks.textTemplate( text )
+	 *
+	 * Returns a WordPress-style templating function for a text string.
+	 *
+	 * See wp.template() in `wp-includes/js/wp-util.js`.
+	 */
+	textTemplate: function ( text ) {
+		var options = {
+			evaluate:    /<#([\s\S]+?)#>/g,
+			interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
+			escape:      /\{\{([^\}]+?)\}\}(?!\})/g,
+			variable:    'data'
+		};
+
+		return _.template( text, null, options );
+	},
+
+	/**
 	 * hooks.post( [action], [data] )
 	 *
 	 * Sends a POST request to WordPress.

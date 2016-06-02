@@ -39,7 +39,7 @@ Base = Backbone.Model.extend( {
 		hooks.trigger( this.namespace + ':model:init', this );
 	},
 
-	validate: function ( attributes, errors ) {
+	validate: function ( attributes, options, errors ) {
 
 		var newErrors = this.__child__.validate.apply( this, arguments );
 

@@ -12,6 +12,7 @@ var $ = Backbone.$,
 	hooks = wp.wordpoints.hooks,
 	l10n = wp.wordpoints.hooks.view.l10n,
 	template = wp.wordpoints.hooks.template,
+	textTemplate = wp.wordpoints.hooks.textTemplate,
 	Fields;
 
 Fields = Backbone.Model.extend({
@@ -24,7 +25,7 @@ Fields = Backbone.Model.extend({
 	templateHidden: template( 'hook-reaction-hidden-field' ),
 	templateSelect: template( 'hook-reaction-select-field' ),
 
-	emptyMessage: _.template( l10n.emptyField ),
+	emptyMessage: textTemplate( l10n.emptyField ),
 
 	initialize: function () {
 
@@ -247,15 +248,9 @@ Fields = Backbone.Model.extend({
 		$el.html( fieldsHTML );
 	},
 
-	validateReaction: function ( reaction, attributes ) {
-
-		var errors = [];
+	validateReaction: function ( reaction, attributes, errors ) {
 
 		this.validate( this.get( 'fields' ), attributes, errors );
-
-		if ( ! _.isEmpty( errors ) ) {
-			return errors;
-		}
 	}
 });
 

@@ -27,6 +27,7 @@ Extension = Backbone.Model.extend({
 	initialize: function () {
 
 		this.listenTo( hooks, 'reaction:view:init', this.initReaction );
+		this.listenTo( hooks, 'reaction:model:validate', this.validateReaction );
 
 		this.data = extensions[ this.id ];
 
@@ -37,7 +38,13 @@ Extension = Backbone.Model.extend({
 	 * @since 1.0.0
 	 * @abstract
 	 */
-	initReaction: emptyFunction( 'initReaction' )
+	initReaction: emptyFunction( 'initReaction' ),
+
+	/**
+	 * @since 1.0.0
+	 * @abstract
+	 */
+	validateReaction: emptyFunction( 'validateReaction' )
 
 }, { extend: extend } );
 

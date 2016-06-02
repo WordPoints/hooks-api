@@ -30,8 +30,6 @@ Conditions = Extension.extend({
 
 	initReaction: function ( reaction ) {
 
-		this.listenTo( reaction, 'validate', this.validateReactionConditions );
-
 		reaction.conditions = {};
 		reaction.model.conditions = {};
 
@@ -91,13 +89,42 @@ Conditions = Extension.extend({
 		}
 	},
 
-	validateReactionConditions: function ( attributes, errors ) {
+	validateReaction: function ( model, attributes, errors ) {
 
-		// TODO
-		this.model.validate(
-			getDeep( attributes, this.fieldNamePrefix )
-			, errors
-		);
+		if ( ! attributes.conditions ) {
+			return;
+		}
+
+		_.each( model.conditions, function ( groups ) {
+			groups.each( function ( group ) {
+				group.get( 'conditions' ).each( function ( condition ) {
+
+					var newErrors = [],
+						hierarchy = condition.getFullHierarchy().concat(
+							[ '_conditions', condition.id ]
+						);
+
+					condition.validate(
+						getDeep( attributes.conditions, hierarchy )
+						, {}
+						, newErrors
+					);
+
+					if ( ! _.isEmpty( newErrors ) ) {
+
+						hierarchy.unshift( 'conditions' );
+
+						for ( var i = 0; i < newErrors.length; i++ ) {
+							newErrors[ i ].field = hierarchy.concat(
+								[ 'settings', newErrors[ i ].field ]
+							);
+
+							errors.push( newErrors[ i ] );
+						}
+					}
+				});
+			});
+		});
 	},
 
 	getType: function ( dataType, slug ) {

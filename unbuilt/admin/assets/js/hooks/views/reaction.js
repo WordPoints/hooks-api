@@ -42,8 +42,8 @@ Reaction = Base.extend({
 		this.listenTo( this.model, 'change:reactor', this.renderTarget );
 		this.listenTo( this.model, 'destroy', this.remove );
 		this.listenTo( this.model, 'sync', this.showSuccess );
-		this.listenTo( this.model, 'error', this.showError );
-		this.listenTo( this.model, 'invalid', this.showError );
+		this.listenTo( this.model, 'error', this.showAjaxErrors );
+		this.listenTo( this.model, 'invalid', this.showValidationErrors );
 
 		this.on( 'render:settings', this.renderTarget );
 
@@ -304,19 +304,40 @@ Reaction = Base.extend({
 		this.model.destroy( { wait: true } );
 	},
 
-	// Display an error when there is an Ajax failure.
-	showError: function ( event, response ) {
+	// Display errors when the model has invalid fields.
+	showValidationErrors: function ( model, errors, options ) {
+		this.showError( errors );
+	},
 
-		var message, errors = [];
+	// Display an error when there is an Ajax failure.
+	showAjaxErrors: function ( event, response ) {
+
+		var errors;
+
+		if ( ! _.isEmpty( response.errors ) ) {
+			errors = response.errors;
+		} else if ( response.message ) {
+			errors = response.message;
+		} else {
+			errors = l10n.unexpectedError;
+		}
+
+		this.showError( errors );
+	},
+
+	showError: function ( errors ) {
+
+		var generalErrors = [];
+		var $errors = this.$( '.messages .err' );
 
 		this.$( '.spinner-overlay' ).hide();
 
 		// Sometimes we get a list of errors.
-		if ( ! _.isEmpty( response.errors ) ) {
+		if ( _.isArray( errors ) ) {
 
 			// When that happens, we loop over them and try to display each of
 			// them next to their associated field.
-			_.each( response.errors, function ( error ) {
+			_.each( errors, function ( error ) {
 
 				var $field, escapedFieldName;
 
@@ -324,7 +345,7 @@ Reaction = Base.extend({
 				// though, so we collect them in an array an display them all
 				// together a bit later.
 				if ( ! error.field ) {
-					errors.push( error.message );
+					generalErrors.push( error.message );
 					return;
 				}
 
@@ -344,7 +365,7 @@ Reaction = Base.extend({
 
 					// If that fails, we just add this to the general errors.
 					if ( 0 === $field.length ) {
-						errors.push( error.message );
+						generalErrors.push( error.message );
 						return;
 					}
 
@@ -357,36 +378,27 @@ Reaction = Base.extend({
 
 			}, this );
 
-			var $errors = this.$( '.messages .err' );
-
 			$errors.html( '' );
 
 			// There may be some general errors that we need to display to the user.
 			// We also add an explanation that there are some fields that need to be
 			// corrected, if there were some per-field errors, to make sure that they
 			// see those errors as well (since they may not be in view).
-			if ( errors.length < response.errors.length ) {
-				errors.unshift( l10n.fieldsInvalid );
+			if ( generalErrors.length < errors.length ) {
+				generalErrors.unshift( l10n.fieldsInvalid );
 			}
 
-			_.each( errors, function ( error ) {
+			_.each( generalErrors, function ( error ) {
 				$errors.append( $( '<p></p>' ).text( error ) );
 			});
 
-			$errors.fadeIn();
 
 		} else {
 
-			// Sometimes we are given just one error message, or no message at
-			// all, in which case we use the default.
-			if ( response.message ) {
-				message = response.message;
-			} else {
-				message = l10n.unexpectedError;
-			}
-
-			this.$( '.messages .err' ).text( message ).fadeIn();
+			$errors.text( errors );
 		}
+
+		$errors.fadeIn();
 	},
 
 	// Display a success message.

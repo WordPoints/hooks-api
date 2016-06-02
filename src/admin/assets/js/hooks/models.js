@@ -203,6 +203,24 @@ _.extend( hooks, {
 	},
 
 	/**
+	 * hooks.textTemplate( text )
+	 *
+	 * Returns a WordPress-style templating function for a text string.
+	 *
+	 * See wp.template() in `wp-includes/js/wp-util.js`.
+	 */
+	textTemplate: function ( text ) {
+		var options = {
+			evaluate:    /<#([\s\S]+?)#>/g,
+			interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
+			escape:      /\{\{([^\}]+?)\}\}(?!\})/g,
+			variable:    'data'
+		};
+
+		return _.template( text, null, options );
+	},
+
+	/**
 	 * hooks.post( [action], [data] )
 	 *
 	 * Sends a POST request to WordPress.
@@ -347,7 +365,7 @@ Base = Backbone.Model.extend( {
 		hooks.trigger( this.namespace + ':model:init', this );
 	},
 
-	validate: function ( attributes, errors ) {
+	validate: function ( attributes, options, errors ) {
 
 		var newErrors = this.__child__.validate.apply( this, arguments );
 
