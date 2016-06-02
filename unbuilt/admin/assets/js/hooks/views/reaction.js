@@ -24,7 +24,6 @@ Reaction = Base.extend({
 	template: wp.wordpoints.hooks.template( 'hook-reaction' ),
 
 	// The DOM events specific to an item.
-	// TODO capture return key to submit the form.
 	events: {
 		'click .actions .delete':    'confirmDelete',
 		'click .save':      'save',
