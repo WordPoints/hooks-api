@@ -143,12 +143,14 @@ hooks.util.emptyFunction = emptyFunction = function ( methodName ) {
  */
 hooks.util.getDeep = function( object, hierarchy ) {
 
-	_.each( hierarchy, function ( field ) {
+	for ( var i = 0; i < hierarchy.length; i++ ) {
 
-		if ( typeof object !== 'undefined' ) {
-			object = object[ field ];
+		if ( typeof object === 'undefined' ) {
+			break;
 		}
-	});
+
+		object = object[ hierarchy[ i ] ];
+	}
 
 	return object;
 };
