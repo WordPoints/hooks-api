@@ -77,7 +77,9 @@ Condition = Backbone.Model.extend({
 		}, this );
 
 		return fieldsHTML;
-	}
+	},
+
+	validateSettings: function () {}
 });
 
 module.exports = Condition;
@@ -94,6 +96,7 @@ module.exports = Condition;
 var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	ConditionGroups = wp.wordpoints.hooks.model.ConditionGroups,
 	ConditionGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
+	Extensions = wp.wordpoints.hooks.Extensions,
 	ArgsCollection = wp.wordpoints.hooks.model.Args,
 	Args = wp.wordpoints.hooks.Args,
 	EntityArrayContains;
@@ -119,7 +122,7 @@ EntityArrayContains = Condition.extend({
 			condition.model.getArg().get( 'entity_slug' )
 		);
 
-		var conditionGroups = new ConditionGroups( null, {
+		condition.model.subGroups = new ConditionGroups( null, {
 			args: new ArgsCollection( [ arg ] ),
 			hierarchy: condition.model.getFullHierarchy().concat(
 				[ '_conditions', condition.model.id, 'settings', 'conditions' ]
@@ -129,13 +132,22 @@ EntityArrayContains = Condition.extend({
 		} );
 
 		var view = new ConditionGroupsView( {
-			collection: conditionGroups,
+			collection: condition.model.subGroups,
 			reaction: condition.reaction
 		});
 
 		condition.$settings.append( view.render().$el );
 
 		return '';
+	},
+
+	validateSettings: function ( condition, settings, errors ) {
+
+		Extensions.get( 'conditions' ).validateConditions(
+			[ condition.subGroups ]
+			, settings.conditions
+			, errors
+		);
 	}
 });
 
@@ -303,17 +315,26 @@ Conditions = Extension.extend({
 			return;
 		}
 
-		_.each( model.conditions, function ( groups ) {
+		this.validateConditions( model.conditions, attributes.conditions, errors );
+	},
+
+	validateConditions: function ( conditions, settings, errors ) {
+
+		_.each( conditions, function ( groups ) {
 			groups.each( function ( group ) {
 				group.get( 'conditions' ).each( function ( condition ) {
 
 					var newErrors = [],
-						hierarchy = condition.getFullHierarchy().concat(
+						hierarchy = condition.getHierarchy().concat(
 							[ '_conditions', condition.id ]
 						);
 
+					if ( groups.hierarchy.length === 1 ) {
+						hierarchy.unshift( groups.hierarchy[0] );
+					}
+
 					condition.validate(
-						getDeep( attributes.conditions, hierarchy )
+						getDeep( settings, hierarchy )
 						, {}
 						, newErrors
 					);
@@ -321,10 +342,14 @@ Conditions = Extension.extend({
 					if ( ! _.isEmpty( newErrors ) ) {
 
 						hierarchy.unshift( 'conditions' );
+						hierarchy.push( 'settings' );
 
 						for ( var i = 0; i < newErrors.length; i++ ) {
+
 							newErrors[ i ].field = hierarchy.concat(
-								[ 'settings', newErrors[ i ].field ]
+								_.isArray( newErrors[ i ].field )
+									? newErrors[ i ].field
+									: [ newErrors[ i ].field ]
 							);
 
 							errors.push( newErrors[ i ] );
@@ -700,7 +725,29 @@ Condition = Base.extend({
 			, errors
 		);
 
+		var controller = this.getController();
+
+		if ( controller ) {
+			controller.validateSettings( this, attributes.settings, errors );
+		}
+
 		return errors;
+	},
+
+	getController: function () {
+
+		var arg = this.getArg();
+
+		if ( ! arg ) {
+			return false;
+		}
+
+		var Conditions = Extensions.get( 'conditions' );
+
+		return Conditions.getController(
+			Conditions.getDataTypeFromArg( arg )
+			, this.get( 'type' )
+		);
 	},
 
 	getType: function () {

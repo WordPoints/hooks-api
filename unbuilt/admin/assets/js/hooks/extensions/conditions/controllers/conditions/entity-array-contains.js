@@ -9,6 +9,7 @@
 var Condition = wp.wordpoints.hooks.extension.Conditions.Condition,
 	ConditionGroups = wp.wordpoints.hooks.model.ConditionGroups,
 	ConditionGroupsView = wp.wordpoints.hooks.view.ConditionGroups,
+	Extensions = wp.wordpoints.hooks.Extensions,
 	ArgsCollection = wp.wordpoints.hooks.model.Args,
 	Args = wp.wordpoints.hooks.Args,
 	EntityArrayContains;
@@ -34,7 +35,7 @@ EntityArrayContains = Condition.extend({
 			condition.model.getArg().get( 'entity_slug' )
 		);
 
-		var conditionGroups = new ConditionGroups( null, {
+		condition.model.subGroups = new ConditionGroups( null, {
 			args: new ArgsCollection( [ arg ] ),
 			hierarchy: condition.model.getFullHierarchy().concat(
 				[ '_conditions', condition.model.id, 'settings', 'conditions' ]
@@ -44,13 +45,22 @@ EntityArrayContains = Condition.extend({
 		} );
 
 		var view = new ConditionGroupsView( {
-			collection: conditionGroups,
+			collection: condition.model.subGroups,
 			reaction: condition.reaction
 		});
 
 		condition.$settings.append( view.render().$el );
 
 		return '';
+	},
+
+	validateSettings: function ( condition, settings, errors ) {
+
+		Extensions.get( 'conditions' ).validateConditions(
+			[ condition.subGroups ]
+			, settings.conditions
+			, errors
+		);
 	}
 });
 

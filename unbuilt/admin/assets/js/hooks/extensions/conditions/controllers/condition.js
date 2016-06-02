@@ -36,7 +36,9 @@ Condition = Backbone.Model.extend({
 		}, this );
 
 		return fieldsHTML;
-	}
+	},
+
+	validateSettings: function () {}
 });
 
 module.exports = Condition;

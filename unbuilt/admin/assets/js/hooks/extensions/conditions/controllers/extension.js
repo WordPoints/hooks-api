@@ -95,17 +95,26 @@ Conditions = Extension.extend({
 			return;
 		}
 
-		_.each( model.conditions, function ( groups ) {
+		this.validateConditions( model.conditions, attributes.conditions, errors );
+	},
+
+	validateConditions: function ( conditions, settings, errors ) {
+
+		_.each( conditions, function ( groups ) {
 			groups.each( function ( group ) {
 				group.get( 'conditions' ).each( function ( condition ) {
 
 					var newErrors = [],
-						hierarchy = condition.getFullHierarchy().concat(
+						hierarchy = condition.getHierarchy().concat(
 							[ '_conditions', condition.id ]
 						);
 
+					if ( groups.hierarchy.length === 1 ) {
+						hierarchy.unshift( groups.hierarchy[0] );
+					}
+
 					condition.validate(
-						getDeep( attributes.conditions, hierarchy )
+						getDeep( settings, hierarchy )
 						, {}
 						, newErrors
 					);
@@ -113,10 +122,14 @@ Conditions = Extension.extend({
 					if ( ! _.isEmpty( newErrors ) ) {
 
 						hierarchy.unshift( 'conditions' );
+						hierarchy.push( 'settings' );
 
 						for ( var i = 0; i < newErrors.length; i++ ) {
+
 							newErrors[ i ].field = hierarchy.concat(
-								[ 'settings', newErrors[ i ].field ]
+								_.isArray( newErrors[ i ].field )
+									? newErrors[ i ].field
+									: [ newErrors[ i ].field ]
 							);
 
 							errors.push( newErrors[ i ] );

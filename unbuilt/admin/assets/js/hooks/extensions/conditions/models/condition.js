@@ -43,7 +43,29 @@ Condition = Base.extend({
 			, errors
 		);
 
+		var controller = this.getController();
+
+		if ( controller ) {
+			controller.validateSettings( this, attributes.settings, errors );
+		}
+
 		return errors;
+	},
+
+	getController: function () {
+
+		var arg = this.getArg();
+
+		if ( ! arg ) {
+			return false;
+		}
+
+		var Conditions = Extensions.get( 'conditions' );
+
+		return Conditions.getController(
+			Conditions.getDataTypeFromArg( arg )
+			, this.get( 'type' )
+		);
 	},
 
 	getType: function () {
