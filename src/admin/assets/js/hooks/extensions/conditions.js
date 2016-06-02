@@ -1001,29 +1001,18 @@ ConditionGroups = Base.extend({
 	},
 
 	getArgType: function ( arg ) {
-		// TODO use getDataTypeFromArg instead?
+
 		var argType;
 
 		if ( ! arg || ! arg.get ) {
 			return;
 		}
 
-		argType = arg.get( '_type' );
+		argType = this.Conditions.getDataTypeFromArg( arg );
 
-		switch ( argType ) {
-
-			case 'attr':
-				argType = arg.get( 'data_type' );
-				break;
-
-			case 'array':
-				argType = 'entity_array';
-				break;
-
-			case 'relationship':
-				// We compress relationships to avoid redundancy.
-				argType = this.getArgType( arg.getChild( arg.get( 'secondary' ) ) );
-				break;
+		// We compress relationships to avoid redundancy.
+		if ( 'relationship' === argType ) {
+			argType = this.getArgType( arg.getChild( arg.get( 'secondary' ) ) );
 		}
 
 		return argType;
