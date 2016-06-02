@@ -25,7 +25,7 @@
             }
         },
         "points": {
-            "314": {
+            "349": {
                 "name": "(unknown)->get_reaction_store",
                 "type": "unknown",
                 "args_started": true,
@@ -34,23 +34,23 @@
             }
         },
         "WordPointsHooksAdminData.events[": {
-            "341": false
+            "376": false
         },
         "] =": {
-            "343": false,
-            "344": false
+            "378": false,
+            "379": false
         },
         ";\n\t\t\tWordPointsHooksAdminData.reactions[": {
-            "343": false
+            "378": false
         },
         ";": {
-            "344": false
+            "379": false
         },
         "1": {
-            "651": false
+            "686": false
         },
         "2": {
-            "651": false
+            "686": false
         }
     },
     "\/admin\/includes\/classes\/screen.php": {
@@ -69,13 +69,13 @@
             }
         },
         "attr": {
-            "408": false
+            "411": false
         },
         "relationship": {
-            "413": false
+            "416": false
         },
         "entity": {
-            "438": {
+            "441": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -272,13 +272,6 @@
     },
     "\/includes\/functions.php": {
         "approved": {
-            "141": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "164": {
                 "name": "array",
                 "type": "unknown",
@@ -288,13 +281,6 @@
             }
         },
         "publish": {
-            "177": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "189": {
                 "name": "array",
                 "type": "unknown",
@@ -304,7 +290,7 @@
             }
         },
         "wp": {
-            "242": {
+            "253": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -313,7 +299,7 @@
             }
         },
         "WordPoints_Hook_Arg": {
-            "267": {
+            "278": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -322,7 +308,7 @@
             }
         },
         "WordPoints_Hook_Arg_Current_User": {
-            "280": {
+            "291": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -331,14 +317,14 @@
             }
         },
         "post\\\\": {
-            "447": {
+            "457": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "463": {
+            "473": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -347,21 +333,21 @@
             }
         },
         "WordPoints_Hook_Arg_Dynamic": {
-            "447": {
+            "457": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "463": {
+            "473": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "480": {
+            "490": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -370,7 +356,7 @@
             }
         },
         "comment\\\\": {
-            "480": {
+            "490": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -386,7 +372,7 @@
     },
     "\/includes\/classes\/hook\/reaction\/store\/options.php": {
         "-": {
-            "305": false
+            "349": false
         }
     },
     "\/includes\/classes\/db\/query.php": {

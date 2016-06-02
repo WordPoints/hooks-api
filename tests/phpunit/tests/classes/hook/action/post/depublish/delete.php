@@ -79,7 +79,6 @@ class WordPoints_Hook_Action_Post_Depublish_Delete_Test
 	 */
 	public function test_should_fire_other_requirements_met() {
 
-
 		$post = $this->factory->post->create_and_get(
 			array( 'post_status' => 'publish' )
 		);

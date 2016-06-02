@@ -129,7 +129,7 @@ function wordpoints_hooks_admin_register_scripts() {
 			'target_label'    => __( 'Target', 'wordpoints' ),
 			// translators: form field
 			'cannotBeChanged' => __( '(cannot be changed)', 'wordpoints' ),
-			'fieldsInvalid'   => __( 'Error: the values of some fields are invalid. Please correct these and then try again.')
+			'fieldsInvalid'   => __( 'Error: the values of some fields are invalid. Please correct these and then try again.', 'wordpoints' ),
 		)
 	);
 
