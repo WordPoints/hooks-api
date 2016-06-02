@@ -5,8 +5,6 @@
  * @augments Backbone.Collection
  */
 var Condition = wp.wordpoints.hooks.model.Condition,
-	getDeep = wp.wordpoints.hooks.util.getDeep,
-	setDeep = wp.wordpoints.hooks.util.setDeep,
 	Conditions;
 
 Conditions = Backbone.Collection.extend({
@@ -17,42 +15,9 @@ Conditions = Backbone.Collection.extend({
 	comparator: 'id',
 
 	sync: function ( method, collection, options ) {
-		// TODO Hook should be passed in as an option.
-
-		var conditions = getDeep(
-			collection.reaction.attributes.conditions
-			, collection.hierarchy.concat( [ '_conditions' ] )
+		options.error(
+			{ message: 'Fetching and saving hook conditions is not supported.' }
 		);
-
-		switch ( method ) {
-
-			case 'create':
-				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: 'Conditions already exist.' } ); // TODO
-					return;
-				}
-
-				setDeep(
-					collection.reaction.attributes.conditions
-					, collection.hierarchy.concat( [ '_conditions' ] )
-					, collection.models
-				);
-
-				options.success();
-				break;
-
-			case 'read':
-				if ( typeof conditions === 'undefined' ) {
-					options.error( { message: 'Conditions not found.' } ); // TODO
-					return;
-				}
-
-				options.success( conditions );
-				break;
-
-			default:
-				options.error( { message: 'Conditions can only be created and read.' } );
-		}
 	}
 });
 

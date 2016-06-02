@@ -429,8 +429,6 @@ module.exports = Conditions;
  * @augments Backbone.Collection
  */
 var Conditions = wp.wordpoints.hooks.model.Conditions,
-	getDeep = wp.wordpoints.hooks.util.getDeep,
-	setDeep = wp.wordpoints.hooks.util.setDeep,
 	ConditionGroup;
 
 // This is a model although we originally thought it ought to be a collection,
@@ -521,48 +519,14 @@ ConditionGroup = Backbone.Model.extend({
 	},
 
 	sync: function ( method, collection, options ) {
-
-		// TODO sync back to collection instead, and let the collection sync with reaction.
-		var conditions = getDeep(
-			collection.reaction.attributes.conditions
-			, collection.hierarchy.concat( [ '_conditions' ] )
+		options.error(
+			{ message: 'Fetching and saving groups of hook conditions is not supported.' }
 		);
-
-		switch ( method ) {
-
-			case 'create':
-				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: 'Condition already exists.' } );
-					return;
-				}
-
-				setDeep(
-					collection.reaction.attributes.conditions
-					, collection.hierarchy.concat( [ '_conditions' ] )
-					, collection.models
-				);
-
-				options.success();
-				break;
-
-			case 'read':
-				if ( typeof conditions === 'undefined' ) {
-					options.error( 'Conditions not found.' );
-					return;
-				}
-
-				options.success( conditions );
-				break;
-
-			default:
-				options.error(
-					{ message: 'Condition groups can only be created and read.' }
-				);
-		}
 	}
 });
 
 module.exports = ConditionGroup;
+
 },{}],7:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.model.ConditionGroups
@@ -691,7 +655,6 @@ var Base = wp.wordpoints.hooks.model.Base,
 	Args = wp.wordpoints.hooks.Args,
 	Extensions = wp.wordpoints.hooks.Extensions,
 	Fields = wp.wordpoints.hooks.Fields,
-	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Condition;
 
 Condition = Base.extend({
@@ -795,58 +758,9 @@ Condition = Base.extend({
 	},
 
 	sync: function ( method, model, options ) {
-
-		if ( ! model.reaction ) {
-			return;
-		}
-
-		var conditions = getDeep(
-			model.reaction.attributes.conditions
-			, model.getFullHierarchy().concat( [ '_conditions' ] )
+		options.error(
+			{ message: 'Fetching and saving hook conditions is not supported.' }
 		);
-
-		switch ( method ) {
-
-			case 'create':
-				if ( typeof conditions[ model.id ] !== 'undefined' ) {
-					options.error( { message: 'Condition already exists.' } ); // TODO error messages
-					return;
-				}
-
-				conditions[ model.id ] = _.omit( model.attributes, [ 'id' ] );
-
-				options.success();
-				break;
-
-			case 'read':
-				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: 'Condition not found.' } );
-					return;
-				}
-
-				options.success( conditions[ model.id ] );
-				break;
-
-			case 'update':
-				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: 'Condition not found.' } );
-					return;
-				}
-
-				conditions[ model.id ] = _.omit( model.attributes, [ 'id' ] );
-
-				options.success();
-				break;
-
-			case 'delete':
-				if ( ! conditions || typeof conditions[ model.id ] === 'undefined' ) {
-					//options.error( { message: todo } );
-					return;
-				}
-
-				delete conditions[ model.id ];
-				break;
-		}
 	}
 });
 
@@ -860,8 +774,6 @@ module.exports = Condition;
  * @augments Backbone.Collection
  */
 var Condition = wp.wordpoints.hooks.model.Condition,
-	getDeep = wp.wordpoints.hooks.util.getDeep,
-	setDeep = wp.wordpoints.hooks.util.setDeep,
 	Conditions;
 
 Conditions = Backbone.Collection.extend({
@@ -872,46 +784,14 @@ Conditions = Backbone.Collection.extend({
 	comparator: 'id',
 
 	sync: function ( method, collection, options ) {
-		// TODO Hook should be passed in as an option.
-
-		var conditions = getDeep(
-			collection.reaction.attributes.conditions
-			, collection.hierarchy.concat( [ '_conditions' ] )
+		options.error(
+			{ message: 'Fetching and saving hook conditions is not supported.' }
 		);
-
-		switch ( method ) {
-
-			case 'create':
-				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: 'Conditions already exist.' } ); // TODO
-					return;
-				}
-
-				setDeep(
-					collection.reaction.attributes.conditions
-					, collection.hierarchy.concat( [ '_conditions' ] )
-					, collection.models
-				);
-
-				options.success();
-				break;
-
-			case 'read':
-				if ( typeof conditions === 'undefined' ) {
-					options.error( { message: 'Conditions not found.' } ); // TODO
-					return;
-				}
-
-				options.success( conditions );
-				break;
-
-			default:
-				options.error( { message: 'Conditions can only be created and read.' } );
-		}
 	}
 });
 
 module.exports = Conditions;
+
 },{}],12:[function(require,module,exports){
 /**
  * wp.wordpoints.hooks.view.ConditionGroup

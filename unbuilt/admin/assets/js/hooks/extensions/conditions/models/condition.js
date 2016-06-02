@@ -9,7 +9,6 @@ var Base = wp.wordpoints.hooks.model.Base,
 	Args = wp.wordpoints.hooks.Args,
 	Extensions = wp.wordpoints.hooks.Extensions,
 	Fields = wp.wordpoints.hooks.Fields,
-	getDeep = wp.wordpoints.hooks.util.getDeep,
 	Condition;
 
 Condition = Base.extend({
@@ -113,58 +112,9 @@ Condition = Base.extend({
 	},
 
 	sync: function ( method, model, options ) {
-
-		if ( ! model.reaction ) {
-			return;
-		}
-
-		var conditions = getDeep(
-			model.reaction.attributes.conditions
-			, model.getFullHierarchy().concat( [ '_conditions' ] )
+		options.error(
+			{ message: 'Fetching and saving hook conditions is not supported.' }
 		);
-
-		switch ( method ) {
-
-			case 'create':
-				if ( typeof conditions[ model.id ] !== 'undefined' ) {
-					options.error( { message: 'Condition already exists.' } ); // TODO error messages
-					return;
-				}
-
-				conditions[ model.id ] = _.omit( model.attributes, [ 'id' ] );
-
-				options.success();
-				break;
-
-			case 'read':
-				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: 'Condition not found.' } );
-					return;
-				}
-
-				options.success( conditions[ model.id ] );
-				break;
-
-			case 'update':
-				if ( typeof conditions[ model.id ] === 'undefined' ) {
-					options.error( { message: 'Condition not found.' } );
-					return;
-				}
-
-				conditions[ model.id ] = _.omit( model.attributes, [ 'id' ] );
-
-				options.success();
-				break;
-
-			case 'delete':
-				if ( ! conditions || typeof conditions[ model.id ] === 'undefined' ) {
-					//options.error( { message: todo } );
-					return;
-				}
-
-				delete conditions[ model.id ];
-				break;
-		}
 	}
 });
 

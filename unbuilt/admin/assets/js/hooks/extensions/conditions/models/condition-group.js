@@ -5,8 +5,6 @@
  * @augments Backbone.Collection
  */
 var Conditions = wp.wordpoints.hooks.model.Conditions,
-	getDeep = wp.wordpoints.hooks.util.getDeep,
-	setDeep = wp.wordpoints.hooks.util.setDeep,
 	ConditionGroup;
 
 // This is a model although we originally thought it ought to be a collection,
@@ -97,44 +95,9 @@ ConditionGroup = Backbone.Model.extend({
 	},
 
 	sync: function ( method, collection, options ) {
-
-		// TODO sync back to collection instead, and let the collection sync with reaction.
-		var conditions = getDeep(
-			collection.reaction.attributes.conditions
-			, collection.hierarchy.concat( [ '_conditions' ] )
+		options.error(
+			{ message: 'Fetching and saving groups of hook conditions is not supported.' }
 		);
-
-		switch ( method ) {
-
-			case 'create':
-				if ( typeof conditions !== 'undefined' ) {
-					options.error( { message: 'Condition already exists.' } );
-					return;
-				}
-
-				setDeep(
-					collection.reaction.attributes.conditions
-					, collection.hierarchy.concat( [ '_conditions' ] )
-					, collection.models
-				);
-
-				options.success();
-				break;
-
-			case 'read':
-				if ( typeof conditions === 'undefined' ) {
-					options.error( 'Conditions not found.' );
-					return;
-				}
-
-				options.success( conditions );
-				break;
-
-			default:
-				options.error(
-					{ message: 'Condition groups can only be created and read.' }
-				);
-		}
 	}
 });
 
