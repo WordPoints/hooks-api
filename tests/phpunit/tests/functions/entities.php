@@ -128,7 +128,6 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertTrue( $children->is_registered( 'user', 'roles' ) );
 
 		$this->assertTrue( $entities->is_registered( 'user_role' ) );
-		$this->assertTrue( $children->is_registered( 'user_role', 'name' ) );
 	}
 
 	/**
