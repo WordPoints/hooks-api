@@ -1651,7 +1651,7 @@ Reaction = Base.extend({
 	},
 
 	// Display errors when the model has invalid fields.
-	showValidationErrors: function ( model, errors, options ) {
+	showValidationErrors: function ( model, errors ) {
 		this.showError( errors );
 	},
 
