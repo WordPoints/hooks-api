@@ -4,7 +4,7 @@
  * Hook UI script data provider interface.
  *
  * @package wordpoints-hooks-api
- * @since   1.
+ * @since   1.0.0
  */
 
 /**
