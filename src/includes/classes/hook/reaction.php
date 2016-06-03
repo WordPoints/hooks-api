@@ -33,7 +33,12 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	//
 
 	/**
+	 * Construct the class for a hook reaction.
+	 *
 	 * @since 1.0.0
+	 *
+	 * @param int                             $id    The ID of a hook reaction.
+	 * @param WordPoints_Hook_Reaction_StoreI $store The storage object.
 	 */
 	public function __construct( $id, WordPoints_Hook_Reaction_StoreI $store ) {
 

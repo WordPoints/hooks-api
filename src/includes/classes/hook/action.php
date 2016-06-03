@@ -65,6 +65,10 @@ class WordPoints_Hook_Action implements WordPoints_Hook_ActionI {
 
 	/**
 	 * @since 1.0.0
+	 *
+	 * @param string $slug        The slug of this action.
+	 * @param array  $action_args The args the action was fired with.
+	 * @param array  $args        Other args.
 	 */
 	public function __construct( $slug, array $action_args, array $args = array() ) {
 

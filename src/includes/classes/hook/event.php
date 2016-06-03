@@ -25,6 +25,8 @@ abstract class WordPoints_Hook_Event implements WordPoints_Hook_EventI {
 
 	/**
 	 * @since 1.0.0
+	 *
+	 * @param string $slug The event slug.
 	 */
 	public function __construct( $slug ) {
 

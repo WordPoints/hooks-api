@@ -49,7 +49,11 @@ abstract class WordPoints_Hook_Reaction_Store implements WordPoints_Hook_Reactio
 	protected $reaction_class;
 
 	/**
+	 * Constructs the class with the reactor slug.
+	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of this store.
 	 */
 	public function __construct( $slug ) {
 		$this->slug = $slug;

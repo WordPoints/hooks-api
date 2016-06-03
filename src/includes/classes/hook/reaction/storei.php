@@ -18,15 +18,6 @@
 interface WordPoints_Hook_Reaction_StoreI {
 
 	/**
-	 * Constructs the class with the reactor slug.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $slug The slug of this store.
-	 */
-	public function __construct( $slug );
-
-	/**
 	 * Get the slug of this reaction store.
 	 *
 	 * This isn't the slug of the storage method itself, but the identifier for the

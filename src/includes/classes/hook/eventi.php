@@ -15,11 +15,6 @@
 interface WordPoints_Hook_EventI {
 
 	/**
-	 * @param string $slug The event slug.
-	 */
-	public function __construct( $slug );
-
-	/**
 	 * Get the event slug.
 	 *
 	 * @since 1.0.0

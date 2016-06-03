@@ -22,13 +22,6 @@
 interface WordPoints_Hook_ActionI {
 
 	/**
-	 * @param string $slug        The slug of this action.
-	 * @param array  $action_args The args the action was fired with.
-	 * @param array  $args        Other args.
-	 */
-	public function __construct( $slug, array $action_args, array $args = array() );
-
-	/**
 	 * Get the slug of this action.
 	 *
 	 * Note that the slug is not necessarily the name of the WordPress action.
