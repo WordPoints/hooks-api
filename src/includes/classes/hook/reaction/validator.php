@@ -173,7 +173,7 @@ final class WordPoints_Hook_Reaction_Validator {
 
 			$this->settings = $reactor->validate_settings( $this->settings, $this, $this->event_args );
 
-			/** @var WordPoints_Hook_Extension $extension */
+			/** @var WordPoints_Hook_ExtensionI $extension */
 			foreach ( $this->hooks->extensions->get_all() as $extension ) {
 				$this->settings = $extension->validate_settings( $this->settings, $this, $this->event_args );
 			}

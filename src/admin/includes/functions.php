@@ -320,7 +320,7 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 	foreach ( $hooks->extensions->get_all() as $slug => $extension ) {
 
-		if ( $extension instanceof WordPoints_Hook_Extension ) {
+		if ( $extension instanceof WordPoints_Hook_ExtensionI ) {
 			$extensions_data[ $slug ] = $extension->get_ui_script_data();
 		}
 

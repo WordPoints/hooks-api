@@ -13,7 +13,7 @@
  * @since 1.0.0
  *
  * @method string create( $args = array(), $generation_definitions = null )
- * @method WordPoints_Hook_Extension create_and_get( $args = array(), $generation_definitions = null )
+ * @method WordPoints_Hook_ExtensionI create_and_get( $args = array(), $generation_definitions = null )
  * @method string[] create_many( $count, $args = array(), $generation_definitions = null )
  */
 class WordPoints_PHPUnit_Factory_For_Hook_Extension extends WP_UnitTest_Factory_For_Thing {

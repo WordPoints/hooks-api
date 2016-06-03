@@ -10,13 +10,9 @@
 /**
  * Represents a hook extension.
  *
- * Hook extensions extend the basic hooks API, and can modify whether a particular
- * hook firing should hit the target. Each extension makes this decision based on
- * custom settings it offers for each reaction.
- *
  * @since 1.0.0
  */
-abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
+abstract class WordPoints_Hook_Extension implements WordPoints_Hook_ExtensionI {
 
 	/**
 	 * The unique slug for identifying this extension.
@@ -46,11 +42,7 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	protected $event_args;
 
 	/**
-	 * Get the slug of this extension.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return string The extension's slug.
 	 */
 	public function get_slug() {
 		return $this->slug;
@@ -154,22 +146,7 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_SettingsI {
 	}
 
 	/**
-	 * Check whether this hook firing should hit the target.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @param WordPoints_Hook_Fire $fire The hook fire object.
-	 *
-	 * @return bool Whether the target should be hit by this hook firing.
-	 */
-	abstract public function should_hit( WordPoints_Hook_Fire $fire );
-
-	/**
-	 * Get the data the scripts need for the UI.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array Any data that needs to be present for the scripts in the UI.
 	 */
 	public function get_ui_script_data() {
 		return array();

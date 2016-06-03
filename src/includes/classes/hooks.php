@@ -193,7 +193,7 @@ class WordPoints_Hooks extends WordPoints_App {
 
 		unset( $validator );
 
-		/** @var WordPoints_Hook_Extension[] $extensions */
+		/** @var WordPoints_Hook_ExtensionI[] $extensions */
 		$extensions = $this->extensions->get_all();
 
 		foreach ( $extensions as $extension ) {
