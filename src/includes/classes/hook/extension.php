@@ -144,13 +144,6 @@ abstract class WordPoints_Hook_Extension implements WordPoints_Hook_ExtensionI {
 			return false;
 		}
 	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function get_ui_script_data() {
-		return array();
-	}
 }
 
 // EOF

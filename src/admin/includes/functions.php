@@ -316,35 +316,15 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 	$hooks = wordpoints_hooks();
 
-	$extensions_data = array();
+	$extensions_data = wordpoints_hooks_ui_get_script_data_from_objects(
+		$hooks->extensions->get_all()
+		, 'extension'
+	);
 
-	foreach ( $hooks->extensions->get_all() as $slug => $extension ) {
-
-		if ( $extension instanceof WordPoints_Hook_ExtensionI ) {
-			$extensions_data[ $slug ] = $extension->get_ui_script_data();
-		}
-
-		if ( wp_script_is( "wordpoints-hooks-extension-{$slug}", 'registered' ) ) {
-			wp_enqueue_script( "wordpoints-hooks-extension-{$slug}" );
-		}
-	}
-
-	unset( $extension, $slug );
-
-	$reactor_data = array();
-
-	foreach ( $hooks->reactors->get_all() as $slug => $reactor ) {
-
-		if ( $reactor instanceof WordPoints_Hook_ReactorI ) {
-			$reactor_data[ $slug ] = $reactor->get_ui_script_data();
-		}
-
-		if ( wp_script_is( "wordpoints-hooks-reactor-{$slug}", 'registered' ) ) {
-			wp_enqueue_script( "wordpoints-hooks-reactor-{$slug}" );
-		}
-	}
-
-	unset( $reactor, $slug );
+	$reactor_data = wordpoints_hooks_ui_get_script_data_from_objects(
+		$hooks->reactors->get_all()
+		, 'reactor'
+	);
 
 	$event_action_types = wordpoints_hooks_ui_get_script_data_event_action_types();
 	$entities_data = wordpoints_hooks_ui_get_script_data_entities();
@@ -375,6 +355,35 @@ function wordpoints_hooks_ui_setup_script_data() {
 		, 'WordPointsHooksAdminData'
 		, $data
 	);
+}
+
+/**
+ * Get the UI script data from a bunch of objects.
+ *
+ * @since 1.0.0
+ *
+ * @param object[] $objects Objects that might provide script UI data.
+ * @param string   $type    The type of objects. Used to automatically enqueue
+ *                          scripts for the objects.
+ *
+ * @return array The data extracted from the objects.
+ */
+function wordpoints_hooks_ui_get_script_data_from_objects( $objects, $type ) {
+
+	$data = array();
+
+	foreach ( $objects as $slug => $object ) {
+
+		if ( $object instanceof WordPoints_Hook_UI_Script_Data_ProviderI ) {
+			$data[ $slug ] = $object->get_ui_script_data();
+		}
+
+		if ( wp_script_is( "wordpoints-hooks-{$type}-{$slug}", 'registered' ) ) {
+			wp_enqueue_script( "wordpoints-hooks-{$type}-{$slug}" );
+		}
+	}
+
+	return $data;
 }
 
 /**

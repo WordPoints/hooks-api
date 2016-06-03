@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-abstract class WordPoints_Hook_Reactor implements WordPoints_Hook_ReactorI {
+abstract class WordPoints_Hook_Reactor
+	implements WordPoints_Hook_ReactorI,
+		WordPoints_Hook_UI_Script_Data_ProviderI {
 
 	/**
 	 * The unique slug identifying this hook reactor.

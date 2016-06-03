@@ -12,7 +12,9 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
+class WordPoints_Hook_Extension_Conditions
+	extends WordPoints_Hook_Extension
+	implements WordPoints_Hook_UI_Script_Data_ProviderI {
 
 	/**
 	 * @since 1.0.0

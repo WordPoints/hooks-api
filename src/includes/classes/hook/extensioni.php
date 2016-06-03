@@ -37,15 +37,6 @@ interface WordPoints_Hook_ExtensionI extends WordPoints_Hook_SettingsI {
 	 * @return bool Whether the target should be hit by this hook firing.
 	 */
 	public function should_hit( WordPoints_Hook_Fire $fire );
-
-	/**
-	 * Get the data the scripts need for the UI.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array Any data that needs to be present for the scripts in the UI.
-	 */
-	public function get_ui_script_data();
 }
 
 // EOF

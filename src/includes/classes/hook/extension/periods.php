@@ -14,7 +14,8 @@
  */
 class WordPoints_Hook_Extension_Periods
 	extends WordPoints_Hook_Extension
-	implements WordPoints_Hook_Extension_Hit_ListenerI {
+	implements WordPoints_Hook_Extension_Hit_ListenerI,
+		WordPoints_Hook_UI_Script_Data_ProviderI {
 
 	/**
 	 * @since 1.0.0

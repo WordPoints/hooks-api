@@ -12,6 +12,7 @@
 // auto-generated {
 $dir = dirname( __FILE__ );
 require_once( $dir . '/specedi.php' );
+require_once( $dir . '/hook/ui/script/data/provideri.php' );
 require_once( $dir . '/hook/settingsi.php' );
 require_once( $dir . '/hook/retroactive/queryi.php' );
 require_once( $dir . '/hook/retroactive/query/modifieri.php' );
