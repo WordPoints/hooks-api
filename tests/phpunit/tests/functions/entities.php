@@ -27,7 +27,7 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 
 		wordpoints_entities_app_init( $entities );
 
-		$sub_apps = $entities->sub_apps;
+		$sub_apps = $entities->sub_apps();
 
 		$this->assertTrue( $sub_apps->is_registered( 'children' ) );
 		$this->assertTrue( $sub_apps->is_registered( 'contexts' ) );

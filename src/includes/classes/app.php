@@ -17,8 +17,7 @@
  *
  * @since 1.0.0
  *
- * @property-read WordPoints_Class_Registry_Persistent $sub_apps Child apps registry.
- * @property-read object                               $*        Child app objects.
+ * @property-read object $* Child app objects.
  */
 class WordPoints_App {
 
@@ -127,9 +126,6 @@ class WordPoints_App {
 	 */
 	public function __get( $var ) {
 
-		if ( 'sub_apps' === $var ) {
-			return $this->$var;
-		}
 
 		$sub = $this->sub_apps->get( $var, array( $this ) );
 
@@ -202,7 +198,7 @@ class WordPoints_App {
 		} else {
 			_doing_it_wrong(
 				__METHOD__
-				, 'Sub apps must be registered using $app->sub_apps->register().'
+				, 'Sub apps must be registered using $app->sub_apps()->register().'
 				, '1.0.0'
 			);
 		}
@@ -218,10 +214,21 @@ class WordPoints_App {
 		} else {
 			_doing_it_wrong(
 				__METHOD__
-				, 'Sub apps must be deregistered using $app->sub_apps->deregister().'
+				, 'Sub apps must be deregistered using $app->sub_apps()->deregister().'
 				, '1.0.0'
 			);
 		}
+	}
+
+	/**
+	 * Get the sub apps registry.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WordPoints_Class_Registry_Persistent The sub apps registry.
+	 */
+	public function sub_apps() {
+		return $this->sub_apps;
 	}
 
 	/**

@@ -29,12 +29,12 @@ class WordPoints_Admin_Apps_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 
 		wordpoints_hooks_register_admin_apps( $apps );
 
-		$this->assertTrue( $apps->sub_apps->is_registered( 'admin' ) );
+		$this->assertTrue( $apps->sub_apps()->is_registered( 'admin' ) );
 
 		/** @var WordPoints_App $app */
-		$app = $apps->sub_apps->get( 'admin' );
+		$app = $apps->sub_apps()->get( 'admin' );
 
-		$this->assertTrue( $app->sub_apps->is_registered( 'screen' ) );
+		$this->assertTrue( $app->sub_apps()->is_registered( 'screen' ) );
 	}
 }
 

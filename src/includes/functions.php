@@ -321,8 +321,9 @@ function wordpoints_hook_events_init( $events ) {
  */
 function wordpoints_entities_app_init( $entities ) {
 
-	$entities->sub_apps->register( 'children', 'WordPoints_Class_Registry_Children' );
-	$entities->sub_apps->register( 'contexts', 'WordPoints_Class_Registry' );
+	$sub_apps = $entities->sub_apps();
+	$sub_apps->register( 'children', 'WordPoints_Class_Registry_Children' );
+	$sub_apps->register( 'contexts', 'WordPoints_Class_Registry' );
 }
 
 /**
@@ -693,7 +694,7 @@ function wordpoints_entities() {
  */
 function wordpoints_apps_init( $app ) {
 
-	$apps = $app->sub_apps;
+	$apps = $app->sub_apps();
 
 	$apps->register( 'hooks', 'WordPoints_Hooks' );
 	$apps->register( 'entities', 'WordPoints_App_Registry' );

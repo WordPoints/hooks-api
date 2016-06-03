@@ -125,7 +125,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$app = new WordPoints_App( 'test' );
 
 		$this->assertTrue(
-			$app->sub_apps->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
+			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
 		);
 
 		$this->assertTrue( isset( $app->sub ) );
@@ -162,7 +162,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		);
 
 		$this->assertTrue(
-			$app->sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
+			$app->sub_apps()->register( 'registry', 'WordPoints_Class_Registry' )
 		);
 
 		$registry = $app->registry;
@@ -188,7 +188,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		);
 
 		$this->assertTrue(
-			$app->sub_apps->register(
+			$app->sub_apps()->register(
 				'registry'
 				, 'WordPoints_Class_Registry_Children'
 			)
@@ -217,7 +217,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		);
 
 		$this->assertTrue(
-			$app->sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
+			$app->sub_apps()->register( 'registry', 'WordPoints_Class_Registry' )
 		);
 
 		$app->registry;
@@ -245,7 +245,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		);
 
 		$this->assertTrue(
-			$app->sub_apps->register( 'registry', 'WordPoints_App' )
+			$app->sub_apps()->register( 'registry', 'WordPoints_App' )
 		);
 
 		$app->registry;
@@ -281,7 +281,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$app = new WordPoints_App( 'test' );
 
 		$this->assertTrue(
-			$app->sub_apps->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
+			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
 		);
 
 		$app->sub = array();
@@ -301,7 +301,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$app = new WordPoints_App( 'test' );
 
 		$this->assertTrue(
-			$app->sub_apps->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
+			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
 		);
 
 		unset( $app->sub );
@@ -319,10 +319,11 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$this->mock_apps();
 
 		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
+		$apps = $apps->sub_apps();
+		$apps->register( 'test', 'WordPoints_App' );
 
-		$apps->sub_apps->register( 'test', 'WordPoints_App' );
-
-		$app = $apps->sub_apps->get( 'test' );
+		/** @var WordPoints_App $app */
+		$app = $apps->get( 'test' );
 
 		add_action(
 			'wordpoints_init_app_registry-test-registry'
@@ -336,8 +337,10 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			, array( $mock, 'action' )
 		);
 
+		$sub_apps = $app->sub_apps();
+
 		$this->assertTrue(
-			$app->sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
+			$sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
 		);
 
 		$registry = $app->registry;
@@ -346,7 +349,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 
 		$this->assertEquals( 1, $mock->call_count );
 
-		$app->sub_apps->deregister( 'registry' );
+		$sub_apps->deregister( 'registry' );
 
 		$this->assertNull( $app->registry );
 	}
@@ -376,10 +379,11 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$this->mock_apps();
 
 		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
+		$apps = $apps->sub_apps();
+		$apps->register( 'test', 'WordPoints_App' );
 
-		$apps->sub_apps->register( 'test', 'WordPoints_App' );
-
-		$app = $apps->sub_apps->get( 'test' );
+		/** @var WordPoints_App $app */
+		$app = $apps->get( 'test' );
 
 		add_action(
 			'wordpoints_init_app_registry-test-registry'
@@ -393,8 +397,10 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			, array( $mock, 'action' )
 		);
 
+		$sub_apps = $app->sub_apps();
+
 		$this->assertTrue(
-			$app->sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
+			$sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
 		);
 
 		$registry = $app->registry;
@@ -403,7 +409,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 
 		$this->assertEquals( 1, $mock->call_count );
 
-		$app->sub_apps->deregister( 'registry' );
+		$sub_apps->deregister( 'registry' );
 
 		$this->assertNull( $app->registry );
 	}
@@ -445,10 +451,11 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$this->mock_apps();
 
 		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
+		$apps = $apps->sub_apps();
+		$apps->register( 'test', 'WordPoints_App' );
 
-		$apps->sub_apps->register( 'test', 'WordPoints_App' );
-
-		$app = $apps->sub_apps->get( 'test' );
+		/** @var WordPoints_App $app */
+		$app = $apps->get( 'test' );
 
 		add_action(
 			'wordpoints_init_app_registry-test-parent'
@@ -462,8 +469,10 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			, array( $mock, 'action' )
 		);
 
+		$sub_apps = $app->sub_apps();
+
 		$this->assertTrue(
-			$app->sub_apps->register( 'parent', 'WordPoints_Class_Registry' )
+			$sub_apps->register( 'parent', 'WordPoints_Class_Registry' )
 		);
 
 		$registry = $app->parent;
@@ -472,7 +481,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 
 		$this->assertEquals( 1, $mock->call_count );
 
-		$app->sub_apps->deregister( 'parent' );
+		$sub_apps->deregister( 'parent' );
 
 		$this->assertNull( $app->parent );
 	}

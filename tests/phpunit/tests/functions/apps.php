@@ -27,7 +27,7 @@ class WordPoints_Apps_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		wordpoints_apps_init( $apps );
 
-		$sub_apps = $apps->sub_apps;
+		$sub_apps = $apps->sub_apps();
 
 		$this->assertTrue( $sub_apps->is_registered( 'hooks' ) );
 		$this->assertTrue( $sub_apps->is_registered( 'entities' ) );

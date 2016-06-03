@@ -185,7 +185,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array( 'action' => __CLASS__ )
@@ -210,7 +210,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array(
@@ -240,7 +240,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array( 'action' => __CLASS__ )
@@ -267,7 +267,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array( 'action' => __CLASS__ )
@@ -297,7 +297,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array( 'action' => null )
@@ -323,7 +323,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$apps = $this->mock_apps();
 		$entities = wordpoints_entities();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array(
@@ -381,7 +381,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$apps = $this->mock_apps();
 		$entities = wordpoints_entities();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array(
@@ -438,7 +438,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$apps = $this->mock_apps();
 		$entities = wordpoints_entities();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$slug = $this->factory->wordpoints->hook_action->create(
 			array(

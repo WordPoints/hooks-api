@@ -15,7 +15,7 @@ class WordPoints_Entity_chang_trigger implements WordPoints_Entity_Change_Listen
 		// maybe? and how shoudl we handle that, all at once or one by one?
 
 		/** @var WordPoints_Entity_Change_ListenerI[] $listeners */
-		$listeners = wordpoints_apps()->sub_apps->get( 'entity_change_listeners' );
+		$listeners = wordpoints_apps()->sub_apps()->get( 'entity_change_listeners' );
 		foreach ( $listeners as $listener ) {
 			$listener->created( $entity );
 		}
@@ -111,7 +111,7 @@ class WordPoints_Entity_Change_Listener_Hooks implements WordPoints_Entity_Chang
 	protected function matches_requirements( WordPoints_Entity $entity ) {
 
 		/** @var WordPoints_Class_Registry $defaults */
-		$defaults = wordpoints_apps()->sub_apps->get( 'entity_possession_defaults' );
+		$defaults = wordpoints_apps()->sub_apps()->get( 'entity_possession_defaults' );
 
 		$defaults = $defaults->get( $entity->get_slug() );
 

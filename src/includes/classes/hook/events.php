@@ -51,7 +51,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 	 */
 	public function init() {
 
-		$this->sub_apps->register( 'args', 'WordPoints_Class_Registry_Children' );
+		$this->sub_apps()->register( 'args', 'WordPoints_Class_Registry_Children' );
 
 		parent::init();
 	}

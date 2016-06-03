@@ -54,7 +54,7 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$this->factory->wordpoints->hook_event->create();
 
@@ -81,7 +81,7 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$apps = $this->mock_apps();
 
-		$apps->sub_apps->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
+		$apps->sub_apps()->register( 'hooks', 'WordPoints_PHPUnit_Mock_Hooks' );
 
 		$this->factory->wordpoints->hook_event->create();
 

@@ -18,14 +18,14 @@
  */
 function wordpoints_hooks_register_admin_apps( $app ) {
 
-	$apps = $app->sub_apps;
+	$apps = $app->sub_apps();
 
 	$apps->register( 'admin', 'WordPoints_App' );
 
 	/** @var WordPoints_App $admin */
 	$admin = $apps->get( 'admin' );
 
-	$admin->sub_apps->register( 'screen', 'WordPoints_Admin_Screens' );
+	$admin->sub_apps()->register( 'screen', 'WordPoints_Admin_Screens' );
 }
 
 /**
