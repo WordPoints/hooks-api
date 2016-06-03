@@ -110,7 +110,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 		$fields = array_merge( $object->get_all_meta(), $fields );
 
 		$reactions = $hooks->get_reaction_store( $object->get_store_slug() );
-		$reaction  = $reactions->update_reaction( $object->ID, $fields );
+		$reaction  = $reactions->update_reaction( $object->get_id(), $fields );
 
 		if ( ! $reaction ) {
 			return $reaction;

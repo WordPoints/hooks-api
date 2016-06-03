@@ -210,7 +210,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 */
 	public function test_options() {
 
-		$this->assertEquals( 1, $this->reaction->ID );
+		$this->assertEquals( 1, $this->reaction->get_id() );
 
 		$this->assertTrue( $this->reaction->add_meta( 'key', 'value' ) );
 
@@ -221,7 +221,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$reaction_2 = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 1, $reaction_2->ID );
+		$this->assertEquals( 1, $reaction_2->get_id() );
 
 		$this->assertFalse( $reaction_2->get_meta( 'key' ) );
 
@@ -232,7 +232,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 		);
 
 		$this->assertTrue(
-			$reaction_store->delete_reaction( $reaction_2->ID )
+			$reaction_store->delete_reaction( $reaction_2->get_id() )
 		);
 
 		restore_current_blog();
@@ -256,7 +256,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 1, $reaction->ID );
+		$this->assertEquals( 1, $reaction->get_id() );
 
 		$this->assertTrue( $reaction->add_meta( 'key', 'value' ) );
 
@@ -267,7 +267,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 2, $reaction->ID );
+		$this->assertEquals( 2, $reaction->get_id() );
 
 		$reaction_store = wordpoints_hooks()->get_reaction_store(
 			$reaction->get_store_slug()

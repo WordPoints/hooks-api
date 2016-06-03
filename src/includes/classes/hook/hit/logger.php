@@ -55,7 +55,7 @@ class WordPoints_Hook_Hit_Logger {
 				'reactor' => $this->fire->reaction->get_reactor_slug(),
 				'reaction_store' => $this->fire->reaction->get_store_slug(),
 				'reaction_context_id' => wp_json_encode( $this->fire->reaction->get_context_id() ),
-				'reaction_id' => $this->fire->reaction->ID,
+				'reaction_id' => $this->fire->reaction->get_id(),
 				'date' => current_time( 'mysql' ),
 			)
 		);

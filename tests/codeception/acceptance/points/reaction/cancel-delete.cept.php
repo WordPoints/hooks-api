@@ -26,6 +26,6 @@ $I->seeJQueryDialog( 'Are you sure?' );
 $I->click( 'Cancel', '.wordpoints-delete-hook-reaction-dialog' );
 $I->waitForJqueryAjax();
 $I->canSeeElement( '#points-user_register .wordpoints-hook-reaction' );
-$I->canSeePointsReactionInDB( $reaction->ID );
+$I->canSeePointsReactionInDB( $reaction->get_id() );
 
 // EOF

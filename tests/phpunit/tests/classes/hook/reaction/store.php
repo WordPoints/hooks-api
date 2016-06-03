@@ -76,7 +76,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $result );
 
-		$reaction = $store->get_reaction( $result->ID );
+		$reaction = $store->get_reaction( $result->get_id() );
 
 		$this->assertEquals( $result, $reaction );
 
@@ -225,11 +225,11 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 			)
 		);
 
-		$result = $reaction->store->update_reaction( $reaction->ID, $settings );
+		$result = $reaction->store->update_reaction( $reaction->get_id(), $settings );
 
 		$this->assertIsReaction( $result );
 
-		$reaction = $reaction->store->get_reaction( $reaction->ID );
+		$reaction = $reaction->store->get_reaction( $reaction->get_id() );
 
 		$this->assertEquals( $result, $reaction );
 
@@ -250,7 +250,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$reaction->store->delete_reaction( $reaction->ID );
+		$reaction->store->delete_reaction( $reaction->get_id() );
 
 		$settings = array(
 			'event' => 'test_event_2',
@@ -267,7 +267,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 			)
 		);
 
-		$result = $reaction->store->update_reaction( $reaction->ID, $settings );
+		$result = $reaction->store->update_reaction( $reaction->get_id(), $settings );
 
 		$this->assertFalse( $result );
 	}
@@ -299,7 +299,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 			)
 		);
 
-		$result = $reaction->store->update_reaction( $reaction->ID, $settings );
+		$result = $reaction->store->update_reaction( $reaction->get_id(), $settings );
 
 		$this->assertInstanceOf( 'WordPoints_Hook_Reaction_Validator', $result );
 
@@ -337,7 +337,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 			)
 		);
 
-		$result = $reaction->store->update_reaction( $reaction->ID, $settings );
+		$result = $reaction->store->update_reaction( $reaction->get_id(), $settings );
 
 		$this->assertIsReaction( $result );
 
@@ -379,7 +379,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 			)
 		);
 
-		$result = $reaction->store->update_reaction( $reaction->ID, $settings );
+		$result = $reaction->store->update_reaction( $reaction->get_id(), $settings );
 
 		$this->assertIsReaction( $result );
 
@@ -420,7 +420,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 		$mock = new WordPoints_Mock_Filter();
 		add_action( 'wordpoints_hook_reaction_save', array( $mock, 'action' ), 10, 5 );
 
-		$result = $reaction->store->update_reaction( $reaction->ID, $settings );
+		$result = $reaction->store->update_reaction( $reaction->get_id(), $settings );
 
 		$this->assertIsReaction( $result );
 

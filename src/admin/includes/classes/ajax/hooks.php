@@ -57,7 +57,7 @@ class WordPoints_Admin_Ajax_Hooks {
 		return array_merge(
 			$reaction->get_all_meta()
 			, array(
-				'id' => $reaction->ID,
+				'id' => $reaction->get_id(),
 				'event' => $reaction->get_event_slug(),
 				'reaction_store' => $reaction->get_store_slug(),
 				'nonce' => self::get_update_nonce( $reaction ),
@@ -234,7 +234,7 @@ class WordPoints_Admin_Ajax_Hooks {
 		$this->verify_request( $this->get_update_nonce_action( $reaction ) );
 
 		$reaction = $reaction_store->update_reaction(
-			$reaction->ID
+			$reaction->get_id()
 			, $this->get_data()
 		);
 
@@ -255,7 +255,7 @@ class WordPoints_Admin_Ajax_Hooks {
 
 		$this->verify_request( $this->get_delete_nonce_action( $reaction ) );
 
-		$result = $reaction_store->delete_reaction( $reaction->ID );
+		$result = $reaction_store->delete_reaction( $reaction->get_id() );
 
 		if ( ! $result ) {
 			wp_send_json_error( array( 'message' => __( 'There was an error deleting the reaction. Please try again.', 'wordpoints' ) ) );

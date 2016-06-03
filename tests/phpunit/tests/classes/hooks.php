@@ -190,13 +190,13 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		// The reactors should have been hit.
 		$this->assertCount( 2, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ) );
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ) );
 
 		$this->assertCount( 1, $other_reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->get_id() )
 		);
 	}
 
@@ -255,14 +255,14 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		// The first reactor should not have been hit.
 		$this->assertCount( 0, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ), 0 );
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ), 0 );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ), 0 );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ), 0 );
 
 		// The other reactor should.
 		$this->assertCount( 1, $other_reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->get_id() )
 		);
 	}
 
@@ -308,14 +308,14 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		// The first reactor should not have been hit.
 		$this->assertCount( 0, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ), 0 );
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ), 0 );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ), 0 );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ), 0 );
 
 		// The other reactor should.
 		$this->assertCount( 1, $other_reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->get_id() )
 		);
 	}
 
@@ -381,8 +381,8 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		// The reactors should have been hit.
 		$this->assertCount( 2, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ) );
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ) );
 
 		$this->assertCount( 0, $other_reactor->hits );
 	}
@@ -414,15 +414,15 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$this->assertCount( 2, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->ID ) );
-		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ) );
 
 		$reactor = $hooks->reactors->get( 'another' );
 
 		$this->assertCount( 1, $reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->get_id() )
 		);
 	}
 
@@ -473,12 +473,12 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		// The reactors should have been hit.
 		$this->assertCount( 1, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->get_id() ) );
 
 		$this->assertCount( 1, $other_reactor->hits );
 
 		$this->assertHitsLogged(
-			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->ID )
+			array( 'reactor' => 'another', 'reaction_id' => $other_reaction->get_id() )
 		);
 	}
 
@@ -607,7 +607,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		// The reactor should have been hit.
 		$this->assertCount( 1, $reactor->hits );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->get_id() ) );
 
 		// Block one of the extensions from allowing a hit this time.
 		$other_extension->should_hit = false;
@@ -626,7 +626,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertCount( 1, $reactor->hits );
 
 		// There should still be just one hit in the logs.
-		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->get_id() ) );
 	}
 
 	/**

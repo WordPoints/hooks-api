@@ -33,7 +33,7 @@ class WordPoints_Hook_Hit_Logger_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->assertInternalType( 'integer', $hit_id );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->get_id() ) );
 	}
 }
 

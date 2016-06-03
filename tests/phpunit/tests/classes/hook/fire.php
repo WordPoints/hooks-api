@@ -54,7 +54,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$this->assertInternalType( 'integer', $hit_id );
 		$this->assertEquals( $fire->hit_id, $hit_id );
 
-		$this->assertHitsLogged( array( 'reaction_id' => $reaction->ID ) );
+		$this->assertHitsLogged( array( 'reaction_id' => $reaction->get_id() ) );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class WordPoints_Hook_Fire_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			, $query->get_arg( 'reaction_context_id' )
 		);
 
-		$this->assertEquals( $reaction->ID, $query->get_arg( 'reaction_id' ) );
+		$this->assertEquals( $reaction->get_id(), $query->get_arg( 'reaction_id' ) );
 	}
 }
 

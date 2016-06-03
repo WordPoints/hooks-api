@@ -107,7 +107,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->assertEquals(
 			array(
-				'id' => $reaction->ID,
+				'id' => $reaction->get_id(),
 				'event' => $reaction->get_event_slug(),
 				'reaction_store' => $reaction->get_store_slug(),
 				'reactor' => $reaction->get_reactor_slug(),
@@ -404,7 +404,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		);
 
 		$this->assertFalse(
-			$reaction_store->reaction_exists( $this->reaction->ID )
+			$reaction_store->reaction_exists( $this->reaction->get_id() )
 		);
 	}
 
@@ -432,7 +432,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 		);
 
 		$this->assertTrue(
-			$reaction_store->reaction_exists( $this->reaction->ID )
+			$reaction_store->reaction_exists( $this->reaction->get_id() )
 		);
 	}
 
@@ -512,7 +512,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 					: $this->reaction_store->get_slug();
 
 			case 'id':
-				return $this->reaction->ID;
+				return $this->reaction->get_id();
 		}
 
 		return parent::get_valid_posts_value( $query_arg );

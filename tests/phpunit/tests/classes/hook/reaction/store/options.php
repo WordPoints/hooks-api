@@ -44,7 +44,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertTrue( $reaction_store->reaction_exists( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->reaction_exists( $reaction->get_id() ) );
 	}
 
 	/**
@@ -171,7 +171,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->assertEquals(
 			$reaction->get_event_slug()
-			, $reaction_store->get_reaction_event_from_index( $reaction->ID )
+			, $reaction_store->get_reaction_event_from_index( $reaction->get_id() )
 		);
 	}
 
@@ -212,7 +212,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->assertEquals(
 			'another_event'
-			, $reaction_store->get_reaction_event_from_index( $reaction->ID )
+			, $reaction_store->get_reaction_event_from_index( $reaction->get_id() )
 		);
 	}
 
@@ -245,9 +245,9 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertTrue( $reaction_store->delete_reaction( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->delete_reaction( $reaction->get_id() ) );
 
-		$this->assertFalse( $reaction_store->reaction_exists( $reaction->ID ) );
+		$this->assertFalse( $reaction_store->reaction_exists( $reaction->get_id() ) );
 		$this->assertSame( array(), $reaction_store->get_reactions() );
 		$this->assertSame(
 			array()
@@ -255,7 +255,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 		);
 
 		$this->assertFalse(
-			$reaction_store->get_reaction_event_from_index( $reaction->ID )
+			$reaction_store->get_reaction_event_from_index( $reaction->get_id() )
 		);
 	}
 
@@ -273,9 +273,9 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 1, $reaction->ID );
+		$this->assertEquals( 1, $reaction->get_id() );
 
-		$this->assertTrue( $reaction_store->reaction_exists( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->reaction_exists( $reaction->get_id() ) );
 		$this->assertEquals( array( $reaction ), $reaction_store->get_reactions() );
 		$this->assertEquals(
 			array( $reaction )
@@ -284,7 +284,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$this->assertEquals(
 			'test_event'
-			, $reaction_store->get_reaction_event_from_index( $reaction->ID )
+			, $reaction_store->get_reaction_event_from_index( $reaction->get_id() )
 		);
 	}
 
@@ -302,22 +302,22 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 3 );
 
-		$this->assertEquals( 1, $reactions[0]->ID );
-		$this->assertEquals( 2, $reactions[1]->ID );
-		$this->assertEquals( 3, $reactions[2]->ID );
+		$this->assertEquals( 1, $reactions[0]->get_id() );
+		$this->assertEquals( 2, $reactions[1]->get_id() );
+		$this->assertEquals( 3, $reactions[2]->get_id() );
 
 		$this->assertTrue( $reaction_store->delete_reaction( 1 ) );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 4, $reaction->ID );
+		$this->assertEquals( 4, $reaction->get_id() );
 
 		// When the newest reaction is deleted, the ID shouldn't be reused.
 		$this->assertTrue( $reaction_store->delete_reaction( 4 ) );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 5, $reaction->ID );
+		$this->assertEquals( 5, $reaction->get_id() );
 	}
 
 	/**
@@ -334,9 +334,9 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reactions = $this->factory->wordpoints->hook_reaction->create_many( 3 );
 
-		$this->assertEquals( 1, $reactions[0]->ID );
-		$this->assertEquals( 2, $reactions[1]->ID );
-		$this->assertEquals( 3, $reactions[2]->ID );
+		$this->assertEquals( 1, $reactions[0]->get_id() );
+		$this->assertEquals( 2, $reactions[1]->get_id() );
+		$this->assertEquals( 3, $reactions[2]->get_id() );
 
 		$current_mode = wordpoints_hooks()->get_current_mode();
 		$option_name = "wordpoints_hook_reaction_last_id-{$this->slug}-{$current_mode}";
@@ -346,14 +346,14 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 4, $reaction->ID );
+		$this->assertEquals( 4, $reaction->get_id() );
 
 		// When the index max is greater than the next ID as calculated from option.
 		$reaction_store->update_option( $option_name, 1 );
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 5, $reaction->ID );
+		$this->assertEquals( 5, $reaction->get_id() );
 	}
 
 	/**
@@ -371,7 +371,7 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 1, $reaction->ID );
+		$this->assertEquals( 1, $reaction->get_id() );
 
 		// Create another site.
 		$site_id = $this->factory->blog->create();
@@ -380,9 +380,9 @@ class WordPoints_Hook_Reaction_Store_Options_Test extends WordPoints_PHPUnit_Tes
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		$this->assertEquals( 1, $reaction->ID );
+		$this->assertEquals( 1, $reaction->get_id() );
 
-		$this->assertTrue( $reaction_store->delete_reaction( $reaction->ID ) );
+		$this->assertTrue( $reaction_store->delete_reaction( $reaction->get_id() ) );
 
 		restore_current_blog();
 

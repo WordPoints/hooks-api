@@ -49,13 +49,8 @@ abstract class WordPoints_Hook_Reaction implements WordPoints_Hook_ReactionI {
 	/**
 	 * @since 1.0.0
 	 */
-	public function __get( $var ) {
-
-		if ( 'ID' === $var ) {
-			return $this->ID;
-		}
-
-		return null;
+	public function get_id() {
+		return $this->ID;
 	}
 
 	/**

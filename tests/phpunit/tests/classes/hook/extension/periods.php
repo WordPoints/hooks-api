@@ -381,7 +381,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 			$now = current_time( 'timestamp' );
 
-			$this->assertEquals( $reaction->ID, $results[ $index ]->reaction_id );
+			$this->assertEquals( $reaction->get_id(), $results[ $index ]->reaction_id );
 			$this->assertLessThanOrEqual( 2, $now - strtotime( $results[ $index ]->date, $now ) );
 			$this->assertEquals( $period['signature'], $results[ $index ]->signature );
 		}
@@ -701,7 +701,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertIsReaction( $other_reaction );
 
-		$this->assertEquals( $reaction->ID, $other_reaction->ID );
+		$this->assertEquals( $reaction->get_id(), $other_reaction->get_id() );
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
@@ -764,7 +764,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$this->assertEquals( 'test_store', $other_reaction->get_store_slug() );
-		$this->assertEquals( $reaction->ID, $other_reaction->ID );
+		$this->assertEquals( $reaction->get_id(), $other_reaction->get_id() );
 		$this->assertEquals(
 			$reaction->get_context_id()
 			, $other_reaction->get_context_id()

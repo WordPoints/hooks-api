@@ -63,7 +63,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 
 		$this->assertEquals( $reaction, $validator->get_reaction() );
 		$this->assertEquals( $reaction->get_all_meta(), $validator->get_settings() );
-		$this->assertEquals( $reaction->ID, $validator->get_id() );
+		$this->assertEquals( $reaction->get_id(), $validator->get_id() );
 
 		$this->assertEquals( 'test_event', $validator->get_event_slug() );
 		$this->assertEquals( 'test_reactor', $validator->get_reactor_slug() );

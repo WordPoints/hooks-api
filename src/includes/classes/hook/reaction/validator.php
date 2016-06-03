@@ -321,7 +321,7 @@ final class WordPoints_Hook_Reaction_Validator {
 			return false;
 		}
 
-		return $this->reaction->ID;
+		return $this->reaction->get_id();
 	}
 
 	/**

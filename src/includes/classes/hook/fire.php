@@ -141,7 +141,7 @@ class WordPoints_Hook_Fire {
 				'reaction_context_id' => wp_json_encode(
 					$this->reaction->get_context_id()
 				),
-				'reaction_id' => $this->reaction->ID,
+				'reaction_id' => $this->reaction->get_id(),
 			)
 		);
 	}
