@@ -262,7 +262,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		$arg_types_index = array();
 
-		/** @var WordPoints_Hook_Reactor $reactor */
+		/** @var WordPoints_Hook_ReactorI $reactor */
 		foreach ( $reactors as $slug => $reactor ) {
 			$arg_types = $reactor->get_arg_types();
 

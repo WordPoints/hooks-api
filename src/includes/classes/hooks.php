@@ -177,7 +177,7 @@ class WordPoints_Hooks extends WordPoints_App {
 	 */
 	protected function fire_reaction( $fire ) {
 
-		/** @var WordPoints_Hook_Reactor $reactor */
+		/** @var WordPoints_Hook_ReactorI $reactor */
 		$reactor = $this->reactors->get( $fire->reaction->get_reactor_slug() );
 
 		if ( ! in_array( $fire->action_type, $reactor->get_action_types(), true ) ) {

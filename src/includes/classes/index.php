@@ -15,6 +15,7 @@ require_once( $dir . '/specedi.php' );
 require_once( $dir . '/hook/settingsi.php' );
 require_once( $dir . '/hook/retroactive/queryi.php' );
 require_once( $dir . '/hook/retroactive/query/modifieri.php' );
+require_once( $dir . '/hook/reactori.php' );
 require_once( $dir . '/hook/reactioni.php' );
 require_once( $dir . '/hook/reaction/storei.php' );
 require_once( $dir . '/hook/extension/miss/listeneri.php' );

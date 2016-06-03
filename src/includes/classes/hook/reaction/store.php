@@ -143,7 +143,7 @@ abstract class WordPoints_Hook_Reaction_Store implements WordPoints_Hook_Reactio
 
 		$reaction->update_meta( 'reactor', $settings['reactor'] );
 
-		/** @var WordPoints_Hook_Reactor $reactor */
+		/** @var WordPoints_Hook_ReactorI $reactor */
 		$reactor = wordpoints_hooks()->reactors->get( $settings['reactor'] );
 		$reactor->update_settings( $reaction, $settings );
 

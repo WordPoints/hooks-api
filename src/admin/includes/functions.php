@@ -335,7 +335,7 @@ function wordpoints_hooks_ui_setup_script_data() {
 
 	foreach ( $hooks->reactors->get_all() as $slug => $reactor ) {
 
-		if ( $reactor instanceof WordPoints_Hook_Reactor ) {
+		if ( $reactor instanceof WordPoints_Hook_ReactorI ) {
 			$reactor_data[ $slug ] = $reactor->get_ui_script_data();
 		}
 

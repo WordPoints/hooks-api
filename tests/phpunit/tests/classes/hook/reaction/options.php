@@ -21,7 +21,7 @@ class WordPoints_Hook_Reaction_Options_Test extends WordPoints_PHPUnit_TestCase_
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var WordPoints_Hook_Reactor
+	 * @var WordPoints_Hook_ReactorI
 	 */
 	protected $reactor;
 

@@ -278,7 +278,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			return;
 		}
 
-		/** @var WordPoints_Hook_Reactor $reactor */
+		/** @var WordPoints_Hook_ReactorI $reactor */
 		$reactor = $this->hooks->reactors->get( 'points' );
 		$reactor_action_types = array_fill_keys( $reactor->get_action_types(), true );
 
