@@ -45,7 +45,7 @@ class WordPoints_Hook_Extension_Conditions extends WordPoints_Hook_Extension {
 		foreach ( $this->conditions->get_all() as $data_type => $conditions ) {
 			foreach ( $conditions as $slug => $condition ) {
 
-				if ( ! ( $condition instanceof WordPoints_Hook_Condition ) ) {
+				if ( ! ( $condition instanceof WordPoints_Hook_ConditionI ) ) {
 					continue;
 				}
 
