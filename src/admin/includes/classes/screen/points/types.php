@@ -366,7 +366,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 				'slug' => $slug,
 			);
 
-			if ( $arg instanceof WordPoints_Hook_Arg ) {
+			if ( $arg instanceof WordPoints_Hook_ArgI ) {
 				$event_data['args'][ $slug ]['title'] = $arg->get_title();
 				$event_data['args'][ $slug ]['is_stateful'] = $arg->is_stateful();
 			}

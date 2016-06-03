@@ -61,7 +61,7 @@ class WordPoints_Hook_Event_Args extends WordPoints_Entity_Hierarchy {
 	/**
 	 * Construct the object with the arg objects.
 	 *
-	 * @param WordPoints_Hook_Arg[] $args The hook args.
+	 * @param WordPoints_Hook_ArgI[] $args The hook args.
 	 */
 	public function __construct( array $args ) {
 

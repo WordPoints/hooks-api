@@ -282,10 +282,10 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WordPoints_Hook_Arg[]|WordPoints_EntityishI[] $args            The args.
-	 * @param string[][]                                    $arg_types_index A list of reactor slugs indexed by arg slug.
-	 * @param array[][]                                     $targets         The targets data.
-	 * @param string[]                                      $target_stack    The target stack.
+	 * @param WordPoints_Hook_ArgI[]|WordPoints_EntityishI[] $args            The args.
+	 * @param string[][]                                     $arg_types_index A list of reactor slugs indexed by arg slug.
+	 * @param array[][]                                      $targets         The targets data.
+	 * @param string[]                                       $target_stack    The target stack.
 	 *
 	 * @return array[][] The target data.
 	 */
@@ -302,7 +302,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 				$slug = $arg->get_slug();
 				$target_stack[] = $slug;
 
-			} elseif ( $arg instanceof WordPoints_Hook_Arg ) {
+			} elseif ( $arg instanceof WordPoints_Hook_ArgI ) {
 
 				$slug = $arg->get_entity_slug();
 

@@ -10,14 +10,9 @@
 /**
  * Represents a hook arg.
  *
- * When an action is fired, each event that is triggered by it needs to retrieve one
- * more values related to that event. These are called the event args. The values may
- * come from the action itself, or from elsewhere. This class provides a common
- * interface for retrieving those values and converting them into entities.
- *
  * @since 1.0.0
  */
-class WordPoints_Hook_Arg {
+class WordPoints_Hook_Arg implements WordPoints_Hook_ArgI {
 
 	/**
 	 * The slug of this arg.
@@ -85,33 +80,21 @@ class WordPoints_Hook_Arg {
 	}
 
 	/**
-	 * Get the slug of this arg.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return string The arg slug.
 	 */
 	public function get_slug() {
 		return $this->slug;
 	}
 
 	/**
-	 * Get the slug of the type of entity this arg is.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return string The entity slug.
 	 */
 	public function get_entity_slug() {
 		return $this->entity_slug;
 	}
 
 	/**
-	 * Get the entity object for this arg's value.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return WordPoints_Entity|false The entity, or false if not registered.
 	 */
 	public function get_entity() {
 
@@ -131,11 +114,7 @@ class WordPoints_Hook_Arg {
 	}
 
 	/**
-	 * Retrieves the value for this arg.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return mixed The arg value.
 	 */
 	public function get_value() {
 
@@ -147,11 +126,7 @@ class WordPoints_Hook_Arg {
 	}
 
 	/**
-	 * Retrieves the human-readable title of this arg.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return string The arg title.
 	 */
 	public function get_title() {
 
@@ -165,11 +140,7 @@ class WordPoints_Hook_Arg {
 	}
 
 	/**
-	 * Check whether the arg is stateful.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @return bool Whether this arg is stateful.
 	 */
 	public function is_stateful() {
 		return $this->is_stateful;

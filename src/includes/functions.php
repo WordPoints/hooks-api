@@ -565,7 +565,7 @@ function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
 
 	$event_slug = $log->log_type;
 
-	/** @var WordPoints_Hook_Arg $arg */
+	/** @var WordPoints_Hook_ArgI $arg */
 	foreach ( wordpoints_hooks()->events->args->get_children( $event_slug ) as $slug => $arg ) {
 
 		$value = wordpoints_get_points_log_meta( $log->id, $slug, true );

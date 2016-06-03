@@ -25,6 +25,7 @@ require_once( $dir . '/hook/extension/hit/listeneri.php' );
 require_once( $dir . '/hook/eventi.php' );
 require_once( $dir . '/hook/event/reversingi.php' );
 require_once( $dir . '/hook/conditioni.php' );
+require_once( $dir . '/hook/argi.php' );
 require_once( $dir . '/hook/actioni.php' );
 require_once( $dir . '/entityishi.php' );
 require_once( $dir . '/entityish/storedi.php' );
