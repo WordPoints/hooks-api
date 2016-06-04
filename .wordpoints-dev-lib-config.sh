@@ -37,7 +37,7 @@ wpcept-run() {
 		return
 	fi
 
-	sed -i "s/http:\/\/wptests.local/$WP_CEPT_SERVER/" codeception.dist.yml
+	sed -i "s/wptests.local/$WP_CEPT_SERVER/" codeception.dist.yml
 
 	phantomjs --webdriver=4444 --webdriver-loglevel=DEBUG &
 
