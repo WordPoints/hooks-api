@@ -19,7 +19,7 @@ interface WordPoints_Hook_ReactionI {
 	 * Get the reaction ID.
 	 *
 	 * @since 1.0.0
-	 *        
+	 *
 	 * @return int The ID of this reaction.
 	 */
 	public function get_id();

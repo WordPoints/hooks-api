@@ -18,7 +18,7 @@
  * "miss" the target entity.
  *
  * @since 1.0.0
- *        
+ *
  * @method null|object|WordPoints_Hook_Router|WordPoints_Hook_Actions|WordPoints_Hook_Events|WordPoints_Class_Registry_ChildrenI|WordPoints_Class_Registry|WordPoints_App get_sub_app( $slug )
  */
 class WordPoints_Hooks extends WordPoints_App {

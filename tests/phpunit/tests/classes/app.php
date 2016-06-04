@@ -127,7 +127,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$this->assertTrue(
 			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
 		);
-		
+
 		$this->assertInstanceOf(
 			'WordPoints_PHPUnit_Mock_Object'
 			, $app->get_sub_app( 'sub' )

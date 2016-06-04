@@ -38,7 +38,7 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 		$this->mock_apps();
 
 		$this->give_current_user_caps( 'manage_options' );
-		
+
 		wordpoints_hooks_api_admin_menu();
 
 		$this->assertAdminSubmenuRegistered( 'wordpoints_points_types' );
@@ -65,13 +65,13 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 	 * @param string $parent The slug of the parent menu item.
 	 */
 	protected function assertAdminSubmenuRegistered( $slug, $parent = null ) {
-		
+
 		global $submenu;
-		
+
 		if ( null === $parent ) {
 			$parent = wordpoints_get_main_admin_menu();
 		}
-		
+
 		$this->assertArrayHasKey( $parent, $submenu );
 		$this->assertContains( $slug, wp_list_pluck( $submenu[ $parent ], 2 ) );
 	}
