@@ -33,7 +33,7 @@ class WordPoints_WPDB_Wrapper {
 
 	public function __call( $name, $arguments ) {
 
-		$wrappers = wordpoints_apps()->sub_apps()->get( 'wpdb_wrappers' );
+		$wrappers = wordpoints_apps()->get_sub_app( 'wpdb_wrappers' );
 		$slugs = $wrappers->get_child_slugs( $name );
 		$should_listen = $query = false;
 

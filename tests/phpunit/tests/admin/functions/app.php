@@ -32,7 +32,7 @@ class WordPoints_Admin_Apps_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 		$this->assertTrue( $apps->sub_apps()->is_registered( 'admin' ) );
 
 		/** @var WordPoints_App $app */
-		$app = $apps->sub_apps()->get( 'admin' );
+		$app = $apps->get_sub_app( 'admin' );
 
 		$this->assertTrue( $app->sub_apps()->is_registered( 'screen' ) );
 	}
