@@ -35,7 +35,7 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 	 */
 	public function test_wordpoints_hooks_api_admin_menu() {
 
-		$this->mock_apps();
+		wordpoints_hooks_register_admin_apps( $this->mock_apps() );
 
 		$this->give_current_user_caps( 'manage_options' );
 
