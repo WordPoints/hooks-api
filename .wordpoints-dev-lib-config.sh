@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then echo 1; else echo 0; fi)
-export WP_CEPT_SERVER='127.0.0.1:8888'
+export DO_WP_CEPT=$(if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then echo 1; else echo 0; fi)
+export WP_CEPT_SERVER='127.0.0.1:8080'
 
 # Codeception requires PHP 5.4+.
 if [[ $TRAVIS_PHP_VERSION == '5.2' || $TRAVIS_PHP_VERSION == '5.3' ]]; then
@@ -22,6 +22,10 @@ wpcept-setup() {
 	composer require --prefer-source codeception/codeception:2.1.4
 	composer require --prefer-source lucatume/wp-browser:1.10.11
 
+	nc -z 127.0.0.1 8080; echo $?
+	nc -z 127.0.0.1 8030; echo $?
+	nc -z 127.0.0.1 8888; echo $?
+
 	# We start the server up early so that it has time to prepare.
 	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" &
 }
@@ -40,7 +44,7 @@ wpcept-run() {
 	# Give PhantomJS time to start.
 	sleep 3
 
-	vendor/bin/wpcept run --debug
+	vendor/bin/wpcept run --debug acceptance points/reaction/update.cept
 
 	ls "$PROJECT_DIR"/../tests/codeception/_output/
 	ls /tmp/wordpress/src/
