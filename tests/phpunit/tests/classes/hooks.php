@@ -410,14 +410,15 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$hooks = wordpoints_hooks();
 
 		// The reactors should have been hit.
-		$reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
+		$reactors = $hooks->get_sub_app( 'reactors' );
+		$reactor  = $reactors->get( 'test_reactor' );
 
 		$this->assertCount( 2, $reactor->hits );
 
 		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ) );
 		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ) );
 
-		$reactor = $hooks->get_sub_app( 'reactors' )->get( 'another' );
+		$reactor = $reactors->get( 'another' );
 
 		$this->assertCount( 1, $reactor->hits );
 

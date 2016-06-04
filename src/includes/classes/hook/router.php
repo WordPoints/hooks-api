@@ -58,6 +58,15 @@ class WordPoints_Hook_Router {
 	protected $events;
 
 	/**
+	 * The event args registry object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var WordPoints_Class_Registry_ChildrenI
+	 */
+	protected $event_args;
+
+	/**
 	 * The actions, indexed by WordPress action/filter hooks.
 	 *
 	 * The indexes are of this format: "$action_or_filter_name,$priority".
@@ -120,6 +129,7 @@ class WordPoints_Hook_Router {
 			$this->hooks   = $hooks;
 			$this->events  = $hooks->get_sub_app( 'events' );
 			$this->actions = $hooks->get_sub_app( 'actions' );
+			$this->event_args = $this->events->get_sub_app( 'args' );
 		}
 
 		foreach ( $this->action_index[ $name ]['actions'] as $slug => $data ) {
@@ -145,7 +155,7 @@ class WordPoints_Hook_Router {
 						continue;
 					}
 
-					$event_args = $this->events->get_sub_app( 'args' )->get_children( $event_slug, array( $action_object ) );
+					$event_args = $this->event_args->get_children( $event_slug, array( $action_object ) );
 
 					if ( empty( $event_args ) ) {
 						continue;

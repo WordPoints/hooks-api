@@ -411,14 +411,15 @@ class WordPoints_Hook_Event_Args_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 		);
 
 		$entities = wordpoints_entities();
+		$children = $entities->get_sub_app( 'children' );
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test'
 			, 'child_2'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'

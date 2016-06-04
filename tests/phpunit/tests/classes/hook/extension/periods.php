@@ -433,13 +433,14 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
-		$this->assertCount( 1, $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' )->hits );
+		$reactors = $hooks->get_sub_app( 'reactors' );
+		$this->assertCount( 1, $reactors->get( 'test_reactor' )->hits );
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
-		$this->assertCount( 1, $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' )->hits );
+		$this->assertCount( 1, $reactors->get( 'test_reactor' )->hits );
 	}
 
 	/**
@@ -686,7 +687,8 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
+		$reactors     = $hooks->get_sub_app( 'reactors' );
+		$test_reactor = $reactors->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -707,7 +709,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$other_reactor = $hooks->get_sub_app( 'reactors' )->get( 'another_reactor' );
+		$other_reactor = $reactors->get( 'another_reactor' );
 
 		$this->assertCount( 1, $other_reactor->hits );
 	}

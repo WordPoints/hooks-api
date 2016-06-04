@@ -123,15 +123,13 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			)
 		);
 
-		$hooks = wordpoints_hooks();
+		$args = wordpoints_hooks()->get_sub_app( 'events' )->get_sub_app( 'args' );
 
-		$this->assertTrue(
-			$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->is_registered( 'test_event', 'test_arg' )
-		);
+		$this->assertTrue( $args->is_registered( 'test_event', 'test_arg' ) );
 
 		$this->assertInstanceOf(
 			'WordPoints_PHPUnit_Mock_Hook_Arg'
-			, $hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get( 'test_event', 'test_arg' )
+			, $args->get( 'test_event', 'test_arg' )
 		);
 	}
 
@@ -150,24 +148,21 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			)
 		);
 
-		$hooks = wordpoints_hooks();
+		$events = wordpoints_hooks()->get_sub_app( 'events' );
+		$args   = $events->get_sub_app( 'args' );
 
-		$this->assertTrue(
-			$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->is_registered( 'test_event', 'test_arg' )
-		);
+		$this->assertTrue( $args->is_registered( 'test_event', 'test_arg' ) );
 
 		$this->assertInstanceOf(
 			'WordPoints_PHPUnit_Mock_Hook_Arg'
-			, $hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get( 'test_event', 'test_arg' )
+			, $args->get( 'test_event', 'test_arg' )
 		);
 
-		$hooks->get_sub_app( 'events' )->deregister( 'test_event' );
+		$events->deregister( 'test_event' );
 
-		$this->assertFalse(
-			$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->is_registered( 'test_event', 'test_arg' )
-		);
+		$this->assertFalse( $args->is_registered( 'test_event', 'test_arg' ) );
 
-		$this->assertFalse( $hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get( 'test_event', 'test_arg' ) );
+		$this->assertFalse( $args->get( 'test_event', 'test_arg' ) );
 	}
 
 	/**
@@ -177,18 +172,16 @@ class WordPoints_Hook_Events_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 	 */
 	public function test_deregister_unregistered() {
 
-		/** @var WordPoints_Hooks $hooks */
-		$hooks = $this->mock_apps()->get_sub_app( 'hooks' );
+		$this->mock_apps();
 
-		$this->assertFalse(
-			$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->is_registered( 'test_event', 'test_arg' )
-		);
+		$events = wordpoints_hooks()->get_sub_app( 'events' );
+		$args   = $events->get_sub_app( 'args' );
 
-		$hooks->get_sub_app( 'events' )->deregister( 'test_event' );
+		$this->assertFalse( $args->is_registered( 'test_event', 'test_arg' ) );
 
-		$this->assertFalse(
-			$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->is_registered( 'test_event', 'test_arg' )
-		);
+		$events->deregister( 'test_event' );
+
+		$this->assertFalse( $args->is_registered( 'test_event', 'test_arg' ) );
 	}
 }
 

@@ -45,7 +45,8 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction_Store extends WP_UnitTest_Fac
 		$slug = $args['slug'];
 		$class = $args['class'];
 
-		wordpoints_entities()->get_sub_app( 'contexts' )->register(
+		$contexts = wordpoints_entities()->get_sub_app( 'contexts' );
+		$contexts->register(
 			'test_context'
 			, 'WordPoints_PHPUnit_Mock_Entity_Context'
 		);
@@ -61,7 +62,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction_Store extends WP_UnitTest_Fac
 
 		// Make sure that contexts are registered, as they are needed when checking
 		// whether a reaction store should be made available.
-		wordpoints_entity_contexts_init( wordpoints_entities()->get_sub_app( 'contexts' ) );
+		wordpoints_entity_contexts_init( $contexts );
 
 		return $slug;
 	}

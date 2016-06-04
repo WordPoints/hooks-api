@@ -333,7 +333,7 @@ function wordpoints_entities_app_init( $entities ) {
  *
  * @WordPress\action wordpoints_init_app_registry-entities-contexts
  *
- * @param WordPoints_Class_Registry $contexts The entity context registry.
+ * @param WordPoints_Class_RegistryI $contexts The entity context registry.
  */
 function wordpoints_entity_contexts_init( $contexts ) {
 

@@ -215,14 +215,15 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 		$this->factory->wordpoints->entity->create();
 
 		$entities = wordpoints_entities();
+		$children = $entities->get_sub_app( 'children' );
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
 		);
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test_entity'
 			, 'relationship'
 			, 'WordPoints_PHPUnit_Mock_Entity_Relationship_Array'
@@ -283,14 +284,15 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 		$this->factory->wordpoints->entity->create();
 
 		$entities = wordpoints_entities();
+		$children = $entities->get_sub_app( 'children' );
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
 		);
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test_entity'
 			, 'relationship'
 			, 'WordPoints_PHPUnit_Mock_Entity_Relationship_Array'

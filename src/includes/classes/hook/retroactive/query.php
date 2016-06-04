@@ -245,13 +245,14 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 
 		$event_slug = $this->reaction->get_event_slug();
 
-		$event = $this->hooks->get_sub_app( 'events' )->get( $event_slug );
+		$events = $this->hooks->get_sub_app( 'events' );
+		$event  = $events->get( $event_slug );
 
 		if ( ! ( $event instanceof WordPoints_Hook_Event_RetroactiveI ) ) {
 			$this->validator->add_error( 'invalid hook' );
 		}
 
-		foreach ( $this->hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get_children( $event_slug ) as $arg ) {
+		foreach ( $events->get_sub_app( 'args' )->get_children( $event_slug ) as $arg ) {
 			$this->arg_hierarchy_push( // TODO
 				$arg
 			);

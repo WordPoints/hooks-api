@@ -165,7 +165,7 @@ class WordPoints_Hook_Extension_Conditions
 			return false;
 		}
 
-		$condition = wordpoints_hooks()->get_sub_app( 'conditions' )->get( $data_type, $settings['type'] );
+		$condition = $this->conditions->get( $data_type, $settings['type'] );
 
 		if ( ! $condition ) {
 

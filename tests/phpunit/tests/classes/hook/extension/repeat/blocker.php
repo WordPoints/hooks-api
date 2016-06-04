@@ -183,13 +183,14 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
+		$extensions = $hooks->get_sub_app( 'extensions' );
 
-		$hooks->get_sub_app( 'extensions' )->register(
+		$extensions->register(
 			'repeat_blocker'
 			, 'WordPoints_Hook_Extension_Repeat_Blocker'
 		);
 
-		$hooks->get_sub_app( 'extensions' )->register(
+		$extensions->register(
 			'test_extension'
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
@@ -208,7 +209,7 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		// The extension should have been checked.
-		$extension = $hooks->get_sub_app( 'extensions' )->get( 'test_extension' );
+		$extension = $extensions->get( 'test_extension' );
 
 		$this->assertCount( 1, $extension->hit_checks );
 		$this->assertCount( 1, $extension->hits );
@@ -368,14 +369,15 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 		$this->mock_apps();
 
 		$this->hooks = wordpoints_hooks();
+		$extensions = $this->hooks->get_sub_app( 'extensions' );
 
-		$this->hooks->get_sub_app( 'extensions' )->register(
+		$extensions->register(
 			'repeat_blocker'
 			,
 			'WordPoints_Hook_Extension_Repeat_Blocker'
 		);
 
-		$this->hooks->get_sub_app( 'extensions' )->register(
+		$extensions->register(
 			'test_extension'
 			,
 			'WordPoints_PHPUnit_Mock_Hook_Extension'
@@ -395,7 +397,7 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 		$this->hooks->fire( 'test_event', $this->event_args, 'test_fire' );
 
 		// The extension should have been checked.
-		$this->extension = $this->hooks->get_sub_app( 'extensions' )->get( 'test_extension' );
+		$this->extension = $extensions->get( 'test_extension' );
 
 		$this->assertCount( 1, $this->extension->hit_checks );
 		$this->assertCount( 1, $this->extension->hits );

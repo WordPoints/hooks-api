@@ -355,15 +355,14 @@ class WordPoints_Entity_Hierarchy_Test extends WordPoints_PHPUnit_TestCase_Hooks
 
 		$this->factory->wordpoints->entity->create( array( 'slug' => 'test' ) );
 
-		$entities = wordpoints_entities();
-
-		$entities->get_sub_app( 'children' )->register(
+		$children = wordpoints_entities()->get_sub_app( 'children' );
+		$children->register(
 			'test'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		$entities->get_sub_app( 'children' )->register(
+		$children->register(
 			'test'
 			, 'child_2'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'

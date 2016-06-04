@@ -146,15 +146,19 @@ final class WordPoints_Hook_Reaction_Validator {
 			$fail_fast = $this->fail_fast;
 			$this->fail_fast = true;
 
+			$events = $this->hooks->get_sub_app( 'events' );
+
 			if ( ! isset( $this->event_slug ) ) {
 				$this->add_error( __( 'Event is missing.', 'wordpoints' ), 'event' );
-			} elseif ( ! $this->hooks->get_sub_app( 'events' )->is_registered( $this->event_slug ) ) {
+			} elseif ( ! $events->is_registered( $this->event_slug ) ) {
 				$this->add_error( __( 'Event is invalid.', 'wordpoints' ), 'event' );
 			}
 
+			$reactors = $this->hooks->get_sub_app( 'reactors' );
+
 			if ( ! isset( $this->reactor_slug ) ) {
 				$this->add_error( __( 'Reactor is missing.', 'wordpoints' ), 'reactor' );
-			} elseif ( ! $this->hooks->get_sub_app( 'reactors' )->is_registered( $this->reactor_slug ) ) {
+			} elseif ( ! $reactors->is_registered( $this->reactor_slug ) ) {
 				$this->add_error( __( 'Reactor is invalid.', 'wordpoints' ), 'reactor' );
 			}
 
@@ -162,14 +166,14 @@ final class WordPoints_Hook_Reaction_Validator {
 			// supposed to fail fast).
 			$this->fail_fast = $fail_fast;
 
-			$event_args = $this->hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get_children(
+			$event_args = $events->get_sub_app( 'args' )->get_children(
 				$this->event_slug
 			);
 
 			$this->event_args = new WordPoints_Hook_Event_Args( $event_args );
 			$this->event_args->set_validator( $this );
 
-			$reactor = $this->hooks->get_sub_app( 'reactors' )->get( $this->reactor_slug );
+			$reactor = $reactors->get( $this->reactor_slug );
 
 			$this->settings = $reactor->validate_settings( $this->settings, $this, $this->event_args );
 
