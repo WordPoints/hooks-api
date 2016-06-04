@@ -89,10 +89,10 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 			}
 		}
 
-		$args = $events->get_sub_app( 'args' );
+		$args_registry = $events->get_sub_app( 'args' );
 
 		foreach ( $args['args'] as $arg_slug => $class ) {
-			$args->register( $slug, $arg_slug, $class );
+			$args_registry->register( $slug, $arg_slug, $class );
 		}
 
 		$events->register( $slug, $class, $args );

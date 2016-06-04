@@ -86,10 +86,10 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 		}
 
 		if ( isset( $args['args'] ) ) {
-			$args = $this->get_sub_app( 'args' );
+			$args_registry = $this->get_sub_app( 'args' );
 
 			foreach ( $args['args'] as $arg_slug => $class ) {
-				$args->register( $slug, $arg_slug, $class );
+				$args_registry->register( $slug, $arg_slug, $class );
 			}
 		}
 
