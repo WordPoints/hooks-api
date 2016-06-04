@@ -127,10 +127,11 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 		$this->assertTrue(
 			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
 		);
-
-		$this->assertTrue( isset( $app->sub ) );
-
-		$this->assertInstanceOf( 'WordPoints_PHPUnit_Mock_Object', $app->sub );
+		
+		$this->assertInstanceOf(
+			'WordPoints_PHPUnit_Mock_Object'
+			, $app->get_sub_app( 'sub' )
+		);
 	}
 
 	/**
@@ -142,8 +143,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 
 		$app = new WordPoints_App( 'test' );
 
-		$this->assertNull( $app->sub );
-		$this->assertFalse( isset( $app->sub ) );
+		$this->assertNull( $app->get_sub_app( 'sub' ) );
 	}
 
 	/**
@@ -165,7 +165,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			$app->sub_apps()->register( 'registry', 'WordPoints_Class_Registry' )
 		);
 
-		$registry = $app->registry;
+		$registry = $app->get_sub_app( 'registry' );
 
 		$this->assertEquals( 1, $mock->call_count );
 
@@ -194,7 +194,7 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			)
 		);
 
-		$registry = $app->registry;
+		$registry = $app->get_sub_app( 'registry' );
 
 		$this->assertEquals( 1, $mock->call_count );
 
@@ -220,11 +220,11 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			$app->sub_apps()->register( 'registry', 'WordPoints_Class_Registry' )
 		);
 
-		$app->registry;
+		$app->get_sub_app( 'registry' );
 
 		$this->assertEquals( 1, $mock->call_count );
 
-		$app->registry;
+		$app->get_sub_app( 'registry' );
 
 		$this->assertEquals( 1, $mock->call_count );
 	}
@@ -248,256 +248,9 @@ class WordPoints_App_Test extends WordPoints_PHPUnit_TestCase {
 			$app->sub_apps()->register( 'registry', 'WordPoints_App' )
 		);
 
-		$app->registry;
+		$app->get_sub_app( 'registry' );
 
 		$this->assertEquals( 0, $mock->call_count );
-	}
-
-	/**
-	 * Test that setting a var is not allowed.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @expectedIncorrectUsage WordPoints_App::__set
-	 */
-	public function test_setting_var_not_allowed() {
-
-		$app = new WordPoints_App( 'test' );
-
-		$app->sub = array();
-
-		$this->assertNull( $app->sub );
-	}
-
-	/**
-	 * Test that overwriting a sub-app is not allowed.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @expectedIncorrectUsage WordPoints_App::__set
-	 */
-	public function test_setting_var_overwrite_not_allowed() {
-
-		$app = new WordPoints_App( 'test' );
-
-		$this->assertTrue(
-			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
-		);
-
-		$app->sub = array();
-
-		$this->assertInstanceOf( 'WordPoints_PHPUnit_Mock_Object', $app->sub );
-	}
-
-	/**
-	 * Test that unsetting a sub-app is not allowed.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @expectedIncorrectUsage WordPoints_App::__unset
-	 */
-	public function test_unsetting_var_not_allowed() {
-
-		$app = new WordPoints_App( 'test' );
-
-		$this->assertTrue(
-			$app->sub_apps()->register( 'sub', 'WordPoints_PHPUnit_Mock_Object' )
-		);
-
-		unset( $app->sub );
-
-		$this->assertInstanceOf( 'WordPoints_PHPUnit_Mock_Object', $app->sub );
-	}
-
-	/**
-	 * Test when first getting a sub-app it is possible to access it in the action.
-	 *
-	 * @since 1.0.0
-	 */
-	public function test_get_registry_sub_app_access_sub_app() {
-
-		$this->mock_apps();
-
-		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
-		$apps = $apps->sub_apps();
-		$apps->register( 'test', 'WordPoints_App' );
-
-		/** @var WordPoints_App $app */
-		$app = $apps->get( 'test' );
-
-		add_action(
-			'wordpoints_init_app_registry-test-registry'
-			, array( $this, 'action_get_sub_app' )
-		);
-
-		$mock = new WordPoints_Mock_Filter;
-
-		add_action(
-			'wordpoints_init_app_registry-test-registry'
-			, array( $mock, 'action' )
-		);
-
-		$sub_apps = $app->sub_apps();
-
-		$this->assertTrue(
-			$sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
-		);
-
-		$registry = $app->registry;
-
-		$this->assertInstanceOf( 'WordPoints_Class_Registry', $registry );
-
-		$this->assertEquals( 1, $mock->call_count );
-
-		$sub_apps->deregister( 'registry' );
-
-		$this->assertNull( $app->registry );
-	}
-
-	/**
-	 * Accesses a sub app.
-	 *
-	 * @since 1.0.0
-	 */
-	public function action_get_sub_app() {
-
-		$app = wordpoints_apps()->test;
-
-		$this->assertInstanceOf( 'WordPoints_Class_Registry', $app->registry );
-	}
-
-	/**
-	 * Test when first getting a sub-app a warning is issued if it is modified during
-	 * the action.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @expectedIncorrectUsage WordPoints_App::__get
-	 */
-	public function test_get_registry_sub_app_modify_sub_app() {
-
-		$this->mock_apps();
-
-		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
-		$apps = $apps->sub_apps();
-		$apps->register( 'test', 'WordPoints_App' );
-
-		/** @var WordPoints_App $app */
-		$app = $apps->get( 'test' );
-
-		add_action(
-			'wordpoints_init_app_registry-test-registry'
-			, array( $this, 'action_modify_sub_app' )
-		);
-
-		$mock = new WordPoints_Mock_Filter;
-
-		add_action(
-			'wordpoints_init_app_registry-test-registry'
-			, array( $mock, 'action' )
-		);
-
-		$sub_apps = $app->sub_apps();
-
-		$this->assertTrue(
-			$sub_apps->register( 'registry', 'WordPoints_Class_Registry' )
-		);
-
-		$registry = $app->registry;
-
-		$this->assertInstanceOf( 'WordPoints_Class_Registry', $registry );
-
-		$this->assertEquals( 1, $mock->call_count );
-
-		$sub_apps->deregister( 'registry' );
-
-		$this->assertNull( $app->registry );
-	}
-
-	/**
-	 * Modifies a sub app.
-	 *
-	 * @since 1.0.0
-	 */
-	public function action_modify_sub_app() {
-
-		$app = wordpoints_apps()->test;
-
-		$this->assertInstanceOf( 'WordPoints_Class_Registry', $app->registry );
-
-		$app->registry = 'a';
-
-		$this->assertEquals( 'a', $app->registry );
-	}
-
-	/**
-	 * Test when some sub-app shares the name of a protected property.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @expectedIncorrectUsage WordPoints_App::__set
-	 */
-	public function test_get_registry_sub_app_access_restricted_property() {
-
-		if ( defined( 'HHVM_VERSION' ) ) {
-			$this->markTestSkipped( 'Attempting to set a hidden property causes a fatal error on HHVM' );
-		} else {
-			$this->setExpectedException(
-				'PHPUnit_Framework_Error_Notice'
-				, 'Undefined property: WordPoints_App::$parent'
-			);
-		}
-
-		$this->mock_apps();
-
-		$apps = WordPoints_App::$main = new WordPoints_App( 'apps' );
-		$apps = $apps->sub_apps();
-		$apps->register( 'test', 'WordPoints_App' );
-
-		/** @var WordPoints_App $app */
-		$app = $apps->get( 'test' );
-
-		add_action(
-			'wordpoints_init_app_registry-test-parent'
-			, array( $this, 'action_access_protected_sub_app' )
-		);
-
-		$mock = new WordPoints_Mock_Filter;
-
-		add_action(
-			'wordpoints_init_app_registry-test-parent'
-			, array( $mock, 'action' )
-		);
-
-		$sub_apps = $app->sub_apps();
-
-		$this->assertTrue(
-			$sub_apps->register( 'parent', 'WordPoints_Class_Registry' )
-		);
-
-		$registry = $app->parent;
-
-		$this->assertInstanceOf( 'WordPoints_Class_Registry', $registry );
-
-		$this->assertEquals( 1, $mock->call_count );
-
-		$sub_apps->deregister( 'parent' );
-
-		$this->assertNull( $app->parent );
-	}
-
-	/**
-	 * Accesses a sub app that is also a declared protected class property.
-	 *
-	 * @since 1.0.0
-	 */
-	public function action_access_protected_sub_app() {
-
-		$app = wordpoints_apps()->test;
-		// Attempt to modify it.
-		$app->parent = 'a';
-
-		$this->assertNull( $app->parent );
 	}
 }
 

@@ -223,7 +223,7 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->mock_apps();
 
-		$events = wordpoints_hooks()->events;
+		$events = wordpoints_hooks()->get_sub_app( 'events' );
 
 		$filter = 'wordpoints_register_hook_events_for_post_types';
 		$this->listen_for_filter( $filter );
@@ -326,14 +326,14 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	protected function assert_registered( $event_slug, $arg_slugs = array() ) {
 
-		$events = wordpoints_hooks()->events;
+		$events = wordpoints_hooks()->get_sub_app( 'events' );
 
 		$this->assertTrue( $events->is_registered( $event_slug ) );
 
 		foreach ( (array) $arg_slugs as $slug ) {
 
 			$this->assertTrue(
-				$events->args->is_registered( $event_slug, $slug )
+				$events->get_sub_app( 'args' )->is_registered( $event_slug, $slug )
 				, "The {$slug} arg must be registered for the {$event_slug} event."
 			);
 		}
@@ -350,14 +350,14 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 	 */
 	protected function assert_not_registered( $event_slug, $arg_slugs = array() ) {
 
-		$events = wordpoints_hooks()->events;
+		$events = wordpoints_hooks()->get_sub_app( 'events' );
 
 		$this->assertFalse( $events->is_registered( $event_slug ) );
 
 		foreach ( (array) $arg_slugs as $slug ) {
 
 			$this->assertFalse(
-				$events->args->is_registered( $event_slug, $slug )
+				$events->get_sub_app( 'args' )->is_registered( $event_slug, $slug )
 				, "The {$slug} arg must not be registered for the {$event_slug} event."
 			);
 		}

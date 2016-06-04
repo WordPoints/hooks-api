@@ -48,7 +48,7 @@ class WordPoints_Functions_Register_Post_Type_Entities_Test extends WordPoints_P
 		$this->assertEquals( array( 'test' ), $mock->calls[0] );
 
 		$entities = wordpoints_entities();
-		$children = $entities->children;
+		$children = $entities->get_sub_app( 'children' );
 
 		$this->assertTrue( $entities->is_registered( 'post\test' ) );
 		$this->assertTrue( $children->is_registered( 'post\test', 'author' ) );
@@ -70,7 +70,7 @@ class WordPoints_Functions_Register_Post_Type_Entities_Test extends WordPoints_P
 		wordpoints_register_post_type_entities( 'test' );
 
 		$entities = wordpoints_entities();
-		$children = $entities->children;
+		$children = $entities->get_sub_app( 'children' );
 
 		$this->assertFalse( $children->is_registered( 'post\test', 'content' ) );
 
@@ -97,7 +97,7 @@ class WordPoints_Functions_Register_Post_Type_Entities_Test extends WordPoints_P
 		wordpoints_register_post_type_entities( 'test' );
 
 		$entities = wordpoints_entities();
-		$children = $entities->children;
+		$children = $entities->get_sub_app( 'children' );
 
 		$this->assertFalse( $entities->is_registered( 'comment\test' ) );
 		$this->assertFalse( $children->is_registered( 'comment\test', 'post\test' ) );
@@ -128,7 +128,7 @@ class WordPoints_Functions_Register_Post_Type_Entities_Test extends WordPoints_P
 		wordpoints_register_post_type_entities( 'test' );
 
 		$entities = wordpoints_entities();
-		$children = $entities->children;
+		$children = $entities->get_sub_app( 'children' );
 
 		$this->assertFalse( $children->is_registered( 'post\test', 'terms\post_tag' ) );
 

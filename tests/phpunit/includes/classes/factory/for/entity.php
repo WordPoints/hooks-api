@@ -43,7 +43,7 @@ class WordPoints_PHPUnit_Factory_For_Entity extends WP_UnitTest_Factory_For_Thin
 		$entities = wordpoints_entities();
 
 		if ( $args === $this->default_generation_definitions ) {
-			$entities->contexts->register(
+			$entities->get_sub_app( 'contexts' )->register(
 				'test_context'
 				, 'WordPoints_PHPUnit_Mock_Entity_Context'
 			);

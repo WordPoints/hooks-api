@@ -29,7 +29,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->mock_apps();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -111,7 +111,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 			),
 		);
 
-		$extension = wordpoints_hooks()->extensions->get( 'conditions' );
+		$extension = wordpoints_hooks()->get_sub_app( 'extensions' )->get( 'conditions' );
 
 		$validator = new WordPoints_Hook_Reaction_Validator( array() );
 		$event_args = new WordPoints_Hook_Event_Args( array() );
@@ -141,7 +141,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->mock_apps();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
@@ -197,11 +197,11 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->mock_apps();
 
-		$extensions = wordpoints_hooks()->extensions;
+		$extensions = wordpoints_hooks()->get_sub_app( 'extensions' );
 		$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
 		$extension = $extensions->get( 'conditions' );
 
-		wordpoints_hooks()->events->args->register(
+		wordpoints_hooks()->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -209,7 +209,7 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$entities = wordpoints_entities();
 		$entities->register( 'another', 'WordPoints_PHPUnit_Mock_Entity' );
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -256,11 +256,11 @@ class WordPoints_Hook_Extension_Conditions_Test extends WordPoints_PHPUnit_TestC
 
 		$this->mock_apps();
 
-		$extensions = wordpoints_hooks()->extensions;
+		$extensions = wordpoints_hooks()->get_sub_app( 'extensions' );
 		$extensions->register( 'conditions', 'WordPoints_Hook_Extension_Conditions' );
 		$extension = $extensions->get( 'conditions' );
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'

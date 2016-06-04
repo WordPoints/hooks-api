@@ -87,7 +87,7 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertEquals( 1, $this->filter_was_called( $filter ) );
 		$this->assertEquals( 1, $this->filter_was_called( $filter_2 ) );
 
-		$children = $entities->children;
+		$children = $entities->get_sub_app( 'children' );
 
 		$this->assertTrue( $entities->is_registered( 'post\post' ) );
 		$this->assertTrue( $children->is_registered( 'post\post', 'content' ) );
@@ -150,7 +150,7 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->assertEquals( array( 'post_tag' ), $mock->calls[0] );
 
 		$entities = wordpoints_entities();
-		$children = $entities->children;
+		$children = $entities->get_sub_app( 'children' );
 
 		$this->assertTrue( $entities->is_registered( 'term\post_tag' ) );
 		$this->assertTrue( $children->is_registered( 'term\post_tag', 'id' ) );
@@ -328,7 +328,7 @@ class WordPoints_Entities_Functions_Test extends WordPoints_PHPUnit_TestCase_Hoo
 		$this->mock_apps();
 
 		$entities = wordpoints_entities();
-		$contexts = $entities->contexts;
+		$contexts = $entities->get_sub_app( 'contexts' );
 
 		wordpoints_entity_contexts_init( $contexts );
 

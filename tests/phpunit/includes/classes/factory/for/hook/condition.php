@@ -45,7 +45,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Condition extends WP_UnitTest_Factory_
 			$args['class'] = 'WordPoints_PHPUnit_Mock_Hook_Condition_Unmet';
 		}
 
-		$conditions = wordpoints_hooks()->conditions;
+		$conditions = wordpoints_hooks()->get_sub_app( 'conditions' );
 		$conditions->register( $args['data_type'], $args['slug'], $args['class'] );
 		return $conditions->get( $args['data_type'], $args['slug'] );
 	}

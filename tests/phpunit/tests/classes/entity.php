@@ -324,7 +324,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
@@ -359,7 +359,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
@@ -385,7 +385,7 @@ class WordPoints_Entity_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$entity = $this->factory->wordpoints->entity->create_and_get();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity'

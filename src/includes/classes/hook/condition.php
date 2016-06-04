@@ -37,7 +37,7 @@ abstract class WordPoints_Hook_Condition implements WordPoints_Hook_ConditionI {
 
 		} elseif ( $arg instanceof WordPoints_Entity_Attr ) {
 
-			$data_types = wordpoints_apps()->data_types;
+			$data_types = wordpoints_apps()->get_sub_app( 'data_types' );
 
 			$data_type = $data_types->get( $arg->get_data_type() );
 

@@ -358,7 +358,7 @@ class WordPoints_Hook_Reaction_Store_Test extends WordPoints_PHPUnit_TestCase_Ho
 
 		$this->assertIsReaction( $reaction );
 
-		$extensions = wordpoints_hooks()->extensions;
+		$extensions = wordpoints_hooks()->get_sub_app( 'extensions' );
 		$extensions->register(
 			'test_extension'
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'

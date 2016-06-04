@@ -32,13 +32,13 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		$entities = wordpoints_entities();
 
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
 		);
 
-		wordpoints_hooks()->extensions->register(
+		wordpoints_hooks()->get_sub_app( 'extensions' )->register(
 			'conditions'
 			, 'WordPoints_Hook_Extension_Conditions'
 		);
@@ -120,13 +120,13 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		$entities = wordpoints_entities();
 
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
 		);
 
-		wordpoints_hooks()->extensions->register(
+		wordpoints_hooks()->get_sub_app( 'extensions' )->register(
 			'conditions'
 			, 'WordPoints_Hook_Extension_Conditions'
 		);
@@ -216,19 +216,19 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		$entities = wordpoints_entities();
 
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
 		);
 
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'relationship'
 			, 'WordPoints_PHPUnit_Mock_Entity_Relationship_Array'
 		);
 
-		wordpoints_hooks()->extensions->register(
+		wordpoints_hooks()->get_sub_app( 'extensions' )->register(
 			'conditions'
 			, 'WordPoints_Hook_Extension_Conditions'
 		);
@@ -284,19 +284,19 @@ class WordPoints_Hook_Condition_Entity_Array_Contains_Test
 
 		$entities = wordpoints_entities();
 
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
 		);
 
-		$entities->children->register(
+		$entities->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'relationship'
 			, 'WordPoints_PHPUnit_Mock_Entity_Relationship_Array'
 		);
 
-		wordpoints_hooks()->extensions->register(
+		wordpoints_hooks()->get_sub_app( 'extensions' )->register(
 			'conditions'
 			, 'WordPoints_Hook_Extension_Conditions'
 		);

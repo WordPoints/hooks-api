@@ -40,7 +40,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 			WordPoints_PHPUnit_TestCase::mock_apps();
 		}
 
-		$reactors = wordpoints_hooks()->reactors;
+		$reactors = wordpoints_hooks()->get_sub_app( 'reactors' );
 
 		$slug = $args['slug'];
 		$class = $args['class'];
@@ -51,7 +51,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 
 		// Make sure that contexts are registered, as they are needed when checking
 		// whether a reaction store should be made available.
-		wordpoints_entity_contexts_init( wordpoints_entities()->contexts );
+		wordpoints_entity_contexts_init( wordpoints_entities()->get_sub_app( 'contexts' ) );
 
 		return $slug;
 	}
@@ -67,7 +67,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reactor extends WP_UnitTest_Factory_Fo
 	 * @since 1.0.0
 	 */
 	public function get_object_by_id( $object_id ) {
-		return wordpoints_hooks()->reactors->get( $object_id );
+		return wordpoints_hooks()->get_sub_app( 'reactors' )->get( $object_id );
 	}
 }
 

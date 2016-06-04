@@ -147,7 +147,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		do_action( __CLASS__, 1, 2, 3 );
 
-		$reactor = wordpoints_hooks()->reactors->get( 'test_reactor' );
+		$reactor = wordpoints_hooks()->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $reactor->hits );
 	}
@@ -251,7 +251,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		/** @var WordPoints_PHPUnit_Mock_Hooks $hooks */
 		$hooks = wordpoints_hooks();
 
-		$hooks->router->add_event_to_action( 'test_event', 'test_action' );
+		$hooks->get_sub_app( 'router' )->add_event_to_action( 'test_event', 'test_action' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 
@@ -281,7 +281,7 @@ class WordPoints_Hook_Router_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$hooks = wordpoints_hooks();
 
 		// Deregister the arg.
-		$hooks->events->args->deregister_children( 'test_event' );
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->deregister_children( 'test_event' );
 
 		do_action( __CLASS__, 1, 2, 3 );
 

@@ -18,14 +18,8 @@
  * "miss" the target entity.
  *
  * @since 1.0.0
- *
- * @property-read WordPoints_Hook_Router               $router     The hook action router.
- * @property-read WordPoints_Hook_Actions              $actions    The actions registry.
- * @property-read WordPoints_Hook_Events               $events     The events registry.
- * @property-read WordPoints_Class_Registry_Persistent $reactors   The reactors registry.
- * @property-read WordPoints_Class_Registry_Children   $reaction_stores The reaction stores registry.
- * @property-read WordPoints_Class_Registry_Persistent $extensions The extensions registry.
- * @property-read WordPoints_Class_Registry_Children   $conditions The conditions registry.
+ *        
+ * @method null|object|WordPoints_Hook_Router|WordPoints_Hook_Actions|WordPoints_Hook_Events|WordPoints_Class_Registry_ChildrenI|WordPoints_Class_Registry|WordPoints_App get_sub_app( $slug )
  */
 class WordPoints_Hooks extends WordPoints_App {
 
@@ -109,7 +103,7 @@ class WordPoints_Hooks extends WordPoints_App {
 	 */
 	public function get_reaction_store( $slug ) {
 
-		$reaction_store = $this->reaction_stores->get(
+		$reaction_store = $this->get_sub_app( 'reaction_stores' )->get(
 			$this->get_current_mode()
 			, $slug
 		);
@@ -142,7 +136,7 @@ class WordPoints_Hooks extends WordPoints_App {
 		$action_type
 	) {
 
-		foreach ( $this->reaction_stores->get_all() as $reaction_stores ) {
+		foreach ( $this->get_sub_app( 'reaction_stores' )->get_all() as $reaction_stores ) {
 			foreach ( $reaction_stores as $reaction_store ) {
 
 				if ( ! $reaction_store instanceof WordPoints_Hook_Reaction_StoreI ) {
@@ -178,7 +172,7 @@ class WordPoints_Hooks extends WordPoints_App {
 	protected function fire_reaction( $fire ) {
 
 		/** @var WordPoints_Hook_ReactorI $reactor */
-		$reactor = $this->reactors->get( $fire->reaction->get_reactor_slug() );
+		$reactor = $this->get_sub_app( 'reactors' )->get( $fire->reaction->get_reactor_slug() );
 
 		if ( ! in_array( $fire->action_type, $reactor->get_action_types(), true ) ) {
 			return;
@@ -194,7 +188,7 @@ class WordPoints_Hooks extends WordPoints_App {
 		unset( $validator );
 
 		/** @var WordPoints_Hook_ExtensionI[] $extensions */
-		$extensions = $this->extensions->get_all();
+		$extensions = $this->get_sub_app( 'extensions' )->get_all();
 
 		foreach ( $extensions as $extension ) {
 			if ( ! $extension->should_hit( $fire ) ) {

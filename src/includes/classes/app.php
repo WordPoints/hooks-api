@@ -16,8 +16,6 @@
  * can be any sort of object.
  *
  * @since 1.0.0
- *
- * @property-read object $* Child app objects.
  */
 class WordPoints_App {
 
@@ -115,44 +113,29 @@ class WordPoints_App {
 	}
 
 	/**
+	 * Get a sub app.
+	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug of the sub-app to get.
+	 *
+	 * @return null|object|WordPoints_App|WordPoints_Class_RegistryI|WordPoints_Class_Registry_ChildrenI The sub app, or null if not found.
 	 */
-	public function __isset( $var ) {
-		return $this->sub_apps->is_registered( $var );
-	}
+	public function get_sub_app( $slug ) {
 
-	/**
-	 * @since 1.0.0
-	 */
-	public function __get( $var ) {
+		$sub_app = $this->sub_apps->get( $slug, array( $this ) );
 
-
-		$sub = $this->sub_apps->get( $var, array( $this ) );
-
-		if ( ! $sub ) {
+		if ( ! $sub_app ) {
 			return null;
 		}
 
 		if (
-			empty( $this->did_init[ $var ] )
+			empty( $this->did_init[ $slug ] )
 			&& ! self::$main->silent
-			&& $this->should_do_registry_init( $sub )
+			&& $this->should_do_registry_init( $sub_app )
 		) {
 
-			$is_protected_property = array_key_exists( $var, get_object_vars( $this ) );
-
-			// When the below action is called it is possible that some hooked code
-			// may attempt to access the property that is being initialized. However,
-			// the __get() function will not be called recursively, meaning that
-			// instead of the true value the code will get null. To solve this, we
-			// temporarily set this as a public property. However, we can't do this
-			// for properties that the class has declared, because otherwise it would
-			// be possible to modify and then unset protected class properties.
-			if ( ! $is_protected_property ) {
-				$this->allow_set = true;
-				$this->$var = $sub;
-				$this->allow_set = false;
-			}
+			$this->did_init[ $slug ] = true;
 
 			/**
 			 * Initialization of an app registry.
@@ -164,60 +147,10 @@ class WordPoints_App {
 			 * @param WordPoints_Class_RegistryI|WordPoints_Class_Registry_ChildrenI
 			 *        $registry The registry object.
 			 */
-			do_action( "wordpoints_init_app_registry-{$this->full_slug}-{$var}", $sub );
-
-			// Because this property was public, it's possible that it might have
-			// been modified inadvertently. If this happens we give a warning.
-			if ( $sub !== $this->$var ) {
-				_doing_it_wrong(
-					__METHOD__
-					, esc_html( "Do not modify the {$var} property directly." )
-					, '1.0.0'
-				);
-			}
-
-			if ( ! $is_protected_property ) {
-				$this->allow_set = true;
-				unset( $this->$var );
-				$this->allow_set = false;
-			}
-
-			$this->did_init[ $var ] = true;
+			do_action( "wordpoints_init_app_registry-{$this->full_slug}-{$slug}", $sub_app );
 		}
 
-		return $sub;
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function __set( $var, $value ) {
-
-		if ( $this->allow_set ) {
-			$this->$var = $value;
-		} else {
-			_doing_it_wrong(
-				__METHOD__
-				, 'Sub apps must be registered using $app->sub_apps()->register().'
-				, '1.0.0'
-			);
-		}
-	}
-
-	/**
-	 * @since 1.0.0
-	 */
-	public function __unset( $var ) {
-
-		if ( $this->allow_set ) {
-			unset( $this->$var );
-		} else {
-			_doing_it_wrong(
-				__METHOD__
-				, 'Sub apps must be deregistered using $app->sub_apps()->deregister().'
-				, '1.0.0'
-			);
-		}
+		return $sub_app;
 	}
 
 	/**

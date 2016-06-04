@@ -43,13 +43,13 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 
 		$hooks = new WordPoints_Hooks( 'hooks' );
 
-		$this->assertInstanceOf( 'WordPoints_Hook_Router', $hooks->router );
-		$this->assertInstanceOf( 'WordPoints_Hook_Actions', $hooks->actions );
-		$this->assertInstanceOf( 'WordPoints_Hook_Events', $hooks->events );
-		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->reactors );
-		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->reaction_stores );
-		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->extensions );
-		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->conditions );
+		$this->assertInstanceOf( 'WordPoints_Hook_Router', $hooks->get_sub_app( 'router' ) );
+		$this->assertInstanceOf( 'WordPoints_Hook_Actions', $hooks->get_sub_app( 'actions' ) );
+		$this->assertInstanceOf( 'WordPoints_Hook_Events', $hooks->get_sub_app( 'events' ) );
+		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->get_sub_app( 'reactors' ) );
+		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->get_sub_app( 'reaction_stores' ) );
+		$this->assertInstanceOf( 'WordPoints_Class_Registry_Persistent', $hooks->get_sub_app( 'extensions' ) );
+		$this->assertInstanceOf( 'WordPoints_Class_Registry_Children', $hooks->get_sub_app( 'conditions' ) );
 	}
 
 	/**
@@ -142,7 +142,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			)
 		);
 
-		wordpoints_entities()->contexts->register(
+		wordpoints_entities()->get_sub_app( 'contexts' )->register(
 			'test_context'
 			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
 		);
@@ -238,7 +238,7 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 			array( 'reactor' => 'another' )
 		);
 
-		wordpoints_entities()->contexts->register(
+		wordpoints_entities()->get_sub_app( 'contexts' )->register(
 			'test_context'
 			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
 		);
@@ -410,14 +410,14 @@ class WordPoints_Hooks_Test extends WordPoints_PHPUnit_TestCase_Hooks {
 		$hooks = wordpoints_hooks();
 
 		// The reactors should have been hit.
-		$reactor = $hooks->reactors->get( 'test_reactor' );
+		$reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 2, $reactor->hits );
 
 		$this->assertHitsLogged( array( 'reaction_id' => $reactions[0]->get_id() ) );
 		$this->assertHitsLogged( array( 'reaction_id' => $reactions[1]->get_id() ) );
 
-		$reactor = $hooks->reactors->get( 'another' );
+		$reactor = $hooks->get_sub_app( 'reactors' )->get( 'another' );
 
 		$this->assertCount( 1, $reactor->hits );
 

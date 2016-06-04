@@ -214,7 +214,7 @@ class WordPoints_Entity_Change_Listener_Points implements WordPoints_Entity_Chan
 		$settings = $this->get_settings_for_entity( $before );
 
 		/** @var WordPoints_Class_Registry_ChildrenI $children */
-		$children = wordpoints_entities()->children;
+		$children = wordpoints_entities()->get_sub_app( 'children' );
 		foreach ( $children->get_children_slugs( $before->get_slug() ) as $child_slug ) {
 			
 			if ( ! isset( $settings['children'][ $child_slug ] ) ) {

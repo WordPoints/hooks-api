@@ -47,7 +47,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Action extends WP_UnitTest_Factory_For
 
 		unset( $args['slug'], $args['class'] );
 
-		wordpoints_hooks()->actions->register( $slug, $class, $args );
+		wordpoints_hooks()->get_sub_app( 'actions' )->register( $slug, $class, $args );
 
 		return $slug;
 	}
@@ -63,7 +63,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Action extends WP_UnitTest_Factory_For
 	 * @since 1.0.0
 	 */
 	public function get_object_by_id( $object_id ) {
-		return wordpoints_hooks()->actions->get( $object_id );
+		return wordpoints_hooks()->get_sub_app( 'actions' )->get( $object_id );
 	}
 }
 

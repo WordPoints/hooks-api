@@ -65,7 +65,7 @@ class WordPoints_Hooks_Get_Event_Primary_Arg_GUID_JSON_Function_Test
 
 		$entity_slug = $this->factory->wordpoints->entity->create();
 
-		wordpoints_entities()->contexts->register(
+		wordpoints_entities()->get_sub_app( 'contexts' )->register(
 			'test_context'
 			, 'WordPoints_PHPUnit_Mock_Entity_Context_OutOfState'
 		);

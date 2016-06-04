@@ -316,7 +316,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 		);
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'test_extension'
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
@@ -334,7 +334,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 		$this->assertInstanceOf( 'WordPoints_Hook_Event_Args', $event_args );
 
 		/** @var WordPoints_PHPUnit_Mock_Hook_Extension $extension */
-		$extension = $hooks->extensions->get( 'test_extension' );
+		$extension = $hooks->get_sub_app( 'extensions' )->get( 'test_extension' );
 
 		$this->assertCount( 1, $extension->validations );
 
@@ -380,7 +380,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 		);
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'test_extension'
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
@@ -402,7 +402,7 @@ class WordPoints_Hook_Reaction_Validator_Test extends WordPoints_PHPUnit_TestCas
 		$this->assertInstanceOf( 'WordPoints_Hook_Event_Args', $event_args );
 
 		/** @var WordPoints_PHPUnit_Mock_Hook_Extension $extension */
-		$extension = $hooks->extensions->get( 'test_extension' );
+		$extension = $hooks->get_sub_app( 'extensions' )->get( 'test_extension' );
 
 		$this->assertEquals(
 			array(

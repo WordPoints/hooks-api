@@ -40,7 +40,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Extension extends WP_UnitTest_Factory_
 			WordPoints_PHPUnit_TestCase::mock_apps();
 		}
 
-		$extensions = wordpoints_hooks()->extensions;
+		$extensions = wordpoints_hooks()->get_sub_app( 'extensions' );
 
 		$slug = $args['slug'];
 		$class = $args['class'];
@@ -63,7 +63,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Extension extends WP_UnitTest_Factory_
 	 * @since 1.0.0
 	 */
 	public function get_object_by_id( $object_id ) {
-		return wordpoints_hooks()->extensions->get( $object_id );
+		return wordpoints_hooks()->get_sub_app( 'extensions' )->get( $object_id );
 	}
 }
 

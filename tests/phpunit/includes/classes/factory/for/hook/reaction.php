@@ -45,7 +45,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 		}
 
 		$hooks    = wordpoints_hooks();
-		$reactors = $hooks->reactors;
+		$reactors = $hooks->get_sub_app( 'reactors' );
 
 		if ( ! $reactors->is_registered( $args['reactor'] ) ) {
 			$this->factory->hook_reactor->create(
@@ -53,7 +53,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Reaction extends WP_UnitTest_Factory_F
 			);
 		}
 
-		if ( ! $hooks->events->is_registered( $args['event'] ) ) {
+		if ( ! $hooks->get_sub_app( 'events' )->is_registered( $args['event'] ) ) {
 
 			if ( 'test_event' === $args['event'] || 'another' === $args['event'] ) {
 				$this->factory->hook_event->create( array( 'slug' => $args['event'] ) );

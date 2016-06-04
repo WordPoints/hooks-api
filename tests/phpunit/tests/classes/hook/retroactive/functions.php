@@ -136,7 +136,7 @@ class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_PHPUnit_Test
 		$hooks = wordpoints_hooks();
 
 		/** @var WordPoints_Hook_Reactor_Points $points_target */
-		$points_target = $hooks->reactors->get( 'points' );
+		$points_target = $hooks->get_sub_app( 'reactors' )->get( 'points' );
 		$instance      = $points_target->reactions->create_reaction(
 			array(
 				'event'       => 'post_publish',
@@ -163,7 +163,7 @@ class WordPoints_Hook_Retroactive_Functions_Test extends WordPoints_PHPUnit_Test
 			$this->fail();
 		}
 
-		$hook = $hooks->events->get( 'post_publish' );
+		$hook = $hooks->get_sub_app( 'events' )->get( 'post_publish' );
 
 		foreach ( $results as $target => $result ) {
 			$points_target->retroactive_hit( $target, $result, $hook, $instance );

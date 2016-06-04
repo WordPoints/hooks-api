@@ -41,7 +41,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 		}
 
 		$hooks  = wordpoints_hooks();
-		$events = $hooks->events;
+		$events = $hooks->get_sub_app( 'events' );
 
 		$slug = $args['slug'];
 		$class = $args['class'];
@@ -55,7 +55,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 			);
 		}
 
-		$actions = $hooks->actions;
+		$actions = $hooks->get_sub_app( 'actions' );
 
 		if ( ! $actions->is_registered( $args['actions']['fire'] ) ) {
 
@@ -90,7 +90,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 		}
 
 		foreach ( $args['args'] as $arg_slug => $class ) {
-			$events->args->register( $slug, $arg_slug, $class );
+			$events->get_sub_app( 'args' )->register( $slug, $arg_slug, $class );
 		}
 
 		$events->register( $slug, $class, $args );
@@ -109,7 +109,7 @@ class WordPoints_PHPUnit_Factory_For_Hook_Event extends WP_UnitTest_Factory_For_
 	 * @since 1.0.0
 	 */
 	public function get_object_by_id( $object_id ) {
-		return wordpoints_hooks()->events->get( $object_id );
+		return wordpoints_hooks()->get_sub_app( 'events' )->get( $object_id );
 	}
 }
 

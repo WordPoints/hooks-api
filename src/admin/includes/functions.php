@@ -317,12 +317,12 @@ function wordpoints_hooks_ui_setup_script_data() {
 	$hooks = wordpoints_hooks();
 
 	$extensions_data = wordpoints_hooks_ui_get_script_data_from_objects(
-		$hooks->extensions->get_all()
+		$hooks->get_sub_app( 'extensions' )->get_all()
 		, 'extension'
 	);
 
 	$reactor_data = wordpoints_hooks_ui_get_script_data_from_objects(
-		$hooks->reactors->get_all()
+		$hooks->get_sub_app( 'reactors' )->get_all()
 		, 'reactor'
 	);
 
@@ -400,7 +400,7 @@ function wordpoints_hooks_ui_get_script_data_entities() {
 	$entities_data = array();
 
 	/** @var WordPoints_Class_Registry_Children $entity_children */
-	$entity_children = $entities->children;
+	$entity_children = $entities->get_sub_app( 'children' );
 
 	/** @var WordPoints_Entity $entity */
 	foreach ( $entities->get_all() as $slug => $entity ) {
@@ -494,7 +494,7 @@ function wordpoints_hooks_ui_get_script_data_event_action_types() {
 	// We want a list of the action types for each event. We can start with this list
 	// but it is indexed by action slug and then action type and then event slug, so
 	// we ned to do some processing.
-	$event_index = wordpoints_hooks()->router->get_event_index();
+	$event_index = wordpoints_hooks()->get_sub_app( 'router' )->get_event_index();
 
 	// We don't care about the action slugs, so first we get rid of that bottom level
 	// of the array.

@@ -219,7 +219,7 @@ class WordPoints_Hook_Reactor_Points extends WordPoints_Hook_Reactor {
 	 */
 	protected function reverse_logs( $logs, WordPoints_Hook_Fire $fire ) {
 
-		$event = wordpoints_hooks()->events->get(
+		$event = wordpoints_hooks()->get_sub_app( 'events' )->get(
 			$fire->reaction->get_event_slug()
 		);
 

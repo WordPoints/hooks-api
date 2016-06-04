@@ -29,7 +29,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->mock_apps();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -172,7 +172,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->mock_apps();
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Child'
@@ -266,11 +266,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->mock_apps();
 
-		$extensions = wordpoints_hooks()->extensions;
+		$extensions = wordpoints_hooks()->get_sub_app( 'extensions' );
 		$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
 		$extension = $extensions->get( 'periods' );
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -312,12 +312,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->mock_apps();
 
-		$extensions = wordpoints_hooks()->extensions;
+		$extensions = wordpoints_hooks()->get_sub_app( 'extensions' );
 		$extensions->register( 'periods', 'WordPoints_Hook_Extension_Periods' );
 
 		$extension = $extensions->get( 'periods' );
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -402,12 +402,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -433,13 +433,13 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
-		$this->assertCount( 1, $hooks->reactors->get( 'test_reactor' )->hits );
+		$this->assertCount( 1, $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' )->hits );
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
-		$this->assertCount( 1, $hooks->reactors->get( 'test_reactor' )->hits );
+		$this->assertCount( 1, $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' )->hits );
 	}
 
 	/**
@@ -473,12 +473,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
 
-		wordpoints_entities()->children->register(
+		wordpoints_entities()->get_sub_app( 'children' )->register(
 			'test_entity'
 			, 'child'
 			, 'WordPoints_PHPUnit_Mock_Entity_Attr'
@@ -504,7 +504,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertPeriodsExist( $periods, $reaction );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -546,7 +546,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -570,7 +570,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'another:test_entity' )
 		);
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -578,7 +578,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -603,7 +603,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -623,7 +623,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -631,7 +631,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -658,7 +658,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -678,7 +678,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -686,7 +686,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -707,7 +707,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->assertCount( 1, $test_reactor->hits );
 
-		$other_reactor = $hooks->reactors->get( 'another_reactor' );
+		$other_reactor = $hooks->get_sub_app( 'reactors' )->get( 'another_reactor' );
 
 		$this->assertCount( 1, $other_reactor->hits );
 	}
@@ -722,7 +722,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -742,7 +742,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -750,7 +750,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -785,7 +785,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -809,7 +809,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -817,7 +817,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -843,7 +843,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -863,7 +863,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->add_entity( $entity );
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -871,7 +871,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -896,7 +896,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -919,7 +919,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 			new WordPoints_PHPUnit_Mock_Entity( 'test_entity' )
 		);
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -927,7 +927,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -950,7 +950,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -968,7 +968,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->add_entity( $entity );
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -976,7 +976,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -1017,7 +1017,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -1035,7 +1035,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$event_args = new WordPoints_Hook_Event_Args( array() );
 		$event_args->add_entity( $entity );
 
-		$hooks->events->args->register(
+		$hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			'test_event'
 			, 'another:test_entity'
 			, 'WordPoints_PHPUnit_Mock_Hook_Arg'
@@ -1043,7 +1043,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -1074,7 +1074,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -1105,7 +1105,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 
@@ -1134,7 +1134,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->mock_apps();
 
 		$hooks = wordpoints_hooks();
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'periods'
 			, 'WordPoints_Hook_Extension_Periods'
 		);
@@ -1165,7 +1165,7 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		$this->assertEquals( 0, $get_period_queries->call_count );
 		$this->assertEquals( 1, $get_by_reaction_queries->call_count );
 
-		$test_reactor = $hooks->reactors->get( 'test_reactor' );
+		$test_reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $test_reactor->hits );
 

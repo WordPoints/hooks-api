@@ -245,13 +245,13 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 
 		$event_slug = $this->reaction->get_event_slug();
 
-		$event = $this->hooks->events->get( $event_slug );
+		$event = $this->hooks->get_sub_app( 'events' )->get( $event_slug );
 
 		if ( ! ( $event instanceof WordPoints_Hook_Event_RetroactiveI ) ) {
 			$this->validator->add_error( 'invalid hook' );
 		}
 
-		foreach ( $this->hooks->events->args->get_children( $event_slug ) as $arg ) {
+		foreach ( $this->hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get_children( $event_slug ) as $arg ) {
 			$this->arg_hierarchy_push( // TODO
 				$arg
 			);
@@ -262,12 +262,12 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 			$this->reset();
 		}
 
-		$reactor = $this->hooks->reactors->get( $this->reaction->get_reactor_slug() );
+		$reactor = $this->hooks->get_sub_app( 'reactors' )->get( $this->reaction->get_reactor_slug() );
 
 		$reactor->modify_retroactive_query( $this );
 		$this->reset();
 
-		foreach ( $this->hooks->extensions->get_all() as $extension ) {
+		foreach ( $this->hooks->get_sub_app( 'extensions' )->get_all() as $extension ) {
 
 			if ( $extension instanceof WordPoints_Hook_Retroactive_Query_ModifierI ) {
 				$extension->modify_retroactive_query( $this );
@@ -376,7 +376,7 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 		$storage_type = $query->get_field( 'storage_info', 'type' );
 
 		// it is pretty stupid to wait until now to figure this out.
-		$executor = $this->hooks->retroactive_query_executors->get( $storage_type );
+		$executor = $this->hooks->get_sub_app( 'retroactive_query_executors' )->get( $storage_type );
 
 		if ( ! $executor ) {
 			$this->validator->add_error(
@@ -389,13 +389,13 @@ class WordPoints_Hook_Retroactive_Query implements WordPoints_Hook_Retroactive_Q
 
 	protected function filter_results() {
 
-		$reactor = $this->hooks->reactors->get( $this->reaction->get_reactor_slug() );
+		$reactor = $this->hooks->get_sub_app( 'reactors' )->get( $this->reaction->get_reactor_slug() );
 
 		if ( $reactor instanceof WordPoints_Hook_Retroactive_Query_FilterI ) {
 			$reactor->filter_retroactive_query( $this );
 		}
 
-		foreach ( $this->hooks->extensions->get_all() as $extension ) {
+		foreach ( $this->hooks->get_sub_app( 'extensions' )->get_all() as $extension ) {
 			if ( $extension instanceof WordPoints_Hook_Retroactive_Query_FilterI ) {
 				$extension->filter_retroactive_query( $this );
 			}

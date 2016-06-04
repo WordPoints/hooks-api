@@ -256,7 +256,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->reaction = $this->factory->wordpoints->hook_reaction->create();
 
-		wordpoints_hooks()->events->args->register(
+		wordpoints_hooks()->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			$this->reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
@@ -298,7 +298,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 
-		wordpoints_hooks()->events->args->register(
+		wordpoints_hooks()->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			$this->reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'
@@ -344,7 +344,7 @@ class WordPoints_Admin_Ajax_Hooks_Test extends WordPoints_PHPUnit_TestCase_Ajax 
 
 		$this->reaction = $this->factory->wordpoints->hook_reaction->create_and_get();
 
-		wordpoints_hooks()->events->args->register(
+		wordpoints_hooks()->get_sub_app( 'events' )->get_sub_app( 'args' )->register(
 			$this->reaction->get_event_slug()
 			, 'current:test_entity'
 			, 'WordPoints_Hook_Arg'

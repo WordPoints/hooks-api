@@ -21,7 +21,7 @@ function wordpoints_init_hooks() {
 	// Just accessing this causes it to be initialized. We need to do that so
 	// the actions will be registered and hooked up. The rest of the API can be
 	// lazy-loaded as it is needed.
-	$hooks->actions;
+	$hooks->get_sub_app( 'actions' );
 }
 
 /**
@@ -352,7 +352,7 @@ function wordpoints_entity_contexts_init( $contexts ) {
  */
 function wordpoints_entities_init( $entities ) {
 
-	$children = $entities->children;
+	$children = $entities->get_sub_app( 'children' );
 
 	$entities->register( 'user', 'WordPoints_Entity_User' );
 	$children->register( 'user', 'roles', 'WordPoints_Entity_User_Roles' );
@@ -402,7 +402,7 @@ function wordpoints_entities_init( $entities ) {
 function wordpoints_register_post_type_entities( $slug ) {
 
 	$entities = wordpoints_entities();
-	$children = $entities->children;
+	$children = $entities->get_sub_app( 'children' );
 
 	$entities->register( "post\\{$slug}", 'WordPoints_Entity_Post' );
 	$children->register( "post\\{$slug}", 'author', 'WordPoints_Entity_Post_Author' );
@@ -442,7 +442,7 @@ function wordpoints_register_post_type_entities( $slug ) {
  */
 function wordpoints_register_post_type_hook_events( $slug ) {
 
-	$events = wordpoints_hooks()->events;
+	$events = wordpoints_hooks()->get_sub_app( 'events' );
 
 	if ( 'attachment' === $slug ) {
 
@@ -514,7 +514,7 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 function wordpoints_register_taxonomy_entities( $slug ) {
 
 	$entities = wordpoints_entities();
-	$children = $entities->children;
+	$children = $entities->get_sub_app( 'children' );
 
 	$entities->register( "term\\{$slug}", 'WordPoints_Entity_Term' );
 	$children->register( "term\\{$slug}", 'id', 'WordPoints_Entity_Term_Id' );
@@ -567,7 +567,7 @@ function wordpoints_hooks_user_can_view_points_log( $can_view, $log ) {
 	$event_slug = $log->log_type;
 
 	/** @var WordPoints_Hook_ArgI $arg */
-	foreach ( wordpoints_hooks()->events->args->get_children( $event_slug ) as $slug => $arg ) {
+	foreach ( wordpoints_hooks()->get_sub_app( 'events' )->get_sub_app( 'args' )->get_children( $event_slug ) as $slug => $arg ) {
 
 		$value = wordpoints_get_points_log_meta( $log->id, $slug, true );
 
@@ -664,7 +664,7 @@ function wordpoints_hooks() {
 		wordpoints_apps();
 	}
 
-	return WordPoints_App::$main->hooks;
+	return WordPoints_App::$main->get_sub_app( 'hooks' );
 }
 
 /**
@@ -680,7 +680,7 @@ function wordpoints_entities() {
 		wordpoints_apps();
 	}
 
-	return WordPoints_App::$main->entities;
+	return WordPoints_App::$main->get_sub_app( 'entities' );
 }
 
 /**
@@ -795,7 +795,7 @@ function wordpoints_entities_get_current_context_id( $slug ) {
 	$current_context = array();
 
 	/** @var WordPoints_Class_Registry $contexts */
-	$contexts = wordpoints_entities()->contexts;
+	$contexts = wordpoints_entities()->get_sub_app( 'contexts' );
 
 	while ( $slug ) {
 

@@ -11,8 +11,6 @@
  * A registry for the hook events.
  *
  * @since 1.0.0
- *
- * @property-read WordPoints_Class_Registry_Children $args The event args registry.
  */
 class WordPoints_Hook_Events extends WordPoints_App_Registry {
 
@@ -41,7 +39,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 
 		$hooks = wordpoints_hooks();
 
-		$this->router = $hooks->router;
+		$this->router = $hooks->get_sub_app( 'router' );
 
 		parent::__construct( $slug );
 	}
@@ -89,7 +87,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 
 		if ( isset( $args['args'] ) ) {
 			foreach ( $args['args'] as $arg_slug => $class ) {
-				$this->args->register( $slug, $arg_slug, $class );
+				$this->get_sub_app( 'args' )->register( $slug, $arg_slug, $class );
 			}
 		}
 
@@ -115,7 +113,7 @@ class WordPoints_Hook_Events extends WordPoints_App_Registry {
 			}
 		}
 
-		$this->args->deregister_children( $slug );
+		$this->get_sub_app( 'args' )->deregister_children( $slug );
 
 		unset( $this->event_data[ $slug ] );
 	}

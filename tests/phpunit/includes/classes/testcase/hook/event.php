@@ -258,7 +258,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 
 		$this->hooks = wordpoints_hooks();
 
-		$reactors = $this->hooks->reactors->get_all();
+		$reactors = $this->hooks->get_sub_app( 'reactors' )->get_all();
 
 		$arg_types_index = array();
 
@@ -271,7 +271,8 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 			}
 		}
 
-		$args = $this->hooks->events->args->get_children( $this->event_slug );
+		/** @var WordPoints_Hook_ArgI[] $args */
+		$args = $this->hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get_children( $this->event_slug );
 
 		return $this->get_targets_from_args( $args, $arg_types_index );
 	}
@@ -318,7 +319,7 @@ abstract class WordPoints_PHPUnit_TestCase_Hook_Event extends WordPoints_PHPUnit
 				}
 			}
 
-			$children = wordpoints_entities()->children->get_children( $slug );
+			$children = wordpoints_entities()->get_sub_app( 'children' )->get_children( $slug );
 
 			$targets = $this->get_targets_from_args(
 				$children

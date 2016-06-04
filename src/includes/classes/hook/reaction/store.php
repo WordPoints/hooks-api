@@ -144,11 +144,11 @@ abstract class WordPoints_Hook_Reaction_Store implements WordPoints_Hook_Reactio
 		$reaction->update_meta( 'reactor', $settings['reactor'] );
 
 		/** @var WordPoints_Hook_ReactorI $reactor */
-		$reactor = wordpoints_hooks()->reactors->get( $settings['reactor'] );
+		$reactor = wordpoints_hooks()->get_sub_app( 'reactors' )->get( $settings['reactor'] );
 		$reactor->update_settings( $reaction, $settings );
 
 		/** @var WordPoints_Hook_ExtensionI $extension */
-		foreach ( wordpoints_hooks()->extensions->get_all() as $extension ) {
+		foreach ( wordpoints_hooks()->get_sub_app( 'extensions' )->get_all() as $extension ) {
 			$extension->update_settings( $reaction, $settings );
 		}
 

@@ -32,7 +32,7 @@ abstract class WordPoints_Spec implements  WordPoints_SpecI {
 
 	public function validate_settings( $settings ) {
 
-		$data_types = wordpoints_apps()->data_types;
+		$data_types = wordpoints_apps()->get_sub_app( 'data_types' );
 
 		foreach ( $this->get_settings_fields() as $setting => $data ) {
 
@@ -237,7 +237,7 @@ class WordPoints_Spec_Entity_Array_Contains extends WordPoints_Spec {
 
 	protected function validate_conditions() {
 
-		$conditions_extension = wordpoints_hooks()->extensions->get(
+		$conditions_extension = wordpoints_hooks()->get_sub_app( 'extensions' )->get(
 			'conditions'
 		);
 
@@ -268,7 +268,7 @@ class WordPoints_Spec_Entity_Array_Contains extends WordPoints_Spec {
 	 */
 	protected function filter_entities( $entities ) {
 
-		$conditions_extension = wordpoints_hooks()->extensions->get(
+		$conditions_extension = wordpoints_hooks()->get_sub_app( 'extensions' )->get(
 			'conditions'
 		);
 

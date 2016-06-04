@@ -279,13 +279,13 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 		}
 
 		/** @var WordPoints_Hook_ReactorI $reactor */
-		$reactor = $this->hooks->reactors->get( 'points' );
+		$reactor = $this->hooks->get_sub_app( 'reactors' )->get( 'points' );
 		$reactor_action_types = array_fill_keys( $reactor->get_action_types(), true );
 
 		$event_action_types = wordpoints_hooks_ui_get_script_data_event_action_types();
 
 		/** @var WordPoints_Hook_EventI[] $events */
-		$events = $this->hooks->events->get_all();
+		$events = $this->hooks->get_sub_app( 'events' )->get_all();
 
 		/**
 		 * Filter the events to show meta boxes for on the Points Types admin screen.
@@ -356,7 +356,7 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 			}
 		}
 
-		$args = $this->hooks->events->args->get_children( $event_slug );
+		$args = $this->hooks->get_sub_app( 'events' )->get_sub_app( 'args' )->get_children( $event_slug );
 
 		$event_data = array( 'args' => array() );
 

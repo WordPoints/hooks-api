@@ -184,12 +184,12 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 
 		$hooks = wordpoints_hooks();
 
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'repeat_blocker'
 			, 'WordPoints_Hook_Extension_Repeat_Blocker'
 		);
 
-		$hooks->extensions->register(
+		$hooks->get_sub_app( 'extensions' )->register(
 			'test_extension'
 			, 'WordPoints_PHPUnit_Mock_Hook_Extension'
 		);
@@ -208,13 +208,13 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
 
 		// The extension should have been checked.
-		$extension = $hooks->extensions->get( 'test_extension' );
+		$extension = $hooks->get_sub_app( 'extensions' )->get( 'test_extension' );
 
 		$this->assertCount( 1, $extension->hit_checks );
 		$this->assertCount( 1, $extension->hits );
 
 		// The reactor should have been hit.
-		$reactor = $hooks->reactors->get( 'test_reactor' );
+		$reactor = $hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $reactor->hits );
 
@@ -369,13 +369,13 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 
 		$this->hooks = wordpoints_hooks();
 
-		$this->hooks->extensions->register(
+		$this->hooks->get_sub_app( 'extensions' )->register(
 			'repeat_blocker'
 			,
 			'WordPoints_Hook_Extension_Repeat_Blocker'
 		);
 
-		$this->hooks->extensions->register(
+		$this->hooks->get_sub_app( 'extensions' )->register(
 			'test_extension'
 			,
 			'WordPoints_PHPUnit_Mock_Hook_Extension'
@@ -395,13 +395,13 @@ class WordPoints_Hook_Extension_Repeat_Blocker_Test extends WordPoints_PHPUnit_T
 		$this->hooks->fire( 'test_event', $this->event_args, 'test_fire' );
 
 		// The extension should have been checked.
-		$this->extension = $this->hooks->extensions->get( 'test_extension' );
+		$this->extension = $this->hooks->get_sub_app( 'extensions' )->get( 'test_extension' );
 
 		$this->assertCount( 1, $this->extension->hit_checks );
 		$this->assertCount( 1, $this->extension->hits );
 
 		// The reactor should have been hit.
-		$this->reactor = $this->hooks->reactors->get( 'test_reactor' );
+		$this->reactor = $this->hooks->get_sub_app( 'reactors' )->get( 'test_reactor' );
 
 		$this->assertCount( 1, $this->reactor->hits );
 

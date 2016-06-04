@@ -118,8 +118,8 @@ class WordPoints_Hook_Router {
 			$hooks = wordpoints_hooks();
 
 			$this->hooks   = $hooks;
-			$this->events  = $hooks->events;
-			$this->actions = $hooks->actions;
+			$this->events  = $hooks->get_sub_app( 'events' );
+			$this->actions = $hooks->get_sub_app( 'actions' );
 		}
 
 		foreach ( $this->action_index[ $name ]['actions'] as $slug => $data ) {
@@ -145,7 +145,7 @@ class WordPoints_Hook_Router {
 						continue;
 					}
 
-					$event_args = $this->events->args->get_children( $event_slug, array( $action_object ) );
+					$event_args = $this->events->get_sub_app( 'args' )->get_children( $event_slug, array( $action_object ) );
 
 					if ( empty( $event_args ) ) {
 						continue;
@@ -296,7 +296,7 @@ class WordPoints_Hook_Router {
 	public function get_event_index() {
 
 		if ( empty( $this->event_index ) ) {
-			wordpoints_hooks()->events;
+			wordpoints_hooks()->get_sub_app( 'events' );
 		}
 
 		return $this->event_index;
