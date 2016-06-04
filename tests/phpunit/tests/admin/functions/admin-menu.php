@@ -23,7 +23,7 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 		'_wp_real_parent_file',
 		'_wp_submenu_nopriv',
 		'_registered_pages',
-		'_parent_pages'
+		'_parent_pages',
 	);
 
 	/**
