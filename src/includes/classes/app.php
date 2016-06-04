@@ -140,8 +140,6 @@ class WordPoints_App {
 			/**
 			 * Initialization of an app registry.
 			 *
-			 * The $var is the slug of the registry.
-			 *
 			 * @since 1.0.0
 			 *
 			 * @param WordPoints_Class_RegistryI|WordPoints_Class_Registry_ChildrenI
