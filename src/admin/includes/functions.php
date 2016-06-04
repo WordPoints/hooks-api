@@ -41,7 +41,9 @@ function wordpoints_hooks_api_admin_menu() {
 	$wordpoints_menu = wordpoints_get_main_admin_menu();
 
 	/** @var WordPoints_Admin_Screens $admin_screens */
-	$admin_screens = wordpoints_apps()->admin->screen;
+	$admin_screens = wordpoints_apps()->get_sub_app( 'admin' )->get_sub_app(
+		'screen'
+	);
 
 	// Hooks page.
 	$id = add_submenu_page(

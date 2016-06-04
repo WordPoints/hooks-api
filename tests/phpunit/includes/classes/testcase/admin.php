@@ -33,6 +33,13 @@ abstract class WordPoints_PHPUnit_TestCase_Admin extends WordPoints_PHPUnit_Test
 		if ( ! self::$included_files ) {
 
 			/**
+			 * WordPoints administration-side code.
+			 *
+			 * @since 1.0.0
+			 */
+			require_once( WORDPOINTS_DIR . '/admin/admin.php' );
+
+			/**
 			 * Administration-side code.
 			 *
 			 * @since 1.0.0
