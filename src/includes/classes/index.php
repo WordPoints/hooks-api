@@ -130,6 +130,7 @@ require_once( $dir . '/hook/router.php' );
 require_once( $dir . '/hook/settings.php' );
 require_once( $dir . '/hook/validator/exception.php' );
 require_once( $dir . '/hooks.php' );
+require_once( $dir . '/legacy/points/hook/to/reaction/importer.php' );
 require_once( $dir . '/query/builder/db/mysql.php' );
 require_once( $dir . '/spec.php' );
 require_once( $dir . '/wpdb/wrapper.php' );
