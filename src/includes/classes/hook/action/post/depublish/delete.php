@@ -19,8 +19,8 @@ class WordPoints_Hook_Action_Post_Depublish_Delete extends WordPoints_Hook_Actio
 	 */
 	public function should_fire() {
 
-
 		$post = $this->get_post_entity();
+
 		if ( ! $post ) {
 			return false;
 		}
