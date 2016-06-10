@@ -90,7 +90,6 @@ require_once( $dir . '/hook/arg.php' );
 require_once( $dir . '/hook/arg/current/post.php' );
 require_once( $dir . '/hook/arg/current/site.php' );
 require_once( $dir . '/hook/arg/current/user.php' );
-require_once( $dir . '/hook/arg/dynamic.php' );
 require_once( $dir . '/hook/condition.php' );
 require_once( $dir . '/hook/condition/entity/array/contains.php' );
 require_once( $dir . '/hook/condition/equals.php' );
