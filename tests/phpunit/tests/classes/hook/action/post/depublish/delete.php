@@ -29,9 +29,9 @@ class WordPoints_Hook_Action_Post_Depublish_Delete_Test
 		);
 
 		$action = new WordPoints_Hook_Action_Post_Depublish_Delete(
-			'test'
+			'test\\post'
 			, array( $post )
-			, array( 'arg_index' => array( 'post' => 0 ) )
+			, array( 'arg_index' => array( 'post\\post' => 0 ) )
 		);
 
 		$this->assertTrue( $action->should_fire() );
@@ -49,9 +49,29 @@ class WordPoints_Hook_Action_Post_Depublish_Delete_Test
 		);
 
 		$action = new WordPoints_Hook_Action_Post_Depublish_Delete(
-			'test'
+			'test\\post'
 			, array( $post )
-			, array( 'arg_index' => array( 'post' => 0 ) )
+			, array( 'arg_index' => array( 'post\\post' => 0 ) )
+		);
+
+		$this->assertFalse( $action->should_fire() );
+	}
+
+	/**
+	 * Test checking if an action should fire when the post is the wrong type.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_should_fire_wrong_post_type() {
+
+		$post = $this->factory->post->create_and_get(
+			array( 'post_status' => 'publish' )
+		);
+
+		$action = new WordPoints_Hook_Action_Post_Depublish_Delete(
+			'test\\page'
+			, array( $post )
+			, array( 'arg_index' => array( 'post\\page' => 0 ) )
 		);
 
 		$this->assertFalse( $action->should_fire() );
@@ -65,8 +85,9 @@ class WordPoints_Hook_Action_Post_Depublish_Delete_Test
 	public function test_should_fire_no_post() {
 
 		$action = new WordPoints_Hook_Action_Post_Depublish_Delete(
-			'test'
+			'test\\post'
 			, array( 'a' )
+			, array( 'arg_index' => array( 'post\\post' => 0 ) )
 		);
 
 		$this->assertFalse( $action->should_fire() );
@@ -84,10 +105,10 @@ class WordPoints_Hook_Action_Post_Depublish_Delete_Test
 		);
 
 		$action = new WordPoints_Hook_Action_Post_Depublish_Delete(
-			'test'
+			'test\\post'
 			, array( $post, 'a' )
 			, array(
-				'arg_index' => array( 'post' => 0 ),
+				'arg_index' => array( 'post\\post' => 0 ),
 				'requirements' => array( 1 => 'a' ),
 			)
 		);
@@ -107,10 +128,10 @@ class WordPoints_Hook_Action_Post_Depublish_Delete_Test
 		);
 
 		$action = new WordPoints_Hook_Action_Post_Depublish_Delete(
-			'test'
+			'test\\post'
 			, array( $post, 'b' )
 			, array(
-				'arg_index' => array( 'post' => 0 ),
+				'arg_index' => array( 'post\\post' => 0 ),
 				'requirements' => array( 1 => 'a' ),
 			)
 		);

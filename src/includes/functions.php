@@ -132,99 +132,6 @@ function wordpoints_hook_conditions_init( $conditions ) {
 function wordpoints_hook_actions_init( $actions ) {
 
 	$actions->register(
-		'comment_approve'
-		, 'WordPoints_Hook_Action'
-		, array(
-			'action' => 'transition_comment_status',
-			'data'   => array(
-				'arg_index'    => array( 'comment' => 2 ),
-				'requirements' => array( 0 => 'approved' ),
-			),
-		)
-	);
-
-	$actions->register(
-		'comment_new'
-		, 'WordPoints_Hook_Action_Comment_New'
-		, array(
-			'action' => 'wp_insert_comment',
-			'data'   => array(
-				'arg_index' => array( 'comment' => 1 ),
-			),
-		)
-	);
-
-	$actions->register(
-		'comment_deapprove'
-		, 'WordPoints_Hook_Action'
-		, array(
-			'action' => 'transition_comment_status',
-			'data'   => array(
-				'arg_index' => array( 'comment' => 2 ),
-				'requirements' => array( 1 => 'approved' ),
-			),
-		)
-	);
-
-	// This works for all post types except attachments.
-	$actions->register(
-		'post_publish'
-		, 'WordPoints_Hook_Action_Post_Publish'
-		, array(
-			'action' => 'transition_post_status',
-			'data'   => array(
-				'arg_index' => array( 'post' => 2 ),
-				'requirements' => array( 0 => 'publish' ),
-			),
-		)
-	);
-
-	$actions->register(
-		'post_depublish'
-		, 'WordPoints_Hook_Action_Post_Publish'
-		, array(
-			'action' => 'transition_post_status',
-			'data'   => array(
-				'arg_index' => array( 'post' => 2 ),
-				'requirements' => array( 1 => 'publish' ),
-			),
-		)
-	);
-
-	$actions->register(
-		'post_depublish_delete'
-		, 'WordPoints_Hook_Action_Post_Depublish_Delete'
-		, array(
-			'action' => 'delete_post',
-			'data'   => array(
-				'arg_index' => array( 'post' => 0 ),
-			),
-		)
-	);
-
-	$actions->register(
-		'add_attachment'
-		, 'WordPoints_Hook_Action'
-		, array(
-			'action' => 'add_attachment',
-			'data'   => array(
-				'arg_index' => array( 'post\attachment' => 0 ),
-			),
-		)
-	);
-
-	$actions->register(
-		'post_delete'
-		, 'WordPoints_Hook_Action'
-		, array(
-			'action' => 'delete_post',
-			'data'   => array(
-				'arg_index' => array( 'post' => 0 ),
-			),
-		)
-	);
-
-	$actions->register(
 		'user_register'
 		, 'WordPoints_Hook_Action'
 		, array(
@@ -253,6 +160,144 @@ function wordpoints_hook_actions_init( $actions ) {
 			'action' => 'wp',
 		)
 	);
+	
+	// Register actions for all of the public post types.
+	$post_types = get_post_types( array( 'public' => true ) );
+
+	/**
+	 * Filter which post types to register hook actions for.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] The post type slugs ("names").
+	 */
+	$post_types = apply_filters( 'wordpoints_register_hook_actions_for_post_types', $post_types );
+
+	foreach ( $post_types as $slug ) {
+		wordpoints_register_post_type_hook_actions( $slug );
+	}
+}
+
+/**
+ * Register the hook actions for a post type.
+ *
+ * @since 1.0.0
+ *
+ * @param string $slug The slug of the post type.
+ */
+function wordpoints_register_post_type_hook_actions( $slug ) {
+
+	$actions = wordpoints_hooks()->get_sub_app( 'actions' );
+
+	if ( post_type_supports( $slug, 'comments' ) ) {
+
+		$actions->register(
+			"comment_approve\\{$slug}"
+			, 'WordPoints_Hook_Action_Post_Type_Comment'
+			, array(
+				'action' => 'transition_comment_status',
+				'data'   => array(
+					'arg_index'    => array( "comment\\{$slug}" => 2 ),
+					'requirements' => array( 0 => 'approved' ),
+				),
+			)
+		);
+
+		$actions->register(
+			"comment_new\\{$slug}"
+			, 'WordPoints_Hook_Action_Comment_New'
+			, array(
+				'action' => 'wp_insert_comment',
+				'data'   => array(
+					'arg_index' => array( "comment\\{$slug}" => 1 ),
+				),
+			)
+		);
+
+		$actions->register(
+			"comment_deapprove\\{$slug}"
+			, 'WordPoints_Hook_Action_Post_Type_Comment'
+			, array(
+				'action' => 'transition_comment_status',
+				'data'   => array(
+					'arg_index'    => array( "comment\\{$slug}" => 2 ),
+					'requirements' => array( 1 => 'approved' ),
+				),
+			)
+		);
+	}
+	
+	// This works for all post types except attachments.
+	if ( 'attachment' !== $slug ) {
+
+		$actions->register(
+			"post_publish\\{$slug}"
+			, 'WordPoints_Hook_Action_Post_Type'
+			, array(
+				'action' => 'transition_post_status',
+				'data'   => array(
+					'arg_index'    => array( "post\\{$slug}" => 2 ),
+					'requirements' => array( 0 => 'publish' ),
+				),
+			)
+		);
+
+		$actions->register(
+			"post_depublish\\{$slug}"
+			, 'WordPoints_Hook_Action_Post_Type'
+			, array(
+				'action' => 'transition_post_status',
+				'data'   => array(
+					'arg_index'    => array( "post\\{$slug}" => 2 ),
+					'requirements' => array( 1 => 'publish' ),
+				),
+			)
+		);
+		
+		$actions->register(
+			"post_depublish_delete\\{$slug}"
+			, 'WordPoints_Hook_Action_Post_Depublish_Delete'
+			, array(
+				'action' => 'delete_post',
+				'data'   => array(
+					'arg_index' => array( "post\\{$slug}" => 0 ),
+				),
+			)
+		);
+		
+	} else {
+
+		$actions->register(
+			'add_attachment'
+			, 'WordPoints_Hook_Action'
+			, array(
+				'action' => 'add_attachment',
+				'data'   => array(
+					'arg_index' => array( 'post\attachment' => 0 ),
+				),
+			)
+		);
+
+		$actions->register(
+			"post_delete\\{$slug}"
+			, 'WordPoints_Hook_Action_Post_Type'
+			, array(
+				'action' => 'delete_post',
+				'data'   => array(
+					'arg_index' => array( "post\\{$slug}" => 0 ),
+				),
+			)
+		);
+	}
+	
+	/**
+	 * Fires when registering the hook actions for a post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug The slug ("name") of the post type.
+	 */
+	do_action( 'wordpoints_register_post_type_hook_actions', $slug );
 }
 
 /**
@@ -452,10 +497,10 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, array(
 				'actions' => array(
 					'toggle_on'  => 'add_attachment',
-					'toggle_off' => 'post_delete',
+					'toggle_off' => "post_delete\\{$slug}",
 				),
 				'args'    => array(
-					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+					"post\\{$slug}" => 'WordPoints_Hook_Arg',
 				),
 			)
 		);
@@ -467,11 +512,14 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, 'WordPoints_Hook_Event_Post_Publish'
 			, array(
 				'actions' => array(
-					'toggle_on'  => 'post_publish',
-					'toggle_off' => array( 'post_depublish', 'post_depublish_delete' ),
+					'toggle_on'  => "post_publish\\{$slug}",
+					'toggle_off' => array(
+						"post_depublish\\{$slug}",
+						"post_depublish_delete\\{$slug}",
+					),
 				),
 				'args'    => array(
-					"post\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+					"post\\{$slug}" => 'WordPoints_Hook_Arg',
 				),
 			)
 		);
@@ -484,11 +532,14 @@ function wordpoints_register_post_type_hook_events( $slug ) {
 			, 'WordPoints_Hook_Event_Comment_Leave'
 			, array(
 				'actions' => array(
-					'toggle_on'  => array( 'comment_approve', 'comment_new' ),
-					'toggle_off' => 'comment_deapprove',
+					'toggle_on'  => array(
+						"comment_approve\\{$slug}",
+						"comment_new\\{$slug}",
+					),
+					'toggle_off' => "comment_deapprove\\{$slug}",
 				),
 				'args' => array(
-					"comment\\{$slug}" => 'WordPoints_Hook_Arg_Dynamic',
+					"comment\\{$slug}" => 'WordPoints_Hook_Arg',
 				),
 			)
 		);

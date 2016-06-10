@@ -196,20 +196,38 @@ class WordPoints_Hooks_Functions_Test extends WordPoints_PHPUnit_TestCase_Hooks 
 
 		$this->mock_apps();
 
-		$actions = new WordPoints_Hook_Actions();
+		$actions = wordpoints_hooks()->get_sub_app( 'actions' );
+
+		$filter = 'wordpoints_register_hook_actions_for_post_types';
+		$this->listen_for_filter( $filter );
 
 		wordpoints_hook_actions_init( $actions );
 
-		$this->assertTrue( $actions->is_registered( 'comment_approve' ) );
-		$this->assertTrue( $actions->is_registered( 'comment_new' ) );
-		$this->assertTrue( $actions->is_registered( 'comment_deapprove' ) );
-		$this->assertTrue( $actions->is_registered( 'post_publish' ) );
-		$this->assertTrue( $actions->is_registered( 'post_depublish' ) );
-		$this->assertTrue( $actions->is_registered( 'post_depublish_delete' ) );
-		$this->assertTrue( $actions->is_registered( 'post_delete' ) );
+		$this->assertEquals( 1, $this->filter_was_called( $filter ) );
+
 		$this->assertTrue( $actions->is_registered( 'user_register' ) );
 		$this->assertTrue( $actions->is_registered( 'user_delete' ) );
 		$this->assertTrue( $actions->is_registered( 'user_visit' ) );
+
+		$this->assertTrue( $actions->is_registered( 'post_publish\post' ) );
+		$this->assertTrue( $actions->is_registered( 'post_depublish\post' ) );
+		$this->assertTrue( $actions->is_registered( 'post_depublish_delete\post' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_approve\post' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_new\post' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_deapprove\post' ) );
+
+		$this->assertTrue( $actions->is_registered( 'post_publish\page' ) );
+		$this->assertTrue( $actions->is_registered( 'post_depublish\page' ) );
+		$this->assertTrue( $actions->is_registered( 'post_depublish_delete\page' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_approve\page' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_new\page' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_deapprove\page' ) );
+
+		$this->assertTrue( $actions->is_registered( 'add_attachment' ) );
+		$this->assertTrue( $actions->is_registered( 'post_delete\attachment' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_approve\attachment' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_new\attachment' ) );
+		$this->assertTrue( $actions->is_registered( 'comment_deapprove\attachment' ) );
 	}
 
 	/**

@@ -12,7 +12,13 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Hook_Action_Comment_New extends WordPoints_Hook_Action {
+class WordPoints_Hook_Action_Comment_New
+	extends WordPoints_Hook_Action_Post_Type_Comment {
+
+	/**
+	 * @since 1.0.0
+	 */
+	protected $post_hierarchy = array( 'comment\\post', 'post\\post', 'post\\post' );
 
 	/**
 	 * @since 1.0.0
