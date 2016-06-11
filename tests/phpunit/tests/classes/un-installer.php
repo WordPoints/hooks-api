@@ -28,13 +28,11 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->create_points_type();
 
-		$handler = wordpointstests_add_points_hook(
-			"wordpoints_{$legacy_slug}_points_hook"
-			, $settings
-		);
+		$hook_type = "wordpoints_{$legacy_slug}_points_hook";
+		$handler   = wordpointstests_add_points_hook( $hook_type, $settings );
 
 		$this->assertEquals(
-			array( 'points' => array( "wordpoints_{$legacy_slug}_points_hook-1" ) )
+			array( 'points' => array( "{$hook_type}-1" ) )
 			, WordPoints_Points_Hooks::get_points_types_hooks()
 		);
 
@@ -68,7 +66,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 		$this->assertEquals( $imported_settings, $reactions[0]->get_all_meta() );
 
 		$this->assertArrayHasKey(
-			$legacy_slug
+			$hook_type
 			, get_option( 'wordpoints_legacy_points_hooks_disabled' )
 		);
 
@@ -266,13 +264,11 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->create_points_type();
 
-		$handler = wordpointstests_add_points_hook(
-			"wordpoints_{$legacy_slug}_points_hook"
-			, $settings
-		);
+		$hook_type = "wordpoints_{$legacy_slug}_points_hook";
+		$handler = wordpointstests_add_points_hook( $hook_type, $settings );
 
 		$this->assertEquals(
-			array( 'points' => array( "wordpoints_{$legacy_slug}_points_hook-1" ) )
+			array( 'points' => array( "{$hook_type}-1" ) )
 			, WordPoints_Points_Hooks::get_points_types_hooks()
 		);
 
@@ -284,7 +280,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 		$this->install();
 
 		$this->assertEquals(
-			array( 'points' => array( "wordpoints_{$legacy_slug}_points_hook-1" ) )
+			array( 'points' => array( "{$hook_type}-1" ) )
 			, WordPoints_Points_Hooks::get_points_types_hooks()
 		);
 
@@ -298,7 +294,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 		$this->assertEmpty( $reaction_store->get_reactions() );
 
 		$this->assertArrayNotHasKey(
-			$legacy_slug
+			$hook_type
 			, get_option( 'wordpoints_legacy_points_hooks_disabled' )
 		);
 
@@ -391,7 +387,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$this->assertArrayHasKey(
-			'registration'
+			'wordpoints_registration_points_hook'
 			, get_option( 'wordpoints_legacy_points_hooks_disabled' )
 		);
 
@@ -437,13 +433,11 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 
 		$this->create_points_type();
 
-		$handler = wordpointstests_add_points_hook(
-			"wordpoints_{$legacy_slug}_points_hook"
-			, $settings
-		);
+		$hook_type = "wordpoints_{$legacy_slug}_points_hook";
+		$handler   = wordpointstests_add_points_hook( $hook_type, $settings );
 
 		$this->assertEquals(
-			array( 'points' => array( "wordpoints_{$legacy_slug}_points_hook-1" ) )
+			array( 'points' => array( "{$hook_type}-1" ) )
 			, WordPoints_Points_Hooks::get_points_types_hooks()
 		);
 
@@ -534,7 +528,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 		}
 
 		$this->assertArrayHasKey(
-			$legacy_slug
+			$hook_type
 			, get_option( 'wordpoints_legacy_points_hooks_disabled' )
 		);
 	}

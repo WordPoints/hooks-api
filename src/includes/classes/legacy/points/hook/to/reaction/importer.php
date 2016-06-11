@@ -33,7 +33,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 	 *
 	 * @var string
 	 */
-	protected $legacy_slug;
+	protected $legacy_id_base;
 
 	/**
 	 * The slug of the event to use when converting the hook instances to reactions.
@@ -150,7 +150,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $legacy_slug       The legacy slug of the type of hook to import.
+	 * @param string $legacy_id_base    The id base of the type of hook to import.
 	 * @param string $event_slug        The slug of the event to use when converting
 	 *                                  an instance to a reaction.
 	 * @param array  $expected_settings The expected settings for this hook. Only the
@@ -160,11 +160,11 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 	 *                                  not be imported.
 	 * @param string $legacy_log_type   The legacy log type used by the type of hook
 	 *                                  being imported.
-	 * @param array $target             The target to use when converting an instance
+	 * @param array  $target            The target to use when converting an instance
 	 *                                  to a reaction.
 	 */
 	public function __construct(
-		$legacy_slug,
+		$legacy_id_base,
 		$event_slug,
 		$expected_settings,
 		$legacy_log_type,
@@ -175,7 +175,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 		$this->target            = $target;
 		$this->expected_settings = $expected_settings;
 		$this->legacy_log_type   = $legacy_log_type;
-		$this->legacy_slug       = $legacy_slug;
+		$this->legacy_id_base    = $legacy_id_base;
 	}
 
 	/**
@@ -186,7 +186,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 	public function import() {
 
 		$this->legacy_handler = WordPoints_Points_Hooks::get_handler_by_id_base(
-			"wordpoints_{$this->legacy_slug}_points_hook"
+			$this->legacy_id_base
 		);
 
 		if ( ! $this->legacy_handler ) {
@@ -220,7 +220,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 			$option = 'wordpoints_legacy_points_hooks_disabled';
 
 			$disabled = $this->get_array_option( $option );
-			$disabled[ $this->legacy_slug ] = true;
+			$disabled[ $this->legacy_id_base ] = true;
 
 			$this->update_option( $option, $disabled );
 		}
@@ -358,7 +358,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 			, 0
 			, $points_type
 			, 0
-			, $this->legacy_slug
+			, $this->legacy_id_base
 			, $meta
 		);
 	}
@@ -377,7 +377,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 	 */
 	protected function filter_reaction_settings( $settings, $order ) {
 
-		if ( 'periodic' !== $this->legacy_slug ) {
+		if ( 'wordpoints_periodic_points_hook' !== $this->legacy_id_base ) {
 			// We do this even if reversals will be blocked, in case the blocking
 			// is ever removed for this reaction.
 			$settings['reversals_legacy_points'] = array(

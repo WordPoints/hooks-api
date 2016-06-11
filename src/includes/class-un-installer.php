@@ -201,7 +201,7 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 	) {
 
 		$importer = new WordPoints_Legacy_Points_Hook_To_Reaction_Importer(
-			$legacy_slug
+			"wordpoints_{$legacy_slug}_points_hook"
 			, $event_slug
 			, $expected_settings
 			, $legacy_log_type
