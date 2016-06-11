@@ -74,6 +74,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 			array(
 				array(
 					'order'       => 0,
+					'id_base'     => $hook_type,
 					'instance'    => $settings,
 					'points_type' => 'points',
 					'reaction_id' => $reactions[0]->get_id(),
@@ -395,6 +396,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 			array(
 				array(
 					'order'       => 0,
+					'id_base'     => 'wordpoints_registration_points_hook',
 					'points_type' => 'points',
 					'reaction_id' => $reactions[0]->get_id(),
 					'instance'    => array(
@@ -517,6 +519,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 			$this->assertEquals(
 				array(
 					'order'       => 0,
+					'id_base'     => $hook_type,
 					'instance'    => $settings,
 					'points_type' => 'points',
 					'reaction_id' => $reactions[ $i ]->get_id(),

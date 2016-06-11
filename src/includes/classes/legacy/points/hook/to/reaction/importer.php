@@ -482,6 +482,7 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 
 		$this->imported_hooks[] = array(
 			'order'       => $order,
+			'id_base'     => $this->legacy_id_base,
 			'instance'    => $this->legacy_instance,
 			'points_type' => $settings['points_type'],
 			'reaction_id' => $reaction->get_id(),
