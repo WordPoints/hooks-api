@@ -982,4 +982,125 @@ function wordpoints_escape_mysql_identifier( $identifier ) {
 	return '`' . str_replace( '`', '``', $identifier ) . '`';
 }
 
+
+/**
+ * Get an option or network option that must be an array.
+ *
+ * This is a wrapper for {@see wordpoints_get_maybe_network_option()} that will force
+ * the return value to be an array.
+ * 
+ * @since 1.0.0
+ *
+ * @param string $option The name of the option to get.
+ * @param bool   $network Whether to retrieve a network option, or a regular option.
+ *                        By default a regular option will be retrieved, unless
+ *                        WordPoints is network active, in which case a network
+ *                        option will be retrieved.
+ *
+ * @return array The option value if it is an array, or an empty array if not.
+ */
+function wordpoints_get_maybe_network_array_option( $option, $network = null ) {
+
+	$value = wordpoints_get_maybe_network_option( $option, $network );
+
+	if ( ! is_array( $value ) ) {
+		$value = array();
+	}
+
+	return $value;
+}
+
+/**
+ * Get an option or network option from the database.
+ *
+ * @since 1.0.0
+ *
+ * @param string $option  The name of the option to get.
+ * @param bool   $network Whether to retrieve a network option, or a regular option.
+ *                        By default a regular option will be retrieved, unless
+ *                        WordPoints is network active, in which case a network
+ *                        option will be retrieved.
+ * @param mixed  $default A default value to return if the option isn't found.
+ *
+ * @return mixed The option value if it exists, or $default (false by default).
+ */
+function wordpoints_get_maybe_network_option( $option, $network = null, $default = false ) {
+
+	if ( $network || ( null === $network && is_wordpoints_network_active() ) ) {
+		return get_site_option( $option, $default );
+	} else {
+		return get_option( $option, $default );
+	}
+}
+
+/**
+ * Add an option or network option.
+ *
+ * @since 1.0.0
+ *
+ * @param string $option   The name of the option to add.
+ * @param mixed  $value    The value for the option.
+ * @param bool   $network  Whether to add a network option, or a regular option. By
+ *                         default a regular option will be added, unless WordPoints
+ *                         is network active, in which case a network option will be
+ *                         added.
+ * @param string $autoload Whether to automatically load the option. 'yes' (default)
+ *                         or 'no'. Does not apply if WordPoints is network active.
+ *
+ * @return bool Whether the option was added successfully.
+ */
+function wordpoints_add_maybe_network_option( $option, $value, $network = null, $autoload = 'yes' ) {
+
+	if ( $network || ( null === $network && is_wordpoints_network_active() ) ) {
+		return add_site_option( $option, $value );
+	} else {
+		return add_option( $option, $value, '', $autoload );
+	}
+}
+
+/**
+ * Update an option or network option.
+ *
+ * @since 1.0.0
+ *
+ * @param string $option  The name of the option to update.
+ * @param mixed  $value   The new value for the option.
+ * @param bool   $network Whether to update a network option, or a regular option.
+ *                        By default a regular option will be updated, unless
+ *                        WordPoints is network active, in which case a network
+ *                        option will be updated.
+ *
+ * @return bool Whether the option was updated successfully.
+ */
+function wordpoints_update_maybe_network_option( $option, $value, $network = null ) {
+
+	if ( $network || ( null === $network && is_wordpoints_network_active() ) ) {
+		return update_site_option( $option, $value );
+	} else {
+		return update_option( $option, $value );
+	}
+}
+
+/**
+ * Delete an option or network option.
+ *
+ * @since 1.0.0
+ *
+ * @param string $option  The name of the option to delete.
+ * @param bool   $network Whether to delete a network option, or a regular option.
+ *                        By default a regular option will be deleted, unless
+ *                        WordPoints is network active, in which case a network
+ *                        option will be deleted.
+ *
+ * @return bool Whether the option was successfully deleted.
+ */
+function wordpoints_delete_maybe_network_option( $option, $network = null ) {
+
+	if ( $network || ( null === $network && is_wordpoints_network_active() ) ) {
+		return delete_site_option( $option );
+	} else {
+		return delete_option( $option );
+	}
+}
+
 // EOF
