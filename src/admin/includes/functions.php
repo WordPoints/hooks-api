@@ -58,6 +58,20 @@ function wordpoints_hooks_api_admin_menu() {
 	if ( $id ) {
 		$admin_screens->register( $id, 'WordPoints_Admin_Screen_Points_Types' );
 	}
+
+	// Remove the old hooks screen if not needed.
+	$disabled_hooks = wordpoints_get_maybe_network_array_option(
+		'wordpoints_legacy_points_hooks_disabled'
+		, is_network_admin()
+	);
+
+	$hooks = WordPoints_Points_Hooks::get_handlers();
+
+	// If all of the registered hooks have been imported and disabled, then there is
+	// no need to keep the old hooks screen.
+	if ( ! array_diff_key( $hooks, $disabled_hooks ) ) {
+		remove_submenu_page( $wordpoints_menu, 'wordpoints_points_hooks' );
+	}
 }
 
 /**

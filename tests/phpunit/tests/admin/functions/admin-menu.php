@@ -27,6 +27,24 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 	);
 
 	/**
+	 * @since 1.0.0
+	 */
+	public static function setUpBeforeClass() {
+
+		if ( ! self::$included_files ) {
+
+			/**
+			 * WordPoints administration-side code.
+			 *
+			 * @since 1.0.0
+			 */
+			require_once( WORDPOINTS_DIR . '/components/points/admin/admin.php' );
+		}
+
+		parent::setUpBeforeClass();
+	}
+
+	/**
 	 * Test the wordpoints_hooks_api_admin_menu() function.
 	 *
 	 * @since 1.0.0
@@ -57,6 +75,61 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 	}
 
 	/**
+	 * Test the wordpoints_hooks_api_admin_menu() function.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_hooks_api_admin_menu
+	 */
+	public function test_wordpoints_hooks_api_admin_menu_points_hooks() {
+
+		wordpoints_hooks_register_admin_apps( $this->mock_apps() );
+
+		$this->give_current_user_caps( 'manage_options' );
+
+		wordpoints_points_admin_menu();
+
+		$this->assertAdminSubmenuRegistered( 'wordpoints_points_hooks' );
+
+		wordpoints_update_maybe_network_option(
+			'wordpoints_legacy_points_hooks_disabled'
+			, array_fill_keys(
+				array_keys( WordPoints_Points_Hooks::get_handlers() )
+				, true
+			)
+			, is_network_admin()
+		);
+
+		wordpoints_hooks_api_admin_menu();
+
+		$this->assertAdminSubmenuRegistered( 'wordpoints_points_types' );
+		$this->assertAdminSubmenuNotRegistered( 'wordpoints_points_hooks' );
+	}
+
+	/**
+	 * Test the wordpoints_hooks_api_admin_menu() function.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @covers ::wordpoints_hooks_api_admin_menu
+	 */
+	public function test_wordpoints_hooks_api_admin_menu_points_hooks_enabled() {
+
+		wordpoints_hooks_register_admin_apps( $this->mock_apps() );
+
+		$this->give_current_user_caps( 'manage_options' );
+
+		wordpoints_points_admin_menu();
+
+		$this->assertAdminSubmenuRegistered( 'wordpoints_points_hooks' );
+
+		wordpoints_hooks_api_admin_menu();
+
+		$this->assertAdminSubmenuRegistered( 'wordpoints_points_types' );
+		$this->assertAdminSubmenuRegistered( 'wordpoints_points_hooks' );
+	}
+
+	/**
 	 * Assert that a submenu item has been registered for an admin menu.
 	 *
 	 * @since 1.0.0
@@ -74,6 +147,30 @@ class WordPoints_Admin_Menu_Functions_Test extends WordPoints_PHPUnit_TestCase_A
 
 		$this->assertArrayHasKey( $parent, $submenu );
 		$this->assertContains( $slug, wp_list_pluck( $submenu[ $parent ], 2 ) );
+	}
+
+	/**
+	 * Assert that a submenu item has not been registered for an admin menu.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug   The slug of the submenu item.
+	 * @param string $parent The slug of the parent menu item.
+	 */
+	protected function assertAdminSubmenuNotRegistered( $slug, $parent = null ) {
+
+		global $submenu;
+
+		if ( null === $parent ) {
+			$parent = wordpoints_get_main_admin_menu();
+		}
+
+		if ( isset( $submenu[ $parent ] ) ) {
+			$this->assertNotContains( $slug, wp_list_pluck( $submenu[ $parent ], 2 ) );
+		} else {
+			// We run an assertion anyway just so that it is counted.
+			$this->assertArrayNotHasKey( $parent, $submenu );
+		}
 	}
 }
 
