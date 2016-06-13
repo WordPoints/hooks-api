@@ -72,6 +72,7 @@ module.exports = function( grunt ) {
 			contents,
 			interfaces = [],
 			entity_parents = [],
+			action_parents = [],
 			classes_dir = SOURCE_DIR + 'includes/classes/',
 			file = classes_dir + 'index.php',
 			class_files = grunt.file.expand(
@@ -93,14 +94,19 @@ module.exports = function( grunt ) {
 
 				entity_parents.push( class_files[ i ] );
 				class_files.splice( i, 1 );
-				
+
 			} else if ( class_files[ i ].substr( 0, 19 ) === 'entity/relationship' ) {
 
 				entity_parents.push( class_files[ i ] );
 				class_files.splice( i, 1 );
+
+			} else if ( class_files[ i ].substr( 0, 21 ) === 'hook/action/post/type' ) {
+
+				action_parents.push( class_files[ i ] );
+				class_files.splice( i, 1 );
 			}
 		}
-		
+
 		// Entity these entity classes need to come before other entity classes.
 		Array.prototype.splice.apply(
 			class_files
@@ -117,7 +123,14 @@ module.exports = function( grunt ) {
 				, 1
 			)
 		);
-		
+
+		// Action classes that need to come before other action classes.
+		Array.prototype.splice.apply(
+			class_files
+			, [ class_files.indexOf( 'hook/action.php' ) + 1, 0 ]
+				.concat( action_parents.reverse() )
+		);
+
 		// This class needs to come before other event classes.
 		class_files.splice(
 			class_files.indexOf( 'hook/event.php' ) + 1
