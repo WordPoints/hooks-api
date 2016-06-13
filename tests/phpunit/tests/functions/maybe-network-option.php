@@ -125,7 +125,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 			, wordpoints_get_maybe_network_option( 'test', $network, 'bob' )
 		);
 	}
-	
+
 	/**
 	 * Test getting a maybe network option returns a regular option by default.
 	 *
@@ -207,7 +207,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 			, wordpoints_get_maybe_network_array_option( 'test', $network )
 		);
 	}
-	
+
 	/**
 	 * Test adding a maybe network option adds a regular option by default.
 	 *
@@ -225,7 +225,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 		$this->assertFalse( get_site_option( 'test' ) );
 	}
 
-	/** 
+	/**
 	 * Test adding a maybe network option adds a network option if network active.
 	 *
 	 * @since 1.0.0
@@ -250,7 +250,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 	 * @covers ::wordpoints_add_maybe_network_option
 	 */
 	public function test_add() {
-	
+
 		$this->assertTrue(
 			wordpoints_add_maybe_network_option( 'test', 'testing', false )
 		);
@@ -258,7 +258,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 		$this->assertEquals( 'testing', get_option( 'test' ) );
 		$this->assertFalse( get_site_option( 'test' ) );
 	}
-	
+
 	/**
 	 * Test adding a maybe network option adds a network option when requested.
 	 *
@@ -311,7 +311,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 
 		$this->assertEquals( 'network_option', get_site_option( 'test' ) );
 	}
-	
+
 	/**
 	 * Test adding a maybe network option adds an autoloaded option by default.
 	 *
@@ -355,9 +355,9 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 	 * @return bool Whether the option is autoloaded or not.
 	 */
 	protected function is_option_autoloaded( $option ) {
-		
+
 		global $wpdb;
-		
+
 		return 'yes' === $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT `autoload` FROM {$wpdb->options} WHERE `option_name` = %s"
@@ -493,7 +493,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 
 		$this->assertFalse( get_option( 'test' ) );
 		$this->assertEquals( 'network_option', get_site_option( 'test' ) );
-	
+
 	}
 
 	/**
@@ -531,7 +531,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 		$this->assertTrue(
 			wordpoints_delete_maybe_network_option( 'test', false )
 		);
-		
+
 		$this->assertFalse( get_option( 'test' ) );
 		$this->assertEquals( 'network_option', get_site_option( 'test' ) );
 	}
@@ -564,7 +564,7 @@ class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_T
 	 * @covers ::wordpoints_delete_maybe_network_option
 	 */
 	public function test_delete_option_nonexistent() {
-		
+
 		$this->assertFalse(
 			wordpoints_delete_maybe_network_option( 'test', false )
 		);

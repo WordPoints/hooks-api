@@ -78,7 +78,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 					'instance'    => $settings,
 					'points_type' => 'points',
 					'reaction_id' => $reactions[0]->get_id(),
-				)
+				),
 			)
 			, get_option( 'wordpoints_imported_points_hooks' )
 		);
@@ -133,7 +133,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 20,
 					'post_type'    => 'post',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'post\post', 'author', 'user' ),
@@ -149,7 +149,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 20,
 					'post_type'    => 'page',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'post\page', 'author', 'user' ),
@@ -165,7 +165,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 20,
 					'post_type'    => 'attachment',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'post\attachment', 'author', 'user' ),
@@ -181,7 +181,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 10,
 					'post_type'    => 'post',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'comment\post', 'author', 'user' ),
@@ -197,7 +197,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 10,
 					'post_type'    => 'page',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'comment\page', 'author', 'user' ),
@@ -213,7 +213,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 10,
 					'post_type'    => 'post',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'comment\post', 'post\post', 'post\post', 'author', 'user' ),
@@ -229,7 +229,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 				'settings'    => array(
 					'points'       => 10,
 					'post_type'    => 'page',
-					'auto_reverse' => 1
+					'auto_reverse' => 1,
 				),
 				'import_settings' => array(
 					'target'          => array( 'comment\page', 'post\page', 'post\page', 'author', 'user' ),
@@ -421,7 +421,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 		$settings    = array(
 			'points'       => 20,
 			'post_type'    => 'ALL',
-			'auto_reverse' => 1
+			'auto_reverse' => 1,
 		);
 
 		$imported_settings = array(
@@ -589,7 +589,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 							array(
 								'post_type' => $settings['post_type'],
 							)
-						)
+						),
 					)
 				);
 			break;
@@ -602,7 +602,7 @@ class WordPoints_Hooks_API_Un_Installer_Test extends WordPoints_PHPUnit_TestCase
 								'post_author' => $user_id,
 								'post_type'   => $settings['post_type'],
 							)
-						)
+						),
 					)
 				);
 			break;

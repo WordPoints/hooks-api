@@ -173,7 +173,7 @@ class WordPoints_Hooks_API_Un_Installer extends WordPoints_Un_Installer_Base {
 		$this->import_legacy_points_hook(
 			'periodic',
 			'user_visit',
-			array( 'points' => true, 'period' => true, ),
+			array( 'points' => true, 'period' => true ),
 			'periodic',
 			array( 'current:user' )
 		);

@@ -160,7 +160,7 @@ function wordpoints_hook_actions_init( $actions ) {
 			'action' => 'wp',
 		)
 	);
-	
+
 	// Register actions for all of the public post types.
 	$post_types = get_post_types( array( 'public' => true ) );
 
@@ -226,7 +226,7 @@ function wordpoints_register_post_type_hook_actions( $slug ) {
 			)
 		);
 	}
-	
+
 	// This works for all post types except attachments.
 	if ( 'attachment' !== $slug ) {
 
@@ -253,7 +253,7 @@ function wordpoints_register_post_type_hook_actions( $slug ) {
 				),
 			)
 		);
-		
+
 		$actions->register(
 			"post_depublish_delete\\{$slug}"
 			, 'WordPoints_Hook_Action_Post_Depublish_Delete'
@@ -264,7 +264,7 @@ function wordpoints_register_post_type_hook_actions( $slug ) {
 				),
 			)
 		);
-		
+
 	} else {
 
 		$actions->register(
@@ -289,7 +289,7 @@ function wordpoints_register_post_type_hook_actions( $slug ) {
 			)
 		);
 	}
-	
+
 	/**
 	 * Fires when registering the hook actions for a post type.
 	 *
@@ -988,7 +988,7 @@ function wordpoints_escape_mysql_identifier( $identifier ) {
  *
  * This is a wrapper for {@see wordpoints_get_maybe_network_option()} that will force
  * the return value to be an array.
- * 
+ *
  * @since 1.0.0
  *
  * @param string $option The name of the option to get.

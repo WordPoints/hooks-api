@@ -16,8 +16,8 @@
             "errors": false
         },
         "\/admin\/includes\/classes\/screen\/points\/types.php": {
-            "size": 16539,
-            "hash": "14df121f20c1e0e1d4e74a757181484d",
+            "size": 17244,
+            "hash": "528090d46cf799f2017ec8e573cf6605",
             "errors": false
         },
         "\/admin\/includes\/classes\/screen.php": {
@@ -31,8 +31,8 @@
             "errors": false
         },
         "\/admin\/includes\/functions.php": {
-            "size": 16057,
-            "hash": "2f2b6d784017c180fe5cc2020d70590a",
+            "size": 16542,
+            "hash": "0623fd379c5b975107ff02f64f9f21d5",
             "errors": false
         },
         "\/hooks-api.php": {
@@ -46,8 +46,8 @@
             "errors": false
         },
         "\/includes\/class-un-installer.php": {
-            "size": 1472,
-            "hash": "036004cacd7d935826e3301e0a69bb6e",
+            "size": 5046,
+            "hash": "1ffaf7b8e74961b8f4330bcfa9a82f6f",
             "errors": false
         },
         "\/includes\/classes\/app\/registry.php": {
@@ -56,8 +56,8 @@
             "errors": false
         },
         "\/includes\/classes\/app.php": {
-            "size": 3724,
-            "hash": "24456384c63436bd204349ee3ab55154",
+            "size": 3674,
+            "hash": "78ebb6034d73b3e42cf2ca5958ea0e9a",
             "errors": false
         },
         "\/includes\/classes\/class\/autoloader.php": {
@@ -306,18 +306,23 @@
             "errors": false
         },
         "\/includes\/classes\/hook\/action\/comment\/new.php": {
-            "size": 500,
-            "hash": "2bcd99cd2e8a6f3cf219e330fe6644b0",
+            "size": 630,
+            "hash": "6b502f1bd524e7de9c0201b573fdd986",
             "errors": false
         },
         "\/includes\/classes\/hook\/action\/post\/depublish\/delete.php": {
-            "size": 531,
-            "hash": "d7ce08b1c1baa421cb8f06dbdaa83044",
+            "size": 549,
+            "hash": "93be0fbf6a7219e38c354fc77c649415",
             "errors": false
         },
-        "\/includes\/classes\/hook\/action\/post\/publish.php": {
-            "size": 632,
-            "hash": "7621b368430b15ba14f1d6904bd1bf48",
+        "\/includes\/classes\/hook\/action\/post\/type\/comment.php": {
+            "size": 424,
+            "hash": "49ed24a908177bd2b07170664877de6d",
+            "errors": false
+        },
+        "\/includes\/classes\/hook\/action\/post\/type.php": {
+            "size": 1871,
+            "hash": "819bd0192024ad6df5574a6695de7cc4",
             "errors": false
         },
         "\/includes\/classes\/hook\/action.php": {
@@ -348,11 +353,6 @@
         "\/includes\/classes\/hook\/arg\/current\/user.php": {
             "size": 510,
             "hash": "7bbdcd10c2e5ddd921c2403ff38f89ff",
-            "errors": false
-        },
-        "\/includes\/classes\/hook\/arg\/dynamic.php": {
-            "size": 1814,
-            "hash": "69066d67d76a67262feaac1035b4bef8",
             "errors": false
         },
         "\/includes\/classes\/hook\/arg.php": {
@@ -596,8 +596,13 @@
             "errors": false
         },
         "\/includes\/classes\/index.php": {
-            "size": 6287,
-            "hash": "a57c0feb4269de64ee62eb5fd5373718",
+            "size": 6368,
+            "hash": "f5cad56334989ef9b340c4e8e17f365c",
+            "errors": false
+        },
+        "\/includes\/classes\/legacy\/points\/hook\/to\/reaction\/importer.php": {
+            "size": 12809,
+            "hash": "8f4b2eca8b8e1a44b509de2f455cd750",
             "errors": false
         },
         "\/includes\/constants.php": {
@@ -606,10 +611,10 @@
             "errors": false
         },
         "\/includes\/functions.php": {
-            "size": 22879,
-            "hash": "2ee58c807c309b75e1c142803cfb9cf5",
+            "size": 28530,
+            "hash": "55cb4c5e7256c22c88845f8b9786b540",
             "errors": false
         }
     },
-    "config_signature": "568307a78f590012fede0a260bb2ed0f"
+    "config_signature": "c2dae2c9d1b3e57d5b22bca2ba6247c2"
 }
