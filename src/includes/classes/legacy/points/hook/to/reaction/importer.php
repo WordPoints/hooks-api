@@ -206,6 +206,10 @@ class WordPoints_Legacy_Points_Hook_To_Reaction_Importer {
 
 		$this->reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
 
+		if ( ! $this->reaction_store ) {
+			return;
+		}
+
 		$this->legacy_instances = $this->legacy_handler->get_instances(
 			$this->hook_mode
 		);

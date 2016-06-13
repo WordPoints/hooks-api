@@ -309,6 +309,10 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 		$this->reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
 
+		if ( ! $this->reaction_store ) {
+			return;
+		}
+
 		/** @var WordPoints_Hook_ReactorI $reactor */
 		$reactor = $this->hooks->get_sub_app( 'reactors' )->get( 'points' );
 		$reactor_action_types = array_fill_keys( $reactor->get_action_types(), true );
