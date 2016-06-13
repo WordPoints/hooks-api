@@ -24,6 +24,12 @@ wpcept-setup() {
 
 	# We start the server up early so that it has time to prepare.
 	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" &
+
+	# Configure WordPress for access through a web server.
+	cd "$WP_DEVELOP_DIR"
+	cp wp-tests-config.php wp-config.php
+	echo "require_once(ABSPATH . 'wp-settings.php');" >> wp-config.php
+	cd -
 }
 
 wpcept-run() {
