@@ -11,6 +11,8 @@
  * Tests the maybe network option functions.
  *
  * @since 1.0.0
+ *
+ * @requires WordPress multisite
  */
 class WordPoints_Maybe_Network_Option_Function_Test extends WordPoints_PHPUnit_TestCase {
 
