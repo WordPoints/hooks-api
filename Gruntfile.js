@@ -54,7 +54,8 @@ module.exports = function( grunt ) {
 			},
 			// This triggers an automatic reload of the `watch` task.
 			config: {
-				files: 'Gruntfile.js'
+				files: 'Gruntfile.js',
+				tasks: ['build']
 			},
 			css: {
 				files: [ UNBUILT_DIR + '**/*.scss' ],
@@ -157,4 +158,7 @@ module.exports = function( grunt ) {
 
 		grunt.file.write( file, contents );
 	});
+
+	grunt.registerTask( 'build', ['autoloader', 'browserify', 'sass:all'] );
+	grunt.registerTask( 'default', 'build' );
 };
