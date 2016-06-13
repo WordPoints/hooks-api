@@ -8,7 +8,7 @@
  */
 
 $I = new AcceptanceTester( $scenario );
-$I->wantTo( 'Cancel update a points reaction' );
+$I->wantTo( 'Update a points reaction, but change my mind' );
 $I->hadCreatedAPointsReaction();
 $I->amLoggedInAsAdminOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
 $I->see( 'Test description.', '#points-user_register .wordpoints-hook-reaction .title' );

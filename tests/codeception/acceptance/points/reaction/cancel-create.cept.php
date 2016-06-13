@@ -8,7 +8,7 @@
  */
 
 $I = new AcceptanceTester( $scenario );
-$I->wantTo( 'Cancel creating a points reaction' );
+$I->wantTo( 'Create a points reaction, but change my mind' );
 $I->hadCreatedAPointsType();
 $I->amLoggedInAsAdminOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
 $I->click( 'Add New', '#points-user_register .controls' );

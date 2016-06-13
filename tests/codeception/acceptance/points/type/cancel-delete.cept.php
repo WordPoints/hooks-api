@@ -8,7 +8,7 @@
  */
 
 $I = new AcceptanceTester( $scenario );
-$I->wantTo( 'Cancel deleting a points type' );
+$I->wantTo( 'Delete a points type, but change my mind' );
 $I->hadCreatedAPointsType();
 $I->amLoggedInAsAdminOnPage( 'wp-admin/admin.php?page=wordpoints_points_types' );
 $I->see( 'Points Types' );
