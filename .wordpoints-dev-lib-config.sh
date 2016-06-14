@@ -14,11 +14,6 @@ wpcept-setup() {
 		return
 	fi
 
-	if [[ $WP_VERSION != '4.4' ]]; then
-		export DISPLAY=:99.0
- 		sh -e /etc/init.d/xvfb start
- 	fi
-
 	composer require --prefer-source codeception/codeception:2.1.4
 	composer require --prefer-source lucatume/wp-browser:1.10.11
 
