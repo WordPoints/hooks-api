@@ -958,8 +958,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$settings = array(
-			'periods' => array( 'test_fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ) ),
 			'target'  => array( 'test_entity' ),
+			'periods' => array(
+				'test_fire' => array(
+					array( 'length' => MINUTE_IN_SECONDS, 'relative' => true ),
+				),
+			),
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
@@ -991,7 +995,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		// Increase the length.
 		$reaction->update_meta(
 			'periods'
-			, array( 'test_fire' => array( array( 'length' => HOUR_IN_SECONDS ) ) )
+			, array(
+				'test_fire' => array(
+					array( 'length' => HOUR_IN_SECONDS, 'relative' => true ),
+				),
+			)
 		);
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
@@ -1001,7 +1009,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		// Back to the shorter length.
 		$reaction->update_meta(
 			'periods'
-			, array( 'test_fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ) )
+			, array(
+				'test_fire' => array(
+					array( 'length' => MINUTE_IN_SECONDS, 'relative' => true ),
+				),
+			)
 		);
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
@@ -1025,8 +1037,12 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		);
 
 		$settings = array(
-			'periods' => array( 'test_fire' => array( array( 'length' => HOUR_IN_SECONDS ) ) ),
 			'target'  => array( 'test_entity' ),
+			'periods' => array(
+				'test_fire' => array(
+					array( 'length' => HOUR_IN_SECONDS, 'relative' => true ),
+				),
+			),
 		);
 
 		$reaction = $this->factory->wordpoints->hook_reaction->create( $settings );
@@ -1058,7 +1074,11 @@ class WordPoints_Hook_Extension_Periods_Test extends WordPoints_PHPUnit_TestCase
 		// Decrease the length.
 		$reaction->update_meta(
 			'periods'
-			, array( 'test_fire' => array( array( 'length' => MINUTE_IN_SECONDS ) ) )
+			, array(
+				'test_fire' => array(
+					array( 'length' => MINUTE_IN_SECONDS, 'relative' => true ),
+				),
+			)
 		);
 
 		$hooks->fire( 'test_event', $event_args, 'test_fire' );
