@@ -42,15 +42,12 @@ wpcept-run() {
 
 	sed -i "s/wptests.local/$WP_CEPT_SERVER/" codeception.dist.yml
 
-	phantomjs --webdriver=4444 --webdriver-loglevel=DEBUG &
+	phantomjs --webdriver=4444 &
 
 	# Give PhantomJS time to start.
 	sleep 3
 
 	vendor/bin/wpcept run --debug acceptance points/reaction/update.cept
-
-	ls "$PROJECT_DIR"/../tests/codeception/_output/
-	cat "$PROJECT_DIR/../tests/codeception/_output/pointsreactionupdate.cept.fail.html"
 }
 
 fixed-setup-composer() {
