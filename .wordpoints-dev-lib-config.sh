@@ -42,7 +42,7 @@ wpcept-run() {
 	# Give PhantomJS time to start.
 	sleep 3
 
-	vendor/bin/wpcept run --debug
+	vendor/bin/wpcept run
 }
 
 fixed-setup-composer() {
