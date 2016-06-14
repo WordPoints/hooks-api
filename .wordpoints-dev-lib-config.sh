@@ -18,7 +18,7 @@ wpcept-setup() {
 	composer require --prefer-source lucatume/wp-browser:1.10.11
 
 	# We start the server up early so that it has time to prepare.
-	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" &
+	php -S "$WP_CEPT_SERVER" -t "$WP_CORE_DIR" >/dev/null &
 }
 
 wpcept-run() {
@@ -37,7 +37,7 @@ wpcept-run() {
 
 	sed -i "s/wptests.local/$WP_CEPT_SERVER/" codeception.dist.yml
 
-	phantomjs --webdriver=4444 &
+	phantomjs --webdriver=4444 >/dev/null &
 
 	# Give PhantomJS time to start.
 	sleep 3
