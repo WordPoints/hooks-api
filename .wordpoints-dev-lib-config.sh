@@ -27,6 +27,7 @@ wpcept-setup() {
 
 	# Configure WordPress for access through a web server.
 	cd "$WP_DEVELOP_DIR"
+	sed -i "s/example.org/$WP_CEPT_SERVER/" wp-tests-config.php
 	cp wp-tests-config.php wp-config.php
 	echo "require_once(ABSPATH . 'wp-settings.php');" >> wp-config.php
 	cd -
