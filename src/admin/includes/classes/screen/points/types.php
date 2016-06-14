@@ -483,10 +483,10 @@ class WordPoints_Admin_Screen_Points_Types extends WordPoints_Admin_Screen {
 
 		if ( isset( $_POST['save-points-type'] ) ) { // WPCS: CSRF OK
 
-			if ( isset( $_POST['points-slug'] ) ) { // WPCS: CSRF OK
-				$this->update_points_type();
-			} else {
+			if ( ! empty( $_POST['add_new'] ) ) { // WPCS: CSRF OK
 				$this->add_points_type();
+			} else {
+				$this->update_points_type();
 			}
 
 		} elseif ( ! empty( $_POST['delete-points-type'] ) ) { // WPCS: CSRF OK
