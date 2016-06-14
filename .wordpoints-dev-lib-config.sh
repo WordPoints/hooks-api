@@ -47,7 +47,7 @@ wpcept-run() {
 	# Give PhantomJS time to start.
 	sleep 3
 
-	vendor/bin/wpcept run --debug acceptance points/reaction/update.cept
+	vendor/bin/wpcept run --debug
 }
 
 fixed-setup-composer() {
