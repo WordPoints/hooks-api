@@ -40,13 +40,6 @@ WordPoints_Modules::register(
 );
 
 /**
- * The module's constants.
- *
- * @since 1.0.0
- */
-require_once( dirname( __FILE__ ) . '/includes/constants.php' );
-
-/**
  * The module's functions.
  *
  * @since 1.0.0
@@ -60,29 +53,10 @@ require_once( dirname( __FILE__ ) . '/includes/functions.php' );
  */
 require_once( dirname( __FILE__ ) . '/includes/actions.php' );
 
-/**
- * Class autoloader.
- *
- * Unfortunately, it can't be autoloaded. :-)
- *
- * @since 1.0.0
- */
-require_once( dirname( __FILE__ ) . '/includes/classes/class/autoloader.php' );
-
 // Register the classes to autoload.
 WordPoints_Class_Autoloader::register_dir(
 	dirname( __FILE__ ) . '/includes/classes'
 	, 'WordPoints_'
 );
-
-if ( is_admin() ) {
-
-	/**
-	 * Administration-side code.
-	 *
-	 * @since 1.0.0
-	 */
-	require_once( dirname( __FILE__ ) . '/admin/admin.php' );
-}
 
 // EOF

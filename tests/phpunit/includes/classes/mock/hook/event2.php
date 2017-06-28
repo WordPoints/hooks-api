@@ -6,7 +6,7 @@
  * @package wordpoints-hooks-api
  * @since 1.0.0
  */
-
+// TODO this appears to be unused.
 /**
  * Mock hook event class for the PHPUnit tests.
  *

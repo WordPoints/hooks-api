@@ -14,10 +14,15 @@ php:
 env:
     - TRAVISCI_RUN=codesniff
     - TRAVISCI_RUN=phpunit WP_VERSION=master WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=master WORDPOINTS_VERSION=stable
     - TRAVISCI_RUN=phpunit WP_VERSION=4.5 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.5 WORDPOINTS_VERSION=stable
     - TRAVISCI_RUN=phpunit WP_VERSION=4.4 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.4 WORDPOINTS_VERSION=stable
     - TRAVISCI_RUN=phpunit WP_VERSION=4.3 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.3 WORDPOINTS_VERSION=stable
     - TRAVISCI_RUN=phpunit WP_VERSION=4.2 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.2 WORDPOINTS_VERSION=stable
 
 sudo: false
 
@@ -51,11 +56,9 @@ before_script:
     - export DEV_LIB_PATH=dev-lib
     - if [ -e .wordpoints-dev-lib-config.sh ]; then source .wordpoints-dev-lib-config.sh; fi
     - source $DEV_LIB_PATH/travis/before_script.sh
-    - wpcept-setup
 
 script:
     - codesniff-php-syntax
-    - php -e src/includes/classes/index.php
     - codesniff-phpcs
     - codesniff-jshint
     - codesniff-l10n
@@ -74,7 +77,4 @@ script:
     - wpcept-run
 
 after_script:
-    - if [[ $DO_CODE_COVERAGE == 1 ]]; then php vendor/bin/coveralls; fi
-
-after_success:
-    - if [[ $DO_CODE_COVERAGE == 1 ]]; then bash <(curl -s https://codecov.io/bash) -f $(find build/logs/ -name 'clover-*.xml'); fi
+    - source $DEV_LIB_PATH/travis/after_script.sh

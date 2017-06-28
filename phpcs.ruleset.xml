@@ -4,10 +4,6 @@
 
 	<rule ref="WordPoints" />
 
-	<rule ref="Generic.Files.LowercasedFilename.NotFound">
-		<exclude-pattern>/tests/codeception/*</exclude-pattern>
-	</rule>
-
 	<exclude-pattern>/src/includes/classes/entity/change.php</exclude-pattern>
 	<exclude-pattern>/src/includes/classes/hierarchy.php</exclude-pattern>
 	<exclude-pattern>/src/includes/classes/hook/retroactive/*</exclude-pattern>
