@@ -2,6 +2,8 @@
 
 API for scripting automatic responses to user actions, being developed as a module.
 
+**Notice**: This extension was partly merged into WordPoints core in [#321](https://github.com/WordPoints/wordpoints/issues/321), and now contains mostly remaining experimental code relating more to achievements.
+
 ## Purpose
 
 - To provide a basic API for hooking into user actions, that can be utilized accross WordPoints's components.
